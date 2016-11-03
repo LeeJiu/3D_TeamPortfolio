@@ -44,8 +44,10 @@ HRESULT t_Scene::Scene_Init()
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection);
 	
+
+
 	//
-	D3DXMatrixScaling(&matScale, 0.01f, 0.01f, 0.01f);
+	D3DXMatrixScaling(&matScale, 0.03f, 0.03f, 0.03f);
 
 	matCorrection = matScale * matRotate;
 	m_Land = new cBaseObject;
@@ -53,7 +55,7 @@ HRESULT t_Scene::Scene_Init()
 		"../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection));
 	m_Land->SetActive(true);
 
-	m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0,0)-18, 0);
+	m_Land->pTransform->SetWorldPosition(-150, this->m_pTerrain->GetHeight(0,0) -6.5, 280);
 	//
 
 	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
@@ -62,6 +64,7 @@ HRESULT t_Scene::Scene_Init()
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
+	pSkinnedTrans->SetWorldPosition(-150, 0, 280);
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
