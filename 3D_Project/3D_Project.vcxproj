@@ -82,10 +82,12 @@
     <ClInclude Include="cBoundBox.h" />
     <ClInclude Include="cBoundSphere.h" />
     <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cCommand.h" />
     <ClInclude Include="cDXFontManager.h" />
     <ClInclude Include="cFrustum.h" />
     <ClInclude Include="cGizmoManager.h" />
     <ClInclude Include="cImage.h" />
+    <ClInclude Include="cInputHandler.h" />
     <ClInclude Include="cKeyMgr.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cLight_Direction.h" />
@@ -129,10 +131,12 @@
     <ClCompile Include="cBoundBox.cpp" />
     <ClCompile Include="cBoundSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cCommand.cpp" />
     <ClCompile Include="cDXFontManager.cpp" />
     <ClCompile Include="cFrustum.cpp" />
     <ClCompile Include="cGizmoManager.cpp" />
     <ClCompile Include="cImage.cpp" />
+    <ClCompile Include="cInputHandler.cpp" />
     <ClCompile Include="cKeyMgr.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLight_Direction.cpp" />
