@@ -1,3 +1,4 @@
+
 #pragma once
 #include "cScene.h"
 
@@ -6,7 +7,7 @@ class cCamera;
 class cTerrain;
 class cSkinnedAnimation;
 
-class t_Scene : public cScene
+class move_Test : public cScene
 {
 private:
 
@@ -21,13 +22,13 @@ private:
 	bool			m_bMove;
 
 	cBaseObject*	m_Land;			//컬링된 오브젝트
-	
+
 	D3DXMATRIXA16 temp;
 
 
 public:
-	t_Scene(void);
-	~t_Scene(void);
+	move_Test(void);
+	~move_Test(void);
 
 
 	virtual HRESULT Scene_Init();

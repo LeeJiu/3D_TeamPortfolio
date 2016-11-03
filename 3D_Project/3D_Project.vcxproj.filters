@@ -156,6 +156,9 @@
     <ClInclude Include="cSceneChangeEffectUpDown.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="move_Test.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="t_Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -291,6 +294,9 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="t_Scene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="move_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>

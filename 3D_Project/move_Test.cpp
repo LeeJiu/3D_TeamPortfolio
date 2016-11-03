@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "t_Scene.h"
+#include "move_Test.h"
 #include "cLight_Direction.h"
 #include "cXMesh_Static.h"
 #include "cBaseObject.h"
@@ -9,15 +9,15 @@
 #include "cSkinnedAnimation.h"
 #include "cLight_Point.h"
 
-t_Scene::t_Scene(void)
+move_Test::move_Test(void)
 {
 }
 
-t_Scene::~t_Scene(void)
+move_Test::~move_Test(void)
 {
 }
 
-HRESULT t_Scene::Scene_Init()
+HRESULT move_Test::Scene_Init()
 {
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
@@ -43,7 +43,7 @@ HRESULT t_Scene::Scene_Init()
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection);
-	
+
 	//
 	D3DXMatrixScaling(&matScale, 0.01f, 0.01f, 0.01f);
 
@@ -53,7 +53,7 @@ HRESULT t_Scene::Scene_Init()
 		"../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection));
 	m_Land->SetActive(true);
 
-	m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0,0)-18, 0);
+	m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
 	//
 
 	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
@@ -90,7 +90,7 @@ HRESULT t_Scene::Scene_Init()
 	return S_OK;
 }
 
-void t_Scene::Scene_Release()
+void move_Test::Scene_Release()
 {
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
@@ -101,7 +101,7 @@ void t_Scene::Scene_Release()
 	SAFE_DELETE(this->pSkinned1);
 }
 
-void t_Scene::Scene_Update(float timeDelta)
+void move_Test::Scene_Update(float timeDelta)
 {
 	this->pSkinned1->Update(timeDelta);
 
@@ -174,7 +174,7 @@ void t_Scene::Scene_Update(float timeDelta)
 		this->pSkinnedTrans->GetWorldPosition().z);
 }
 
-void t_Scene::Scene_Render1()
+void move_Test::Scene_Render1()
 {
 	m_pTerrain->Render(this->pMainCamera, dynamic_cast<cLight_Direction*>(lights[0]));
 
@@ -209,7 +209,7 @@ void t_Scene::Scene_Render1()
 }
 
 
-void t_Scene::Scene_RenderSprite()
+void move_Test::Scene_RenderSprite()
 {
 }
 
