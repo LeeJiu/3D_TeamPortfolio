@@ -42,8 +42,9 @@ public:
 		);
 
 	//레이가 오브젝트와 충돌했는지....
+	//오버라이딩 - 지호가 해둠.
 	bool IsRayHitStaticMeshObject(
-		LPRay pRay,				//레이
+		LPRay inRay,				//레이
 		cBaseObject* pObject,	//Base Object
 		cTransform* pTrans,
 		D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )

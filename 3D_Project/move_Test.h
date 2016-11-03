@@ -19,8 +19,13 @@ private:
 	// 움직임에 써볼것.
 	D3DXVECTOR3		m_currentPos;// 내 케릭터의 위치
 	D3DXVECTOR3		m_prePos;// 내가 갈곳의 위치
-	
+	D3DXVECTOR3		m_lastPos;// 가장 높은 y값을 반환 시킬떄 쓸놈.
+	D3DXVECTOR3		m_mousePos;// 클릭했을때 위치.
+
 	bool isMove;
+	bool isObject;
+	bool isTerrain;
+	bool isClick;
 
 	
 	std::vector<cLight*>	lights;

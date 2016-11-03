@@ -323,7 +323,7 @@ bool cPhysicManager::IsRayHitBound(
 }
 //레이가 오브젝트와 충돌했는지....
 bool cPhysicManager::IsRayHitStaticMeshObject(
-	LPRay pRay,				//레이
+	LPRay inRay,				//레이
 	cBaseObject* pObject,	//Base Object
 	cTransform* pTrans,
 	D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
@@ -336,16 +336,17 @@ bool cPhysicManager::IsRayHitStaticMeshObject(
 	D3DXMATRIXA16 matWorld = pTrans->GetFinalMatrix();
 	D3DXMATRIXA16 matInvMatrix;
 	D3DXMatrixInverse(&matInvMatrix, NULL, &matWorld);
-
+	
 	//NewRayInfo
 	D3DXVECTOR3 origin;
-	D3DXVec3TransformCoord(&origin, &pRay->origin, &matInvMatrix);
+	D3DXVec3TransformCoord(&origin, &inRay->origin, &matInvMatrix);
 	D3DXVECTOR3 direction;
-	D3DXVec3TransformNormal(&direction, &pRay->direction, &matInvMatrix);
+	D3DXVec3TransformNormal(&direction, &inRay->direction, &matInvMatrix);
 
 	Ray newRay;
 	newRay.origin = origin;
 	newRay.direction = direction;
+
 
 	//메쉬 충돌 검출함수
 
@@ -407,7 +408,7 @@ bool cPhysicManager::IsRayHitStaticMeshObject(
 				}
 
 
-
+				//*outRay = newRay; // 아웃 레이의 값을 넣어둔다. 충돌 했다면. ( pos 값을 반환 하닌깐 ray 변경 시킨 값을 필요없음.
 				return true;
 			}
 
@@ -418,7 +419,7 @@ bool cPhysicManager::IsRayHitStaticMeshObject(
 
 
 
-
+	//*outRay = inRay; // 충돌 하지 않았다면 입력 값 그대로 넣어준다. 
 	return false;
 }
 
