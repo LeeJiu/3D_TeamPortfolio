@@ -22,7 +22,7 @@ HRESULT t_Scene::Scene_Init()
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
 		"../Resources/Textures/MyHeight512.bmp",
-		"../Resources/Textures/terrain1.jpg",
+		"../Resources/Textures/terrain1.png",
 		"../Resources/Textures/terrain2.png",
 		"../Resources/Textures/terrain3.png",
 		"../Resources/Textures/terrain4.png",
