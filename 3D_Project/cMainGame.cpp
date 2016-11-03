@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "cMainGame.h"
 #include "cImage.h"
-
+#include "t_Scene.h"
 
 cMainGame::cMainGame(void)
 {
@@ -29,12 +29,12 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->Init();
 	
 	//게임에 사용되는 씬 추가
-	//SCENE_MGR->AddScene( "송대관", new cScene_00() );
+	SCENE_MGR->AddScene("송대관", new t_Scene());
 	//SCENE_MGR->AddScene( "태진아", new cScene_01() );
 	//SCENE_MGR->AddLoadingScene( "로딩씬", new cScene_02() );
 
 	////게임 시작씬
-	//SCENE_MGR->ChangeScene( "송대관" );
+	SCENE_MGR->ChangeScene( "송대관" );
 	
 	//return E_FAIL;
 	return S_OK;		

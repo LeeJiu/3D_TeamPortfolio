@@ -56,7 +56,6 @@ void t_Scene::Scene_Release()
 
 void t_Scene::Scene_Update(float timeDelta)
 {
-	this->object->pTransform->RotateWorld(0, 90 * ONE_RAD * timeDelta, 0);
 	this->object->Update(timeDelta);
 
 }

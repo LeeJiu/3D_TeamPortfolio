@@ -489,3 +489,7 @@ D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(890,38): error 
 
 (data[11/03/16] time[16:00:36] ) : fffff
 
+(data[11/03/16] time[16:07:38] ) : ============== Begin Log ============== 
+
+(data[11/03/16] time[16:12:05] ) : ============== Begin Log ============== 
+
