@@ -6,7 +6,6 @@ class cScene;
 class cMainGame
 {
 private:	
-	cScene*					m_pNowScene;
 
 
 public:

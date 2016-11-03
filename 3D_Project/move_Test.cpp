@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "t_Scene.h"
+#include "move_Test.h"
 #include "cLight_Direction.h"
 #include "cXMesh_Static.h"
 #include "cBaseObject.h"
@@ -9,15 +9,15 @@
 #include "cSkinnedAnimation.h"
 #include "cLight_Point.h"
 
-t_Scene::t_Scene(void)
+move_Test::move_Test(void)
 {
 }
 
-t_Scene::~t_Scene(void)
+move_Test::~move_Test(void)
 {
 }
 
-HRESULT t_Scene::Scene_Init()
+HRESULT move_Test::Scene_Init()
 {
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
@@ -43,7 +43,7 @@ HRESULT t_Scene::Scene_Init()
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection);
-	
+
 	//
 	D3DXMatrixScaling(&matScale, 0.01f, 0.01f, 0.01f);
 
@@ -53,7 +53,7 @@ HRESULT t_Scene::Scene_Init()
 		"../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection));
 	m_Land->SetActive(true);
 
-	m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0,0)-18, 0);
+	m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
 	//
 
 	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
@@ -87,12 +87,10 @@ HRESULT t_Scene::Scene_Init()
 	this->lights.push_back(pLight2);
 	this->lights.push_back(pLight3);
 
-	this->m_time = 0;
-
 	return S_OK;
 }
 
-void t_Scene::Scene_Release()
+void move_Test::Scene_Release()
 {
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
@@ -103,46 +101,46 @@ void t_Scene::Scene_Release()
 	SAFE_DELETE(this->pSkinned1);
 }
 
-void t_Scene::Scene_Update(float timeDelta)
+void move_Test::Scene_Update(float timeDelta)
 {
 	this->pSkinned1->Update(timeDelta);
-	
+
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	{
 		Ray ray;
 		POINT ptMousePos = GetMousePos();
 		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
 		this->pMainCamera->ComputeRay(&ray, &screenPos);
-	
-	
+
+
 		//Terrain 이랑 Ray체크
 		this->m_pTerrain->IsIntersectRay(&m_hitPos, &ray);
-	
+
 		m_bMove = true;
 		this->pSkinned1->Play("Walk", 0.3f);
 	}
-	
+
 	if (KEY_MGR->IsStayDown(VK_LCONTROL))
 	{
-	
+
 		if (KEY_MGR->IsOnceDown('1'))
 			this->pSkinned1->Play("Idle_01", 0.3f);
-	
+
 		if (KEY_MGR->IsOnceDown('2'))
 			this->pSkinned1->Play("Idle_02", 0.3f);
-	
+
 		if (KEY_MGR->IsOnceDown('3'))
 			this->pSkinned1->PlayOneShot("Walk", 0.3f);
-	
+
 	}
-	
-	
+
+
 	if (m_bMove == true)
 	{
 		//거리를 구한다.
 		D3DXVECTOR3 dirToTarget = this->m_hitPos - this->pSkinnedTrans->GetWorldPosition();
 		float dist = D3DXVec3Length(&dirToTarget);
-	
+
 		//히트 포인트에 위치하게 되면 lookdirection을 하지 않는다.
 		//자신이 자신의 위치를 보게 되면 모델이 사라져버린다.
 		if (dist <= 0.001)
@@ -151,37 +149,32 @@ void t_Scene::Scene_Update(float timeDelta)
 			this->pSkinned1->Play("Idle_01", 0.3f);
 			return;
 		}
-	
+
 		D3DXVec3Normalize(&dirToTarget, &dirToTarget);
-	
+
 		//방향을 구한다.
 		this->pSkinnedTrans->LookDirection(dirToTarget);
-	
+
 		//이동량
 		float deltaMove = 5.0f * timeDelta;
 		float t = Clamp01(deltaMove / dist);
-	
+
 		//현재 위치에서 히트 포인트로
 		D3DXVECTOR3 pos = VecLerp(this->pSkinnedTrans->GetWorldPosition(), this->m_hitPos, t);
-	
+
 		//높이 얻는다. / 터레인의 높이
 		pos.y = this->m_pTerrain->GetHeight(pos.x, pos.z);
-	
+
 		this->pSkinnedTrans->SetWorldPosition(pos);
 	}
-	
-	this->m_time += timeDelta;
-	if (m_time > 5.f)
-	{
-		LOG_MGR->AddLog("x: %.2f, y : %.2f, z : %.2f",
-			this->pSkinnedTrans->GetWorldPosition().x,
-			this->pSkinnedTrans->GetWorldPosition().y,
-			this->pSkinnedTrans->GetWorldPosition().z);
-		m_time = 0;
-	}
+
+	LOG_MGR->AddLog("x: %.2f, y : %.2f, z : %.2f",
+		this->pSkinnedTrans->GetWorldPosition().x,
+		this->pSkinnedTrans->GetWorldPosition().y,
+		this->pSkinnedTrans->GetWorldPosition().z);
 }
 
-void t_Scene::Scene_Render1()
+void move_Test::Scene_Render1()
 {
 	m_pTerrain->Render(this->pMainCamera, dynamic_cast<cLight_Direction*>(lights[0]));
 
@@ -216,7 +209,7 @@ void t_Scene::Scene_Render1()
 }
 
 
-void t_Scene::Scene_RenderSprite()
+void move_Test::Scene_RenderSprite()
 {
 }
 
