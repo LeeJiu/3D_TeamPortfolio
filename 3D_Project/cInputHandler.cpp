@@ -11,9 +11,15 @@ cInputHandler::~cInputHandler()
 {
 }
 
-void cInputHandler::HandleInput()
+cCommand* cInputHandler::HandleInput()
 {
-	
+	for (m_miKey = m_mKey.begin(); m_miKey != m_mKey.end(); ++m_miKey)
+	{
+		if (KEY_MGR->IsOnceDown(m_miKey->first)) return m_miKey->second;
+	}
+
+	//아무것도 눌리지 않았다면
+	return NULL;
 }
 
 void cInputHandler::AddKey(int nVKey, cCommand * command)
