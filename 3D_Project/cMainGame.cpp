@@ -29,12 +29,12 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->Init();
 	
 	//게임에 사용되는 씬 추가
-	SCENE_MGR->AddScene("송대관", new t_Scene());
+	SCENE_MGR->AddScene("walk", new t_Scene());
 	//SCENE_MGR->AddScene( "태진아", new cScene_01() );
 	//SCENE_MGR->AddLoadingScene( "로딩씬", new cScene_02() );
 
 	////게임 시작씬
-	SCENE_MGR->ChangeScene( "송대관" );
+	SCENE_MGR->ChangeScene( "walk" );
 	
 	//return E_FAIL;
 	return S_OK;		
@@ -44,9 +44,9 @@ HRESULT cMainGame::Init(void)
 void cMainGame::Release()
 {
 	
-	//씬해재
-	//m_pNowScene->Release();
-	//SAFE_DELETE( m_pNowScene );
+	//씬 해제
+	m_pNowScene->Release();
+	SAFE_DELETE( m_pNowScene );
 
 	//매니져 해제
 	GIZMO_MGR->Release();

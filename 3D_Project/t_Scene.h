@@ -1,5 +1,5 @@
 #pragma once
-#include "cscene.h"
+#include "cScene.h"
 
 class cBaseObject;
 class cCamera;
@@ -10,9 +10,15 @@ class t_Scene : public cScene
 {
 private:
 
-	cBaseObject*						object;
+	cSkinnedAnimation*		pSkinned1;
+	cTransform*				pSkinnedTrans;
 
+	std::vector<cLight*>	lights;
 
+	cTerrain*		m_pTerrain;
+	D3DXVECTOR3		m_hitPos;
+	D3DXVECTOR3		m_hitDir;
+	bool			m_bMove;
 
 
 public:
