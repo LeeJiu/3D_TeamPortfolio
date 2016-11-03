@@ -9,7 +9,6 @@ class cSkinnedAnimation;
 class t_Scene : public cScene
 {
 private:
-
 	cSkinnedAnimation*		pSkinned1;
 	cTransform*				pSkinnedTrans;
 
@@ -20,6 +19,7 @@ private:
 	D3DXVECTOR3		m_hitDir;
 	bool			m_bMove;
 
+	float			m_time;
 
 public:
 	t_Scene(void);
