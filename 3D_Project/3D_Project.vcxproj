@@ -106,9 +106,6 @@
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cSceneChangeEffect.h" />
     <ClInclude Include="cSceneChangeEffectUpDown.h" />
-    <ClInclude Include="cScene_00.h" />
-    <ClInclude Include="cScene_01.h" />
-    <ClInclude Include="cScene_02.h" />
     <ClInclude Include="cScene_Mgr.h" />
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
@@ -154,9 +151,6 @@
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cSceneChangeEffect.cpp" />
     <ClCompile Include="cSceneChangeEffectUpDown.cpp" />
-    <ClCompile Include="cScene_00.cpp" />
-    <ClCompile Include="cScene_01.cpp" />
-    <ClCompile Include="cScene_02.cpp" />
     <ClCompile Include="cScene_Mgr.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />

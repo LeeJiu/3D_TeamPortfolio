@@ -144,17 +144,8 @@
     <ClInclude Include="cQuadParticleEmitter.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="cScene_00.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="cFrustum.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene_01.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene_02.h">
-      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="cScene_Mgr.h">
       <Filter>Managers</Filter>
@@ -284,17 +275,8 @@
     <ClCompile Include="cQuadParticleEmitter.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="cScene_00.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="cFrustum.cpp">
       <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_01.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_02.cpp">
-      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="cScene_Mgr.cpp">
       <Filter>Managers</Filter>
