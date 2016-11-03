@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="cBoundBox" Collapsed="true">
+    <Position X="5.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAgAAAIAiAAAAAASAAAAAAAAAIAAA=</HashCode>
+      <FileName>cBoundBox.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cBoundSphere" Collapsed="true">
+    <Position X="5.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACASAAAACAAAAQAAAAAAAAAAQAAACAAEAAAAAA=</HashCode>
+      <FileName>cBoundSphere.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cImage" Collapsed="true">
+    <Position X="30.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIEIACwAABAQAgAAAACAAAAAAAAgDEBIAAAA=</HashCode>
+      <FileName>cImage.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cMainGame" Collapsed="true">
+    <Position X="32" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAEAAAAAAAAAAgAABAAAACABAAAAQ=</HashCode>
+      <FileName>cMainGame.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cSpriteManager" Collapsed="true">
+    <Position X="14.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEgAAAAgCAEAAAAAgAAAAECBhAAAAA=</HashCode>
+      <FileName>cSpriteManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cDXFontManager" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEgAACAAAAAAAAAIAAAwAAAAgAQEgAAAAIACABAAAAA=</HashCode>
+      <FileName>cDXFontManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cGizmoManager" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAABAAIAEAAAAAAAAggAAAIAAAACABABAAA=</HashCode>
+      <FileName>cGizmoManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cKeyMgr" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABBAAAAAAAAAAAAAAQAAAEAAAAACABACAQA=</HashCode>
+      <FileName>cKeyMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cLogMgr" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAACAAAAAAABAAAAAAACAAAAAAAAGADhAAAQ=</HashCode>
+      <FileName>cLogMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cPhysicManager" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAhABCAAAAAACAAAIAQAAAAGAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>cPhysicManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cResourceMgr_XSkinnedMesh" Collapsed="true">
+    <Position X="23.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAAAACAAAA=</HashCode>
+      <FileName>cResourceMgr_XSkinnedMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cResourceMgr&lt;T, A&gt;" Collapsed="true">
+    <Position X="22.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAQAAAAAAAAAAAAAABAAAAAQAAAAABgCACAAAA=</HashCode>
+      <FileName>cResourceMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cResourceMgr_ShaderFX" Collapsed="true">
+    <Position X="26" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAgAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>cResourceMgr_ShaderFX.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cResourceMgr_Texture" Collapsed="true">
+    <Position X="19.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAgCAAAA=</HashCode>
+      <FileName>cResourceMgr_Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cResourceMgr_XStaticMesh" Collapsed="true">
+    <Position X="21.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAACAQAA=</HashCode>
+      <FileName>cResourceMgr_XStaticMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cSingletonBase&lt;T&gt;" Collapsed="true">
+    <Position X="14.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAQAAAAAAQAAAAAABAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>cSingletonBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cTimeMgr" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAICAAAlAAQAAAABJAEAAAAEICAAAAAACABAAQAA=</HashCode>
+      <FileName>cTimeMgr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cScene" Collapsed="true">
+    <Position X="11.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGwACAAAAAACAAAAAAAABIAAQgAAAACAABAKABAAiAA=</HashCode>
+      <FileName>cScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cScene_00" Collapsed="true">
+    <Position X="11.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAACAAAAAAAAAACMIABAAAAgIQAAAAABAIACAAgAI=</HashCode>
+      <FileName>cScene_00.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BONE_HIERARCHY" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAADAEAAAAAAAAAAQAAAAABAEAAAAAABAAQAA=</HashCode>
+      <FileName>BoneHierachy.h</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="cCamera" Collapsed="true">
+    <Position X="2.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IABAAgAYEAACAAACAAAgBAgAAiAAACgAIgBAIAAAAAA=</HashCode>
+      <FileName>cCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cLight" Collapsed="true">
+    <Position X="8.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAgIAAAAAQIAAAAAhAAAAAA=</HashCode>
+      <FileName>cLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cLight_Direction" Collapsed="true">
+    <Position X="7.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAgAAAAAAQAAAIAAAAAAAAA=</HashCode>
+      <FileName>cLight_Direction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cLight_Point" Collapsed="true">
+    <Position X="9.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAgAAAAAAAAAAAABAAgQAAAAAQAAAEAAAAAAAAA=</HashCode>
+      <FileName>cLight_Point.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cPartcleEmitter" Collapsed="true">
+    <Position X="7.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAIkxAggUgAAGICAIgAAIgDAAEDAAAgEkACCBAaAwA=</HashCode>
+      <FileName>cPartcleEmitter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cParticle" Collapsed="true">
+    <Position X="28.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAQMIACAAAgAgAAAACAAgAAAAAAQAIAAAAAgAEAA=</HashCode>
+      <FileName>cParticle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cParticleQuad" Collapsed="true">
+    <Position X="30.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAMMACAAAAAwAAAACAAgAIBAAAQAIAAAAAgAEAA=</HashCode>
+      <FileName>cParticleQuad.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cQuadParticleEmitter" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAIFxAgAUgAAEICAIAAAAgDACBRIAAAAkAjCBAKAwA=</HashCode>
+      <FileName>cQuadParticleEmitter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cQuadTree" Collapsed="true">
+    <Position X="32" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQQABAIAAAEAAkAAAAACQAAQAAAAAACAAAAAAA=</HashCode>
+      <FileName>cQuadTree.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cSkinnedAnimation" Collapsed="true">
+    <Position X="28.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCQgACBAABFQgBAAAAQEAAAAAABAFAEQoJgKABQgAgI=</HashCode>
+      <FileName>cSkinnedAnimation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cTerrain" Collapsed="true">
+    <Position X="30.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAQAABAgAAIIABBCAAFUJAAAAESIgAABRWgFAABQA=</HashCode>
+      <FileName>cTerrain.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cTransform" Collapsed="true">
+    <Position X="2.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>NAAAgACDEAEYFoAAEwQwYccOJAolABCJYABABsAhkAA=</HashCode>
+      <FileName>cTransform.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cXMesh" Collapsed="true">
+    <Position X="3.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAABACABAgAAA=</HashCode>
+      <FileName>cXMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cXMesh_Skinned" Collapsed="true">
+    <Position X="4.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCQABCFKZEFQgBAgAAwGAAAgAABAFAAAoJgiQBagAQI=</HashCode>
+      <FileName>cXMesh_Skinned.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cXMesh_Static" Collapsed="true">
+    <Position X="2.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kACQAAEAsEgBCAIAAMACBgAIAAAAEAAAVBESQBAIIAA=</HashCode>
+      <FileName>cXMesh_Static.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cBaseObject" Collapsed="true">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAEAAAAAEAAAEAAABAADEAAAAAIAAhgAAKAQAQA=</HashCode>
+      <FileName>cBaseObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cSetBoundObject" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABgAAAAAEAAAACAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>cSetBoundObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="tagRay" Collapsed="true">
+    <Position X="3.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MyUtil.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BONE" Collapsed="true">
+    <Position X="28.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEAAAAAAAAAIAA=</HashCode>
+      <FileName>BoneHierachy.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BONE_MESH" Collapsed="true">
+    <Position X="30.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAhAACAAAICAMBABAQAgAAAAA=</HashCode>
+      <FileName>BoneHierachy.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="tagPARTICLE_VERTEX" Collapsed="true">
+    <Position X="13.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAIAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>cParticle.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="tagPARTICLEQUAD_VERTEX" Collapsed="true">
+    <Position X="9.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAACAAAAAAAAAAgA=</HashCode>
+      <FileName>cParticleQuad.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="Ray" Collapsed="true">
+    <Position X="0.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MyUtil.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPRay" Collapsed="true">
+    <Position X="3.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MyUtil.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="PARTICLE_VERTEX" Collapsed="true">
+    <Position X="15.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cParticle.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPPARTICLE_VERTEX" Collapsed="true">
+    <Position X="14.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cParticle.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="VEC_COLOR" Collapsed="true">
+    <Position X="28.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cParticle.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="VEC_SCALE" Collapsed="true">
+    <Position X="30.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cParticle.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="PARTICLEQUAD_VERTEX" Collapsed="true">
+    <Position X="12.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cParticleQuad.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LPPARTICLEQUAD_VERTEX" Collapsed="true">
+    <Position X="9.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cParticleQuad.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="PATICLE_EMISSION_TYPE" Collapsed="true">
+    <Position X="28.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAABAAAAAgAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>cPartcleEmitter.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

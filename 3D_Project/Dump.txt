@@ -1,0 +1,479 @@
+(data[12/31/14] time[18:46:39] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[18:46:42] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(476,39): error X3013: 'vs_CreateShadow': function does not take 1 parameter
+
+
+(data[12/31/14] time[18:47:29] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:01:16] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:01:39] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:02:37] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:03:28] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:05:03] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:05:31] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:07:29] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:08:22] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:09:10] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:12:57] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:13:00] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(513,48): error X3018: invalid subscript 'BlendWeights'
+
+
+(data[12/31/14] time[19:13:46] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:13:48] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(516,39): error X3004: undeclared identifier 'iNumBones'
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(516,25): error X3013: 'VS_Skin': function does not take 2 parameters
+
+
+(data[12/31/14] time[19:14:42] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:16:56] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:17:53] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:24:04] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:24:06] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(533,20): warning X3206: implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(685,3): error X3004: undeclared identifier 'diff'
+
+
+(data[12/31/14] time[19:24:36] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:25:41] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:27:24] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:27:50] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:28:25] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:28:51] ) : ============== Begin Log ============== 
+
+(data[12/31/14] time[19:29:26] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:38:26] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:40:27] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:40:29] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(533,20): warning X3206: implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(692,64): error X3004: undeclared identifier 'toon'
+
+
+(data[01/02/15] time[16:44:53] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:46:22] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:46:54] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:48:25] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:48:27] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(533,20): warning X3206: implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(704,64): error X3004: undeclared identifier 'rampRgb'
+
+
+(data[01/02/15] time[16:48:51] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:49:31] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:56:09] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:56:11] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(126,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(130,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(574,20): warning X3206: implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(742,104): error X3018: invalid subscript 'Binormal'
+
+
+(data[01/02/15] time[16:56:31] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:57:11] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:58:27] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:58:29] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 0 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,23): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,9): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(752,15): error X4579: NaN and infinity literals not allowed by shader model
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 1 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(825,14): ID3DXEffectCompiler::CompileEffect: There was an error compiling HLL shader parameter
+ID3DXEffectCompiler: Compilation failed
+
+
+(data[01/02/15] time[16:59:26] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[16:59:28] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 0 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,23): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,9): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(752,15): error X4579: NaN and infinity literals not allowed by shader model
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 1 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(825,14): ID3DXEffectCompiler::CompileEffect: There was an error compiling HLL shader parameter
+ID3DXEffectCompiler: Compilation failed
+
+
+(data[01/02/15] time[17:01:28] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:01:30] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 0 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,23): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,9): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(752,15): error X4579: NaN and infinity literals not allowed by shader model
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 1 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(825,14): ID3DXEffectCompiler::CompileEffect: There was an error compiling HLL shader parameter
+ID3DXEffectCompiler: Compilation failed
+
+
+(data[01/02/15] time[17:01:40] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:02:16] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:02:18] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 0 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,23): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,9): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(752,15): error X4579: NaN and infinity literals not allowed by shader model
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 1 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(825,14): ID3DXEffectCompiler::CompileEffect: There was an error compiling HLL shader parameter
+ID3DXEffectCompiler: Compilation failed
+
+
+(data[01/02/15] time[17:02:29] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:02:32] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 0 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,23): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(749,9): warning X4008: floating point division by zero
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(752,15): error X4579: NaN and infinity literals not allowed by shader model
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(120,10): warning X3557: loop only executes for 1 iteration(s), forcing loop to unroll
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(825,14): ID3DXEffectCompiler::CompileEffect: There was an error compiling HLL shader parameter
+ID3DXEffectCompiler: Compilation failed
+
+
+(data[01/02/15] time[17:02:46] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:03:00] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:03:31] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:05:02] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:05:28] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:08:29] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:09:16] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:09:20] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(126,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(130,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(574,20): warning X3206: implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(752,9): error X3017: cannot implicitly convert from 'const float3' to 'float4'
+
+
+(data[01/02/15] time[17:09:27] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:09:29] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(126,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(130,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(574,20): warning X3206: implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(752,9): error X3017: cannot implicitly convert from 'const float3' to 'float4'
+
+
+(data[01/02/15] time[17:09:51] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:09:54] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(126,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(130,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(574,20): warning X3206: implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(752,9): error X3017: cannot implicitly convert from 'const float3' to 'float4'
+
+
+(data[01/02/15] time[17:10:07] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:10:26] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:10:56] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:11:19] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:12:01] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:13:03] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:18:31] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:21:16] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:22:51] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:26:29] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:27:48] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:28:40] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:40:43] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:40:46] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(126,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(130,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(574,20): warning X3206: implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(887,21): error X3004: undeclared identifier 'diffuseColor'
+
+
+(data[01/02/15] time[17:41:09] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:42:00] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:42:25] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:43:40] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:44:15] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:45:13] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:46:38] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:49:41] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:49:44] ) : D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(10,11): warning X3207: Initializer used on a global 'const' variable. This requires setting an external constant. If a literal is desired, use 'static const' instead.
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(47,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(48,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(49,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(53,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(54,22): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(55,21): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(126,24): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(130,20): warning X3206: 'mul': implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(574,20): warning X3206: implicit truncation of vector type
+D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(890,38): error X3004: undeclared identifier 'toon'
+
+
+(data[01/02/15] time[17:50:37] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:51:25] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[17:53:49] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:18:54] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:19:08] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:20:31] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:21:26] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:21:37] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:24:26] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:25:45] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:26:58] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:35:47] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:37:49] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[18:38:59] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[19:23:02] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[19:23:38] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[19:23:57] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[19:29:14] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[19:33:52] ) : ============== Begin Log ============== 
+
+(data[01/02/15] time[22:02:56] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[18:35:01] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[18:37:58] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[18:38:04] ) : fffff
+
+(data[01/05/15] time[18:38:04] ) : fffff
+
+(data[01/05/15] time[18:38:15] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[18:38:21] ) : fffff
+
+(data[01/05/15] time[18:38:25] ) : fffff
+
+(data[01/05/15] time[18:48:50] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[18:49:08] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[19:09:26] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[19:09:35] ) : fffff
+
+(data[01/05/15] time[19:09:39] ) : fffff
+
+(data[01/05/15] time[19:18:21] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[19:18:32] ) : fffff
+
+(data[01/05/15] time[19:18:36] ) : fffff
+
+(data[01/05/15] time[19:19:08] ) : fffff
+
+(data[01/05/15] time[19:19:12] ) : fffff
+
+(data[01/05/15] time[19:19:53] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[19:20:02] ) : fffff
+
+(data[01/05/15] time[19:20:06] ) : fffff
+
+(data[01/05/15] time[19:28:07] ) : ============== Begin Log ============== 
+
+(data[01/05/15] time[19:28:14] ) : fffff
+
+(data[01/05/15] time[19:28:17] ) : fffff
+
+(data[10/14/15] time[01:01:43] ) : ============== Begin Log ============== 
+
+(data[10/14/15] time[01:01:52] ) : fffff
+
+(data[10/14/15] time[01:01:56] ) : fffff
+
+(data[12/22/15] time[01:23:05] ) : ============== Begin Log ============== 
+
+(data[12/22/15] time[01:23:16] ) : fffff
+
+(data[12/22/15] time[01:23:19] ) : fffff
+
+(data[10/14/16] time[18:01:27] ) : ============== Begin Log ============== 
+
+(data[10/14/16] time[18:02:01] ) : fffff
+
+(data[10/14/16] time[18:02:05] ) : fffff
+
+(data[11/01/16] time[17:17:24] ) : ============== Begin Log ============== 
+
+(data[11/01/16] time[17:17:34] ) : fffff
+
+(data[11/01/16] time[17:17:37] ) : fffff
+
+(data[11/01/16] time[17:19:30] ) : ============== Begin Log ============== 
+
+(data[11/01/16] time[17:20:32] ) : fffff
+
+(data[11/01/16] time[17:20:35] ) : fffff
+
+(data[11/02/16] time[21:18:09] ) : ============== Begin Log ============== 
+
+(data[11/02/16] time[21:19:29] ) : ============== Begin Log ============== 
+
+(data[11/02/16] time[21:20:33] ) : ============== Begin Log ============== 
+
+(data[11/02/16] time[21:35:27] ) : ============== Begin Log ============== 
+
+(data[11/02/16] time[21:36:03] ) : ============== Begin Log ============== 
+
+(data[11/02/16] time[21:36:12] ) : fffff
+
+(data[11/02/16] time[21:36:16] ) : fffff
+
+(data[11/02/16] time[22:13:02] ) : ============== Begin Log ============== 
+
+(data[11/02/16] time[22:13:10] ) : fffff
+
+(data[11/02/16] time[22:13:14] ) : fffff
+
+(data[11/02/16] time[22:15:05] ) : ============== Begin Log ============== 
+
+(data[11/02/16] time[22:15:54] ) : ============== Begin Log ============== 
+
+(data[11/02/16] time[22:16:01] ) : fffff
+
+(data[11/02/16] time[22:16:05] ) : fffff
+
+(data[11/02/16] time[22:17:02] ) : ============== Begin Log ============== 
+
+(data[11/02/16] time[22:17:10] ) : fffff
+
+(data[11/02/16] time[22:17:14] ) : fffff
+
