@@ -44,7 +44,7 @@ HRESULT move_Test::Scene_Init()
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection);
 
-	//
+	//=================== 스태틱 렌더 그림.
 	D3DXMatrixScaling(&matScale, 0.01f, 0.01f, 0.01f);
 
 	matCorrection = matScale * matRotate;
@@ -53,8 +53,13 @@ HRESULT move_Test::Scene_Init()
 		"../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection));
 	m_Land->SetActive(true);
 
-	m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
-	//
+	//m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
+	m_Land->pTransform->SetWorldPosition(0, 0, 0);
+
+	//===============
+	//================레이 추가. 아래 방향 바뀌지 않음 .
+	cRay.direction = D3DXVECTOR3(0, -1, 0);
+	//=============== 레이 초기화 끝.
 
 	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
 	this->pSkinned1 = new cSkinnedAnimation();
@@ -87,6 +92,7 @@ HRESULT move_Test::Scene_Init()
 	this->lights.push_back(pLight2);
 	this->lights.push_back(pLight3);
 
+	isMove = false;
 	return S_OK;
 }
 
@@ -104,7 +110,63 @@ void move_Test::Scene_Release()
 void move_Test::Scene_Update(float timeDelta)
 {
 	this->pSkinned1->Update(timeDelta);
+	if (KEY_MGR->IsStayDown('W'))
+	{
+		isMove = true;
+		pSkinnedTrans->MovePositionWorld(pSkinnedTrans->GetForward()*0.2f);
+	}
+	if (KEY_MGR->IsStayDown('S'))
+	{
+		isMove = true;
+		pSkinnedTrans->MovePositionWorld(-pSkinnedTrans->GetForward()*0.2f);
+	}
+	if (KEY_MGR->IsStayDown('Q'))
+	{
+		isMove = true;
+		pSkinnedTrans->MovePositionWorld(-pSkinnedTrans->GetRight()*0.2f);
 
+	}
+	if (KEY_MGR->IsStayDown('E'))
+	{
+		isMove = true;
+		pSkinnedTrans->MovePositionWorld(pSkinnedTrans->GetRight()*0.2f);
+
+	}
+	if (KEY_MGR->IsStayDown('A'))
+	{
+		pSkinnedTrans->RotateSelf(0, -90 * ONE_RAD*timeDelta, 0);
+	}
+	if (KEY_MGR->IsStayDown('D'))
+	{
+		pSkinnedTrans->RotateSelf(0, 90 * ONE_RAD*timeDelta, 0);
+	}
+
+	// 레이 업데이트 
+	cRay.direction = D3DXVECTOR3(0, -1, 0);
+	// 케릭터 앞방향에 레이를 쏜다. 
+	cRay.origin = pSkinnedTrans->GetWorldPosition() + pSkinnedTrans->GetForward()*0.3f;
+	cRay.origin.y = cRay.origin.y + 5; // 머리위에 붙일예정
+
+	// 오브젝트와 충돌했다면.
+	m_currentPos = pSkinnedTrans->GetWorldPosition();//현재 좌표 current넣음.
+
+	if (PHYSICS_MGR->IsRayHitStaticMeshObject(
+		&this->cRay,
+		this->m_Land,
+		this->m_Land->pTransform,
+		&this->m_prePos,
+		NULL) == true)
+	{
+		if (m_prePos.y - m_currentPos.y < 2 && isMove==true)
+		{
+			this->pSkinnedTrans->SetWorldPosition(m_prePos);
+			m_currentPos = m_prePos;
+
+		}
+
+	}
+
+	//=========================
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	{
 		Ray ray;
@@ -119,6 +181,9 @@ void move_Test::Scene_Update(float timeDelta)
 		m_bMove = true;
 		this->pSkinned1->Play("Walk", 0.3f);
 	}
+
+
+	isMove = false;
 
 	if (KEY_MGR->IsStayDown(VK_LCONTROL))
 	{
@@ -172,6 +237,7 @@ void move_Test::Scene_Update(float timeDelta)
 		this->pSkinnedTrans->GetWorldPosition().x,
 		this->pSkinnedTrans->GetWorldPosition().y,
 		this->pSkinnedTrans->GetWorldPosition().z);
+
 }
 
 void move_Test::Scene_Render1()
@@ -206,6 +272,9 @@ void move_Test::Scene_Render1()
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	m_Land->Render();
+	//========== 레이 기지모
+	GIZMO_MGR->Line(this->cRay.origin, this->cRay.origin + this->cRay.direction * 100, 0xffffff00);
+
 }
 
 

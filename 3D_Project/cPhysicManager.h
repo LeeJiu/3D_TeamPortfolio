@@ -35,8 +35,17 @@ public:
 
 	//레이가 오브젝트와 충돌했는지....
 	bool IsRayHitStaticMeshObject( 
-		LPRay Ray,				//레이
+		LPRay pRay,				//레이
 		cBaseObject* pObject,	//Base Object
+		D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
+		D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
+		);
+
+	//레이가 오브젝트와 충돌했는지....
+	bool IsRayHitStaticMeshObject(
+		LPRay pRay,				//레이
+		cBaseObject* pObject,	//Base Object
+		cTransform* pTrans,
 		D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
 		D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
 		);
