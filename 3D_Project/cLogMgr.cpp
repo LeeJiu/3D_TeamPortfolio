@@ -65,7 +65,7 @@ VOID cLogMgr::AddLog( char* strmsg, ... )
 	//FILE 에 출력 할경우
 	if( m_nTarget & LOG_FILE )
 	{
-		LogFile( "(data[%s] time[%s] ) : %s\n", szDate, szTime, szBuff );
+		// LogFile( "(data[%s] time[%s] ) : %s\n", szDate, szTime, szBuff );
 	}
 
 	//LOG 윈도우에 출력할 경우 ( 디버그 모드에서만 지원

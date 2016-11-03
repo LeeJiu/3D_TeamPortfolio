@@ -45,8 +45,8 @@ void cMainGame::Release()
 {
 	
 	//씬 해제
-	m_pNowScene->Release();
-	SAFE_DELETE( m_pNowScene );
+	//m_pNowScene->Release();
+	//SAFE_DELETE( m_pNowScene );
 
 	//매니져 해제
 	GIZMO_MGR->Release();
