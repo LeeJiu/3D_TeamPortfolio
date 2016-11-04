@@ -154,30 +154,45 @@ void move_Test::Scene_Update(float timeDelta)
 		POINT ptMousePos = GetMousePos();
 		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
 		this->pMainCamera->ComputeRay(&ray, &screenPos);
-			 
+
 		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
 		isClick = true;
+
 	}
 
 	if (isClick == true)
 	{
-		//D3DXVECTOR3 dir = m_mousePos - cRay.origin;
-		//D3DXVec3Normalize(&dir, &dir);
+		D3DXVECTOR3 dir = m_mousePos - cRay.origin;	// 방향 및 mousePos의 원점 이동.	
+		dir.y = 0;
 
-		D3DXVECTOR3 dir(0,0,1);
-		cRay.origin += dir*timeDelta;
+	
+		if (D3DXVec3Length(&dir) > 0.5f)
+		{
+		isMove = true;
+			D3DXVec3Normalize(&dir, &dir);
+			D3DXVECTOR3 lerp = pSkinnedTrans->GetForward();
+			D3DXVec3Lerp(&lerp, &lerp, &dir, 0.2);
+			pSkinnedTrans->LookDirection(lerp, D3DXVECTOR3(0, 1, 0));
 
-		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-			cRay.origin.x,
-			cRay.origin.y,
-			cRay.origin.z);
+			cRay.origin += dir*0.2f;
+		}
+		else
+		{
+			isMove = false;
+			isClick = false;
+
+			LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+				cRay.origin.x,
+				cRay.origin.y,
+				cRay.origin.z);
+		}
 	}
 
 
 
 
 	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
-	
+
 	//m_lastPos = this->pSkinnedTrans->GetWorldPosition();
 	//m_lastPos.y = -1000;
 	// 추후에 거리 값을 이용해서 2,3번째 인자 값을 걸러 낼꺼임.
@@ -193,7 +208,7 @@ void move_Test::Scene_Update(float timeDelta)
 	}
 	else
 	{
-		m_lastPos.y = pSkinnedTrans->GetWorldPosition().y -10;
+		m_lastPos.y = pSkinnedTrans->GetWorldPosition().y - 10;
 	}
 
 	// 터레인과 충돌 했다면. 
@@ -201,14 +216,14 @@ void move_Test::Scene_Update(float timeDelta)
 	{
 		if (m_lastPos.y > m_prePos.y)
 		{
-			m_prePos= m_lastPos;
+			m_prePos = m_lastPos;
 		}
 	}
-	
+
 
 
 	//=================================== 케릭터를 최종적으로 움직이게 하는 부분 
-	if ( fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
+	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
 	{
 		this->pSkinnedTrans->SetWorldPosition(m_prePos);
 		m_currentPos = m_prePos; // 좌표 갱신
