@@ -1481,6 +1481,8 @@ void cTransform::DefaultControl( float timeDelta )
 	
 }
 
+
+
 void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 {
 	cTransform* chara = new cTransform();

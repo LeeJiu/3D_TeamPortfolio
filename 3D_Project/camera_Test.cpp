@@ -147,14 +147,12 @@ void camera_Test::Scene_Update(float timeDelta)
 	}
 	if (KEY_MGR->IsStayDown('A'))
 	{
-		pSkinnedTrans->RotateSelf(0, -90 * ONE_RAD*timeDelta, 0);
-		cRay.origin += pSkinnedTrans->GetRight()*0.2f;
+		pSkinnedTrans->RotateSelf(0, -2 * ONE_RAD, 0);
 	}
 
 	if (KEY_MGR->IsStayDown('D'))
 	{
-		pSkinnedTrans->RotateSelf(0, 90 * ONE_RAD*timeDelta, 0);
-		cRay.origin -= pSkinnedTrans->GetRight()*0.2f;
+		pSkinnedTrans->RotateSelf(0, 2 * ONE_RAD, 0);
 	}
 	//=========================
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
