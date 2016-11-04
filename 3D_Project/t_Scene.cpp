@@ -63,6 +63,9 @@ HRESULT t_Scene::Scene_Init()
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
 
+	this->pSkinnedTrans->AddChild(this->pMainCamera);
+	this->pMainCamera->SetLocalPosition(0, 5, -10);
+
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
 	pLight1->Color = D3DXCOLOR(1, 1, 1, 1);
@@ -105,6 +108,8 @@ void t_Scene::Scene_Release()
 
 void t_Scene::Scene_Update(float timeDelta)
 {
+	this->m_state = IDLE;
+	this->pSkinned1->Play("Idle_01", 0.3f);
 	this->pSkinned1->Update(timeDelta);
 	
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
@@ -119,23 +124,50 @@ void t_Scene::Scene_Update(float timeDelta)
 		this->m_pTerrain->IsIntersectRay(&m_hitPos, &ray);
 	
 		m_bMove = true;
-		this->pSkinned1->Play("Walk", 0.3f);
+		//this->pSkinned1->Play("Walk", 0.3f);
 	}
 	
 	if (KEY_MGR->IsStayDown(VK_LCONTROL))
 	{
 	
-		if (KEY_MGR->IsOnceDown('1'))
-			this->pSkinned1->Play("Idle_01", 0.3f);
-	
-		if (KEY_MGR->IsOnceDown('2'))
-			this->pSkinned1->Play("Idle_02", 0.3f);
-	
-		if (KEY_MGR->IsOnceDown('3'))
-			this->pSkinned1->PlayOneShot("Walk", 0.3f);
-	
+		//if (KEY_MGR->IsOnceDown('1'))
+		//	this->pSkinned1->Play("Idle_01", 0.3f);
+		//
+		//if (KEY_MGR->IsOnceDown('2'))
+		//	this->pSkinned1->Play("Idle_02", 0.3f);
+		//
+		//if (KEY_MGR->IsOnceDown('3'))
+		//	this->pSkinned1->PlayOneShot("Walk", 0.3f);
+	}
+
+	if (!KEY_MGR->IsStayDown(VK_RBUTTON))
+	{
+		if (KEY_MGR->IsStayDown('A'))
+		{
+			this->pSkinned1->Play("Walk", 0.3f);
+			this->pSkinnedTrans->MovePositionSelf(-timeDelta, 0, 0);
+		}
+
+		if (KEY_MGR->IsStayDown('D'))
+		{
+			this->pSkinned1->Play("Walk", 0.3f);
+			this->pSkinnedTrans->MovePositionSelf(+timeDelta, 0, 0);
+		}
+
+		if (KEY_MGR->IsStayDown('W'))
+		{
+			this->pSkinned1->Play("Walk", 0.3f);
+			this->pSkinnedTrans->MovePositionSelf(0, 0, +timeDelta);
+		}
+
+		if (KEY_MGR->IsStayDown('S'))
+		{
+			this->pSkinned1->Play("Walk", 0.3f);
+			this->pSkinnedTrans->MovePositionSelf(0, 0, -timeDelta);
+		}
 	}
 	
+
 	
 	if (m_bMove == true)
 	{
@@ -155,8 +187,12 @@ void t_Scene::Scene_Update(float timeDelta)
 		D3DXVec3Normalize(&dirToTarget, &dirToTarget);
 	
 		//방향을 구한다.
-		this->pSkinnedTrans->LookDirection(dirToTarget);
-	
+		//cTransform temp = *this->pSkinnedTrans;
+		//temp->LookDirection(dirToTarget);
+		//this->pSkinnedTrans->RotateSlerp(*this->pSkinnedTrans, *temp, timeDelta * 1.f);
+
+		this->pSkinnedTrans->LookDirection(m_hitPos, timeDelta * 1.0f);
+
 		//이동량
 		float deltaMove = 5.0f * timeDelta;
 		float t = Clamp01(deltaMove / dist);

@@ -1,6 +1,11 @@
 #pragma once
 #include "cScene.h"
 
+enum c_STATE {
+	IDLE,
+	WALK
+};
+
 class cBaseObject;
 class cCamera;
 class cTerrain;
@@ -23,6 +28,8 @@ private:
 	cBaseObject*	m_Land;			//컬링된 오브젝트
 	
 	D3DXMATRIXA16 temp;
+
+	c_STATE			m_state;
 
 
 public:

@@ -37,7 +37,8 @@ HRESULT cMainGame::Init(void)
 
 	////게임 시작씬
 	SCENE_MGR->ChangeScene( "move_Test" );
-	
+
+
 	//return E_FAIL;
 	return S_OK;		
 }	
@@ -94,6 +95,8 @@ void cMainGame::Update()
 
 	//씬업데이트
 	SCENE_MGR->Update( timeDelta );
+
+	ex_wheelDown = ex_wheelUp = false;
 }
 
 //드로우
@@ -140,6 +143,40 @@ void cMainGame::Draw()
 
 }
 
+void cMainGame::OnMouseWheel(HWND hWnd, WPARAM wParam, LPARAM lParam)
+{
+	static int SumDelta = 0;
+	short zDelta;
+	UINT Lines;
+	int Unit;
+
+	SystemParametersInfo(SPI_GETWHEELSCROLLLINES, 0, &Lines, 0);
+	Unit = WHEEL_DELTA / Lines;
+	zDelta = (short)HIWORD(wParam);
+	SumDelta += zDelta;
+	while (abs(SumDelta) >= Unit){
+		if (SumDelta > 0)
+		{
+			SendMessage(hWnd, WM_VSCROLL, SB_LINEUP, 0L);
+			SumDelta -= Unit;
+			ex_wheelDown = false;
+			ex_wheelUp = true;
+			LOG_MGR->AddLog("휠업 %d %d", ex_wheelUp, ex_wheelDown);
+		}
+		
+		if (SumDelta < 0)
+		{
+			SendMessage(hWnd, WM_VSCROLL, SB_LINEDOWN, 0L);
+			SumDelta += Unit;
+			ex_wheelUp = false;
+			ex_wheelDown = true;
+			LOG_MGR->AddLog("휠다운, %d , %d", ex_wheelUp, ex_wheelDown);
+		}
+
+		//이거 스크롤 버튼에서 때면 초기화 되야하는대?
+	}
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -163,8 +200,11 @@ LRESULT cMainGame::MainProc( HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPa
 		break;
 
 	case WM_MOUSEWHEEL:
-		
-		break;
+		{
+			OnMouseWheel(hWnd, wParam, lParam);
+			//return 0;
+			break;
+		}
 
 	case WM_DESTROY:			//윈도우가 파괴된다면..
 		PostQuitMessage( 0 );	//프로그램 종료 요청 ( 메시지 루프를 빠져나가게 된다 )

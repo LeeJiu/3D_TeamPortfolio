@@ -3,6 +3,9 @@
 class cImage;			//이런클래스가 있다
 class cScene;
 
+#define _WIN32_WINNT 0x400
+#define _WIN32_WINDOWS 0x401
+
 class cMainGame
 {
 private:	
@@ -24,7 +27,8 @@ public:
 	//드로우
 	void Draw();
 
-	
+	//휠
+	void OnMouseWheel(HWND hWnd, WPARAM wParam, LPARAM lParam);
 public:
 
 	//프로시져
