@@ -76,6 +76,10 @@ protected:
 	int ShakePosFlag;				//위치 허용축 플레그
 	int ShakeRotFlag;				//회전 허용축 플레그
 
+	float DefaultZoom;
+	float MaxZoomIn;
+	float MaxZoomOut;
+	float Zoom;
 
 public:
 	cTransform(void);
@@ -221,6 +225,7 @@ public:
 	//디폴트 컨트롤 을해준다.
 	void DefaultControl( float timeDelta );
 	void DefaultControl2( float timeDelta );
+	void DefaultControl3(float timeDelta, cTransform* charactor);
 
 
 	//Transform 에 대한 기즈모를 그린다.

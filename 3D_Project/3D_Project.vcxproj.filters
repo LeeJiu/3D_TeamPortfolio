@@ -171,6 +171,9 @@
     <ClInclude Include="cInputHandler.h">
       <Filter>Handler</Filter>
     </ClInclude>
+    <ClInclude Include="camera_Test.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -313,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="cInputHandler.cpp">
       <Filter>Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="camera_Test.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
