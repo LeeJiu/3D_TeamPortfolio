@@ -23,6 +23,8 @@ public:
 	bool IsStayDown( int nVKey );
 	bool IsOnceDown( int nVKey ); 
 	bool IsOnceUp( int nVKey );
+	bool isToggleKey(int key);
+
 };
 
 #define KEY_MGR cKeyMgr::GetInstance()

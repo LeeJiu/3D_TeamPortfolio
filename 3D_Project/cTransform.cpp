@@ -1335,7 +1335,7 @@ void cTransform::DefaultControl( float timeDelta )
 
 	static float accelate = 30.0f;						//초당 이동 증가값
 	static float nowSpeed = 3.0f;						//현재 속도
-	static float maxSpeed = 10.0f;						//최고 속도 
+	static float maxSpeed = 40.0f;						//최고 속도 
 
 
 	//최초 누를때는 마우스 위치를 가운데로 놓고 시작

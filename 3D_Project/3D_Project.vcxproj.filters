@@ -25,6 +25,9 @@
     <Filter Include="BaseObject">
       <UniqueIdentifier>{41599c7b-b182-4887-8ba8-dce59ccf7f11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Handler">
+      <UniqueIdentifier>{3829eae1-802e-4bf9-a6a0-1f7937c7218b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -162,6 +165,12 @@
     <ClInclude Include="t_Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="cCommand.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cInputHandler.h">
+      <Filter>Handler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -298,6 +307,12 @@
     </ClCompile>
     <ClCompile Include="move_Test.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommand.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cInputHandler.cpp">
+      <Filter>Handler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

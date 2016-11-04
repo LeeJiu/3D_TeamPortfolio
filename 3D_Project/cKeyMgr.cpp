@@ -65,3 +65,9 @@ bool cKeyMgr::IsOnceUp( int nVKey )
 
 	return false;
 }
+
+bool cKeyMgr::isToggleKey(int key)
+{
+	if (GetKeyState(key) & 0x0001) return true;
+	else return false;
+}

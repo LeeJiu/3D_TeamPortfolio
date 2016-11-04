@@ -321,7 +321,107 @@ bool cPhysicManager::IsRayHitBound(
 
 	return false;
 }
+//레이가 오브젝트와 충돌했는지....
+bool cPhysicManager::IsRayHitStaticMeshObject(
+	LPRay inRay,				//레이
+	cBaseObject* pObject,	//Base Object
+	cTransform* pTrans,
+	D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
+	D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
+	)
+{
+	//레이를 로컬로 끌어땡긴다
 
+	//bound 의 역행렬
+	D3DXMATRIXA16 matWorld = pTrans->GetFinalMatrix();
+	D3DXMATRIXA16 matInvMatrix;
+	D3DXMatrixInverse(&matInvMatrix, NULL, &matWorld);
+	
+	//NewRayInfo
+	D3DXVECTOR3 origin;
+	D3DXVec3TransformCoord(&origin, &inRay->origin, &matInvMatrix);
+	D3DXVECTOR3 direction;
+	D3DXVec3TransformNormal(&direction, &inRay->direction, &matInvMatrix);
+
+	Ray newRay;
+	newRay.origin = origin;
+	newRay.direction = direction;
+
+
+	//메쉬 충돌 검출함수
+
+	cXMesh_Static* pStaticMesh = dynamic_cast<cXMesh_Static*>(pObject->pMesh);
+	if (pStaticMesh != NULL)
+	{
+		//서브셋대로 돈다
+		for (int i = 0; i < pStaticMesh->dwMaterialsNum; i++)
+		{
+			BOOL bHit = false;
+			DWORD faceIndex = 0;
+			float dist = 0.0f;
+			DWORD hitCount = 0;
+
+			D3DXIntersectSubset(
+				pStaticMesh->pMesh,			//xMesh
+				i,							//서브셋넘
+				&origin,					//레이위치
+				&direction,					//레이 방향
+				&bHit,						//충돌 여부 얻기
+				&faceIndex,					//충돌면 인덱스 
+				NULL,
+				NULL,
+				&dist,						//충돌거리
+				NULL,						//다중충돌시 다중히트정보 얻을 버퍼, 
+				&hitCount);				//다중충돌시 히트 갯수 
+
+
+			if (bHit){
+
+				//hit 지점월드로 땡겨서 리턴
+				if (pHitPos != NULL){
+					D3DXVec3TransformCoord(pHitPos,
+						&(origin + direction * dist), &matWorld);
+				}
+
+				//Hit 노말 구한다.
+				if (pHitNormal != NULL){
+
+					//충돌면 인덱스에 따른 정점 3개를 구한다.
+					DWORD i0 = (faceIndex * 3);
+					DWORD i1 = (faceIndex * 3 + 1);
+					DWORD i2 = (faceIndex * 3 + 2);
+
+					//정점인덱스를 얻는다.
+					D3DXVECTOR3 v0 = pStaticMesh->Vertices[pStaticMesh->Indices[i0]];
+					D3DXVECTOR3 v1 = pStaticMesh->Vertices[pStaticMesh->Indices[i1]];
+					D3DXVECTOR3 v2 = pStaticMesh->Vertices[pStaticMesh->Indices[i2]];
+
+					//정점 2개의 노말을 구한다.
+					D3DXVECTOR3 edge1 = v1 - v0;
+					D3DXVECTOR3 edge2 = v2 - v0;
+
+					D3DXVec3Cross(pHitNormal, &edge1, &edge2);
+					D3DXVec3Normalize(pHitNormal, pHitNormal);
+
+					D3DXVec3TransformNormal(pHitNormal, pHitNormal, &matWorld);
+
+				}
+
+
+				//*outRay = newRay; // 아웃 레이의 값을 넣어둔다. 충돌 했다면. ( pos 값을 반환 하닌깐 ray 변경 시킨 값을 필요없음.
+				return true;
+			}
+
+		}
+
+	}
+
+
+
+
+	//*outRay = inRay; // 충돌 하지 않았다면 입력 값 그대로 넣어준다. 
+	return false;
+}
 
 //레이가 오브젝트와 충돌했는지....
 bool cPhysicManager::IsRayHitStaticMeshObject( 
