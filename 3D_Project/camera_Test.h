@@ -25,6 +25,8 @@ private:
 	bool isTerrain;
 	bool isClick;
 
+	bool isTopView;
+	bool isCharView;
 
 	std::vector<cLight*>	lights;
 

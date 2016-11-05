@@ -20,12 +20,12 @@ HRESULT camera_Test::Scene_Init()
 {
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
-		"../Resources/Textures/MyHeight512.bmp",
+		"../Resources/Textures/MyHeight256.bmp",
 		"../Resources/Textures/terrain1.jpg",
 		"../Resources/Textures/terrain2.png",
 		"../Resources/Textures/terrain3.png",
 		"../Resources/Textures/terrain4.png",
-		"../Resources/Textures/Splat.png",
+		"../Resources/Textures/Splat2.png",
 		1.0f,
 		100.0f,
 		3,
@@ -34,6 +34,9 @@ HRESULT camera_Test::Scene_Init()
 	m_hitPos = D3DXVECTOR3(0, 0, 0);
 
 	m_bMove = false;
+
+	isTopView = true;
+	isCharView = false;
 
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
@@ -63,11 +66,6 @@ HRESULT camera_Test::Scene_Init()
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
 	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
-
-
-	this->pSkinnedTrans->AddChild(this->pMainCamera);
-	this->pMainCamera->SetLocalPosition(0, 5, -10);
-
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
@@ -116,7 +114,30 @@ void camera_Test::Scene_Release()
 
 void camera_Test::Scene_Update(float timeDelta)
 {
-	pMainCamera->DefaultControl3(timeDelta, this->pSkinnedTrans);
+	if (KEY_MGR->IsOnceDown('1'))
+	{
+		this->pMainCamera->ReleaseParent();
+		isCharView = false;
+		isTopView = true;
+	}
+	
+	if (KEY_MGR->IsOnceDown('2'))
+	{
+		this->pSkinnedTrans->AddChild(this->pMainCamera);
+		this->pMainCamera->SetLocalPosition(0, 5, -10);
+
+		isTopView = false;
+		isCharView = true;
+	}
+
+	if (isCharView)
+	{
+		pMainCamera->DefaultControl3(timeDelta, this->pSkinnedTrans);
+	}
+	else if (isTopView)
+	{
+		pMainCamera->DefaultControl(timeDelta);
+	}
 
 	// 레이 업데이트 
 	m_currentPos = pSkinnedTrans->GetWorldPosition(); // 현재 위치. 
@@ -132,7 +153,6 @@ void camera_Test::Scene_Update(float timeDelta)
 	{
 		isMove = true;
 		cRay.origin -= pSkinnedTrans->GetForward()*0.2f;
-
 	}
 	if (KEY_MGR->IsStayDown('Q'))
 	{
@@ -148,13 +168,11 @@ void camera_Test::Scene_Update(float timeDelta)
 	if (KEY_MGR->IsStayDown('A'))
 	{
 		pSkinnedTrans->RotateSelf(0, -90 * ONE_RAD*timeDelta, 0);
-		cRay.origin += pSkinnedTrans->GetRight()*0.2f;
 	}
 
 	if (KEY_MGR->IsStayDown('D'))
 	{
 		pSkinnedTrans->RotateSelf(0, 90 * ONE_RAD*timeDelta, 0);
-		cRay.origin -= pSkinnedTrans->GetRight()*0.2f;
 	}
 	//=========================
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
