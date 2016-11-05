@@ -1480,6 +1480,8 @@ void cTransform::DefaultControl( float timeDelta )
 	
 }
 
+
+
 void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 {
 	//디폴트 컨트롤을 위한 카메라 Angle 값
