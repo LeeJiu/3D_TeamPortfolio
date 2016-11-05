@@ -39,7 +39,7 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->AddLoadingScene( "·Îµù¾À", new cScene_02() );
 
 	////°ÔÀÓ ½ÃÀÛ¾À
-	SCENE_MGR->ChangeScene( "camera_Test" );
+	SCENE_MGR->ChangeScene( "move_Test" );
 
 	//return E_FAIL;
 	return S_OK;		

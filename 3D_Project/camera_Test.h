@@ -11,6 +11,7 @@ class camera_Test : public cScene
 private:
 	cSkinnedAnimation*		pSkinned1;
 	cTransform*				pSkinnedTrans;
+	cTransform*				pTransForCamera;
 	// 도형 피킹에 쓸것.
 	Ray						cRay; //케릭터에 들어갈 레이.
 	bool                    objectHit;
@@ -27,6 +28,7 @@ private:
 
 	bool isTopView;
 	bool isCharView;
+	bool isAltView;
 
 	std::vector<cLight*>	lights;
 

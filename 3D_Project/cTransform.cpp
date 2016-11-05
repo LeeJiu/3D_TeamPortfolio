@@ -1559,12 +1559,12 @@ void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 
 		if(mousePos.x < screenCenterX )
 		{
-			charactor->RotateSelf(0, nowAngleH * ONE_RAD * 0.005, 0);
+			charactor->RotateSelf(0, -2.5 * ONE_RAD , 0);
 		}
 		
 		if (mousePos.x > screenCenterX )
 		{
-			charactor->RotateSelf(0, nowAngleH * ONE_RAD* 0.005, 0);
+			charactor->RotateSelf(0, 2.5 * ONE_RAD, 0);
 		}
 
 		//실패한y축읳 흔적
