@@ -82,6 +82,69 @@
 #define WIN_STYLE	WS_CAPTION | WS_SYSMENU | WS_BORDER	//윈도우 형태
 
 
+//캐릭터 상태 디파인문
+
+
+enum PLAYER_STATE
+{
+	ROBBY_IDLE,         //게임 시작 선택창 대기모션
+
+	PET_IDLE,           //펫 탑승
+	PET_RUN,            //펫 이동
+
+	SIT_SRT,           //앉기_시작
+	SIT_LOOP,          //앉아있는 상태
+	SIT_UP,            //일어서는 모션
+	LOOP,              //습득상태
+
+	HELLO,             //인사
+	CRY,               //울기
+	DANCE,             //춤을춰라 나의 인형아!
+
+	STF_DMG,           //피격
+	STF_DIE,           //죽어가는 중
+	STF_DEAD,          //죽음
+	STF_DOWN,          //넉백
+	STF_STUN,          //넉백상태_루프
+	STF_WAKEUP,        //넉백 일어나기
+
+	STF_IDLE,            //평화상태
+	STF_WAIT,            //전투대기
+	STF_WALK,            //걷기
+	STF_WALK_BACK,       //뒤로걷기
+	STF_RUN,             //달리기
+	RUN_R,               //오른쪽으로 달리기
+	RUN_L,               //왼쪽으로 달리기
+	STF_STOP,            //달리다 멈추기
+	STF_PASSOUT,         //기력소모
+	STF_JUMP,            //점프
+
+
+	STF_WEAPON,          //무기 착용
+	STF_UNWEAPON,        //무기 해제
+
+	//공격 상태
+
+	STF_ATK1,           //기본공격 1
+	STF_ATK2,           //기본공격 2
+
+	STF_BUFF,           //스킬_버프
+	STF_TYFUNG,         //스킬_태풍
+	STF_THUNDER,        //스킬_라이트닝 로드
+	STF_FROZEN,         //스킬_빙하지대
+	STF_FIRE,           //스킬_즉시소각
+	STF_SPLASH,         //스킬_전방폭파
+	STF_BUMB,           //스킬_지면폭파
+	STF_DRAIN,          //스킬_드레인
+	STF_SWING,          //스킬_후려찍기
+	STF_STORM,          //스킬_천둥벼락
+	STF_MAGIC_SHOT,     //스킬_마법발사
+
+	STF_BLINK,          //스킬_ 점멸
+	END
+};
+
+
 #define ONE_RAD 0.017453f				//라디안1 동
 
 
