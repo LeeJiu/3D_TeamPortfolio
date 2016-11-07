@@ -161,8 +161,7 @@ void move_Test2::Scene_Render1()
 
 	m_Land->Render();
 	//========== 레이 기지모
-	GIZMO_MGR->Line(this->cRay.origin, this->cRay.origin + this->cRay.direction * 100, 0xffffff00);
-
+	move->render();
 }
 
 

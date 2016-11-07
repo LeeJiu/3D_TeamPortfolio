@@ -34,6 +34,9 @@
     <Filter Include="Component">
       <UniqueIdentifier>{8d2a1705-2813-409f-9e6c-6b5d6da36a26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ObjClass">
+      <UniqueIdentifier>{d3a61c23-fd41-4ccc-8701-141554358b36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -192,6 +195,18 @@
     <ClInclude Include="cTestCommand2.h">
       <Filter>Handler</Filter>
     </ClInclude>
+    <ClInclude Include="animation_Test.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="sector_Test.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="move_Test2.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="moveClass.h">
+      <Filter>ObjClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -349,6 +364,18 @@
     </ClCompile>
     <ClCompile Include="cTestCommand2.cpp">
       <Filter>Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="animation_Test.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="sector_Test.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="move_Test2.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="moveClass.cpp">
+      <Filter>ObjClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

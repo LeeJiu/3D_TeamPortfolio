@@ -21,6 +21,12 @@ class moveClass
 
 	cTerrain*		m_pTerrain; // 전방 선언.
 
+
+	//==================== jump 
+	bool isJump;
+	float m_jumpPower;
+	float m_gravity;
+
 public:
 	void init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain);
 	
