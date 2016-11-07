@@ -24,7 +24,6 @@ cTransform::cTransform(void)
 	ShakePosFlag = SHAKE_X | SHAKE_Y | SHAKE_Z;
 	ShakeRotFlag = SHAKE_X | SHAKE_Y | SHAKE_Z;
 
-	DefaultZoom = 0;
 	MaxZoomIn = 5;
 	MaxZoomOut = -5;
 	Zoom = 0;
@@ -1481,11 +1480,10 @@ void cTransform::DefaultControl( float timeDelta )
 	
 }
 
+
+
 void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 {
-	cTransform* chara = new cTransform();
-	chara = charactor;
-
 	//디폴트 컨트롤을 위한 카메라 Angle 값
 	static float nowAngleH = 0.0f;			//수평앵글
 	static float nowAngleV = 0.0f;			//수직앵글
@@ -1499,10 +1497,10 @@ void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 	static float nowSpeed = 3.0f;						//현재 속도
 	static float maxSpeed = 40.0f;						//최고 속도 
 	
-	
 	//입력 방향벡터
 	D3DXVECTOR3 inputVector(0, 0, 0);
 
+	//줌인 줌아웃
 	if (Zoom <= MaxZoomIn && ex_wheelUp) {
 		inputVector.z = 1.0f;
 		Zoom += 1.0f;
@@ -1524,20 +1522,15 @@ void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 	D3DXVECTOR3 target = inputVector * maxSpeed;
 	this->MovePositionSelf(target * timeDelta);
 
-	
 	//최초 누를때는 마우스 위치를 가운데로 놓고 시작
 	if (KEY_MGR->IsOnceDown(VK_RBUTTON)) {
 
 		//화면의 중심위치
-		//int screenCenterX = WINSIZE_X / 2;
-		//int screenCenterY = WINSIZE_Y / 2;
-		int screenCenterX = chara->GetWorldPosition().x;
-		int screenCenterY = chara->GetWorldPosition().y + 5;
-		LOG_MGR->AddLog("x : %f, y : %f", screenCenterX, screenCenterY);
+		int screenCenterX = WINSIZE_X / 2;
+		int screenCenterY = WINSIZE_Y / 2;
 
-
-		//다시 마우스 위치를 센터로...
 		SetMousePos(screenCenterX, screenCenterY);
+		//다시 마우스 위치를 센터로...
 	}
 	else if (KEY_MGR->IsStayDown(VK_RBUTTON)) {
 
@@ -1547,6 +1540,7 @@ void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 		//화면의 중심위치
 		int screenCenterX = WINSIZE_X / 2;
 		int screenCenterY = WINSIZE_Y / 2;
+
 
 		//현재 마우스 위치
 		POINT mousePos = GetMousePos();
@@ -1561,13 +1555,40 @@ void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 
 		//앵글값을 min max 범위 안으로
 		nowAngleV = Clamp(nowAngleV, minAngleV, maxAngleV);
-
-		//다시 마우스 위치를 센터로...
 		SetMousePos(screenCenterX, screenCenterY);
 
+		if(mousePos.x < screenCenterX )
+		{
+			charactor->RotateSelf(0, -2.5 * ONE_RAD , 0);
+		}
+		
+		if (mousePos.x > screenCenterX )
+		{
+			charactor->RotateSelf(0, 2.5 * ONE_RAD, 0);
+		}
 
-		this->SetRotateWorld(nowAngleV * ONE_RAD, nowAngleH * ONE_RAD, 0.0f);
-
+		//실패한y축읳 흔적
+		//if (mousePos.y > screenCenterY )
+		////if(KEY_MGR->IsStayDown(VK_UP))
+		//{
+		//	if (this->NowView < this->MaxUpView)
+		//	{
+		//		this->NowView += 1 * ONE_RAD;
+		//		chara->RotateSelf(1 * ONE_RAD, 0, 0);
+		//	}
+		//}
+		//
+		//if (mousePos.y < screenCenterY )
+		////if (KEY_MGR->IsStayDown(VK_DOWN))
+		//{
+		//	if (this->NowView > this->MinDownView)
+		//	{
+		//		this->NowView -= 1 * ONE_RAD;
+		//		chara->RotateSelf(-1 * ONE_RAD, 0, 0);
+		//
+		//	}
+		//}
+		//LOG_MGR->AddLog("now Angle %f", NowView);
 	}
 }
 
@@ -1579,29 +1600,28 @@ void cTransform::DefaultControl2( float timeDelta )
 	if( KEY_MGR->IsStayDown( VK_LSHIFT ) )
 		deltaMove *= 5.0f;
 
-	if( KEY_MGR->IsStayDown( VK_RBUTTON ) == false )
+	if (KEY_MGR->IsStayDown(VK_RBUTTON) == false)
 	{
-		if( KEY_MGR->IsStayDown( 'A' ) )
-			this->MovePositionSelf( -deltaMove, 0.0f, 0.0f );
-		else if( KEY_MGR->IsStayDown( 'D' ))
-			this->MovePositionSelf( deltaMove, 0.0f, 0.0f );
+		if (KEY_MGR->IsStayDown('A'))
+			this->MovePositionSelf(-deltaMove, 0.0f, 0.0f);
+		else if (KEY_MGR->IsStayDown('D'))
+			this->MovePositionSelf(deltaMove, 0.0f, 0.0f);
 
-		if( KEY_MGR->IsStayDown( 'W' ) )
-			this->MovePositionSelf( 0.0f, 0.0f, deltaMove );
-		else if( KEY_MGR->IsStayDown( 'S' ))
-			this->MovePositionSelf( 0.0f, 0.0f, -deltaMove );
+		if (KEY_MGR->IsStayDown('W'))
+			this->MovePositionSelf(0.0f, 0.0f, deltaMove);
+		else if (KEY_MGR->IsStayDown('S'))
+			this->MovePositionSelf(0.0f, 0.0f, -deltaMove);
 
-		if( KEY_MGR->IsStayDown( VK_LEFT ) )
-			this->RotateSelf( 0.0f, -deltaAngle, 0.0f );
-		else if( KEY_MGR->IsStayDown( VK_RIGHT ))
-			this->RotateSelf( 0.0f, deltaAngle, 0.0f );
+		if (KEY_MGR->IsStayDown(VK_LEFT))
+			this->RotateSelf(0.0f, -deltaAngle, 0.0f);
+		else if (KEY_MGR->IsStayDown(VK_RIGHT))
+			this->RotateSelf(0.0f, deltaAngle, 0.0f);
 
-		if( KEY_MGR->IsStayDown( VK_UP ) )
-			this->RotateSelf( -deltaAngle, 0.0f, 0.0f );
-		else if( KEY_MGR->IsStayDown( VK_DOWN ))
-			this->RotateSelf( deltaAngle, 0.0f, 0.0f );
+		if (KEY_MGR->IsStayDown(VK_UP))
+			this->RotateSelf(-deltaAngle, 0.0f, 0.0f);
+		else if (KEY_MGR->IsStayDown(VK_DOWN))
+			this->RotateSelf(deltaAngle, 0.0f, 0.0f);
 	}
-
 }
 
 

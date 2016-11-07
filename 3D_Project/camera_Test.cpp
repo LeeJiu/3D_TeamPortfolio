@@ -20,12 +20,12 @@ HRESULT camera_Test::Scene_Init()
 {
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
-		"../Resources/Textures/MyHeight512.bmp",
+		"../Resources/Textures/MyHeight256.bmp",
 		"../Resources/Textures/terrain1.jpg",
 		"../Resources/Textures/terrain2.png",
 		"../Resources/Textures/terrain3.png",
 		"../Resources/Textures/terrain4.png",
-		"../Resources/Textures/Splat.png",
+		"../Resources/Textures/Splat2.png",
 		1.0f,
 		100.0f,
 		3,
@@ -34,6 +34,9 @@ HRESULT camera_Test::Scene_Init()
 	m_hitPos = D3DXVECTOR3(0, 0, 0);
 
 	m_bMove = false;
+
+	isTopView = true;
+	isCharView = false;
 
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
@@ -64,16 +67,24 @@ HRESULT camera_Test::Scene_Init()
 	this->pSkinnedTrans = new cTransform();
 	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
 
-
-	this->pSkinnedTrans->AddChild(this->pMainCamera);
-	this->pMainCamera->SetLocalPosition(0, 5, -10);
-
+	this->pTransForCamera = new cTransform();
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
 	pLight1->Color = D3DXCOLOR(1, 1, 1, 1);
 	pLight1->Intensity = 1.0f;
-	pLight1->pTransform->SetRotateWorld(45 * ONE_RAD, 45 * ONE_RAD, 45 * ONE_RAD);
+	//pLight1->pTransform->SetRotateWorld(45 * ONE_RAD, 45 * ONE_RAD, 45 * ONE_RAD);
+	pLight1->pTransform->SetRotateWorld(90 * ONE_RAD, 0, 0);
+
+	cLight_Direction* pLight4 = new cLight_Direction();
+	pLight4->Color = D3DXCOLOR(1, 1, 1, 1);
+	pLight4->Intensity = 1.0f;
+	pLight4->pTransform->SetRotateWorld(45 * ONE_RAD, 45 * ONE_RAD, 0);
+
+	cLight_Direction* pLight5 = new cLight_Direction();
+	pLight5->Color = D3DXCOLOR(1, 1, 1, 1);
+	pLight5->Intensity = 1.0f;
+	pLight5->pTransform->SetRotateWorld(120 * ONE_RAD, 45 * ONE_RAD, 45 * ONE_RAD);
 
 	cLight_Point* pLight2 = new cLight_Point();
 	pLight2->Color = D3DXCOLOR(1, 1, 1, 0);
@@ -92,6 +103,8 @@ HRESULT camera_Test::Scene_Init()
 	this->lights.push_back(pLight1);
 	this->lights.push_back(pLight2);
 	this->lights.push_back(pLight3);
+	this->lights.push_back(pLight4);
+	this->lights.push_back(pLight5);
 
 	isMove = false;
 	//================레이 추가. 아래 방향 바뀌지 않음 .
@@ -109,6 +122,7 @@ void camera_Test::Scene_Release()
 	SAFE_DELETE(m_pTerrain);
 
 	SAFE_DELETE(this->pSkinnedTrans);
+	SAFE_DELETE(this->pTransForCamera);
 
 	this->pSkinned1->Release();
 	SAFE_DELETE(this->pSkinned1);
@@ -116,141 +130,194 @@ void camera_Test::Scene_Release()
 
 void camera_Test::Scene_Update(float timeDelta)
 {
-	pMainCamera->DefaultControl3(timeDelta, this->pSkinnedTrans);
+	this->pTransForCamera->SetWorldPosition(this->pSkinnedTrans->GetWorldPosition());
+
+	if (KEY_MGR->IsOnceDown('1'))
+	{
+		this->pMainCamera->ReleaseParent();
+		isCharView = false;
+		isTopView = true;
+	}
+	
+	if (KEY_MGR->IsOnceDown('2'))
+	{
+		this->pMainCamera->Reset(2);
+		this->pSkinnedTrans->AddChild(this->pMainCamera);
+		this->pMainCamera->SetLocalPosition(0, 3, -10);
+
+		isTopView = false;
+		isCharView = true;
+	}
+
+	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
+	{
+		isAltView = true;
+		isCharView = false;
+		this->pMainCamera->ReleaseParent();
+		this->pTransForCamera->AddChild(this->pMainCamera);
+	}
+	if(isAltView && KEY_MGR->IsOnceUp(VK_MENU))
+	{
+		this->pMainCamera->Reset();
+		this->pTransForCamera->Reset();
+		this->pTransForCamera->SetWorldMatrix(this->pSkinnedTrans->GetFinalMatrix());
+
+		this->pSkinnedTrans->AddChild(this->pMainCamera);
+		this->pMainCamera->SetLocalPosition(0, 3, -10);
+		isCharView = true;
+		isAltView = false;
+	}
+
+	
+
+	if (isCharView)
+	{
+		pMainCamera->DefaultControl3(timeDelta, this->pSkinnedTrans);
+	}
+	else if (isTopView)
+	{
+		pMainCamera->DefaultControl(timeDelta);
+	}
+	else if (isAltView)
+	{
+		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
+	}
+
 
 	// 레이 업데이트 
 	m_currentPos = pSkinnedTrans->GetWorldPosition(); // 현재 위치. 
 													  //cRay.direction = D3DXVECTOR3(0, -1, 0);
 	cRay.origin.y = pSkinnedTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
 
-	if (KEY_MGR->IsStayDown('W'))
+	if(!isTopView)
 	{
-		isMove = true;
-		cRay.origin += pSkinnedTrans->GetForward()*0.2f;
-	}
-	if (KEY_MGR->IsStayDown('S'))
-	{
-		isMove = true;
-		cRay.origin -= pSkinnedTrans->GetForward()*0.2f;
-
-	}
-	if (KEY_MGR->IsStayDown('Q'))
-	{
-		isMove = true;
-		cRay.origin += pSkinnedTrans->GetRight()*0.2f;
-
-	}
-	if (KEY_MGR->IsStayDown('E'))
-	{
-		isMove = true;
-		cRay.origin -= pSkinnedTrans->GetRight()*0.2f;
-	}
-	if (KEY_MGR->IsStayDown('A'))
-	{
-		pSkinnedTrans->RotateSelf(0, -90 * ONE_RAD*timeDelta, 0);
-		cRay.origin += pSkinnedTrans->GetRight()*0.2f;
-	}
-
-	if (KEY_MGR->IsStayDown('D'))
-	{
-		pSkinnedTrans->RotateSelf(0, 90 * ONE_RAD*timeDelta, 0);
-		cRay.origin -= pSkinnedTrans->GetRight()*0.2f;
-	}
-	//=========================
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	{
-		Ray ray;
-		POINT ptMousePos = GetMousePos();
-		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-		this->pMainCamera->ComputeRay(&ray, &screenPos);
-
-		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
-		isClick = true;
-	}
-
-	if (isClick == true)
-	{
-		//D3DXVECTOR3 dir = m_mousePos - cRay.origin;
-		//D3DXVec3Normalize(&dir, &dir);
-
-		D3DXVECTOR3 dir(0, 0, 1);
-		cRay.origin += dir*timeDelta;
-
-	//	LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-	//		cRay.origin.x,
-	//		cRay.origin.y,
-	//		cRay.origin.z);
-	}
-
-
-
-
-	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
-
-	//m_lastPos = this->pSkinnedTrans->GetWorldPosition();
-	//m_lastPos.y = -1000;
-	// 추후에 거리 값을 이용해서 2,3번째 인자 값을 걸러 낼꺼임.
-	if ((
-		PHYSICS_MGR->IsRayHitStaticMeshObject(
-			&this->cRay,
-			this->m_Land,
-			this->m_Land->pTransform,
-			&this->m_prePos,
-			NULL)) == true)
-	{
-		m_lastPos = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
-	}
-	else
-	{
-		m_lastPos.y = pSkinnedTrans->GetWorldPosition().y - 10;
-	}
-
-	// 터레인과 충돌 했다면. 
-	if (this->m_pTerrain->IsIntersectRay(&m_prePos, &cRay) == true)
-	{
-		if (m_lastPos.y > m_prePos.y)
+		if (KEY_MGR->IsStayDown('W'))
 		{
-			m_prePos = m_lastPos;
+			isMove = true;
+			cRay.origin += pSkinnedTrans->GetForward()*0.2f;
 		}
-	}
+		if (KEY_MGR->IsStayDown('S'))
+		{
+			isMove = true;
+			cRay.origin -= pSkinnedTrans->GetForward()*0.2f;
+		}
+		if (KEY_MGR->IsStayDown('Q'))
+		{
+			isMove = true;
+			cRay.origin += pSkinnedTrans->GetRight()*0.2f;
+
+		}
+		if (KEY_MGR->IsStayDown('E'))
+		{
+			isMove = true;
+			cRay.origin -= pSkinnedTrans->GetRight()*0.2f;
+		}
+		if (KEY_MGR->IsStayDown('A'))
+		{
+			pSkinnedTrans->RotateSelf(0, -90 * ONE_RAD*timeDelta, 0);
+			pTransForCamera->RotateSelf(0, -90 * ONE_RAD*timeDelta, 0);
+		}
+
+		if (KEY_MGR->IsStayDown('D'))
+		{
+			pSkinnedTrans->RotateSelf(0, 90 * ONE_RAD*timeDelta, 0);
+			pTransForCamera->RotateSelf(0, 90 * ONE_RAD*timeDelta, 0);
+		}
+		//=========================
+		if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+		{
+			Ray ray;
+			POINT ptMousePos = GetMousePos();
+			D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+			this->pMainCamera->ComputeRay(&ray, &screenPos);
+
+			this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+			isClick = true;
+		}
+
+		if (isClick == true)
+		{
+			//D3DXVECTOR3 dir = m_mousePos - cRay.origin;
+			//D3DXVec3Normalize(&dir, &dir);
+
+			D3DXVECTOR3 dir(0, 0, 1);
+			cRay.origin += dir*timeDelta;
+
+		//	LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+		//		cRay.origin.x,
+		//		cRay.origin.y,
+		//		cRay.origin.z);
+		}
 
 
 
-	//=================================== 케릭터를 최종적으로 움직이게 하는 부분 
-	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
-	{
-		this->pSkinnedTrans->SetWorldPosition(m_prePos);
-		m_currentPos = m_prePos; // 좌표 갱신
-	}
-	// 레이랑 케릭터 거리가 멀어지면 레이가 더이상 넘어가지 못하게 만든다.
-	float rayCheckDis = D3DXVec3Length(&(cRay.origin - pSkinnedTrans->GetWorldPosition()));
-	if (rayCheckDis > 0.25f) // 상수 값은 속력 보다 조금 높은 값.
-	{
-		cRay.origin = pSkinnedTrans->GetWorldPosition();
-		cRay.origin.y = pSkinnedTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
 
-	}
+		// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
 
-	isMove = false;
-	//=================================== 케릭터를 최종적으로 움직이게 하는 부분  끗.
+		//m_lastPos = this->pSkinnedTrans->GetWorldPosition();
+		//m_lastPos.y = -1000;
+		// 추후에 거리 값을 이용해서 2,3번째 인자 값을 걸러 낼꺼임.
+		if ((
+			PHYSICS_MGR->IsRayHitStaticMeshObject(
+				&this->cRay,
+				this->m_Land,
+				this->m_Land->pTransform,
+				&this->m_prePos,
+				NULL)) == true)
+		{
+			m_lastPos = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
+		}
+		else
+		{
+			m_lastPos.y = pSkinnedTrans->GetWorldPosition().y - 10;
+		}
 
-	this->pSkinned1->Update(timeDelta);
+		// 터레인과 충돌 했다면. 
+		if (this->m_pTerrain->IsIntersectRay(&m_prePos, &cRay) == true)
+		{
+			if (m_lastPos.y > m_prePos.y)
+			{
+				m_prePos = m_lastPos;
+			}
+		}
 
 
-	if (KEY_MGR->IsOnceDown(VK_SPACE))
-	{
-		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-			this->pSkinnedTrans->GetWorldPosition().x,
-			this->pSkinnedTrans->GetWorldPosition().y,
-			this->pSkinnedTrans->GetWorldPosition().z);
 
-		LOG_MGR->AddLog("Rx: %.2f, Ry : %.2f, Rz : %.2f",
-			m_prePos.x,
-			m_prePos.y,
-			m_prePos.z);
+		//=================================== 케릭터를 최종적으로 움직이게 하는 부분 
+		if (fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
+		{
+			this->pSkinnedTrans->SetWorldPosition(m_prePos);
+			m_currentPos = m_prePos; // 좌표 갱신
+		}
+		// 레이랑 케릭터 거리가 멀어지면 레이가 더이상 넘어가지 못하게 만든다.
+		float rayCheckDis = D3DXVec3Length(&(cRay.origin - pSkinnedTrans->GetWorldPosition()));
+		if (rayCheckDis > 0.25f) // 상수 값은 속력 보다 조금 높은 값.
+		{
+			cRay.origin = pSkinnedTrans->GetWorldPosition();
+			cRay.origin.y = pSkinnedTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
 
-	}
+		}
 
+		isMove = false;
+		//=================================== 케릭터를 최종적으로 움직이게 하는 부분  끗.
+
+		this->pSkinned1->Update(timeDelta);
+
+
+		if (KEY_MGR->IsOnceDown(VK_SPACE))
+		{
+			LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+				this->pSkinnedTrans->GetWorldPosition().x,
+				this->pSkinnedTrans->GetWorldPosition().y,
+				this->pSkinnedTrans->GetWorldPosition().z);
+
+			LOG_MGR->AddLog("Rx: %.2f, Ry : %.2f, Rz : %.2f",
+				m_prePos.x,
+				m_prePos.y,
+				m_prePos.z);
+
+		}
+	 }
 
 }
 

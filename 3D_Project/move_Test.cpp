@@ -141,11 +141,12 @@ void move_Test::Scene_Update(float timeDelta)
 	}
 	if (KEY_MGR->IsStayDown('A'))
 	{
-		pSkinnedTrans->RotateSelf(0, -90 * ONE_RAD*timeDelta, 0);
+		pSkinnedTrans->RotateSelf(0, -2 * ONE_RAD, 0);
 	}
+
 	if (KEY_MGR->IsStayDown('D'))
 	{
-		pSkinnedTrans->RotateSelf(0, 90 * ONE_RAD*timeDelta, 0);
+		pSkinnedTrans->RotateSelf(0, 2 * ONE_RAD, 0);
 	}
 	//=========================
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
@@ -329,6 +330,7 @@ void move_Test::Scene_Render1()
 	//m_pSkinnedEffect->SetMatrix( "matViewProjection", &matViewProjection );
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
+	
 	this->pSkinned1->Render(pSkinnedTrans);
 
 	//가지고 있는 Animation 을출력해보자..

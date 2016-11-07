@@ -3,8 +3,13 @@
 #include "cImage.h"
 #include "t_Scene.h"
 #include "move_Test.h"
+#include "move_Test2.h"
+
 #include "camera_Test.h"
 #include "cScene_testPlayer.h"
+#include "sector_Test.h"
+#include "animation_Test.h"
+
 
 cMainGame::cMainGame(void)
 {
@@ -34,11 +39,22 @@ HRESULT cMainGame::Init(void)
 	//게임에 사용되는 씬 추가
 	SCENE_MGR->AddScene("model_Test", new t_Scene());
 	SCENE_MGR->AddScene("move_Test", new move_Test());
+	SCENE_MGR->AddScene("move_Test2", new move_Test2());
+
 	SCENE_MGR->AddScene("camera_Test", new camera_Test());
 	SCENE_MGR->AddScene("cScene_testPlayer", new cScene_testPlayer());
 
 	////게임 시작씬
-	SCENE_MGR->ChangeScene( "cScene_testPlayer" );
+	//SCENE_MGR->ChangeScene( "cScene_testPlayer" );
+
+	SCENE_MGR->AddScene("sector_Test", new sector_Test());
+	SCENE_MGR->AddScene("animation_Test", new animation_Test());
+
+	////게임 시작씬
+	SCENE_MGR->ChangeScene( "move_Test2" );
+
+	//SCENE_MGR->ChangeScene( "sector_Test" );
+	//SCENE_MGR->ChangeScene( "animation_Test" );
 
 	//return E_FAIL;
 	return S_OK;		

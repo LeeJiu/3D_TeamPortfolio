@@ -16,7 +16,7 @@ cPhysicManager::~cPhysicManager(void)
 bool cPhysicManager::IsRayHitBound( 
 	LPRay pRay,				//레이
 	cBoundSphere* pBound,	//바운드
-	cTransform* pBoundTrans,  //바운드의 Transform
+	cTransform* pBoundTrans,  //바운드의 Transform ( 움직이고 있는 Trans 값을 넣으면됨 )
 	D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
 	D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
 		)
@@ -42,6 +42,7 @@ bool cPhysicManager::IsRayHitBound(
 	radius = D3DXVec3Length( &halfSize );
 
 	//레이의 오리진에서 부터 구의 센터까지의 방향벡터
+	// ( 구 )  <------  ( 레이 )
 	D3DXVECTOR3 dirToCenter = center - pRay->origin;
 
 	//길이의 제곱
@@ -50,18 +51,18 @@ bool cPhysicManager::IsRayHitBound(
 	//반지름의 제곱
 	float r2 =  radius * radius;
 
-	//만약 광선이 구안에 있다면..
+	//만약 광선(origin 좌표가)이 구안에 있다면..
 	if( r2 > lengthSq )
 	{
 		//광선이 안에서 나가는 것은 체크 안된다.
 		return false;
 	}
-
+	
 
 	//여기까지오면 오리진은 구밖에 있다는예기
 	//구센터까지의 방향벡터와 레이의 방향벡터가 직각을 포함한 
 	//둔각이라면 죽었다깨어나도 충돌될일없다
-	float dot = D3DXVec3Dot( &dirToCenter, &pRay->direction );
+	float dot = D3DXVec3Dot( &dirToCenter, &pRay->direction );// ProJ 값.
 	if( dot <= 0.0f )
 	{	
 		return false;
@@ -89,10 +90,10 @@ bool cPhysicManager::IsRayHitBound(
 		d2 = r2;
 		//d2 = y2 + x2
 		//float x2 = d2 - y2;
-		float x = sqrt( d2 - y2 );
+		float x = sqrt( d2 - y2 ); // 구 반지름  - 레이의 좌표 
 
 		//
-		*pHitPos = pRay->origin + ( pRay->direction * ( dot - x ) );
+		*pHitPos = pRay->origin + ( pRay->direction * ( dot - x ) ); // dot은 반지름 값.
 
 		//Hit 된 위치의 노말을 얻겠다면..
 		if( pHitNormal )
@@ -1389,4 +1390,25 @@ bool cPhysicManager::IntersectRayToPlane( D3DXVECTOR3* pOut, const LPRay pRay, c
 	return true;
 
 
+}
+
+bool cPhysicManager::intersectSector(const cTransform * Trans1, const cTransform * Trans2, float length, float sight)
+{
+	D3DXVECTOR3 v_distnace = Trans2->GetWorldPosition() - Trans1->GetWorldPosition();
+	float distance = D3DXVec3Length(&v_distnace);
+
+	if (std::fabs(distance) < length)
+	{
+		D3DXVECTOR3 dir = Trans1->GetForward();
+		D3DXVECTOR3 targetDir;
+		D3DXVec3Normalize(&targetDir, &v_distnace);
+
+		float C_tAngle = D3DXVec3Dot(&dir, &targetDir);
+		C_tAngle = acos(C_tAngle);
+
+		if (std::fabs(C_tAngle) <= sight)
+			return true;
+		else return false;
+	}
+	else return false;
 }

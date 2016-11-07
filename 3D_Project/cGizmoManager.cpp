@@ -253,6 +253,21 @@ void cGizmoManager::Circle( const D3DXVECTOR3& centerPos, float radius, const D3
 
 }
 
+void cGizmoManager::Sector(const D3DXVECTOR3& pos, const D3DXVECTOR3& dir, float length, float angle)
+{
+	D3DXVECTOR3 startPos = pos;
+	float C_tAngle = D3DXVec3Dot(&dir, &D3DXVECTOR3(1, 0, 0));
+	C_tAngle = acos(C_tAngle);
+	if (dir.z < 0)
+		C_tAngle = 360 * ONE_RAD - C_tAngle;
+
+	D3DXVECTOR3 finalPos(startPos.x + length * cos(C_tAngle - angle), 0, startPos.z + length * sin(C_tAngle - angle));
+	D3DXVECTOR3 finalPos2(startPos.x + length * cos(C_tAngle + angle), 0, startPos.z + length * sin(C_tAngle + angle));
+
+	GIZMO_MGR->Line(startPos, finalPos, 0xff00ff00);
+	GIZMO_MGR->Line(startPos, finalPos2, 0xff00ff00);
+}
+
 //와이어 구를 그리는 함수
 void cGizmoManager::WireSphere( const D3DXVECTOR3& centerPos, float radius,  DWORD color) const
 {

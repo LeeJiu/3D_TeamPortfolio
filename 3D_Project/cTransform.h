@@ -76,7 +76,7 @@ protected:
 	int ShakePosFlag;				//위치 허용축 플레그
 	int ShakeRotFlag;				//회전 허용축 플레그
 
-	float DefaultZoom;
+	//줌 관련
 	float MaxZoomIn;
 	float MaxZoomOut;
 	float Zoom;
