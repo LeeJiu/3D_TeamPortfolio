@@ -37,6 +37,8 @@ public:
 	//원을 그리는 함수
 	void Circle( const D3DXVECTOR3& centerPos, float radius, const D3DXVECTOR3& axis = D3DXVECTOR3( 0, 0, 1 ), DWORD color = 0xff808080 ) const;
 
+	void Sector(const D3DXVECTOR3& pos, const D3DXVECTOR3& dir, float length, float angle);
+
 	//와이어 구를 그리는 함수
 	void WireSphere( const D3DXVECTOR3& centerPos, float radius,  DWORD color = 0xff808080 ) const; 
 
