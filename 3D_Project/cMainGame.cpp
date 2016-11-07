@@ -5,6 +5,8 @@
 #include "move_Test.h"
 #include "camera_Test.h"
 #include "sector_Test.h"
+#include "animation_Test.h"
+
 
 cMainGame::cMainGame(void)
 {
@@ -36,12 +38,14 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->AddScene("move_Test", new move_Test());
 	SCENE_MGR->AddScene("camera_Test", new camera_Test());
 	SCENE_MGR->AddScene("sector_Test", new sector_Test());
+	SCENE_MGR->AddScene("animation_Test", new animation_Test());
 
 	//SCENE_MGR->AddScene( "태진아", new cScene_01() );
 	//SCENE_MGR->AddLoadingScene( "로딩씬", new cScene_02() );
 
 	////게임 시작씬
-	SCENE_MGR->ChangeScene( "sector_Test" );
+	//SCENE_MGR->ChangeScene( "sector_Test" );
+	SCENE_MGR->ChangeScene( "animation_Test" );
 
 	//return E_FAIL;
 	return S_OK;		
