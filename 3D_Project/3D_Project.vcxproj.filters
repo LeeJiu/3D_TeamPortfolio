@@ -28,6 +28,12 @@
     <Filter Include="Handler">
       <UniqueIdentifier>{3829eae1-802e-4bf9-a6a0-1f7937c7218b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameActor">
+      <UniqueIdentifier>{485420e6-2a98-48de-afd1-6d5503dc3252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{8d2a1705-2813-409f-9e6c-6b5d6da36a26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -165,14 +171,26 @@
     <ClInclude Include="t_Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cCommand.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cInputHandler.h">
       <Filter>Handler</Filter>
     </ClInclude>
     <ClInclude Include="camera_Test.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommand.h">
+      <Filter>Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_testPlayer.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayer.h">
+      <Filter>GameActor</Filter>
+    </ClInclude>
+    <ClInclude Include="cTestCommand.h">
+      <Filter>Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="cTestCommand2.h">
+      <Filter>Handler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -311,14 +329,26 @@
     <ClCompile Include="move_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cCommand.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cInputHandler.cpp">
       <Filter>Handler</Filter>
     </ClCompile>
     <ClCompile Include="camera_Test.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommand.cpp">
+      <Filter>Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_testPlayer.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayer.cpp">
+      <Filter>GameActor</Filter>
+    </ClCompile>
+    <ClCompile Include="cTestCommand.cpp">
+      <Filter>Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="cTestCommand2.cpp">
+      <Filter>Handler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include "t_Scene.h"
 #include "move_Test.h"
 #include "camera_Test.h"
+#include "cScene_testPlayer.h"
 
 cMainGame::cMainGame(void)
 {
@@ -34,12 +35,10 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->AddScene("model_Test", new t_Scene());
 	SCENE_MGR->AddScene("move_Test", new move_Test());
 	SCENE_MGR->AddScene("camera_Test", new camera_Test());
-
-	//SCENE_MGR->AddScene( "태진아", new cScene_01() );
-	//SCENE_MGR->AddLoadingScene( "로딩씬", new cScene_02() );
+	SCENE_MGR->AddScene("cScene_testPlayer", new cScene_testPlayer());
 
 	////게임 시작씬
-	SCENE_MGR->ChangeScene( "camera_Test" );
+	SCENE_MGR->ChangeScene( "cScene_testPlayer" );
 
 	//return E_FAIL;
 	return S_OK;		
@@ -48,11 +47,6 @@ HRESULT cMainGame::Init(void)
 //해제
 void cMainGame::Release()
 {
-	
-	//씬 해제
-	//m_pNowScene->Release();
-	//SAFE_DELETE( m_pNowScene );
-
 	//매니져 해제
 	GIZMO_MGR->Release();
 	cGizmoManager::ReleaseInstance();

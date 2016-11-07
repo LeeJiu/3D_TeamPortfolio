@@ -131,13 +131,13 @@ void move_Test::Scene_Update(float timeDelta)
 	if (KEY_MGR->IsStayDown('Q'))
 	{
 		isMove = true;
-		cRay.origin += pSkinnedTrans->GetRight()*0.2f;
+		cRay.origin -= pSkinnedTrans->GetRight()*0.2f;
 
 	}
 	if (KEY_MGR->IsStayDown('E'))
 	{
 		isMove = true;
-		cRay.origin -= pSkinnedTrans->GetRight()*0.2f;
+		cRay.origin += pSkinnedTrans->GetRight()*0.2f;
 	}
 	if (KEY_MGR->IsStayDown('A'))
 	{
@@ -157,7 +157,6 @@ void move_Test::Scene_Update(float timeDelta)
 
 		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
 		isClick = true;
-
 	}
 
 	if (isClick == true)
@@ -168,7 +167,7 @@ void move_Test::Scene_Update(float timeDelta)
 	
 		if (D3DXVec3Length(&dir) > 0.5f)
 		{
-		isMove = true;
+			isMove = true;
 			D3DXVec3Normalize(&dir, &dir);
 			D3DXVECTOR3 lerp = pSkinnedTrans->GetForward();
 			D3DXVec3Lerp(&lerp, &lerp, &dir, 0.2);
@@ -211,7 +210,7 @@ void move_Test::Scene_Update(float timeDelta)
 		m_lastPos.y = pSkinnedTrans->GetWorldPosition().y - 10;
 	}
 
-	// 터레인과 충돌 했다면. 
+	// 터레인과 충돌 했다면. / 캐릭터 위치에서 쏘는 레이와 터레인을 충돌 체크
 	if (this->m_pTerrain->IsIntersectRay(&m_prePos, &cRay) == true)
 	{
 		if (m_lastPos.y > m_prePos.y)

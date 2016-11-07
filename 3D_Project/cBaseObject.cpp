@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ #include "StdAfx.h"
 #include "cBaseObject.h"
 #include "cTransform.h"
 #include "cSkinnedAnimation.h"
