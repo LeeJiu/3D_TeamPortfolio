@@ -331,6 +331,7 @@ void move_Test::Scene_Render1()
 	//m_pSkinnedEffect->SetMatrix( "matViewProjection", &matViewProjection );
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
+	
 	this->pSkinned1->Render(pSkinnedTrans);
 
 	//가지고 있는 Animation 을출력해보자..

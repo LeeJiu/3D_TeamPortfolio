@@ -177,6 +177,12 @@
     <ClInclude Include="animation_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="moveClass.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="move_Test2.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -324,6 +330,12 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="animation_Test.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="moveClass.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="move_Test2.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
