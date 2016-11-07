@@ -174,7 +174,7 @@
     <ClInclude Include="camera_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="animation_Test.h">
+    <ClInclude Include="sector_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="moveClass.h">
@@ -329,7 +329,7 @@
     <ClCompile Include="camera_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="animation_Test.cpp">
+    <ClCompile Include="sector_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="moveClass.cpp">

@@ -101,7 +101,8 @@ public:
 	//반직선과 평면의 충돌 위치
 	bool IntersectRayToPlane( D3DXVECTOR3* pOut, const LPRay pRay, const LPD3DXPLANE pPlane, bool bCheck2Side = false );
 
-
+	//부채꼴범위와 대상의 충돌위치. Trans1이 중심이고 Trans2가 체크할 타겟이다.
+	bool intersectSector(const cTransform* Trans1, const cTransform* Trans2, float length, float sight);
 
 
 	

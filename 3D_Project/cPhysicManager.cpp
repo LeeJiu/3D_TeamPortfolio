@@ -1391,3 +1391,24 @@ bool cPhysicManager::IntersectRayToPlane( D3DXVECTOR3* pOut, const LPRay pRay, c
 
 
 }
+
+bool cPhysicManager::intersectSector(const cTransform * Trans1, const cTransform * Trans2, float length, float sight)
+{
+	D3DXVECTOR3 v_distnace = Trans2->GetWorldPosition() - Trans1->GetWorldPosition();
+	float distance = D3DXVec3Length(&v_distnace);
+
+	if (std::fabs(distance) < length)
+	{
+		D3DXVECTOR3 dir = Trans1->GetForward();
+		D3DXVECTOR3 targetDir;
+		D3DXVec3Normalize(&targetDir, &v_distnace);
+
+		float C_tAngle = D3DXVec3Dot(&dir, &targetDir);
+		C_tAngle = acos(C_tAngle);
+
+		if (std::fabs(C_tAngle) <= sight)
+			return true;
+		else return false;
+	}
+	else return false;
+}
