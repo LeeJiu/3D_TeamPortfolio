@@ -130,12 +130,12 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	}
 
 	//=================================== 케릭터를 최종적으로 움직이게 하는 부분 
-	if (m_prePos.y - m_currentPos.y < -1.f)
+	if (m_prePos.y - m_currentPos.y < -1.f) //현재 좌표와 움직일 좌표차이가 나면 점프를 트루로 바뀌게 해서 중력을줌.
 	{
 		//m_jumpPower = 0.f;
 		isJump = true;
 	}
-	if (m_prePos.y - m_currentPos.y < 0.3f && isMove == true && isJump==false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
+	if (m_prePos.y - m_currentPos.y < 0.5f && isMove == true && isJump==false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
 	{
 		this->pCharTrans->SetWorldPosition(m_prePos);
 		m_currentPos = m_prePos; // 좌표 갱신

@@ -63,7 +63,8 @@ HRESULT move_Test2::Scene_Init()
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
-	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
+	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0)+4.f, 0);
+	
 	move = new moveClass;
 	move->init(pSkinned1, pSkinnedTrans, m_pTerrain);
 

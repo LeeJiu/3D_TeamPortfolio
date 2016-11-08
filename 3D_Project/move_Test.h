@@ -18,6 +18,8 @@ private:
 	cTransform*             colliTest;
 	cBoundBox*              testBox;
 
+	D3DXVECTOR3             quad[4];
+
 	// 도형 피킹에 쓸것.
 	Ray						cRay; //케릭터에 들어갈 레이.
 	bool                    objectHit;
@@ -62,6 +64,10 @@ public:
 
 	virtual void Scene_RenderSprite();
 
+	void createQuad(D3DXVECTOR3* quad);
+	void QuadRender();
 
+	//GIZMO_MGR->Line(startPos, finalPos, 0xff00ff00);
+	//GIZMO_MGR->Line(startPos, finalPos2, 0xff00ff00);
 };
 

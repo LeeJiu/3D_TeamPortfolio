@@ -34,7 +34,6 @@ HRESULT move_Test::Scene_Init()
 
 	m_hitPos = D3DXVECTOR3(0, 0, 0);
 
-	m_bMove = false;
 
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
@@ -110,6 +109,12 @@ HRESULT move_Test::Scene_Init()
 	testBox->localMaxPos = D3DXVECTOR3(4, 4, 4);
 	testBox->localMinPos = D3DXVECTOR3(-3, -3, -3);
 	testBox->radius = 0.5f;
+	//
+	quad[0] = D3DXVECTOR3(-3,0,3);
+	quad[1] = D3DXVECTOR3(3, 0, 3);
+	quad[2] = D3DXVECTOR3(-3, 0, -3);
+	quad[3] = D3DXVECTOR3(3, 0, -3);
+
 	return S_OK;
 }
 
@@ -164,6 +169,16 @@ void move_Test::Scene_Update(float timeDelta)
 		pSkinnedTrans->RotateSelf(0, 2 * ONE_RAD, 0);
 	}
 	//=========================
+	if (KEY_MGR->IsOnceDown('T')) // 쿼드 테스트용.
+	{
+		Ray ray;
+		POINT ptMousePos = GetMousePos();
+		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+		this->pMainCamera->ComputeRay(&ray, &screenPos);
+
+		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+	}
+	//=========================
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	{
 		Ray ray;
@@ -204,7 +219,7 @@ void move_Test::Scene_Update(float timeDelta)
 	}
 
 
-
+	//D3DXIntersectTri()
 
 	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
 
@@ -371,6 +386,8 @@ void move_Test::Scene_Render1()
 	testBox->RenderGizmo(colliTest);
 	GIZMO_MGR->WireSphere(colliTest->GetWorldPosition()
 		, testBox->radius, 0xff0000ff);
+	QuadRender();
+
 }
 
 
@@ -378,3 +395,42 @@ void move_Test::Scene_RenderSprite()
 {
 }
 
+
+void move_Test::QuadRender()
+{
+
+	quad[0] = D3DXVECTOR3(-3, 0, 3);
+	quad[1] = D3DXVECTOR3(3, 0, 3);
+	quad[2] = D3DXVECTOR3(-3, 0, -3);
+	quad[3] = D3DXVECTOR3(3, 0, -3);
+
+	for (int i = 0; i < 4; i++)
+	{
+		quad[0] = D3DXVECTOR3(-3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, 3 + m_mousePos.z);
+		quad[1] = D3DXVECTOR3(3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, 3 + m_mousePos.z);
+		quad[2] = D3DXVECTOR3(-3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, -3 + m_mousePos.z);
+		quad[3] = D3DXVECTOR3(3 + m_mousePos.x, 0 + m_mousePos.y+0.5f, -3 + m_mousePos.z);
+	}
+	
+	if (D3DXIntersectTri(&quad[0], &quad[1], &quad[3], &cRay.origin, &cRay.direction, NULL, NULL, NULL)	)
+	{
+		LOG_MGR->AddLog("위에삼각 ");
+	}
+	if (D3DXIntersectTri(&quad[0], &quad[1], &quad[2], &cRay.origin, &cRay.direction, NULL, NULL, NULL))
+	{
+		LOG_MGR->AddLog("아래삼각");
+	}
+
+
+	//0    1
+	//2    3
+	GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
+	GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
+	GIZMO_MGR->Line(quad[3], quad[2], 0xff00ff00);
+	GIZMO_MGR->Line(quad[2], quad[0], 0xff00ff00);
+
+	
+
+}
+//GIZMO_MGR->Line(startPos, finalPos, 0xff00ff00);
+//GIZMO_MGR->Line(startPos, finalPos2, 0xff00ff00);
