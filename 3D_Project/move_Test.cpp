@@ -60,6 +60,12 @@ HRESULT move_Test::Scene_Init()
 	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
 	this->pSkinned1 = new cSkinnedAnimation();
 	this->pSkinned1->Init(pSkinned);
+	//
+	pSkinnedBox = new cBoundBox;
+	pSkinnedBox->localCenter= D3DXVECTOR3(0,0,0);
+	pSkinnedBox->localMaxPos = D3DXVECTOR3(2, 2, 2);
+	pSkinnedBox->localMinPos = D3DXVECTOR3(-2, -2, -2);
+	pSkinnedBox->radius = 3.f;
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
@@ -95,6 +101,15 @@ HRESULT move_Test::Scene_Init()
 	//=============== 레이 초기화 끝.
 	pMainCamera->SetWorldPosition(2, 5, 2);
 	isClick = false;
+	//
+	colliTest = new cTransform;
+	colliTest->SetWorldPosition(3, m_pTerrain->GetHeight(3, 3)+1, 3);
+	
+	testBox = new cBoundBox;
+	testBox->localCenter = D3DXVECTOR3(0, 0, 0);
+	testBox->localMaxPos = D3DXVECTOR3(4, 4, 4);
+	testBox->localMinPos = D3DXVECTOR3(-3, -3, -3);
+	testBox->radius = 0.5f;
 	return S_OK;
 }
 
@@ -308,7 +323,7 @@ void move_Test::Scene_Update(float timeDelta)
 			m_prePos.z);
 
 	}
-
+	PHYSICS_MGR->IsPointSphere(pSkinnedTrans, 3.f, colliTest);
 
 }
 
@@ -347,7 +362,15 @@ void move_Test::Scene_Render1()
 	m_Land->Render();
 	//========== 레이 기지모
 	GIZMO_MGR->Line(this->cRay.origin, this->cRay.origin + this->cRay.direction * 100, 0xffffff00);
+	//
+	pSkinnedBox->RenderGizmo(pSkinnedTrans);
 
+	GIZMO_MGR->WireSphere(pSkinnedTrans->GetWorldPosition()
+		, pSkinnedBox->radius, 0xffff0000);
+	//
+	testBox->RenderGizmo(colliTest);
+	GIZMO_MGR->WireSphere(colliTest->GetWorldPosition()
+		, testBox->radius, 0xff0000ff);
 }
 
 

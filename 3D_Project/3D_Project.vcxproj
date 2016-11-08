@@ -89,6 +89,7 @@
     <ClInclude Include="cDXFontManager.h" />
     <ClInclude Include="cFrustum.h" />
     <ClInclude Include="cGizmoManager.h" />
+    <ClInclude Include="cIdleState.h" />
     <ClInclude Include="cImage.h" />
     <ClInclude Include="cInputHandler.h" />
     <ClInclude Include="cKeyMgr.h" />
@@ -97,6 +98,8 @@
     <ClInclude Include="cLight_Point.h" />
     <ClInclude Include="cLogMgr.h" />
     <ClInclude Include="cMainGame.h" />
+    <ClInclude Include="cMonster.h" />
+    <ClInclude Include="cMoveState.h" />
     <ClInclude Include="cPartcleEmitter.h" />
     <ClInclude Include="cParticle.h" />
     <ClInclude Include="cParticleQuad.h" />
@@ -118,6 +121,8 @@
     <ClInclude Include="cSingletonBase.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSpriteManager.h" />
+    <ClInclude Include="cState.h" />
+    <ClInclude Include="cStateHandler.h" />
     <ClInclude Include="cTerrain.h" />
     <ClInclude Include="cTestCommand.h" />
     <ClInclude Include="cTestCommand2.h" />
@@ -147,6 +152,7 @@
     <ClCompile Include="cDXFontManager.cpp" />
     <ClCompile Include="cFrustum.cpp" />
     <ClCompile Include="cGizmoManager.cpp" />
+    <ClCompile Include="cIdleState.cpp" />
     <ClCompile Include="cImage.cpp" />
     <ClCompile Include="cInputHandler.cpp" />
     <ClCompile Include="cKeyMgr.cpp" />
@@ -155,6 +161,8 @@
     <ClCompile Include="cLight_Point.cpp" />
     <ClCompile Include="cLogMgr.cpp" />
     <ClCompile Include="cMainGame.cpp" />
+    <ClCompile Include="cMonster.cpp" />
+    <ClCompile Include="cMoveState.cpp" />
     <ClCompile Include="cPartcleEmitter.cpp" />
     <ClCompile Include="cParticle.cpp" />
     <ClCompile Include="cParticleQuad.cpp" />
@@ -176,6 +184,8 @@
     <ClCompile Include="cSingletonBase.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSpriteManager.cpp" />
+    <ClCompile Include="cState.cpp" />
+    <ClCompile Include="cStateHandler.cpp" />
     <ClCompile Include="cTerrain.cpp" />
     <ClCompile Include="cTestCommand.cpp" />
     <ClCompile Include="cTestCommand2.cpp" />

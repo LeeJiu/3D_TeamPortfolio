@@ -14,6 +14,14 @@ private:
 	cTransform*				pSkinnedTrans;
 	cTransform*				pSkinnedTrans2;
 
+	cBoundBox				bound1;
+	cBoundBox				bound2;
+	cBoundBox				bound3;
+	cTransform*				bound1Trans;
+	cTransform*				bound2Trans;
+	cTransform*				bound3Trans;
+
+
 	std::vector<cLight*>	lights;
 
 	D3DXVECTOR3		m_hitPos;

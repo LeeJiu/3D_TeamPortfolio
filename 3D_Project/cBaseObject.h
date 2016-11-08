@@ -3,6 +3,7 @@
 class cXMesh;
 class cTransform;
 class cSkinnedAnimation;
+class cTerrain;
 
 class cBaseObject
 {
@@ -17,6 +18,7 @@ public:
 protected:
 	bool				bActive;	//활성화 여부
 	cSkinnedAnimation*	pSkinned;	//스킨드 Animtion
+	cTerrain*			pTerrain;	//터레인 정보
 
 
 public:
@@ -30,6 +32,9 @@ public:
 			this->BaseObjectRender();
 	}
 
+	//터레인을 셋팅한다.
+	void SetTerrain(cTerrain* terrain) { pTerrain = terrain; }
+
 	//랜더링 될 메쉬를 셋팅한다.
 	void SetMesh( cXMesh*	pMesh );
 
@@ -41,9 +46,15 @@ public:
 		return this->bActive;
 	}
 
+	//스킨드 애니메이션 얻는다.
+	cSkinnedAnimation* GetSkinnedAnim() { return pSkinned; }
 
+	//터레인을 얻는다.
+	cTerrain* GetTerrain() { return pTerrain; }
+
+	
 	//셋팅된 메쉬에 따라 바운드박스를 재계산 한다.
-	void ComputeBoundBox();
+	void ComputeBoundBox();	
 
 
 
