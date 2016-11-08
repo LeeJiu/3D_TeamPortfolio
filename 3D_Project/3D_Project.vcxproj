@@ -101,6 +101,7 @@
     <ClInclude Include="cParticle.h" />
     <ClInclude Include="cParticleQuad.h" />
     <ClInclude Include="cPhysicManager.h" />
+    <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cQuadParticleEmitter.h" />
     <ClInclude Include="cQuadTree.h" />
     <ClInclude Include="cResourceMgr_XSkinnedMesh.h" />
@@ -112,22 +113,27 @@
     <ClInclude Include="cSceneChangeEffect.h" />
     <ClInclude Include="cSceneChangeEffectUpDown.h" />
     <ClInclude Include="cScene_Mgr.h" />
+    <ClInclude Include="cScene_testPlayer.h" />
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSpriteManager.h" />
     <ClInclude Include="cTerrain.h" />
+    <ClInclude Include="cTestCommand.h" />
+    <ClInclude Include="cTestCommand2.h" />
     <ClInclude Include="cTimeMgr.h" />
     <ClInclude Include="cTransform.h" />
     <ClInclude Include="cXMesh.h" />
     <ClInclude Include="cXMesh_Skinned.h" />
     <ClInclude Include="cXMesh_Static.h" />
+    <ClInclude Include="moveClass.h" />
     <ClInclude Include="move_Test.h" />
     <ClInclude Include="MyUtil.h" />
     <ClInclude Include="sector_Test.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="t_Scene.h" />
+    <ClInclude Include="move_Test2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
@@ -153,6 +159,7 @@
     <ClCompile Include="cParticle.cpp" />
     <ClCompile Include="cParticleQuad.cpp" />
     <ClCompile Include="cPhysicManager.cpp" />
+    <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cQuadParticleEmitter.cpp" />
     <ClCompile Include="cQuadTree.cpp" />
     <ClCompile Include="cResourceMgr_XSkinnedMesh.cpp" />
@@ -164,17 +171,22 @@
     <ClCompile Include="cSceneChangeEffect.cpp" />
     <ClCompile Include="cSceneChangeEffectUpDown.cpp" />
     <ClCompile Include="cScene_Mgr.cpp" />
+    <ClCompile Include="cScene_testPlayer.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSpriteManager.cpp" />
     <ClCompile Include="cTerrain.cpp" />
+    <ClCompile Include="cTestCommand.cpp" />
+    <ClCompile Include="cTestCommand2.cpp" />
     <ClCompile Include="cTimeMgr.cpp" />
     <ClCompile Include="cTransform.cpp" />
     <ClCompile Include="cXMesh.cpp" />
     <ClCompile Include="cXMesh_Skinned.cpp" />
     <ClCompile Include="cXMesh_Static.cpp" />
+    <ClCompile Include="moveClass.cpp" />
     <ClCompile Include="move_Test.cpp" />
+    <ClCompile Include="move_Test2.cpp" />
     <ClCompile Include="MyUtil.cpp" />
     <ClCompile Include="sector_Test.cpp" />
     <ClCompile Include="t_Scene.cpp" />

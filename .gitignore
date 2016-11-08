@@ -251,3 +251,4 @@ paket-files/
 .idea/
 *.sln.iml
 3D_Project/Dump.txt
+3D_Project/3D_Project.vcxproj.filters

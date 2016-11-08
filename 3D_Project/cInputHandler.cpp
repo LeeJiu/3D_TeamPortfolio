@@ -9,6 +9,13 @@ cInputHandler::cInputHandler()
 
 cInputHandler::~cInputHandler()
 {
+	//for (m_miKey = m_mKey.begin(); m_miKey != m_mKey.end();)
+	//{
+	//	//나중에 커멘드 중에 릴리즈 할게 생기면
+	//	//릴리즈 시켜야 한다.
+	//}
+
+	m_mKey.clear();
 }
 
 cCommand* cInputHandler::HandleInput()
@@ -45,5 +52,17 @@ void cInputHandler::ChangeKey(int nVKey, cCommand * command)
 	else
 	{
 		m_mKey.insert(pair<int, cCommand*>(nVKey, command));
+	}
+}
+
+void cInputHandler::SwapKey(int nFromVKey, int nToVKey)
+{
+	//해당 키값이 있다면
+	if (m_mKey.find(nFromVKey) != m_mKey.end())
+	{
+		cCommand* tempCommand = m_mKey.find(nFromVKey)->second;
+
+		ChangeKey(nFromVKey, m_mKey.find(nToVKey)->second);
+		ChangeKey(nToVKey, tempCommand);
 	}
 }
