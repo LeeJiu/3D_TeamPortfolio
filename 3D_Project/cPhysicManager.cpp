@@ -611,6 +611,7 @@ bool cPhysicManager::IsOverlap( cBaseObject* pObjA, cBaseObject* pObjB )
 
 
 //2개의 바운드 대한 출동 정보를 얻는다.
+//
 bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundSphere* pBoundA, cTransform* pTransB, cBoundSphere* pBoundB )
 {
 	//월드 구정보를 얻는다.
@@ -703,9 +704,9 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 	OBB obbB;
 		
 	//각 축 방향
-	obbB.axis[0] = pTransB->GetRight();
-	obbB.axis[1] = pTransB->GetUp();
-	obbB.axis[2] = pTransB->GetForward();
+	obbB.axis[0] = pTransB->GetRight();        // x
+	obbB.axis[1] = pTransB->GetUp();		   // y
+	obbB.axis[2] = pTransB->GetForward();	   // z
 
 	//센터
 	obbB.center = centerB;
@@ -737,15 +738,17 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 	{
 		for( int b = 0 ; b < 3 ; b++ )
 		{
-			cos[a][b] = D3DXVec3Dot( &obbA.axis[a], &obbB.axis[b] );
+			cos[a][b] = D3DXVec3Dot( &obbA.axis[a], &obbB.axis[b] ); // |a| |b| 값이 1 이기 때문에 . ( 각 축에 대한 cos 값 proj 할때 씀)
 			absCos[a][b] = abs( cos[a][b] );
 
 			//한축이 서로 교차 되는 지확인
 			if( absCos[a][b] > cutOff ) existParallelPair = true;
 		}
 
+
 		//센터끼리의 방향벡터를 A 바운드 Axis 의 투영한 거리
-		dist[a] = D3DXVec3Dot( &obbA.axis[a], &D );
+		dist[a] = D3DXVec3Dot( &obbA.axis[a], &D ); // 바운드 A 축 기준으로 proj 한다는 의미 인듯함. 
+		                                            // 아니라면 추후 수정함.
 	}
 
 
@@ -770,6 +773,7 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 		 abs( D3DXVec3Dot( &obbA.axis[0], &obbB.axis[1] ) ) * obbB.halfLength[1] +
 		 abs( D3DXVec3Dot( &obbA.axis[0], &obbB.axis[2] ) ) * obbB.halfLength[2];
 	*/
+	// 위에 주석을 보자 하니 obbB 의 절반 길이는 구하는 듯함. ( obbA.축을 기준으로 proj 한 값 )
 	r1 = absCos[0][0] * obbB.halfLength[0] +
 		 absCos[0][1] * obbB.halfLength[1] +
 	     absCos[0][2] * obbB.halfLength[2];
@@ -868,6 +872,7 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	//A의 X 축 B 의 X 축에 대한 외적의 충돌 체크
+	//          z          y x          y        z  x
 	r = abs( dist[2] * cos[1][0] - dist[1] * cos[2][0] );
 	r0 = obbA.halfLength[1] * absCos[2][0] + obbA.halfLength[2] * absCos[1][0];
 	r1 = obbB.halfLength[1] * absCos[0][2] + obbB.halfLength[2] * absCos[0][1];
