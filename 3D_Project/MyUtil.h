@@ -22,11 +22,10 @@ b = 10.000095f
 #define		RS(a,b)			Device->SetRenderState((a),(b))		
 
 
-//방향키로 움직일건지, 마우스로 움직일건지
-enum MOVE_STATE
+//캐릭터 상태
+enum ACTOR_STATE
 {
-	MS_UP, MS_DOWN, MS_LEFT, MS_RIGHT, 
-	MS_LT_TURN, MS_RT_TURN, MS_POINT, MS_NONE
+	AS_IDLE, AS_WALK, AS_ATTACK
 };
 
 

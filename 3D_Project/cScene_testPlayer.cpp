@@ -44,14 +44,12 @@ HRESULT cScene_testPlayer::Scene_Init()
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
-	m_pPlayer->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection));
-	m_pPlayer->SetActive(true);
-
-	//캐릭터의 그려진 위치를 세팅
-	m_pPlayer->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
-	
 	//캐릭터에게 지형 전달
 	m_pPlayer->SetTerrain(m_pTerrain);
+	
+	m_pPlayer->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection));
+	m_pPlayer->SetActive(true);
+	
 
 	return S_OK;
 }

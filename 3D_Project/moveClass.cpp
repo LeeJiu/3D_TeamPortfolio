@@ -22,7 +22,7 @@ void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* t
 	//================레이 추가. 아래 방향 바뀌지 않음 .
 	moveRay.direction = D3DXVECTOR3(0, -1, 0);
 	moveRay.origin = pCharTrans->GetWorldPosition();
-//	isClick = false;
+	//isClick = false;
 
 }
 void moveClass::update(float timeDelta, cBaseObject* collObj)
@@ -47,13 +47,13 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	if (KEY_MGR->IsStayDown('Q'))
 	{
 		isMove = true;
-		moveRay.origin += pCharTrans->GetRight()*0.2f;
+		moveRay.origin -= pCharTrans->GetRight()*0.2f;
 
 	}
 	if (KEY_MGR->IsStayDown('E'))
 	{
 		isMove = true;
-		moveRay.origin -= pCharTrans->GetRight()*0.2f;
+		moveRay.origin += pCharTrans->GetRight()*0.2f;
 	}
 	if (KEY_MGR->IsStayDown('A'))
 	{
@@ -72,20 +72,20 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	//m_lastPos = this->pSkinnedTrans->GetWorldPosition();
 	//m_lastPos.y = -1000;
 	// 추후에 거리 값을 이용해서 2,3번째 인자 값을 걸러 낼꺼임.
-	if ((
-		PHYSICS_MGR->IsRayHitStaticMeshObject(
-		&this->moveRay,
-		collObj,
-		collObj->pTransform,
-		&this->m_prePos,
-		NULL)) == true)
-	{
-		m_lastPos = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
-	}
-	else
-	{
-		m_lastPos.y = pCharTrans->GetWorldPosition().y - 10;
-	}
+	//if ((
+	//	PHYSICS_MGR->IsRayHitStaticMeshObject(
+	//	&this->moveRay,
+	//	collObj,
+	//	collObj->pTransform,
+	//	&this->m_prePos,
+	//	NULL)) == true)
+	//{
+	//	m_lastPos = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
+	//}
+	//else
+	//{
+	//	m_lastPos.y = pCharTrans->GetWorldPosition().y - 10;
+	//}
 
 	// 터레인과 충돌 했다면. 
 	if (m_pTerrain->IsIntersectRay(&m_prePos, &moveRay) == true)
