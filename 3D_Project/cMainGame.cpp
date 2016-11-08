@@ -44,8 +44,8 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->AddLoadingScene( "·Îµù¾À", new cScene_02() );
 
 	////°ÔÀÓ ½ÃÀÛ¾À
-	//SCENE_MGR->ChangeScene( "sector_Test" );
-	SCENE_MGR->ChangeScene( "animation_Test" );
+	SCENE_MGR->ChangeScene( "sector_Test" );
+	//SCENE_MGR->ChangeScene( "animation_Test" );
 
 	//return E_FAIL;
 	return S_OK;		

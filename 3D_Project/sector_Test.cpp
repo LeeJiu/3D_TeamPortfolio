@@ -36,6 +36,8 @@ HRESULT sector_Test::Scene_Init()
 	cXMesh_Skinned* pSkinnedDragon = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Boss/SkulDragon/skulDragon_1.X", &matCorrection);
 	cXMesh_Skinned*	pSkinnedSurcubus = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Surcubus/surcubus.X", &matCorrection2);
 
+	cXMesh* pMash;
+
 	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
 	this->pSkinned1 = new cSkinnedAnimation();
 	this->pSkinned1->Init(pSkinnedDragon);
@@ -47,6 +49,28 @@ HRESULT sector_Test::Scene_Init()
 	pSkinnedTrans->SetWorldPosition(0, 0, 0);
 	this->pSkinnedTrans2 = new cTransform();
 	pSkinnedTrans2->SetWorldPosition(10, 0, 0);
+	
+	this->bound1Trans = new cTransform();
+	this->bound1Trans->SetWorldPosition(0, 0, 10);
+	D3DXVECTOR3	maxpos(3, 3, 3);
+	D3DXVECTOR3	minpos(-3, -3, -3);
+	bound1.localMaxPos = maxpos;
+	bound1.localMinPos = minpos;
+
+
+	this->bound2Trans = new cTransform();
+	this->bound2Trans->SetWorldPosition(-15, 0, 3);
+	D3DXVECTOR3	maxpos2(2, 1, 3);
+	D3DXVECTOR3	minpos2(-2, -1, -3);
+	bound2.localMaxPos = maxpos2;
+	bound2.localMinPos = minpos2;
+
+	this->bound3Trans = new cTransform();
+	this->bound3Trans->SetWorldPosition(-10, 0, -5);
+	D3DXVECTOR3	maxpos3(1, 5, 5);
+	D3DXVECTOR3	minpos3(-1, -5, -5);
+	bound3.localMaxPos = maxpos3;
+	bound3.localMinPos = minpos3;
 
 
 	//라이트 푸쉬
@@ -85,6 +109,9 @@ void sector_Test::Scene_Release()
 {
 	SAFE_DELETE(this->pSkinnedTrans);
 	SAFE_DELETE(this->pSkinnedTrans2);
+	SAFE_DELETE(this->bound1Trans);
+	SAFE_DELETE(this->bound2Trans);
+	SAFE_DELETE(this->bound3Trans);
 
 	this->pSkinned1->Release();
 	SAFE_DELETE(this->pSkinned1);
@@ -97,22 +124,8 @@ void sector_Test::Scene_Update(float timeDelta)
 	this->pSkinned1->Update(timeDelta);
 	this->pSkinned2->Update(timeDelta);
 
-
 	this->pSkinned1->Play("IDLE_C", 0.3f);
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	{
-		//Ray ray;
-		//POINT ptMousePos = GetMousePos();
-		//D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-		//this->pMainCamera->ComputeRay(&ray, &screenPos);
-		//
-		//
-		////Terrain 이랑 Ray체크
-		//this->m_pTerrain->IsIntersectRay(&m_hitPos, &ray);
-		//
-		//m_bMove = true;
-		////this->pSkinned1->Play("Walk", 0.3f);
-	}
+	this->pSkinned2->Play("Walk", 0.3f);
 
 	if (KEY_MGR->IsStayDown('W'))
 	{
@@ -190,49 +203,13 @@ void sector_Test::Scene_Render1()
 	GIZMO_MGR->Circle(this->pSkinnedTrans->GetWorldPosition(), m_sightLength, axis, 0xff00ff00);
 	GIZMO_MGR->Sector(this->pSkinnedTrans->GetWorldPosition(), this->pSkinnedTrans->GetForward(), m_sightLength, m_sight);
 	
-	//D3DXVECTOR3 startPos = this->pSkinnedTrans->GetWorldPosition();
-	////============
-	//D3DXVECTOR3 dir = pSkinnedTrans->GetForward();
-	//float C_tAngle = D3DXVec3Dot(&dir, &D3DXVECTOR3(1,0,0));
-	//C_tAngle = acos(C_tAngle);
-	//if (dir.z < 0)
-	//	C_tAngle = 360* ONE_RAD-C_tAngle;
-	////============
-	//
-	//D3DXVECTOR3 finalPos(startPos.x + m_sightLength * cos(C_tAngle - m_sight), 0, startPos.z + m_sightLength * sin(C_tAngle - m_sight));
-	//D3DXVECTOR3 finalPos2(startPos.x + m_sightLength * cos(C_tAngle + m_sight), 0, startPos.z + m_sightLength * sin(C_tAngle + m_sight));
-	//
-	//GIZMO_MGR->Line(startPos, finalPos, 0xff00ff00);
-	//GIZMO_MGR->Line(startPos, finalPos2, 0xff00ff00);
-	//Hit 위치에 구
-	//GIZMO_MGR->WireSphere(this->m_hitPos, 0.5f, 0xffff0000);
-
+	bound1.RenderGizmo(this->bound1Trans);
+	bound2.RenderGizmo(this->bound2Trans);
+	bound3.RenderGizmo(this->bound3Trans);
+	//this->pBound1.RenderGizmo(boundBound1);
+	
 	//셰이더에 라이팅 셋팅
 	cXMesh_Static::SetCamera(this->pMainCamera);
 	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 }
-
-//bool sector_Test::intersectSector(const cTransform * Trans1, const cTransform * Trans2, float length, float sight)
-//{
-//	D3DXVECTOR3 v_distnace = Trans2->GetWorldPosition() - Trans1->GetWorldPosition();
-//	float distance = D3DXVec3Length(&v_distnace);
-//
-//	if (std::fabs(distance) < length)
-//	{
-//		D3DXVECTOR3 dir = Trans1->GetForward();
-//		D3DXVECTOR3 targetDir;
-//		D3DXVec3Normalize(&targetDir, &v_distnace);
-//
-//		float C_tAngle = D3DXVec3Dot(&dir, &targetDir);
-//		C_tAngle = acos(C_tAngle);
-//
-//		if (std::fabs(C_tAngle) <= sight)
-//			return true;
-//		else return false;
-//	}
-//	else return false;
-//}
-
-
-

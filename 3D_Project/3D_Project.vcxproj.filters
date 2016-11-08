@@ -177,6 +177,9 @@
     <ClInclude Include="sector_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="animation_Test.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -324,6 +327,9 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="sector_Test.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="animation_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
