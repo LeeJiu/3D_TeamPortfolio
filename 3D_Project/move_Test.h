@@ -12,7 +12,12 @@ class move_Test : public cScene
 private:
 
 	cSkinnedAnimation*		pSkinned1;
+	cBoundBox*              pSkinnedBox;
 	cTransform*				pSkinnedTrans;
+	//
+	cTransform*             colliTest;
+	cBoundBox*              testBox;
+
 	// 도형 피킹에 쓸것.
 	Ray						cRay; //케릭터에 들어갈 레이.
 	bool                    objectHit;
