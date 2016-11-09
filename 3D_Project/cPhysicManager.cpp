@@ -13,17 +13,17 @@ cPhysicManager::~cPhysicManager(void)
 }
 
 //레이가 바운드에 충돌했는지 확인
-bool cPhysicManager::IsRayHitBound( 
+bool cPhysicManager::IsRayHitBound(
 	LPRay pRay,				//레이
 	cBoundSphere* pBound,	//바운드
 	cTransform* pBoundTrans,  //바운드의 Transform ( 움직이고 있는 Trans 값을 넣으면됨 )
 	D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
 	D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
-		)
+	)
 {
 	//위치값 
 	D3DXMATRIXA16 matWorld = pBoundTrans->GetFinalMatrix();
-	
+
 	//스케일 값 
 	D3DXVECTOR3 scale = pBoundTrans->GetScale();
 
@@ -33,38 +33,38 @@ bool cPhysicManager::IsRayHitBound(
 	D3DXVECTOR3 halfSize;
 
 	//변환된 위치
-	D3DXVec3TransformCoord( &center, &pBound->localCenter, &matWorld );
+	D3DXVec3TransformCoord(&center, &pBound->localCenter, &matWorld);
 
 	//반지름...
 	halfSize.x = pBound->halfSize.x * scale.x;
 	halfSize.y = pBound->halfSize.y * scale.y;
 	halfSize.z = pBound->halfSize.z * scale.z;
-	radius = D3DXVec3Length( &halfSize );
+	radius = D3DXVec3Length(&halfSize);
 
 	//레이의 오리진에서 부터 구의 센터까지의 방향벡터
 	// ( 구 )  <------  ( 레이 )
 	D3DXVECTOR3 dirToCenter = center - pRay->origin;
 
 	//길이의 제곱
-	float lengthSq = D3DXVec3LengthSq( &dirToCenter );
+	float lengthSq = D3DXVec3LengthSq(&dirToCenter);
 
 	//반지름의 제곱
-	float r2 =  radius * radius;
+	float r2 = radius * radius;
 
 	//만약 광선(origin 좌표가)이 구안에 있다면..
-	if( r2 > lengthSq )
+	if (r2 > lengthSq)
 	{
 		//광선이 안에서 나가는 것은 체크 안된다.
 		return false;
 	}
-	
+
 
 	//여기까지오면 오리진은 구밖에 있다는예기
 	//구센터까지의 방향벡터와 레이의 방향벡터가 직각을 포함한 
 	//둔각이라면 죽었다깨어나도 충돌될일없다
-	float dot = D3DXVec3Dot( &dirToCenter, &pRay->direction );// ProJ 값.
-	if( dot <= 0.0f )
-	{	
+	float dot = D3DXVec3Dot(&dirToCenter, &pRay->direction);// ProJ 값.
+	if (dot <= 0.0f)
+	{
 		return false;
 	}
 
@@ -78,28 +78,28 @@ bool cPhysicManager::IsRayHitBound(
 	float y2 = d2 - x2;
 
 	//광선이 원밖을 벗어났다.
-	if( y2 > r2 ){
+	if (y2 > r2){
 		return false;
 	}
-	
+
 	//여기까지온다면 일단은 히트
 	//만약 얻아가야알 HitPoint 가있다면..
-	if( pHitPos != NULL )
+	if (pHitPos != NULL)
 	{
 		//d를 raius 제곱
 		d2 = r2;
 		//d2 = y2 + x2
 		//float x2 = d2 - y2;
-		float x = sqrt( d2 - y2 ); // 구 반지름  - 레이의 좌표 
+		float x = sqrt(d2 - y2); // 구 반지름  - 레이의 좌표 
 
 		//
-		*pHitPos = pRay->origin + ( pRay->direction * ( dot - x ) ); // dot은 반지름 값.
+		*pHitPos = pRay->origin + (pRay->direction * (dot - x)); // dot은 반지름 값.
 
 		//Hit 된 위치의 노말을 얻겠다면..
-		if( pHitNormal )
+		if (pHitNormal)
 		{
 			*pHitNormal = *pHitPos - center;
-			D3DXVec3Normalize( pHitNormal, pHitNormal );
+			D3DXVec3Normalize(pHitNormal, pHitNormal);
 		}
 	}
 
@@ -108,37 +108,37 @@ bool cPhysicManager::IsRayHitBound(
 
 
 //레이가 바운드에 충돌했는지 확인
-bool cPhysicManager::IsRayHitBound( 
-		LPRay pRay,				//레이
-		cBoundBox* pBound,			//바운드
-		cTransform* pBoundTrans,	//바운드의 Transform
-		D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
-		D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
-		)
+bool cPhysicManager::IsRayHitBound(
+	LPRay pRay,				//레이
+	cBoundBox* pBound,			//바운드
+	cTransform* pBoundTrans,	//바운드의 Transform
+	D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
+	D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
+	)
 {
 	//에시당초 구랑 충돌안하면 사각형과 죽었다깨어나도 안된다...
-	if( this->IsRayHitBound(
-		pRay, 
-		(cBoundSphere*)pBound, 
-		pBoundTrans, 
-		NULL, NULL ) == false ){
+	if (this->IsRayHitBound(
+		pRay,
+		(cBoundSphere*)pBound,
+		pBoundTrans,
+		NULL, NULL) == false){
 		return false;
 	}
 
 	//여기까온다면 사각형과 충돌검사를 해야함.....
-	
+
 	//레이를 로컬로 끌어땡긴다
-	
+
 	//bound 의 역행렬
 	D3DXMATRIXA16 matWorld = pBoundTrans->GetFinalMatrix();
 	D3DXMATRIXA16 matInvMatrix;
-	D3DXMatrixInverse( &matInvMatrix, NULL, &matWorld );
+	D3DXMatrixInverse(&matInvMatrix, NULL, &matWorld);
 
 	//NewRayInfo
-	D3DXVECTOR3 origin; 
-	D3DXVec3TransformCoord( &origin, &pRay->origin, &matInvMatrix );
+	D3DXVECTOR3 origin;
+	D3DXVec3TransformCoord(&origin, &pRay->origin, &matInvMatrix);
 	D3DXVECTOR3 direction;
-	D3DXVec3TransformNormal( &direction, &pRay->direction, &matInvMatrix );
+	D3DXVec3TransformNormal(&direction, &pRay->direction, &matInvMatrix);
 
 	Ray newRay;
 	newRay.origin = origin;
@@ -146,25 +146,25 @@ bool cPhysicManager::IsRayHitBound(
 
 
 	//정점 8 개 뺀다...
-	
+
 	//   5-------6
 	//  /|      /|
 	// 1-------2 |
 	// | 4-----|-7
 	// |/      |/
 	// 0-------3 
-	
+
 	//로컬 8 개의 정점을 구한다
 	D3DXVECTOR3 Vertices[8];
-	Vertices[0] = D3DXVECTOR3( pBound->localMinPos.x, pBound->localMinPos.y, pBound->localMinPos.z );
-	Vertices[1] = D3DXVECTOR3( pBound->localMinPos.x, pBound->localMaxPos.y, pBound->localMinPos.z );
-	Vertices[2] = D3DXVECTOR3( pBound->localMaxPos.x, pBound->localMaxPos.y, pBound->localMinPos.z );
-	Vertices[3] = D3DXVECTOR3( pBound->localMaxPos.x, pBound->localMinPos.y, pBound->localMinPos.z );
-	Vertices[4] = D3DXVECTOR3( pBound->localMinPos.x, pBound->localMinPos.y, pBound->localMaxPos.z );
-	Vertices[5] = D3DXVECTOR3( pBound->localMinPos.x, pBound->localMaxPos.y, pBound->localMaxPos.z );
-	Vertices[6] = D3DXVECTOR3( pBound->localMaxPos.x, pBound->localMaxPos.y, pBound->localMaxPos.z );
-	Vertices[7] = D3DXVECTOR3( pBound->localMaxPos.x, pBound->localMinPos.y, pBound->localMaxPos.z );
-	
+	Vertices[0] = D3DXVECTOR3(pBound->localMinPos.x, pBound->localMinPos.y, pBound->localMinPos.z);
+	Vertices[1] = D3DXVECTOR3(pBound->localMinPos.x, pBound->localMaxPos.y, pBound->localMinPos.z);
+	Vertices[2] = D3DXVECTOR3(pBound->localMaxPos.x, pBound->localMaxPos.y, pBound->localMinPos.z);
+	Vertices[3] = D3DXVECTOR3(pBound->localMaxPos.x, pBound->localMinPos.y, pBound->localMinPos.z);
+	Vertices[4] = D3DXVECTOR3(pBound->localMinPos.x, pBound->localMinPos.y, pBound->localMaxPos.z);
+	Vertices[5] = D3DXVECTOR3(pBound->localMinPos.x, pBound->localMaxPos.y, pBound->localMaxPos.z);
+	Vertices[6] = D3DXVECTOR3(pBound->localMaxPos.x, pBound->localMaxPos.y, pBound->localMaxPos.z);
+	Vertices[7] = D3DXVECTOR3(pBound->localMaxPos.x, pBound->localMinPos.y, pBound->localMaxPos.z);
+
 
 	D3DXVECTOR3 hit;
 	D3DXVECTOR3 min = pBound->localMinPos;
@@ -172,23 +172,23 @@ bool cPhysicManager::IsRayHitBound(
 
 	//뒷면
 	D3DXPLANE planeBack;
-	this->CreatePlane( &planeBack, Vertices + 0, Vertices + 1, Vertices + 2 );
+	this->CreatePlane(&planeBack, Vertices + 0, Vertices + 1, Vertices + 2);
 	//뒷면이 레이랑 충돌했니?
-	if( this->IntersectRayToPlane( &hit, &newRay, &planeBack, false ) )
+	if (this->IntersectRayToPlane(&hit, &newRay, &planeBack, false))
 	{
 		//히트지점이 이 안에 있니?
-		if( min.x <= hit.x && hit.x <= max.x &&
-			min.y <= hit.y && hit.y <= max.y ){
-			
+		if (min.x <= hit.x && hit.x <= max.x &&
+			min.y <= hit.y && hit.y <= max.y){
+
 			//hit 지점월드로 땡겨서 리턴
-			if( pHitPos != NULL ){
-				D3DXVec3TransformCoord( pHitPos, &hit, &matWorld );
+			if (pHitPos != NULL){
+				D3DXVec3TransformCoord(pHitPos, &hit, &matWorld);
 			}
 
-			if( pHitNormal != NULL ){
+			if (pHitNormal != NULL){
 				*pHitNormal = -pBoundTrans->GetForward();
 			}
-			
+
 			return true;
 		}
 	}
@@ -197,23 +197,23 @@ bool cPhysicManager::IsRayHitBound(
 
 	//앞면
 	D3DXPLANE planeFront;
-	this->CreatePlane( &planeFront, Vertices + 6, Vertices + 5, Vertices + 4 );
+	this->CreatePlane(&planeFront, Vertices + 6, Vertices + 5, Vertices + 4);
 	//앞면이 레이랑 충돌했니?
-	if( this->IntersectRayToPlane( &hit, &newRay, &planeFront, false ) )
+	if (this->IntersectRayToPlane(&hit, &newRay, &planeFront, false))
 	{
 		//히트지점이 이 안에 있니?
-		if( min.x <= hit.x && hit.x <= max.x &&
-			min.y <= hit.y && hit.y <= max.y ){
-			
+		if (min.x <= hit.x && hit.x <= max.x &&
+			min.y <= hit.y && hit.y <= max.y){
+
 			//hit 지점월드로 땡겨서 리턴
-			if( pHitPos != NULL ){
-				D3DXVec3TransformCoord( pHitPos, &hit, &matWorld );
+			if (pHitPos != NULL){
+				D3DXVec3TransformCoord(pHitPos, &hit, &matWorld);
 			}
 
-			if( pHitNormal != NULL ){
+			if (pHitNormal != NULL){
 				*pHitNormal = pBoundTrans->GetForward();
 			}
-			
+
 			return true;
 		}
 	}
@@ -223,23 +223,23 @@ bool cPhysicManager::IsRayHitBound(
 
 	//하면
 	D3DXPLANE planeBottom;
-	this->CreatePlane( &planeBottom, Vertices + 3, Vertices + 4, Vertices + 0 );
+	this->CreatePlane(&planeBottom, Vertices + 3, Vertices + 4, Vertices + 0);
 	//하면이 레이랑 충돌했니?
-	if( this->IntersectRayToPlane( &hit, &newRay, &planeBottom, false ) )
+	if (this->IntersectRayToPlane(&hit, &newRay, &planeBottom, false))
 	{
 		//히트지점이 이 안에 있니?
-		if( min.x <= hit.x && hit.x <= max.x &&
-			min.z <= hit.z && hit.z <= max.z ){
-			
+		if (min.x <= hit.x && hit.x <= max.x &&
+			min.z <= hit.z && hit.z <= max.z){
+
 			//hit 지점월드로 땡겨서 리턴
-			if( pHitPos != NULL ){
-				D3DXVec3TransformCoord( pHitPos, &hit, &matWorld );
+			if (pHitPos != NULL){
+				D3DXVec3TransformCoord(pHitPos, &hit, &matWorld);
 			}
 
-			if( pHitNormal != NULL ){
+			if (pHitNormal != NULL){
 				*pHitNormal = -pBoundTrans->GetUp();
 			}
-			
+
 			return true;
 		}
 	}
@@ -249,23 +249,23 @@ bool cPhysicManager::IsRayHitBound(
 
 	//상면
 	D3DXPLANE planeTop;
-	this->CreatePlane( &planeTop, Vertices + 1, Vertices + 5, Vertices + 2 );
+	this->CreatePlane(&planeTop, Vertices + 1, Vertices + 5, Vertices + 2);
 	//상면이 레이랑 충돌했니?
-	if( this->IntersectRayToPlane( &hit, &newRay, &planeTop, false ) )
+	if (this->IntersectRayToPlane(&hit, &newRay, &planeTop, false))
 	{
 		//히트지점이 이 안에 있니?
-		if( min.x <= hit.x && hit.x <= max.x &&
-			min.z <= hit.z && hit.z <= max.z ){
-			
+		if (min.x <= hit.x && hit.x <= max.x &&
+			min.z <= hit.z && hit.z <= max.z){
+
 			//hit 지점월드로 땡겨서 리턴
-			if( pHitPos != NULL ){
-				D3DXVec3TransformCoord( pHitPos, &hit, &matWorld );
+			if (pHitPos != NULL){
+				D3DXVec3TransformCoord(pHitPos, &hit, &matWorld);
 			}
 
-			if( pHitNormal != NULL ){
+			if (pHitNormal != NULL){
 				*pHitNormal = pBoundTrans->GetUp();
 			}
-			
+
 			return true;
 		}
 	}
@@ -274,46 +274,46 @@ bool cPhysicManager::IsRayHitBound(
 
 	//좌면
 	D3DXPLANE planeLeft;
-	this->CreatePlane( &planeLeft, Vertices + 0, Vertices + 5, Vertices + 1 );
+	this->CreatePlane(&planeLeft, Vertices + 0, Vertices + 5, Vertices + 1);
 	//좌면이 레이랑 충돌했니?
-	if( this->IntersectRayToPlane( &hit, &newRay, &planeLeft, false ) )
+	if (this->IntersectRayToPlane(&hit, &newRay, &planeLeft, false))
 	{
 		//히트지점이 이 안에 있니?
-		if( min.y <= hit.y && hit.y <= max.y &&
-			min.z <= hit.z && hit.z <= max.z ){
-			
+		if (min.y <= hit.y && hit.y <= max.y &&
+			min.z <= hit.z && hit.z <= max.z){
+
 			//hit 지점월드로 땡겨서 리턴
-			if( pHitPos != NULL ){
-				D3DXVec3TransformCoord( pHitPos, &hit, &matWorld );
+			if (pHitPos != NULL){
+				D3DXVec3TransformCoord(pHitPos, &hit, &matWorld);
 			}
 
-			if( pHitNormal != NULL ){
+			if (pHitNormal != NULL){
 				*pHitNormal = -pBoundTrans->GetRight();
 			}
-			
+
 			return true;
 		}
 	}
-	
+
 	//우면
 	D3DXPLANE planeRight;
-	this->CreatePlane( &planeRight, Vertices + 2, Vertices + 6, Vertices + 3 );
+	this->CreatePlane(&planeRight, Vertices + 2, Vertices + 6, Vertices + 3);
 	//우면이 레이랑 충돌했니?
-	if( this->IntersectRayToPlane( &hit, &newRay, &planeRight, false ) )
+	if (this->IntersectRayToPlane(&hit, &newRay, &planeRight, false))
 	{
 		//히트지점이 이 안에 있니?
-		if( min.y <= hit.y && hit.y <= max.y &&
-			min.z <= hit.z && hit.z <= max.z ){
-			
+		if (min.y <= hit.y && hit.y <= max.y &&
+			min.z <= hit.z && hit.z <= max.z){
+
 			//hit 지점월드로 땡겨서 리턴
-			if( pHitPos != NULL ){
-				D3DXVec3TransformCoord( pHitPos, &hit, &matWorld );
+			if (pHitPos != NULL){
+				D3DXVec3TransformCoord(pHitPos, &hit, &matWorld);
 			}
 
-			if( pHitNormal != NULL ){
+			if (pHitNormal != NULL){
 				*pHitNormal = pBoundTrans->GetRight();
 			}
-			
+
 			return true;
 		}
 	}
@@ -337,7 +337,7 @@ bool cPhysicManager::IsRayHitStaticMeshObject(
 	D3DXMATRIXA16 matWorld = pTrans->GetFinalMatrix();
 	D3DXMATRIXA16 matInvMatrix;
 	D3DXMatrixInverse(&matInvMatrix, NULL, &matWorld);
-	
+
 	//NewRayInfo
 	D3DXVECTOR3 origin;
 	D3DXVec3TransformCoord(&origin, &inRay->origin, &matInvMatrix);
@@ -425,35 +425,35 @@ bool cPhysicManager::IsRayHitStaticMeshObject(
 }
 
 //레이가 오브젝트와 충돌했는지....
-bool cPhysicManager::IsRayHitStaticMeshObject( 
-		LPRay pRay,				//레이
-		cBaseObject* pObject,	//Base Object
-		D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
-		D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
-		)
+bool cPhysicManager::IsRayHitStaticMeshObject(
+	LPRay pRay,				//레이
+	cBaseObject* pObject,	//Base Object
+	D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
+	D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
+	)
 {
 	/*
 	//에시당초 박스랑 충돌안하면 사각형과 죽었다깨어나도 안된다...
 	if( this->IsRayHitBound(
-		pRay, 
-		&pObject->BoundBox, 
-		&pObject->Transform, 
-		NULL, NULL ) == false ){
-		return false;
+	pRay,
+	&pObject->BoundBox,
+	&pObject->Transform,
+	NULL, NULL ) == false ){
+	return false;
 	}*/
-		
+
 	//레이를 로컬로 끌어땡긴다
-	
+
 	//bound 의 역행렬
 	D3DXMATRIXA16 matWorld = pObject->pTransform->GetFinalMatrix();
 	D3DXMATRIXA16 matInvMatrix;
-	D3DXMatrixInverse( &matInvMatrix, NULL, &matWorld );
+	D3DXMatrixInverse(&matInvMatrix, NULL, &matWorld);
 
 	//NewRayInfo
-	D3DXVECTOR3 origin; 
-	D3DXVec3TransformCoord( &origin, &pRay->origin, &matInvMatrix );
+	D3DXVECTOR3 origin;
+	D3DXVec3TransformCoord(&origin, &pRay->origin, &matInvMatrix);
 	D3DXVECTOR3 direction;
-	D3DXVec3TransformNormal( &direction, &pRay->direction, &matInvMatrix );
+	D3DXVec3TransformNormal(&direction, &pRay->direction, &matInvMatrix);
 
 	Ray newRay;
 	newRay.origin = origin;
@@ -461,60 +461,60 @@ bool cPhysicManager::IsRayHitStaticMeshObject(
 
 	//메쉬 충돌 검출함수
 
-	cXMesh_Static* pStaticMesh = dynamic_cast<cXMesh_Static*>( pObject->pMesh );
-	if( pStaticMesh != NULL )
+	cXMesh_Static* pStaticMesh = dynamic_cast<cXMesh_Static*>(pObject->pMesh);
+	if (pStaticMesh != NULL)
 	{
 		//서브셋대로 돈다
-		for( int i = 0 ; i < pStaticMesh->dwMaterialsNum ; i++ )
+		for (int i = 0; i < pStaticMesh->dwMaterialsNum; i++)
 		{
 			BOOL bHit = false;
 			DWORD faceIndex = 0;
 			float dist = 0.0f;
 			DWORD hitCount = 0;
 
-			D3DXIntersectSubset( 
+			D3DXIntersectSubset(
 				pStaticMesh->pMesh,			//xMesh
 				i,							//서브셋넘
 				&origin,					//레이위치
 				&direction,					//레이 방향
 				&bHit,						//충돌 여부 얻기
 				&faceIndex,					//충돌면 인덱스 
-				NULL, 
-				NULL, 
+				NULL,
+				NULL,
 				&dist,						//충돌거리
 				NULL,						//다중충돌시 다중히트정보 얻을 버퍼, 
-				&hitCount );				//다중충돌시 히트 갯수 
+				&hitCount);				//다중충돌시 히트 갯수 
 
 
-			if( bHit ){
+			if (bHit){
 
 				//hit 지점월드로 땡겨서 리턴
-				if( pHitPos != NULL ){
-					D3DXVec3TransformCoord( pHitPos, 
-						&( origin + direction * dist ), &matWorld );
+				if (pHitPos != NULL){
+					D3DXVec3TransformCoord(pHitPos,
+						&(origin + direction * dist), &matWorld);
 				}
 
 				//Hit 노말 구한다.
-				if( pHitNormal != NULL ){
+				if (pHitNormal != NULL){
 
 					//충돌면 인덱스에 따른 정점 3개를 구한다.
-					DWORD i0 = ( faceIndex * 3 );
-					DWORD i1 = ( faceIndex * 3 + 1);
-					DWORD i2 = ( faceIndex * 3 + 2);
+					DWORD i0 = (faceIndex * 3);
+					DWORD i1 = (faceIndex * 3 + 1);
+					DWORD i2 = (faceIndex * 3 + 2);
 
 					//정점인덱스를 얻는다.
-					D3DXVECTOR3 v0 = pStaticMesh->Vertices[ pStaticMesh->Indices[ i0 ] ];
-					D3DXVECTOR3 v1 = pStaticMesh->Vertices[ pStaticMesh->Indices[ i1 ] ];
-					D3DXVECTOR3 v2 = pStaticMesh->Vertices[ pStaticMesh->Indices[ i2 ] ];
+					D3DXVECTOR3 v0 = pStaticMesh->Vertices[pStaticMesh->Indices[i0]];
+					D3DXVECTOR3 v1 = pStaticMesh->Vertices[pStaticMesh->Indices[i1]];
+					D3DXVECTOR3 v2 = pStaticMesh->Vertices[pStaticMesh->Indices[i2]];
 
 					//정점 2개의 노말을 구한다.
 					D3DXVECTOR3 edge1 = v1 - v0;
 					D3DXVECTOR3 edge2 = v2 - v0;
 
-					D3DXVec3Cross( pHitNormal, &edge1, &edge2 );
+					D3DXVec3Cross(pHitNormal, &edge1, &edge2);
 					D3DXVec3Normalize(pHitNormal, pHitNormal);
 
-					D3DXVec3TransformNormal( pHitNormal, pHitNormal, &matWorld );
+					D3DXVec3TransformNormal(pHitNormal, pHitNormal, &matWorld);
 
 				}
 
@@ -538,13 +538,13 @@ bool cPhysicManager::IsRayHitStaticMeshObject(
 //레이가 구와 충돌했는지 확인
 bool cPhysicManager::IsRayHitSphere(
 	LPRay pRay,
-	const D3DXVECTOR3* pCenter, 
-	float radius, 
+	const D3DXVECTOR3* pCenter,  //월드 . 
+	float radius,
 	D3DXVECTOR3* pHitPos,     //Hit 위치 ( NULL 이면 대입 안됨 )
 	D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
 	)
 {
-	
+
 	//바운드 Sphere 의 정보를 얻는다.
 	D3DXVECTOR3 center = *pCenter;
 
@@ -552,13 +552,13 @@ bool cPhysicManager::IsRayHitSphere(
 	D3DXVECTOR3 dirToCenter = center - pRay->origin;
 
 	//길이의 제곱
-	float lengthSq = D3DXVec3LengthSq( &dirToCenter );
+	float lengthSq = D3DXVec3LengthSq(&dirToCenter);
 
 	//반지름의 제곱
-	float r2 =  radius * radius;
+	float r2 = radius * radius;
 
 
-	float dot = D3DXVec3Dot( &dirToCenter, &pRay->direction );
+	float dot = D3DXVec3Dot(&dirToCenter, &pRay->direction);
 
 
 	// 피타고라스의 정리를 하기위해 직각 삼각형 공식유도
@@ -571,28 +571,28 @@ bool cPhysicManager::IsRayHitSphere(
 	float y2 = d2 - x2;
 
 	//광선이 원밖을 벗어났다.
-	if( y2 > r2 ){
+	if (y2 > r2){
 		return false;
 	}
-	
+
 	//여기까지온다면 일단은 히트
 	//만약 얻아가야알 HitPoint 가있다면..
-	if( pHitPos != NULL )
+	if (pHitPos != NULL)
 	{
 		//d를 raius 제곱
 		d2 = r2;
 		//d2 = y2 + x2
 		//float x2 = d2 - y2;
-		float x = sqrt( d2 - y2 );
+		float x = sqrt(d2 - y2);
 
 		//
-		*pHitPos = pRay->origin + ( pRay->direction * ( dot - x ) );
+		*pHitPos = pRay->origin + (pRay->direction * (dot - x));
 
 		//Hit 된 위치의 노말을 얻겠다면..
-		if( pHitNormal )
+		if (pHitNormal)
 		{
 			*pHitNormal = *pHitPos - center;
-			D3DXVec3Normalize( pHitNormal, pHitNormal );
+			D3DXVec3Normalize(pHitNormal, pHitNormal);
 		}
 	}
 
@@ -602,65 +602,65 @@ bool cPhysicManager::IsRayHitSphere(
 
 
 
-bool cPhysicManager::IsOverlap( cBaseObject* pObjA, cBaseObject* pObjB )
+bool cPhysicManager::IsOverlap(cBaseObject* pObjA, cBaseObject* pObjB)
 {
-	return this->IsOverlap( 
+	return this->IsOverlap(
 		pObjA->pTransform, &pObjA->BoundBox,
-		pObjB->pTransform, &pObjB->BoundBox );
+		pObjB->pTransform, &pObjB->BoundBox);
 }
 
 
 //2개의 바운드 대한 출동 정보를 얻는다.
 //
-bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundSphere* pBoundA, cTransform* pTransB, cBoundSphere* pBoundB )
+bool cPhysicManager::IsOverlap(cTransform* pTransA, cBoundSphere* pBoundA, cTransform* pTransB, cBoundSphere* pBoundB)
 {
 	//월드 구정보를 얻는다.
 	D3DXVECTOR3 centerA;
 	float radiusA;
 	D3DXVECTOR3 centerB;
 	float radiusB;
-	
-	pBoundA->GetWorldCenterRadius( pTransA, &centerA, &radiusA );
-	pBoundB->GetWorldCenterRadius( pTransB, &centerB, &radiusB );
+
+	pBoundA->GetWorldCenterRadius(pTransA, &centerA, &radiusA);
+	pBoundB->GetWorldCenterRadius(pTransB, &centerB, &radiusB);
 
 	D3DXVECTOR3 dirTo = centerB - centerA;
 
 	//거리의 제곱을얻는다 ( sqrt 연산 제외한다 )
-	float distPow2 = D3DXVec3LengthSq( &dirTo );
+	float distPow2 = D3DXVec3LengthSq(&dirTo);
 
 	//반지름 합제곱
 	float sumRadiusPow2 = radiusA + radiusB;
 	sumRadiusPow2 *= sumRadiusPow2;
 
 
-	if( distPow2 > sumRadiusPow2  )
+	if (distPow2 > sumRadiusPow2)
 		return false;
 
 
 	return true;
 }
-bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransform* pTransB, cBoundBox* pBoundB )
+bool cPhysicManager::IsOverlap(cTransform* pTransA, cBoundBox* pBoundA, cTransform* pTransB, cBoundBox* pBoundB)
 {
 	//월드 구정보를 얻는다.
 	D3DXVECTOR3 centerA;
 	float radiusA;
 	D3DXVECTOR3 centerB;
 	float radiusB;
-	
-	pBoundA->GetWorldCenterRadius( pTransA, &centerA, &radiusA );
-	pBoundB->GetWorldCenterRadius( pTransB, &centerB, &radiusB );
+
+	pBoundA->GetWorldCenterRadius(pTransA, &centerA, &radiusA);
+	pBoundB->GetWorldCenterRadius(pTransB, &centerB, &radiusB);
 
 	D3DXVECTOR3 dirTo = centerB - centerA;
 
 	//거리의 제곱을얻는다 ( sqrt 연산 제외한다 )
-	float distPow2 = D3DXVec3LengthSq( &dirTo );
+	float distPow2 = D3DXVec3LengthSq(&dirTo);
 
 	//반지름 합제곱
 	float sumRadiusPow2 = radiusA + radiusB;
 	sumRadiusPow2 *= sumRadiusPow2;
 
 	//외접 구끼리 충돌 안했으면 죽었다깨어나도 상자끼리는 충돌하지 않는다.........
-	if( distPow2 > sumRadiusPow2  )
+	if (distPow2 > sumRadiusPow2)
 		return false;
 
 	//여기까지 온다면 외접구끼리는 충돌했다는 예기
@@ -683,7 +683,7 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 	// A 바운딩에 대한 충돌 구조체
 	//
 	OBB obbA;
-		
+
 	//각 축 방향
 	obbA.axis[0] = pTransA->GetRight();
 	obbA.axis[1] = pTransA->GetUp();
@@ -702,7 +702,7 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 	// B 바운딩에 대한 충돌 구조체
 	//
 	OBB obbB;
-		
+
 	//각 축 방향
 	obbB.axis[0] = pTransB->GetRight();        // x
 	obbB.axis[1] = pTransB->GetUp();		   // y
@@ -734,21 +734,21 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 
 	float r, r0, r1;			//r0 과 r1 의 합이 r 보다 작으면 충돌 실패 
 
-	for( int a = 0 ; a < 3 ; a++ )
+	for (int a = 0; a < 3; a++)
 	{
-		for( int b = 0 ; b < 3 ; b++ )
+		for (int b = 0; b < 3; b++)
 		{
-			cos[a][b] = D3DXVec3Dot( &obbA.axis[a], &obbB.axis[b] ); // |a| |b| 값이 1 이기 때문에 . ( 각 축에 대한 cos 값 proj 할때 씀)
-			absCos[a][b] = abs( cos[a][b] );
+			cos[a][b] = D3DXVec3Dot(&obbA.axis[a], &obbB.axis[b]); // |a| |b| 값이 1 이기 때문에 . ( 각 축에 대한 cos 값 proj 할때 씀)
+			absCos[a][b] = abs(cos[a][b]);
 
 			//한축이 서로 교차 되는 지확인
-			if( absCos[a][b] > cutOff ) existParallelPair = true;
+			if (absCos[a][b] > cutOff) existParallelPair = true;
 		}
 
 
 		//센터끼리의 방향벡터를 A 바운드 Axis 의 투영한 거리
-		dist[a] = D3DXVec3Dot( &obbA.axis[a], &D ); // 바운드 A 축 기준으로 proj 한다는 의미 인듯함. 
-		                                            // 아니라면 추후 수정함.
+		dist[a] = D3DXVec3Dot(&obbA.axis[a], &D); // 바운드 A 축 기준으로 proj 한다는 의미 인듯함. 
+		// 아니라면 추후 수정함.
 	}
 
 
@@ -765,20 +765,20 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 	//r1
 	/*
 	r1 = abs( D3DXVec3Dot( &obbA.axis[0], &( obbB.axis[0] * obbB.halfLength[0] ) ) ) +
-		 abs( D3DXVec3Dot( &obbA.axis[0], &( obbB.axis[1] * obbB.halfLength[1] ) ) ) +
-		 abs( D3DXVec3Dot( &obbA.axis[0], &( obbB.axis[2] * obbB.halfLength[2] ) ) );
+	abs( D3DXVec3Dot( &obbA.axis[0], &( obbB.axis[1] * obbB.halfLength[1] ) ) ) +
+	abs( D3DXVec3Dot( &obbA.axis[0], &( obbB.axis[2] * obbB.halfLength[2] ) ) );
 	*/
 	/*
 	r1 = abs( D3DXVec3Dot( &obbA.axis[0], &obbB.axis[0] ) ) * obbB.halfLength[0] +
-		 abs( D3DXVec3Dot( &obbA.axis[0], &obbB.axis[1] ) ) * obbB.halfLength[1] +
-		 abs( D3DXVec3Dot( &obbA.axis[0], &obbB.axis[2] ) ) * obbB.halfLength[2];
+	abs( D3DXVec3Dot( &obbA.axis[0], &obbB.axis[1] ) ) * obbB.halfLength[1] +
+	abs( D3DXVec3Dot( &obbA.axis[0], &obbB.axis[2] ) ) * obbB.halfLength[2];
 	*/
 	// 위에 주석을 보자 하니 obbB 의 절반 길이는 구하는 듯함. ( obbA.축을 기준으로 proj 한 값 )
 	r1 = absCos[0][0] * obbB.halfLength[0] +
-		 absCos[0][1] * obbB.halfLength[1] +
-	     absCos[0][2] * obbB.halfLength[2];
+		absCos[0][1] * obbB.halfLength[1] +
+		absCos[0][2] * obbB.halfLength[2];
 
-	if( r > r0 + r1 ) return false;
+	if (r > r0 + r1) return false;
 
 
 	//
@@ -793,10 +793,10 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 
 	//r1 
 	r1 = absCos[1][0] * obbB.halfLength[0] +
-		 absCos[1][1] * obbB.halfLength[1] +
-		 absCos[1][2] * obbB.halfLength[2];
+		absCos[1][1] * obbB.halfLength[1] +
+		absCos[1][2] * obbB.halfLength[2];
 
-	if( r > r0 + r1 ) return false;
+	if (r > r0 + r1) return false;
 
 	//
 	// A 바운드 박스에 Z 축을 기준으로 한 연산
@@ -810,33 +810,33 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 
 	//r1 
 	r1 = absCos[2][0] * obbB.halfLength[0] +
-		 absCos[2][1] * obbB.halfLength[1] +
-		 absCos[2][2] * obbB.halfLength[2];
+		absCos[2][1] * obbB.halfLength[1] +
+		absCos[2][2] * obbB.halfLength[2];
 
-	if( r > r0 + r1 ) return false;
+	if (r > r0 + r1) return false;
 
 
 
-	
+
 	//
 	// B 바운드 박스에 X 축을 기준으로 한 연산
 	//
-	r = abs( D3DXVec3Dot( &obbB.axis[0], &D ) );
+	r = abs(D3DXVec3Dot(&obbB.axis[0], &D));
 
 	//r0 
 	r0 = absCos[0][0] * obbA.halfLength[0] +
-		 absCos[1][0] * obbA.halfLength[1] +
-		 absCos[2][0] * obbA.halfLength[2];
+		absCos[1][0] * obbA.halfLength[1] +
+		absCos[2][0] * obbA.halfLength[2];
 
 	//r1 
 	r1 = obbB.halfLength[0];
 
-	if( r > r0 + r1 ) return false;
+	if (r > r0 + r1) return false;
 
 	//
 	// B 바운드 박스에 Y 축을 기준으로 한 연산
 	//
-	r = abs( D3DXVec3Dot( &obbB.axis[1], &D ) );
+	r = abs(D3DXVec3Dot(&obbB.axis[1], &D));
 
 	//r0 
 	r0 = absCos[0][1] * obbA.halfLength[0] +
@@ -845,12 +845,12 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 
 	//r1 
 	r1 = obbB.halfLength[1];
-	if( r > r0 + r1 ) return false;
+	if (r > r0 + r1) return false;
 
 	//
 	// B 바운드 박스에 Z 축을 기준으로 한 연산
 	//
-	r = abs( D3DXVec3Dot( &obbB.axis[2], &D ) );
+	r = abs(D3DXVec3Dot(&obbB.axis[2], &D));
 
 	//r0 
 	r0 = absCos[0][2] * obbA.halfLength[0] +
@@ -859,109 +859,109 @@ bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransf
 
 	//r1 
 	r1 = obbB.halfLength[2];
-	if( r > r0 + r1 ) return false;
+	if (r > r0 + r1) return false;
 
 
 	//여기까왔는데 실패되지 않았다.. 그러면 existParallelPair true 이면
 	//한축이 평행하다는 예기인데 이러면 분리축 6 번만 검색하면된다....
-	if( existParallelPair ) return true;
+	if (existParallelPair) return true;
 
-	
+
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	//A의 X 축 B 의 X 축에 대한 외적의 충돌 체크
 	//          z          y x          y        z  x
-	r = abs( dist[2] * cos[1][0] - dist[1] * cos[2][0] );
+	r = abs(dist[2] * cos[1][0] - dist[1] * cos[2][0]);
 	r0 = obbA.halfLength[1] * absCos[2][0] + obbA.halfLength[2] * absCos[1][0];
 	r1 = obbB.halfLength[1] * absCos[0][2] + obbB.halfLength[2] * absCos[0][1];
-	if( r > r0 + r1 )
+	if (r > r0 + r1)
 		return false;
 
 
 	//A의 X 축 B 의 Y 축에 대한 외적의 충돌 체크
-	r = abs( dist[2] * cos[1][1] - dist[1] * cos[2][1] );
+	r = abs(dist[2] * cos[1][1] - dist[1] * cos[2][1]);
 	r0 = obbA.halfLength[1] * absCos[2][1] + obbA.halfLength[2] * absCos[1][1];
 	r1 = obbB.halfLength[0] * absCos[0][2] + obbB.halfLength[2] * absCos[0][0];
-	if( r > r0 + r1 )
+	if (r > r0 + r1)
 		return false;
 
 
 	//A의 X 축 B 의 Z 축에 대한 외적의 충돌 체크
-	r = abs( dist[2] * cos[1][2] - dist[1] * cos[2][2] );
+	r = abs(dist[2] * cos[1][2] - dist[1] * cos[2][2]);
 	r0 = obbA.halfLength[1] * absCos[2][2] + obbA.halfLength[2] * absCos[1][2];
 	r1 = obbB.halfLength[0] * absCos[0][1] + obbB.halfLength[1] * absCos[0][0];
-	if( r > r0 + r1 )
+	if (r > r0 + r1)
 		return false;
 
 	/////////////////////////////////////////////////////////////////
 
 	//A의 Y 축 B 의 X 축에 대한 외적의 충돌 체크
-	r = abs( dist[0] * cos[2][0] - dist[2] * cos[0][0] );
+	r = abs(dist[0] * cos[2][0] - dist[2] * cos[0][0]);
 	r0 = obbA.halfLength[0] * absCos[2][0] + obbA.halfLength[2] * absCos[0][0];
 	r1 = obbB.halfLength[1] * absCos[1][2] + obbB.halfLength[2] * absCos[1][1];
-	if( r > r0 + r1 )
+	if (r > r0 + r1)
 		return false;
 
 	//A의 Y 축 B 의 Y 축에 대한 외적의 충돌 체크
-	r = abs( dist[0] * cos[2][1] - dist[2] * cos[0][1] );
+	r = abs(dist[0] * cos[2][1] - dist[2] * cos[0][1]);
 	r0 = obbA.halfLength[0] * absCos[2][1] + obbA.halfLength[2] * absCos[0][1];
 	r1 = obbB.halfLength[0] * absCos[1][2] + obbB.halfLength[2] * absCos[1][0];
-	if( r > r0 + r1 )
+	if (r > r0 + r1)
 		return false;
 
 	//A의 Y 축 B 의 Z 축에 대한 외적의 충돌 체크
-	r = abs( dist[0] * cos[2][2] - dist[2] * cos[0][2] );
+	r = abs(dist[0] * cos[2][2] - dist[2] * cos[0][2]);
 	r0 = obbA.halfLength[0] * absCos[2][2] + obbA.halfLength[2] * absCos[0][2];
 	r1 = obbB.halfLength[0] * absCos[1][1] + obbB.halfLength[1] * absCos[1][0];
-	if( r > r0 + r1 )
+	if (r > r0 + r1)
 		return false;
 
 
 	/////////////////////////////////////////////////////////////////	 
 
 	//A의 Z 축 B 의 X 축에 대한 외적의 충돌 체크
-	r = abs( dist[1] * cos[0][0] - dist[0] * cos[1][0] );
+	r = abs(dist[1] * cos[0][0] - dist[0] * cos[1][0]);
 	r0 = obbA.halfLength[0] * absCos[1][0] + obbA.halfLength[1] * absCos[0][0];
 	r1 = obbB.halfLength[1] * absCos[2][2] + obbB.halfLength[2] * absCos[2][1];
-	if( r > r0 + r1 )
+	if (r > r0 + r1)
 		return false;
 
 	//A의 Z 축 B 의 Y 축에 대한 외적의 충돌 체크
-	r = abs( dist[1] * cos[0][1] - dist[0] * cos[1][1] );
+	r = abs(dist[1] * cos[0][1] - dist[0] * cos[1][1]);
 	r0 = obbA.halfLength[0] * absCos[1][1] + obbA.halfLength[1] * absCos[0][1];
 	r1 = obbB.halfLength[0] * absCos[2][2] + obbB.halfLength[2] * absCos[2][0];
-	if( r > r0 + r1 )
+	if (r > r0 + r1)
 		return false;
 
 	//A의 Z 축 B 의 Z 축에 대한 외적의 충돌 체크
-	r = abs( dist[1] * cos[0][2] - dist[0] * cos[1][2] );
+	r = abs(dist[1] * cos[0][2] - dist[0] * cos[1][2]);
 	r0 = obbA.halfLength[0] * absCos[1][2] + obbA.halfLength[1] * absCos[0][2];
 	r1 = obbB.halfLength[0] * absCos[2][1] + obbB.halfLength[1] * absCos[2][0];
-	if( r > r0 + r1 )
+	if (r > r0 + r1)
 		return false;
 
 	//여기까지 클리어 했다면  당신은 충돌 용자... ( PS 충돌 됐다는 예기다 )
 	return true;
 }
-	
 
-bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundSphere* pBoundA, cTransform* pTransB, cBoundBox* pBoundB )
+
+bool cPhysicManager::IsOverlap(cTransform* pTransA, cBoundSphere* pBoundA, cTransform* pTransB, cBoundBox* pBoundB)
 {
 	return true;
 }
-bool cPhysicManager::IsOverlap( cTransform* pTransA, cBoundBox* pBoundA, cTransform* pTransB, cBoundSphere* pBoundB )
+bool cPhysicManager::IsOverlap(cTransform* pTransA, cBoundBox* pBoundA, cTransform* pTransB, cBoundSphere* pBoundB)
 {
 	return true;
 }
 
 
-bool cPhysicManager::IsBlocking( cBaseObject* pObjA, cBaseObject* pObjB, float moveFactor )
+bool cPhysicManager::IsBlocking(cBaseObject* pObjA, cBaseObject* pObjB, float moveFactor)
 {
-	return this->IsBlocking( 
+	return this->IsBlocking(
 		pObjA->pTransform, &pObjA->BoundBox,
-		pObjB->pTransform, &pObjB->BoundBox, moveFactor );
+		pObjB->pTransform, &pObjB->BoundBox, moveFactor);
 }
 
 
@@ -970,27 +970,27 @@ bool cPhysicManager::IsBlocking( cBaseObject* pObjA, cBaseObject* pObjB, float m
 //moveFactor 가 0 일수록 겹칩에 대해 B 가 움직인다.
 //moveFactor 가 0.5 이면 겹칩에 대해 A 와 B 가 똑같은량으로 움직인다.
 //moveFactor 가 1 일수록 겹칩에 대해 A 가 움직인다.
-bool cPhysicManager::IsBlocking( 
-		cTransform* pTransA, cBoundSphere* pBoundA, 
-		cTransform* pTransB, cBoundSphere* pBoundB ,
-		float moveFactor )
+bool cPhysicManager::IsBlocking(
+	cTransform* pTransA, cBoundSphere* pBoundA,
+	cTransform* pTransB, cBoundSphere* pBoundB,
+	float moveFactor)
 
 {
 	return true;
 }
 
 
-bool cPhysicManager::IsBlocking( 
-		cTransform* pTransA, cBoundBox* pBoundA, 
-		cTransform* pTransB, cBoundBox* pBoundB ,
-		float moveFactor )
+bool cPhysicManager::IsBlocking(
+	cTransform* pTransA, cBoundBox* pBoundA,
+	cTransform* pTransB, cBoundBox* pBoundB,
+	float moveFactor)
 {
 	//둘이 충돌되지 않았으면 할필요없다
-	if( IsOverlap( pTransA, pBoundA, pTransB, pBoundB ) == false )
+	if (IsOverlap(pTransA, pBoundA, pTransB, pBoundB) == false)
 		return false;
 
-	moveFactor = Clamp01( moveFactor );
-	
+	moveFactor = Clamp01(moveFactor);
+
 
 
 	//둘이 부디쳤스니 밀어내야한다...
@@ -1013,43 +1013,43 @@ bool cPhysicManager::IsBlocking(
 	// Min 0-------3
 
 	D3DXVECTOR3 pos[8];
-	pos[0] = D3DXVECTOR3( minB.x, minB.y, minB.z );
-	pos[1] = D3DXVECTOR3( minB.x, maxB.y, minB.z );
-	pos[2] = D3DXVECTOR3( maxB.x, maxB.y, minB.z );
-	pos[3] = D3DXVECTOR3( maxB.x, minB.y, minB.z );
-	pos[4] = D3DXVECTOR3( minB.x, minB.y, maxB.z );
-	pos[5] = D3DXVECTOR3( minB.x, maxB.y, maxB.z );
-	pos[6] = D3DXVECTOR3( maxB.x, maxB.y, maxB.z );
-	pos[7] = D3DXVECTOR3( maxB.x, minB.y, maxB.z );
+	pos[0] = D3DXVECTOR3(minB.x, minB.y, minB.z);
+	pos[1] = D3DXVECTOR3(minB.x, maxB.y, minB.z);
+	pos[2] = D3DXVECTOR3(maxB.x, maxB.y, minB.z);
+	pos[3] = D3DXVECTOR3(maxB.x, minB.y, minB.z);
+	pos[4] = D3DXVECTOR3(minB.x, minB.y, maxB.z);
+	pos[5] = D3DXVECTOR3(minB.x, maxB.y, maxB.z);
+	pos[6] = D3DXVECTOR3(maxB.x, maxB.y, maxB.z);
+	pos[7] = D3DXVECTOR3(maxB.x, minB.y, maxB.z);
 
 
 	//A 의 월드 역행렬
 	D3DXMATRIXA16 matWorldAInv;
-	D3DXMatrixInverse( &matWorldAInv, NULL, &pTransA->GetFinalMatrix() );
+	D3DXMatrixInverse(&matWorldAInv, NULL, &pTransA->GetFinalMatrix());
 
 	//B 의 월드 행렬
 	D3DXMATRIXA16 matWorldB = pTransB->GetFinalMatrix();
 
 	//B 월드 만큼 가고 A 의 역으로 다시 움직인 행렬
 	D3DXMATRIXA16 mat = matWorldB * matWorldAInv;
-	
+
 	//B pos 에 적용
-	for( int i = 0 ; i < 8 ; i++ )
-		D3DXVec3TransformCoord( &pos[i], &pos[i], &mat );
+	for (int i = 0; i < 8; i++)
+		D3DXVec3TransformCoord(&pos[i], &pos[i], &mat);
 
 	//이이후 Pos 들은 A 대한 B 의 상대적인 위치값들이된다.
 
-	
+
 	//최종적으로 적용된 B pos 를 가지고 min max 를 갱신 하자
 	minB = pos[0];
 	maxB = pos[0];
-	for( int i = 1 ; i < 8 ; i++ ){
-		if( pos[i].x < minB.x ) minB.x = pos[i].x;
-		if( pos[i].y < minB.y ) minB.y = pos[i].y;
-		if( pos[i].z < minB.z ) minB.z = pos[i].z;
-		if( pos[i].x > maxB.x ) maxB.x = pos[i].x;
-		if( pos[i].y > maxB.y ) maxB.y = pos[i].y;
-		if( pos[i].z > maxB.z ) maxB.z = pos[i].z;
+	for (int i = 1; i < 8; i++){
+		if (pos[i].x < minB.x) minB.x = pos[i].x;
+		if (pos[i].y < minB.y) minB.y = pos[i].y;
+		if (pos[i].z < minB.z) minB.z = pos[i].z;
+		if (pos[i].x > maxB.x) maxB.x = pos[i].x;
+		if (pos[i].y > maxB.y) maxB.y = pos[i].y;
+		if (pos[i].z > maxB.z) maxB.z = pos[i].z;
 	}
 
 	//사각 형 구조체
@@ -1067,59 +1067,59 @@ bool cPhysicManager::IsBlocking(
 
 	//겹칩량의 사각형
 	fRect rcInter;
-	rcInter.left	= max( rcA.left, rcB.left );
-	rcInter.right	= min( rcA.right, rcB.right );
-	rcInter.bottom	= max( rcA.bottom, rcB.bottom );
-	rcInter.top		= min( rcA.top, rcB.top );
-	rcInter.back	= max( rcA.back, rcB.back );
-	rcInter.front	= min( rcA.front, rcB.front );
+	rcInter.left = max(rcA.left, rcB.left);
+	rcInter.right = min(rcA.right, rcB.right);
+	rcInter.bottom = max(rcA.bottom, rcB.bottom);
+	rcInter.top = min(rcA.top, rcB.top);
+	rcInter.back = max(rcA.back, rcB.back);
+	rcInter.front = min(rcA.front, rcB.front);
 
 
 	//각축의 겹칩량을 구하고 그중 가장 작은 축으로 B 이동시킨다.
 	float interX = rcInter.right - rcInter.left;
 	float interY = rcInter.top - rcInter.bottom;
 	float interZ = rcInter.front - rcInter.back;
-	float minInter = (interX < interY) ? ( (interX < interZ ) ? interX : interZ ) : ( (interY < interZ ) ? interY : interZ );
-	
+	float minInter = (interX < interY) ? ((interX < interZ) ? interX : interZ) : ((interY < interZ) ? interY : interZ);
+
 	//미는 방향
-	D3DXVECTOR3 moveDirA( 0, 0, 0 );
+	D3DXVECTOR3 moveDirA(0, 0, 0);
 
 	//밀량
 	float moveLengthA = minInter;
 
 	//X 축의 겹칩량이 제일 작다면..
-	if( minInter == interX )
+	if (minInter == interX)
 	{
 		//A 의 왼쪽으로 밀어야 한다면....
-		if( FLOATEQUAL( rcInter.left, rcA.left ) )
+		if (FLOATEQUAL(rcInter.left, rcA.left))
 			moveDirA = -pTransA->GetRight();
 
 		//A 의 오른쪽으로 밀어야 한다면....
-		else if( FLOATEQUAL( rcInter.right, rcA.right ) )
+		else if (FLOATEQUAL(rcInter.right, rcA.right))
 			moveDirA = pTransA->GetRight();
 	}
 	//Y 축의 겹칩량이 제일 작다면..
-	else if( minInter == interY )
+	else if (minInter == interY)
 	{
 		//A 의 위으로 밀어야 한다면....
-		if( FLOATEQUAL( rcInter.top, rcA.top ) )
+		if (FLOATEQUAL(rcInter.top, rcA.top))
 			moveDirA = pTransA->GetUp();
 
 		//A 의 아래으로 밀어야 한다면....
-		else if( FLOATEQUAL( rcInter.bottom, rcA.bottom ) )
+		else if (FLOATEQUAL(rcInter.bottom, rcA.bottom))
 			moveDirA = -pTransA->GetUp();
 
 	}
 
 	//Z 축의 겹침량이 제일 작다면..
-	else if( minInter == interZ )
+	else if (minInter == interZ)
 	{
 		//A 의 정면으로 밀어야 한다면....
-		if( FLOATEQUAL( rcInter.front, rcA.front ) )
+		if (FLOATEQUAL(rcInter.front, rcA.front))
 			moveDirA = pTransA->GetForward();
 
 		//A 의 뒤으로 밀어야 한다면....
-		else if( FLOATEQUAL( rcInter.back, rcA.back ) )
+		else if (FLOATEQUAL(rcInter.back, rcA.back))
 			moveDirA = -pTransA->GetForward();
 	}
 
@@ -1131,7 +1131,7 @@ bool cPhysicManager::IsBlocking(
 	//
 	// 아래의 연산은 B 를 가만히 두고 A 를 B 역으로 계산한 값이된다.
 	//
-	D3DXVECTOR3 moveDirB( 0, 0, 0 );
+	D3DXVECTOR3 moveDirB(0, 0, 0);
 	float moveLengthB = 0.0f;
 
 	//A의 Min Max
@@ -1151,18 +1151,18 @@ bool cPhysicManager::IsBlocking(
 	//     |/      |/
 	// Min 0-------3
 
-	pos[0] = D3DXVECTOR3( minA.x, minA.y, minA.z );
-	pos[1] = D3DXVECTOR3( minA.x, maxA.y, minA.z );
-	pos[2] = D3DXVECTOR3( maxA.x, maxA.y, minA.z );
-	pos[3] = D3DXVECTOR3( maxA.x, minA.y, minA.z );
-	pos[4] = D3DXVECTOR3( minA.x, minA.y, maxA.z );
-	pos[5] = D3DXVECTOR3( minA.x, maxA.y, maxA.z );
-	pos[6] = D3DXVECTOR3( maxA.x, maxA.y, maxA.z );
-	pos[7] = D3DXVECTOR3( maxA.x, minA.y, maxA.z );
+	pos[0] = D3DXVECTOR3(minA.x, minA.y, minA.z);
+	pos[1] = D3DXVECTOR3(minA.x, maxA.y, minA.z);
+	pos[2] = D3DXVECTOR3(maxA.x, maxA.y, minA.z);
+	pos[3] = D3DXVECTOR3(maxA.x, minA.y, minA.z);
+	pos[4] = D3DXVECTOR3(minA.x, minA.y, maxA.z);
+	pos[5] = D3DXVECTOR3(minA.x, maxA.y, maxA.z);
+	pos[6] = D3DXVECTOR3(maxA.x, maxA.y, maxA.z);
+	pos[7] = D3DXVECTOR3(maxA.x, minA.y, maxA.z);
 
 	//B 의 월드 역행렬
 	D3DXMATRIXA16 matWorldBInv;
-	D3DXMatrixInverse( &matWorldBInv, NULL, &pTransB->GetFinalMatrix() );
+	D3DXMatrixInverse(&matWorldBInv, NULL, &pTransB->GetFinalMatrix());
 
 	//A 의 월드 행렬
 	D3DXMATRIXA16 matWorldA = pTransA->GetFinalMatrix();
@@ -1171,19 +1171,19 @@ bool cPhysicManager::IsBlocking(
 	mat = matWorldA * matWorldBInv;
 
 	//A pos 에 적용
-	for( int i = 0 ; i < 8 ; i++ )
-		D3DXVec3TransformCoord( &pos[i], &pos[i], &mat );
+	for (int i = 0; i < 8; i++)
+		D3DXVec3TransformCoord(&pos[i], &pos[i], &mat);
 
 	//최종적으로 적용된 A pos 를 가지고 min max 를 갱신 하자
 	minA = pos[0];
 	maxA = pos[0];
-	for( int i = 1 ; i < 8 ; i++ ){
-		if( pos[i].x < minA.x ) minA.x = pos[i].x;
-		if( pos[i].y < minA.y ) minA.y = pos[i].y;
-		if( pos[i].z < minA.z ) minA.z = pos[i].z;
-		if( pos[i].x > maxA.x ) maxA.x = pos[i].x;
-		if( pos[i].y > maxA.y ) maxA.y = pos[i].y;
-		if( pos[i].z > maxA.z ) maxA.z = pos[i].z;
+	for (int i = 1; i < 8; i++){
+		if (pos[i].x < minA.x) minA.x = pos[i].x;
+		if (pos[i].y < minA.y) minA.y = pos[i].y;
+		if (pos[i].z < minA.z) minA.z = pos[i].z;
+		if (pos[i].x > maxA.x) maxA.x = pos[i].x;
+		if (pos[i].y > maxA.y) maxA.y = pos[i].y;
+		if (pos[i].z > maxA.z) maxA.z = pos[i].z;
 	}
 	//rcA = { minA.x, maxA.x, minA.y, maxA.y, minA.z, maxA.z };
 	//rcB = { minB.x, maxB.x, minB.y, maxB.y, minB.z, maxB.z };
@@ -1191,54 +1191,54 @@ bool cPhysicManager::IsBlocking(
 	rcB.left = minB.x;		rcB.right = maxB.x;			rcB.bottom = minB.y;			rcB.top = maxB.y;			rcB.back = minB.z;			rcB.front = maxB.z;
 
 	//겹칩량의 사각형
-	rcInter.left	= max( rcA.left, rcB.left );
-	rcInter.right	= min( rcA.right, rcB.right );
-	rcInter.bottom	= max( rcA.bottom, rcB.bottom );
-	rcInter.top		= min( rcA.top, rcB.top );
-	rcInter.back	= max( rcA.back, rcB.back );
-	rcInter.front	= min( rcA.front, rcB.front );
+	rcInter.left = max(rcA.left, rcB.left);
+	rcInter.right = min(rcA.right, rcB.right);
+	rcInter.bottom = max(rcA.bottom, rcB.bottom);
+	rcInter.top = min(rcA.top, rcB.top);
+	rcInter.back = max(rcA.back, rcB.back);
+	rcInter.front = min(rcA.front, rcB.front);
 
 	//각축의 겹칩량을 구하고 그중 가장 작은 축으로 B 이동시킨다.
 	interX = rcInter.right - rcInter.left;
 	interY = rcInter.top - rcInter.bottom;
 	interZ = rcInter.front - rcInter.back;
-	minInter = (interX < interY) ? ( (interX < interZ ) ? interX : interZ ) : ( (interY < interZ ) ? interY : interZ );
+	minInter = (interX < interY) ? ((interX < interZ) ? interX : interZ) : ((interY < interZ) ? interY : interZ);
 
 	moveLengthB = minInter;
-	
+
 	//X 축의 겹칩량이 제일 작다면..
-	if( minInter == interX )
+	if (minInter == interX)
 	{
 		//B 의 왼쪽으로 밀어야 한다면....
-		if( FLOATEQUAL( rcInter.left, rcB.left ) )
+		if (FLOATEQUAL(rcInter.left, rcB.left))
 			moveDirB = -pTransB->GetRight();
 
 		//B 의 오른쪽으로 밀어야 한다면....
-		else if( FLOATEQUAL( rcInter.right, rcB.right ) )
+		else if (FLOATEQUAL(rcInter.right, rcB.right))
 			moveDirB = pTransB->GetRight();
 	}
 	//Y 축의 겹칩량이 제일 작다면..
-	else if( minInter == interY )
+	else if (minInter == interY)
 	{
 		//B 의 위으로 밀어야 한다면....
-		if( FLOATEQUAL( rcInter.top, rcB.top ) )
+		if (FLOATEQUAL(rcInter.top, rcB.top))
 			moveDirB = pTransB->GetUp();
 
 		//B 의 아래으로 밀어야 한다면....
-		else if( FLOATEQUAL( rcInter.bottom, rcB.bottom ) )
+		else if (FLOATEQUAL(rcInter.bottom, rcB.bottom))
 			moveDirB = -pTransB->GetUp();
 
 	}
 
 	//Z 축의 겹침량이 제일 작다면..
-	else if( minInter == interZ )
+	else if (minInter == interZ)
 	{
 		//B 의 정면으로 밀어야 한다면....
-		if( FLOATEQUAL( rcInter.front, rcB.front ) )
+		if (FLOATEQUAL(rcInter.front, rcB.front))
 			moveDirB = pTransB->GetForward();
 
 		//B 의 뒤으로 밀어야 한다면....
-		else if( FLOATEQUAL( rcInter.back, rcB.back ) )
+		else if (FLOATEQUAL(rcInter.back, rcB.back))
 			moveDirB = -pTransB->GetForward();
 	}
 
@@ -1251,7 +1251,7 @@ bool cPhysicManager::IsBlocking(
 
 
 	//밀량이 작은쪽으로...
-	if( moveLengthB > moveLengthA )
+	if (moveLengthB > moveLengthA)
 	{
 		//A 와 B 의 스케일 적용
 		//여긴 A 를 가만히 두고 B 를 건들인거다
@@ -1263,9 +1263,9 @@ bool cPhysicManager::IsBlocking(
 		D3DXVECTOR3 scaleB = pTransB->GetScale();
 
 		pTransB->MovePositionWorld(
-			moveDirA.x * moveLengthA * ( 1.0 - moveFactor ) * scaleA.x ,
-			moveDirA.y * moveLengthA * ( 1.0 - moveFactor ) * scaleA.y ,
-			moveDirA.z * moveLengthA * ( 1.0 - moveFactor ) * scaleA.z );
+			moveDirA.x * moveLengthA * (1.0 - moveFactor) * scaleA.x,
+			moveDirA.y * moveLengthA * (1.0 - moveFactor) * scaleA.y,
+			moveDirA.z * moveLengthA * (1.0 - moveFactor) * scaleA.z);
 
 
 		pTransA->MovePositionWorld(
@@ -1289,36 +1289,36 @@ bool cPhysicManager::IsBlocking(
 		D3DXVECTOR3 scaleB = pTransB->GetScale();
 
 		pTransA->MovePositionWorld(
-			moveDirB.x * moveLengthB * moveFactor  * scaleB.x, 
-			moveDirB.y * moveLengthB * moveFactor  * scaleB.y, 
-			moveDirB.z * moveLengthB * moveFactor  * scaleB.z );
+			moveDirB.x * moveLengthB * moveFactor  * scaleB.x,
+			moveDirB.y * moveLengthB * moveFactor  * scaleB.y,
+			moveDirB.z * moveLengthB * moveFactor  * scaleB.z);
 
 		pTransB->MovePositionWorld(
-			-moveDirB.x * moveLengthB * ( 1.0 - moveFactor ) *scaleB.x ,
-			-moveDirB.y * moveLengthB * ( 1.0 - moveFactor ) *scaleB.y ,
-			-moveDirB.z * moveLengthB * ( 1.0 - moveFactor ) *scaleB.z  );
+			-moveDirB.x * moveLengthB * (1.0 - moveFactor) *scaleB.x,
+			-moveDirB.y * moveLengthB * (1.0 - moveFactor) *scaleB.y,
+			-moveDirB.z * moveLengthB * (1.0 - moveFactor) *scaleB.z);
 	}
 
 
 	return true;
 
-	
+
 
 }
 
 
 //점 3개로 무한 평면을 만든다.
-void cPhysicManager::CreatePlane( LPD3DXPLANE	pOutPlane, const D3DXVECTOR3* p0, const D3DXVECTOR3* p1, const D3DXVECTOR3* p2 )
+void cPhysicManager::CreatePlane(LPD3DXPLANE	pOutPlane, const D3DXVECTOR3* p0, const D3DXVECTOR3* p1, const D3DXVECTOR3* p2)
 {
 	//평면의 노말 
 	D3DXVECTOR3 normal;
 	D3DXVECTOR3 edge1 = *p1 - *p0;
 	D3DXVECTOR3 edge2 = *p2 - *p0;
-	D3DXVec3Cross( &normal, &edge1, &edge2 );
-	D3DXVec3Normalize( &normal, &normal );
+	D3DXVec3Cross(&normal, &edge1, &edge2);
+	D3DXVec3Normalize(&normal, &normal);
 
 	//평면의 노말 방향으로 원점까지의 최단 거리
-	float dist = -D3DXVec3Dot( &normal, p0 );
+	float dist = -D3DXVec3Dot(&normal, p0);
 
 	//평면값 쓰자
 	pOutPlane->a = normal.x;
@@ -1330,10 +1330,10 @@ void cPhysicManager::CreatePlane( LPD3DXPLANE	pOutPlane, const D3DXVECTOR3* p0, 
 }
 
 //임의의 한점에서 평면까지의 최단거리
-float cPhysicManager::PlaneDot( const LPD3DXPLANE pPlane,  const D3DXVECTOR3* point )
+float cPhysicManager::PlaneDot(const LPD3DXPLANE pPlane, const D3DXVECTOR3* point)
 {
 	//평면의 노말
-	D3DXVECTOR3 normal( pPlane->a, pPlane->b, pPlane->c );
+	D3DXVECTOR3 normal(pPlane->a, pPlane->b, pPlane->c);
 
 	/*
 	//평면 상의 임의의 한점???
@@ -1346,36 +1346,36 @@ float cPhysicManager::PlaneDot( const LPD3DXPLANE pPlane,  const D3DXVECTOR3* po
 	float distance = D3DXVec3Dot( &normal, &dir );
 	*/
 
-	float distance = D3DXVec3Dot( &normal, point ) + pPlane->d;
+	float distance = D3DXVec3Dot(&normal, point) + pPlane->d;
 
 
 	return distance;
 }
 
 //반직선과 평면의 충돌 위치
-bool cPhysicManager::IntersectRayToPlane( D3DXVECTOR3* pOut, const LPRay pRay, const LPD3DXPLANE pPlane, bool bCheck2Side )
+bool cPhysicManager::IntersectRayToPlane(D3DXVECTOR3* pOut, const LPRay pRay, const LPD3DXPLANE pPlane, bool bCheck2Side)
 {
 	//노말 벡터
-	D3DXVECTOR3 normal( pPlane->a, pPlane->b, pPlane->c );
-	
-	float dot2 = D3DXVec3Dot( &normal, &pRay->direction );		//광선의 방향과 평면의 법선 방향의 각차의 cos 값
+	D3DXVECTOR3 normal(pPlane->a, pPlane->b, pPlane->c);
+
+	float dot2 = D3DXVec3Dot(&normal, &pRay->direction);		//광선의 방향과 평면의 법선 방향의 각차의 cos 값
 
 	//dot2 가 0 이란예기는 반직선의 방향과 평면의 방향이 직교한다는 예기인데...
 	//이는 즉 평면과 반직선은 평행하다는 예기가 된다.
-	if( FLOATEQUAL( dot2, 0.0f ) )
+	if (FLOATEQUAL(dot2, 0.0f))
 	{
 		return false;
 	}
 
 
 	//반직선의 시작점에서 평면까지으 최단거리
-	float dist = D3DXVec3Dot( &normal, &pRay->origin ) + pPlane->d;
+	float dist = D3DXVec3Dot(&normal, &pRay->origin) + pPlane->d;
 
 	//양면 체크를 안한다면...
-	if( bCheck2Side == false )
+	if (bCheck2Side == false)
 	{
 		//반직선의 시작 위치가 뒤에 있어도 실패
-		if( dist < 0.0f )
+		if (dist < 0.0f)
 			return false;
 	}
 
@@ -1383,11 +1383,11 @@ bool cPhysicManager::IntersectRayToPlane( D3DXVECTOR3* pOut, const LPRay pRay, c
 	float t = dist / -dot2;
 
 	//레이 방향이 반대로 되어있는 경우
-	if( t < 0.0f )
+	if (t < 0.0f)
 		return false;
 
 	//충돌 위치
-	*pOut = pRay->origin + ( pRay->direction * t );
+	*pOut = pRay->origin + (pRay->direction * t);
 
 
 
@@ -1416,4 +1416,51 @@ bool cPhysicManager::intersectSector(const cTransform * Trans1, const cTransform
 		else return false;
 	}
 	else return false;
+}
+
+//점과 구와 충돌체크
+bool cPhysicManager::IsPointSphere(cTransform* pTransA, float radiusA, cTransform* pTransB)
+{
+	//A의 반지름 = radiusA, 비교대상은 radiusB
+	D3DXVECTOR3 dir; // A - B
+	dir = pTransA->GetWorldPosition() - pTransB->GetWorldPosition();
+	float length = D3DXVec3Length(&dir);
+
+	if (radiusA > length)
+	{
+		//LOG_MGR->AddLog("테스트 충돌.");
+		return true;
+	}
+	return false;
+}
+
+//점과 구와 충돌체크
+bool cPhysicManager::IsPointSphere(cTransform* pTransA, float radiusA, D3DXVECTOR3 centerB)
+{
+	//A의 반지름 = radiusA, 비교대상은 radiusB
+	D3DXVECTOR3 dir; // A - B
+	dir = pTransA->GetWorldPosition() - centerB;
+	float length = D3DXVec3Length(&dir);
+
+	if (radiusA > length)
+	{
+		//LOG_MGR->AddLog("테스트 충돌.");
+		return true;
+	}
+	return false;
+}
+
+bool cPhysicManager::IsPointQuad(D3DXVECTOR3* quadA, Ray* rayB)//쿼드A와 비교 대상 B레이
+{
+
+	if (D3DXIntersectTri(&quadA[0], &quadA[1], &quadA[3], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
+	{
+		return true;
+	}
+	if (D3DXIntersectTri(&quadA[0], &quadA[1], &quadA[2], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
+	{
+		return true;
+	}
+
+	return false;
 }

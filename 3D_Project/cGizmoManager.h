@@ -45,7 +45,8 @@ public:
 	//월드 AABB Box 를 그리는 함수
 	void AABBBox( const D3DXVECTOR3& minPos, const D3DXVECTOR3& maxPos, DWORD color = 0xff808080 ) const;
 
-
+	//쿼드 그리는 함수
+	void Quad(const D3DXVECTOR3& quad);
 
 
 };

@@ -61,7 +61,9 @@ public:
 		D3DXVECTOR3* pHitNormal	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
 		);
 
-
+	bool IsPointSphere(cTransform* pTransA, float radiusA, cTransform* pTransB);
+	bool IsPointSphere(cTransform* pTransA, float radiusA, D3DXVECTOR3 centerB);
+	bool IsPointQuad(D3DXVECTOR3* quadA,Ray* rayB);//쿼드A와 비교 대상 B레이
 
 	bool IsOverlap( cBaseObject* pObjA, cBaseObject* pObjB );
 	

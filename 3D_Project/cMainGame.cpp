@@ -52,10 +52,11 @@ HRESULT cMainGame::Init(void)
 	SOUND_MGR->addSound("bgm1", "../Answers.mp3", true, true);
 	
 	////°ÔÀÓ ½ÃÀÛ¾À
-	//SCENE_MGR->ChangeScene( "move_Test2" );
+	SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "sector_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
 	SCENE_MGR->ChangeScene("sector_Test");
+	//SCENE_MGR->ChangeScene("cScene_testPlayer");
 
 	return S_OK;		
 }	

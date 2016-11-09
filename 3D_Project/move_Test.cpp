@@ -34,7 +34,6 @@ HRESULT move_Test::Scene_Init()
 
 	m_hitPos = D3DXVECTOR3(0, 0, 0);
 
-	m_bMove = false;
 
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
@@ -60,6 +59,12 @@ HRESULT move_Test::Scene_Init()
 	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
 	this->pSkinned1 = new cSkinnedAnimation();
 	this->pSkinned1->Init(pSkinned);
+	//
+	pSkinnedBox = new cBoundBox;
+	pSkinnedBox->localCenter = D3DXVECTOR3(0, 0, 0);
+	pSkinnedBox->localMaxPos = D3DXVECTOR3(2, 2, 2);
+	pSkinnedBox->localMinPos = D3DXVECTOR3(-2, -2, -2);
+	pSkinnedBox->radius = 3.f;
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
@@ -95,6 +100,21 @@ HRESULT move_Test::Scene_Init()
 	//=============== 레이 초기화 끝.
 	pMainCamera->SetWorldPosition(2, 5, 2);
 	isClick = false;
+	//
+	colliTest = new cTransform;
+	colliTest->SetWorldPosition(3, m_pTerrain->GetHeight(3, 3) + 1, 3);
+
+	testBox = new cBoundBox;
+	testBox->localCenter = D3DXVECTOR3(0, 0, 0);
+	testBox->localMaxPos = D3DXVECTOR3(4, 4, 4);
+	testBox->localMinPos = D3DXVECTOR3(-3, -3, -3);
+	testBox->radius = 0.5f;
+	//
+	quad[0] = D3DXVECTOR3(-3, 0, 3);
+	quad[1] = D3DXVECTOR3(3, 0, 3);
+	quad[2] = D3DXVECTOR3(-3, 0, -3);
+	quad[3] = D3DXVECTOR3(3, 0, -3);
+
 	return S_OK;
 }
 
@@ -149,6 +169,16 @@ void move_Test::Scene_Update(float timeDelta)
 		pSkinnedTrans->RotateSelf(0, 2 * ONE_RAD, 0);
 	}
 	//=========================
+	if (KEY_MGR->IsOnceDown('T')) // 쿼드 테스트용.
+	{
+		Ray ray;
+		POINT ptMousePos = GetMousePos();
+		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+		this->pMainCamera->ComputeRay(&ray, &screenPos);
+
+		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+	}
+	//=========================
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	{
 		Ray ray;
@@ -165,7 +195,7 @@ void move_Test::Scene_Update(float timeDelta)
 		D3DXVECTOR3 dir = m_mousePos - cRay.origin;	// 방향 및 mousePos의 원점 이동.	
 		dir.y = 0;
 
-	
+
 		if (D3DXVec3Length(&dir) > 0.5f)
 		{
 			isMove = true;
@@ -189,7 +219,7 @@ void move_Test::Scene_Update(float timeDelta)
 	}
 
 
-
+	//D3DXIntersectTri()
 
 	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
 
@@ -308,7 +338,7 @@ void move_Test::Scene_Update(float timeDelta)
 			m_prePos.z);
 
 	}
-
+	PHYSICS_MGR->IsPointSphere(pSkinnedTrans, 3.f, colliTest);
 
 }
 
@@ -330,7 +360,7 @@ void move_Test::Scene_Render1()
 	//m_pSkinnedEffect->SetMatrix( "matViewProjection", &matViewProjection );
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
-	
+
 	this->pSkinned1->Render(pSkinnedTrans);
 
 	//가지고 있는 Animation 을출력해보자..
@@ -347,6 +377,16 @@ void move_Test::Scene_Render1()
 	m_Land->Render();
 	//========== 레이 기지모
 	GIZMO_MGR->Line(this->cRay.origin, this->cRay.origin + this->cRay.direction * 100, 0xffffff00);
+	//
+	pSkinnedBox->RenderGizmo(pSkinnedTrans);
+
+	GIZMO_MGR->WireSphere(pSkinnedTrans->GetWorldPosition()
+		, pSkinnedBox->radius, 0xffff0000);
+	//
+	testBox->RenderGizmo(colliTest);
+	GIZMO_MGR->WireSphere(colliTest->GetWorldPosition()
+		, testBox->radius, 0xff0000ff);
+	QuadRender();
 
 }
 
@@ -355,3 +395,66 @@ void move_Test::Scene_RenderSprite()
 {
 }
 
+
+void move_Test::QuadRender()
+{
+
+	//  원점 기준
+	// 0----1
+	//
+	// 2----3
+
+	quad[0] = D3DXVECTOR3(-3, 0, 5);
+	quad[1] = D3DXVECTOR3(3, 0, 5);
+	quad[2] = D3DXVECTOR3(-3, 0, -5);
+	quad[3] = D3DXVECTOR3(3, 0, -5);
+
+	//quad[0] = D3DXVECTOR3(-3, 0, 3);
+	//quad[1] = D3DXVECTOR3(3, 0, 3);
+	//quad[2] = D3DXVECTOR3(-3, 0, -3);
+	//quad[3] = D3DXVECTOR3(3, 0, -3);
+
+	for (int i = 0; i < 4; i++)
+	{
+		D3DXVec3TransformCoord(&quad[i], &quad[i], &pSkinnedTrans->GetWorldRotateMatrix() );
+	}
+
+	// quad[0] = D3DXVECTOR3(-3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, 3 + m_mousePos.z);
+	// quad[1] = D3DXVECTOR3(3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, 3 + m_mousePos.z);
+	// quad[2] = D3DXVECTOR3(-3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, -3 + m_mousePos.z);
+	// quad[3] = D3DXVECTOR3(3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, -3 + m_mousePos.z);
+	
+	quad[0] += D3DXVECTOR3( m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
+	quad[1] += D3DXVECTOR3(m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
+	quad[2] += D3DXVECTOR3( m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
+	quad[3] += D3DXVECTOR3( m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
+
+
+
+	if (D3DXIntersectTri(&quad[0], &quad[1], &quad[3], &cRay.origin, &cRay.direction, NULL, NULL, NULL))
+	{
+		LOG_MGR->AddLog("위에삼각 ");
+	}
+	if (D3DXIntersectTri(&quad[0], &quad[1], &quad[2], &cRay.origin, &cRay.direction, NULL, NULL, NULL))
+	{
+		LOG_MGR->AddLog("아래삼각");
+	}
+
+
+	//0    1
+	//
+	//2    3
+
+	//GIZMO_MGR->Quad(*quad);
+	
+	
+	GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
+	GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
+	GIZMO_MGR->Line(quad[3], quad[2], 0xff00ff00);
+	GIZMO_MGR->Line(quad[2], quad[0], 0xff00ff00);
+
+
+
+}
+//GIZMO_MGR->Line(startPos, finalPos, 0xff00ff00);
+//GIZMO_MGR->Line(startPos, finalPos2, 0xff00ff00);
