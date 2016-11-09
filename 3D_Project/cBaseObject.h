@@ -12,7 +12,7 @@ public:
 	cXMesh*				pMesh;						//니가 사용하는 메쉬가 뭐니?
 	cBoundBox			BoundBox;
 	bool				IgnoreCreateShadow;			//쉐도우맵 만들때 무시되니
-
+	
 
 
 protected:

@@ -1452,15 +1452,31 @@ bool cPhysicManager::IsPointSphere(cTransform* pTransA, float radiusA, D3DXVECTO
 
 bool cPhysicManager::IsPointQuad(D3DXVECTOR3* quadA, Ray* rayB)//쿼드A와 비교 대상 B레이
 {
-
+	//0    1
+	//
+	//2    3
 	if (D3DXIntersectTri(&quadA[0], &quadA[1], &quadA[3], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
 	{
+		LOG_MGR->AddLog("위에삼각 ");
+
 		return true;
 	}
-	if (D3DXIntersectTri(&quadA[0], &quadA[1], &quadA[2], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
+	if (D3DXIntersectTri(&quadA[0], &quadA[3], &quadA[2], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
 	{
+		LOG_MGR->AddLog("아래삼각");
+
 		return true;
 	}
+
+	//==================== 피직스에 들어온 쿼드 그릴떄 쓰셈 ============
+	//GIZMO_MGR->Line(quadA[0], quadA[1], 0xff00ff00);
+	//GIZMO_MGR->Line(quadA[1], quadA[3], 0xff00ff00);
+	//GIZMO_MGR->Line(quadA[3], quadA[0], 0xff00ff00);
+	//
+	//GIZMO_MGR->Line(quadA[0], quadA[3], 0xffff0000);
+	//GIZMO_MGR->Line(quadA[3], quadA[2], 0xffff0000);
+	//GIZMO_MGR->Line(quadA[2], quadA[0], 0xffff0000);
+
 
 	return false;
 }

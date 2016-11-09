@@ -2,7 +2,6 @@
 #include "MyUtil.h"
 
 
-
 namespace MyUtil{
 
 	 DWORD MaxAnisotropic;				//이방성 필터링 최대 단계
@@ -444,6 +443,36 @@ namespace MyUtil{
 		return *pDword;
 	}
 
+	void createQuad(D3DXVECTOR3* quad, float row, float col, cTransform* myTrans, D3DXVECTOR3* createPos)
+	{
+		//  원점 기준
+		// 0----1
+		//
+		// 2----3
+
+		quad[0] = D3DXVECTOR3(-row, 0, col);
+		quad[1] = D3DXVECTOR3(row, 0, col);
+		quad[2] = D3DXVECTOR3(-row, 0, -col);
+		quad[3] = D3DXVECTOR3(row, 0, -col);
+
+		for (int i = 0; i < 4; i++)
+		{
+			D3DXVec3TransformCoord(&quad[i], &quad[i], &myTrans->GetWorldRotateMatrix());
+		}
+
+		quad[0] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+		quad[1] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+		quad[2] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+		quad[3] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+
+		GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
+		GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
+		GIZMO_MGR->Line(quad[3], quad[0], 0xff00ff00);
+
+		GIZMO_MGR->Line(quad[0], quad[3], 0xffff0000);
+		GIZMO_MGR->Line(quad[3], quad[2], 0xffff0000);
+		GIZMO_MGR->Line(quad[2], quad[0], 0xffff0000);
+	}
 
 
 }
