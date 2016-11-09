@@ -12,7 +12,14 @@ class move_Test : public cScene
 private:
 
 	cSkinnedAnimation*		pSkinned1;
+	cBoundBox*              pSkinnedBox;
 	cTransform*				pSkinnedTrans;
+	//
+	cTransform*             colliTest;
+	cBoundBox*              testBox;
+
+	D3DXVECTOR3             quad[6];
+
 	// 도형 피킹에 쓸것.
 	Ray						cRay; //케릭터에 들어갈 레이.
 	bool                    objectHit;
@@ -57,6 +64,12 @@ public:
 
 	virtual void Scene_RenderSprite();
 
+	//==== 나의 quad 벡터 , 행 , 렬 , 나의 트렌스 , 생성할 좌표.
+	void createQuad(D3DXVECTOR3* quad,float row,float col,cTransform* myTrans,D3DXVECTOR3* createPos);
 
+	void QuadRender();
+	
+	//GIZMO_MGR->Line(startPos, finalPos, 0xff00ff00);
+	//GIZMO_MGR->Line(startPos, finalPos2, 0xff00ff00);
 };
 

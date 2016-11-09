@@ -21,6 +21,7 @@ cMainGame::~cMainGame(void)
 //셋팅
 HRESULT cMainGame::Init(void)
 {
+	
 	//랜덤시드
 	SetRandomSeed();
 	
@@ -29,11 +30,13 @@ HRESULT cMainGame::Init(void)
 
 	//매니져 셋팅
 	TIME_MGR->Init();
+	SCENE_MGR->Init();
+	SOUND_MGR->Init();
 	LOG_MGR->Init( LOG_WINDOW | LOG_FILE, g_hWnd, "Dump" );
 	DXFONT_MGR->Init( Device );	
 	GIZMO_MGR->Init( Device );
 	SPRITE_MGR->Init( Device );
-	SCENE_MGR->Init();
+	
 	
 	//게임에 사용되는 씬 추가
 	SCENE_MGR->AddScene("model_Test", new t_Scene());
@@ -46,11 +49,14 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->AddScene("sector_Test", new sector_Test());
 	SCENE_MGR->AddScene("animation_Test", new animation_Test());
 
+	SOUND_MGR->addSound("bgm1", "../Answers.mp3", true, true);
+	
 	////게임 시작씬
-	//SCENE_MGR->ChangeScene( "move_Test2" );
+	SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "sector_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
-	SCENE_MGR->ChangeScene("cScene_testPlayer");
+	SCENE_MGR->ChangeScene("sector_Test");
+	//SCENE_MGR->ChangeScene("cScene_testPlayer");
 
 	return S_OK;		
 }	
@@ -74,6 +80,8 @@ void cMainGame::Release()
 	SCENE_MGR->Release();
 	cScene_Mgr::ReleaseInstance();
 	cPhysicManager::ReleaseInstance();
+	SOUND_MGR->Release();
+	cSoundManager::ReleaseInstance();
 
 	RESOURCE_TEXTURE->ClearResource();
 	cResourceMgr_Texture::ReleaseInstance();
@@ -102,8 +110,8 @@ void cMainGame::Update()
 
 	//씬업데이트
 	SCENE_MGR->Update( timeDelta );
-
 	ex_wheelDown = ex_wheelUp = false;
+
 }
 
 //드로우

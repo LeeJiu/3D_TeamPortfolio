@@ -20,6 +20,7 @@ sector_Test::~sector_Test()
 }
 HRESULT sector_Test::Scene_Init()
 {
+	SOUND_MGR->play("bgm1", 1);
 
 	m_hitPos = D3DXVECTOR3(0, 0, 0);
 	m_bMove = false;
@@ -102,6 +103,7 @@ HRESULT sector_Test::Scene_Init()
 	this->m_sightLength = 5;
 	this->m_sight = 50 * ONE_RAD;
 
+
 	return S_OK;
 }
 
@@ -121,6 +123,8 @@ void sector_Test::Scene_Release()
 
 void sector_Test::Scene_Update(float timeDelta)
 {
+	
+
 	this->pSkinned1->Update(timeDelta);
 	this->pSkinned2->Update(timeDelta);
 
