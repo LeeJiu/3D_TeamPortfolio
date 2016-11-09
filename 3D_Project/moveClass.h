@@ -1,5 +1,4 @@
 #pragma once
-#include "cScene.h"
 
 //============= 전방 선언 =========
 class cTerrain;

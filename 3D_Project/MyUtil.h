@@ -22,13 +22,6 @@ b = 10.000095f
 #define		RS(a,b)			Device->SetRenderState((a),(b))		
 
 
-//캐릭터 상태
-enum ACTOR_STATE
-{
-	AS_IDLE, AS_WALK, AS_ATTACK
-};
-
-
 //반직선 구조체 
 typedef struct tagRay{
 	D3DXVECTOR3 origin;			//직선의 시작 위치

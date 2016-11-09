@@ -58,13 +58,11 @@ void cBaseObject::BaseObjectRender() {
 	
 	if( this->pMesh != NULL ){
 		
-		if( this->pSkinned )
-			this->pSkinned->Render( this->pTransform );
-		
-		else
-			this->pMesh->Render( this->pTransform );
-	
+		if (this->pSkinned)
+			this->pSkinned->Render(this->pTransform);
 
+		else
+			this->pMesh->Render(this->pTransform);
 
 	}
 	//this->BoundBox.RenderGizmo( this->pTransform );
