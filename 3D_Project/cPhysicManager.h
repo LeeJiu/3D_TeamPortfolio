@@ -63,6 +63,7 @@ public:
 
 	bool IsPointSphere(cTransform* pTransA, float radiusA, cTransform* pTransB);
 	bool IsPointSphere(cTransform* pTransA, float radiusA, D3DXVECTOR3 centerB);
+	bool IsPointQuad(D3DXVECTOR3* quadA,Ray* rayB);//쿼드A와 비교 대상 B레이
 
 	bool IsOverlap( cBaseObject* pObjA, cBaseObject* pObjB );
 	

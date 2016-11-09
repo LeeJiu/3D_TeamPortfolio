@@ -1449,3 +1449,18 @@ bool cPhysicManager::IsPointSphere(cTransform* pTransA, float radiusA, D3DXVECTO
 	}
 	return false;
 }
+
+bool cPhysicManager::IsPointQuad(D3DXVECTOR3* quadA, Ray* rayB)//쿼드A와 비교 대상 B레이
+{
+
+	if (D3DXIntersectTri(&quadA[0], &quadA[1], &quadA[3], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
+	{
+		return true;
+	}
+	if (D3DXIntersectTri(&quadA[0], &quadA[1], &quadA[2], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
+	{
+		return true;
+	}
+
+	return false;
+}
