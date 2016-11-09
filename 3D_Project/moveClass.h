@@ -4,12 +4,12 @@
 //============= 전방 선언 =========
 class cTerrain;
 class cSkinnedAnimation;
-
+class cBaseObject;
 class moveClass 
 {
 	cSkinnedAnimation*		pChar;  //케릭터
 	cTransform*				pCharTrans;//케릭터움직일 trans
-
+	cBaseObject*            pEnumy;    //애너미 주소값 ( 전방선언)
 	Ray                     moveRay;
 
 	D3DXVECTOR3		m_currentPos;// 내 케릭터의 위치
@@ -34,6 +34,8 @@ public:
 	void update(float timeDelta, cBaseObject* collObj);
 	void render();
 
+	void getLastHeight(cBaseObject* enumy);
+	
 	moveClass();
 	~moveClass();
 };

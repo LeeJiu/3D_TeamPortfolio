@@ -47,7 +47,7 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->AddScene("animation_Test", new animation_Test());
 
 	////°ÔÀÓ ½ÃÀÛ¾À
-	SCENE_MGR->ChangeScene( "move_Test" );
+	SCENE_MGR->ChangeScene( "move_Test2" );
 	//SCENE_MGR->ChangeScene( "sector_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
 //	SCENE_MGR->ChangeScene("cScene_testPlayer");
