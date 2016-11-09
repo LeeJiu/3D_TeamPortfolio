@@ -120,6 +120,7 @@
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
+    <ClInclude Include="cSoundManager.h" />
     <ClInclude Include="cSpriteManager.h" />
     <ClInclude Include="cState.h" />
     <ClInclude Include="cStateHandler.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
+    <ClCompile Include="cSoundManager.cpp" />
     <ClCompile Include="cSpriteManager.cpp" />
     <ClCompile Include="cState.cpp" />
     <ClCompile Include="cStateHandler.cpp" />
