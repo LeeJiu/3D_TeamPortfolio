@@ -137,6 +137,8 @@ void move_Test::Scene_Update(float timeDelta)
 	cRay.origin.y = pSkinnedTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
 
 
+
+
 	if (KEY_MGR->IsStayDown('W'))
 	{
 		isMove = true;
