@@ -3,7 +3,7 @@
 #include "csingletonbase.h"
 #include "cBoundBox.h"
 #include "cBaseObject.h"
-
+#include "cTerrain.h"
 
 class cPhysicManager :public cSingletonBase<cPhysicManager>
 {
@@ -106,6 +106,7 @@ public:
 	//부채꼴범위와 대상의 충돌위치. Trans1이 중심이고 Trans2가 체크할 타겟이다.
 	bool intersectSector(const cTransform* Trans1, const cTransform* Trans2, float length, float sight);
 
+	D3DXVECTOR3 getLastHeight(cBaseObject* enumy, Ray* ray, cTerrain* terrain,D3DXVECTOR3* outPos);
 
 	
 };
