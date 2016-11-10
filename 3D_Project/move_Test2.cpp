@@ -66,7 +66,7 @@ HRESULT move_Test2::Scene_Init()
 	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0)+4.f, 0);
 	
 	move = new moveClass;
-	move->init(pSkinned1, pSkinnedTrans, m_pTerrain);
+	move->init(pSkinned1, pSkinnedTrans, m_pTerrain,pMainCamera);
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();

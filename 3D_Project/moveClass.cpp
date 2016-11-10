@@ -4,6 +4,7 @@
 #include "cSkinnedAnimation.h"
 #include "cTerrain.h"
 #include "cBaseObject.h"
+#include "cCamera.h"
 
 moveClass::moveClass()
 {
@@ -14,8 +15,9 @@ moveClass::~moveClass()
 {
 }
 
-void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain)
+void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain, cCamera* camera)
 {
+	pMainCamera = camera;
 	pChar = pSkinned;
 	pCharTrans = trans;
 	m_pTerrain = terrain;
@@ -76,69 +78,20 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 
 		isJump = true;
 	}
+	clickUpdate(); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
+
 	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
 	//=========================
-
-
 
 	getLastHeight(collObj);
 	//아래 피직스 매니져 사용 법
 	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
 	//m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
 
-	//===================== 테스트용 점프 코드 ====================
-	// 점프가 true 일때  ( y 값 감소 )
-	
-	if (isJump == true)
-	{
-		this->pCharTrans->MovePositionSelf(0, m_jumpPower*timeDelta, 0);
-		m_jumpPower -= m_gravity*timeDelta;
+	//================================ 여기 사이에 코딩 하면됨
 
-		// 레이 업데이트 및 m_currentPos 갱신/
-		m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
-		moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
-		
-	}
-
-	// 갈수 있는곳 prePos, 현재 위치 current
-	//=================================== 케릭터를 최종적으로 움직이게 하는 부분 
-	// 위에서 아래로 내려갈 경우 ( 갈곳이 더 아래 있으면(작은값) - 값이 나온다 내려갈수 있는 값이 차가 -1 이면 점프로 바뀌면서 중력적용 )
-	if (m_prePos.y - m_currentPos.y < -1.f) //현재 좌표와 움직일 좌표차이가 나면 점프를 트루로 바뀌게 해서 중력을줌.
-	{
-		isJump = true;
-	}
-	// 위와 마찮가지 갈 곳이 더 높으면 +값이 나온다. (prePos) --__ (current)
-	if ( fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true && isJump == false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
-	{
-		this->pCharTrans->SetWorldPosition(m_prePos);
-		m_currentPos = m_prePos; // 좌표 갱신
-	}
-	else if (isJump == true) // 점프 했을때 
-	{
-		D3DXVECTOR3 jumpPos = m_prePos;
-		jumpPos.y = m_currentPos.y;
-
-		this->pCharTrans->SetWorldPosition(jumpPos);
-		m_currentPos = jumpPos; // 좌표 갱신
-
-		//================ 지상이랑 체크. 
-		if (fabs(m_prePos.y - m_currentPos.y) <= 0.2f)// 0.2은 EPSILON 값.
-		{
-			isJump = false;
-			m_jumpPower = 0;
-		}
-
-	}
-
-	// 레이랑 케릭터 거리가 멀어지면 레이가 더이상 넘어가지 못하게 만든다.
-	float rayCheckDis = D3DXVec3Length(&(moveRay.origin - pCharTrans->GetWorldPosition()));
-	if (rayCheckDis > 0.21f) // 상수 값은 속력 보다 조금 높은 값.
-	{
-		moveRay.origin = pCharTrans->GetWorldPosition();
-		moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
-	}
-
-	isMove = false;
+	//===============================
+	moveJumpCheck();
 
 }
 void moveClass::getLastHeight(cBaseObject* enumy)
@@ -197,4 +150,102 @@ void moveClass::render()
 	//	pChar->Render(pCharTrans);
 	GIZMO_MGR->Line(this->moveRay.origin, this->moveRay.origin + this->moveRay.direction * 100, 0xffffff00);
 
+}
+
+void moveClass::clickUpdate()
+{
+	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+	{
+		Ray ray;
+		POINT ptMousePos = GetMousePos();
+		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+		this->pMainCamera->ComputeRay(&ray, &screenPos);
+
+		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+		isClick = true;
+	}
+
+	if (isClick == true)
+	{
+		D3DXVECTOR3 dir = m_mousePos - moveRay.origin;	// 방향 및 mousePos의 원점 이동.	
+		dir.y = 0;
+
+
+		if (D3DXVec3Length(&dir) > 0.5f)
+		{
+			isMove = true;
+			D3DXVec3Normalize(&dir, &dir);
+			D3DXVECTOR3 lerp = pCharTrans->GetForward();
+			D3DXVec3Lerp(&lerp, &lerp, &dir, 0.2);
+			pCharTrans->LookDirection(lerp, D3DXVECTOR3(0, 1, 0));
+
+			moveRay.origin += dir*0.2f;
+		}
+		else
+		{
+			isMove = false;
+			isClick = false;
+
+			// LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+			// 	moveRay.origin.x,
+			// 	moveRay.origin.y,
+			// 	moveRay.origin.z);
+		}
+	}
+}
+void moveClass::moveJumpCheck()
+{
+	//===================== 테스트용 점프 코드 ====================
+	// 점프가 true 일때  ( y 값 감소 )
+
+	if (isJump == true)
+	{
+		this->pCharTrans->MovePositionSelf(0, m_jumpPower*timeDelta, 0);
+		m_jumpPower -= m_gravity*timeDelta;
+
+		// 레이 업데이트 및 m_currentPos 갱신/
+		m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
+		moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
+
+	}
+
+	// 갈수 있는곳 prePos, 현재 위치 current
+	//=================================== 케릭터를 최종적으로 움직이게 하는 부분 
+	// 위에서 아래로 내려갈 경우 ( 갈곳이 더 아래 있으면(작은값) - 값이 나온다 내려갈수 있는 값이 차가 -1 이면 점프로 바뀌면서 중력적용 )
+	if (m_prePos.y - m_currentPos.y < -1.f) //현재 좌표와 움직일 좌표차이가 나면 점프를 트루로 바뀌게 해서 중력을줌.
+	{
+		isJump = true;
+	}
+	// 위와 마찮가지 갈 곳이 더 높으면 +값이 나온다. (prePos) --__ (current)
+	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true && isJump == false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
+	{
+		this->pCharTrans->SetWorldPosition(m_prePos);
+		m_currentPos = m_prePos; // 좌표 갱신
+	}
+	else if (isJump == true) // 점프 했을때 
+	{
+		D3DXVECTOR3 jumpPos = m_prePos;
+		jumpPos.y = m_currentPos.y;
+
+		this->pCharTrans->SetWorldPosition(jumpPos);
+		m_currentPos = jumpPos; // 좌표 갱신
+
+		//================ 지상이랑 체크. 
+		if (fabs(m_prePos.y - m_currentPos.y) <= 0.2f)// 0.2은 EPSILON 값.
+		{
+			isJump = false;
+			m_jumpPower = 0;
+		}
+
+	}
+
+	// 레이랑 케릭터 거리가 멀어지면 레이가 더이상 넘어가지 못하게 만든다.
+	float rayCheckDis = D3DXVec3Length(&(moveRay.origin - pCharTrans->GetWorldPosition()));
+	if (rayCheckDis > 0.21f) // 상수 값은 속력 보다 조금 높은 값.
+	{
+		moveRay.origin = pCharTrans->GetWorldPosition();
+		moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
+	}
+
+	isMove = false;
 }

@@ -55,7 +55,7 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->ChangeScene( "move_Test2" );
 	//SCENE_MGR->ChangeScene( "sector_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
-	SCENE_MGR->ChangeScene("sector_Test");
+	//SCENE_MGR->ChangeScene("sector_Test");
 	//SCENE_MGR->ChangeScene("cScene_testPlayer");
 
 	return S_OK;		
