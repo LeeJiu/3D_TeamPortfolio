@@ -29,6 +29,8 @@ class moveClass
 	float m_jumpPower;
 	float m_gravity;
 
+	bool test;
+
 public:
 	void init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain,cCamera* camera);
 	

@@ -17,27 +17,37 @@ moveClass::~moveClass()
 
 void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain, cCamera* camera)
 {
+	//=================== 전방선언 값 대입.
 	pMainCamera = camera;
 	pChar = pSkinned;
 	pCharTrans = trans;
 	m_pTerrain = terrain;
 	isMove = false;
+
 	//================레이 추가. 아래 방향 바뀌지 않음 .
 	moveRay.direction = D3DXVECTOR3(0, -1, 0);
 	moveRay.origin = pCharTrans->GetWorldPosition();
-	//	isClick = false;
+	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 3; // 머리위에 붙일예정
+	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
+	m_prePos = pCharTrans->GetWorldPosition();
+
+
 	//================
-	isJump = true;
+	isClick = false;
+	isJump = false;
 	m_jumpPower = 0;
 	m_gravity = 19.8f;
 
+	test = false;
+
+	
 }
 void moveClass::update(float timeDelta, cBaseObject* collObj)
 {
 	// 레이 업데이트 
 	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);
-	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
+	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 3; // 머리위에 붙일예정
 	
 
 	if (KEY_MGR->IsStayDown('W'))
@@ -77,13 +87,22 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 		m_jumpPower = 6;
 
 		isJump = true;
+
+		LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
+			moveRay.origin.x,
+			moveRay.origin.y,
+			moveRay.origin.z);
 	}
+
+
 	clickUpdate(collObj); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
 
 	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
 	//=========================
-
+	
 	getLastHeight(collObj);
+
+
 	//아래 피직스 매니져 사용 법
 	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
 	//m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
@@ -92,12 +111,24 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 
 	//===============================
 	moveJumpCheck(timeDelta);
+	if (test == false)
+	{
+		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+			m_prePos.x,
+			m_prePos.y,
+			m_prePos.z);
+
+		LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
+			moveRay.origin.x,
+			moveRay.origin.y,
+			moveRay.origin.z);
+		test = true;
+	}
 
 }
 void moveClass::getLastHeight(cBaseObject* enumy)
 {
 	D3DXVECTOR3 tempLast(0, 0, 0); // 임시 저장 변수.
-
 	bool objColl = false;
 	bool terrainColl = false;
 
@@ -113,6 +144,7 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 		{
 			tempLast = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
 			objColl = true;      // 오브젝트 충돌 했다. 
+		
 		}
 	    // 오브젝트와 충돌 하지 않았다면 - 현재 위치 보다 낮은 값이 들어간다. ( 이 값이 없으면 아래로 내려가지 않는다. )
 		//else
@@ -122,10 +154,11 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 	}
 	// 오브젝트와 충돌 했다면 - tempLast 에 값이 들어간다. 
 
-
+	
 	// 터레인과 충돌 했다면. 
-	if (m_pTerrain->IsIntersectRay(&m_prePos, &moveRay) == true)
+	if (m_pTerrain->IsIntersectRay(&m_prePos, &moveRay))
 	{
+	
 		terrainColl = true;
 
 		if (objColl == true) // 충돌 했다면 . tempLast = obj의 좌표와 같다. ( 그중에 Y축 값이 높은것으로 반환)
@@ -224,7 +257,7 @@ void moveClass::moveJumpCheck(float timeDelta)
 		isJump = true;
 	}
 	// 위와 마찮가지 갈 곳이 더 높으면 +값이 나온다. (prePos) --__ (current)
-	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true && isJump == false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
+	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f&&isMove==true  && isJump == false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
 	{
 		this->pCharTrans->SetWorldPosition(m_prePos);
 		m_currentPos = m_prePos; // 좌표 갱신
