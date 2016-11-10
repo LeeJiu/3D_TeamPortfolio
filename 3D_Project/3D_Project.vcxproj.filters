@@ -207,8 +207,14 @@
     <ClInclude Include="cBoundSphere.h">
       <Filter>BaseObject</Filter>
     </ClInclude>
+    <ClInclude Include="cSoundManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
     <ClInclude Include="cWayPoint.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_BoundBoxTool.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -383,8 +389,14 @@
     <ClCompile Include="cBoundSphere.cpp">
       <Filter>BaseObject</Filter>
     </ClCompile>
+    <ClCompile Include="cSoundManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
     <ClCompile Include="cWayPoint.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_BoundBoxTool.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

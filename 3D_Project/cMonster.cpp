@@ -16,7 +16,7 @@ cMonster::~cMonster()
 
 void cMonster::BaseObjectEnable()
 {
-	pTransform->SetWorldPosition(3, pTerrain->GetHeight(0, 0), 3);
+	pTransform->SetWorldPosition(20, pTerrain->GetHeight(20, 3), 3);
 	pSkinned->Play("Walk");
 
 	m_pWayPoint = new cWayPoint(pTerrain);

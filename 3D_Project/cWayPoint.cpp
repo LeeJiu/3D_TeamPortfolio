@@ -73,12 +73,13 @@ void cWayPoint::Update(cTransform * trans)
 		return;
 	}
 
+
 	//방향을 구한다.
-	D3DXVECTOR3 dir = wayPoint;
+	/*D3DXVec3Normalize(&dirToTarget, &dirToTarget);
+	D3DXVECTOR3 dir = VecLerp(trans->GetForward(), dirToTarget, 0.3);
 	dir.y = 0;
-	cTransform temp = *trans;
-	temp.LookDirection(dir);
-	trans->RotateSlerp(*trans, temp, 0.2);
+	trans->LookDirection(dir);*/
+	
 
 	//이동량
 	float deltaMove = 5.0f * TIME_MGR->GetFrameDeltaSec();
