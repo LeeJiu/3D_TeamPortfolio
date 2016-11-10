@@ -1,4 +1,5 @@
 #pragma once
+#include "cTransform.h"
 
 
 #define		FEPSILON		0.00001f		//Float 비교를 할때 이값 이하의 오차는 같은 걸로 따진다.
@@ -20,13 +21,6 @@ b = 10.000095f
 
 
 #define		RS(a,b)			Device->SetRenderState((a),(b))		
-
-
-//캐릭터 상태
-enum ACTOR_STATE
-{
-	AS_IDLE, AS_WALK, AS_ATTACK
-};
 
 
 //반직선 구조체 
@@ -99,5 +93,7 @@ namespace MyUtil{
 
 	//플룻의 비트값을 손실하지 않은체 DWORD 형으로 변환
 	DWORD FloatToDWORD( float f );
+
+	void createQuad(D3DXVECTOR3* quad, float row, float col, cTransform* myTrans, D3DXVECTOR3* createPos);
 
 }
