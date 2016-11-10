@@ -60,7 +60,7 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene( "animation_Test" );
 	//SCENE_MGR->ChangeScene("sector_Test");
 	//SCENE_MGR->ChangeScene("cScene_testPlayer");
-	SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
+	SCENE_MGR->ChangeScene("move_Test");
 
 
 	return S_OK;		

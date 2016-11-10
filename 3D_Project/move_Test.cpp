@@ -136,6 +136,7 @@ void move_Test::Scene_Update(float timeDelta)
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);
 	cRay.origin.y = pSkinnedTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
 
+	//PHYSICS_MRG->
 
 
 
