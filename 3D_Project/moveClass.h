@@ -37,8 +37,8 @@ public:
 	void render();
 
 	void getLastHeight(cBaseObject* enumy);
-	void clickUpdate();
-	void moveJumpCheck();
+	void clickUpdate(cBaseObject* enumy);
+	void moveJumpCheck(float timeDelta);
 	moveClass();
 	~moveClass();
 };

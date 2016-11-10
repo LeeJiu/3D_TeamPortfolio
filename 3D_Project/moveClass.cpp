@@ -27,7 +27,7 @@ void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* t
 	moveRay.origin = pCharTrans->GetWorldPosition();
 	//	isClick = false;
 	//================
-	isJump = false;
+	isJump = true;
 	m_jumpPower = 0;
 	m_gravity = 19.8f;
 
@@ -38,7 +38,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);
 	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
-
+	
 
 	if (KEY_MGR->IsStayDown('W'))
 	{
@@ -54,13 +54,13 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	if (KEY_MGR->IsStayDown('Q'))
 	{
 		isMove = true;
-		moveRay.origin += pCharTrans->GetRight()*0.2f;
+		moveRay.origin -= pCharTrans->GetRight()*0.2f;
 
 	}
 	if (KEY_MGR->IsStayDown('E'))
 	{
 		isMove = true;
-		moveRay.origin -= pCharTrans->GetRight()*0.2f;
+		moveRay.origin += pCharTrans->GetRight()*0.2f;
 	}
 	if (KEY_MGR->IsStayDown('A'))
 	{
@@ -78,7 +78,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 
 		isJump = true;
 	}
-	clickUpdate(); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
+	clickUpdate(collObj); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
 
 	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
 	//=========================
@@ -91,7 +91,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	//================================ 여기 사이에 코딩 하면됨
 
 	//===============================
-	moveJumpCheck();
+	moveJumpCheck(timeDelta);
 
 }
 void moveClass::getLastHeight(cBaseObject* enumy)
@@ -141,6 +141,8 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 	if (objColl == false && terrainColl == false) 
 	{
 		m_prePos.y = m_pTerrain->GetHeight(m_prePos.x, m_prePos.z);
+		this->pCharTrans->SetWorldPosition(m_prePos);
+
 	}
 
 
@@ -152,8 +154,12 @@ void moveClass::render()
 
 }
 
-void moveClass::clickUpdate()
+void moveClass::clickUpdate(cBaseObject* enumy)
 {
+	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
+	//m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
+
+
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	{
 		Ray ray;
@@ -162,6 +168,7 @@ void moveClass::clickUpdate()
 		this->pMainCamera->ComputeRay(&ray, &screenPos);
 
 		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+		m_mousePos = PHYSICS_MGR->getLastHeight(enumy, &ray, m_pTerrain, &m_mousePos);
 		isClick = true;
 	}
 
@@ -193,7 +200,7 @@ void moveClass::clickUpdate()
 		}
 	}
 }
-void moveClass::moveJumpCheck()
+void moveClass::moveJumpCheck(float timeDelta)
 {
 	//===================== 테스트용 점프 코드 ====================
 	// 점프가 true 일때  ( y 값 감소 )
