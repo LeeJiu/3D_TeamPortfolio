@@ -1,4 +1,3 @@
-
 #pragma once
 #include "cScene.h"
 
@@ -6,16 +5,23 @@ class cBaseObject;
 class cCamera;
 class cTerrain;
 class cSkinnedAnimation;
+class cPlayer;
+class cMage;
 
 class animation_Test : public cScene
 {
 private:
 
 	cSkinnedAnimation*		pSkinned1;
+	cPlayer*				pPlayer;
+	cMage*					pMage;
 	cTransform*				pSkinnedTrans;
-	// 도형 피킹에 쓸것.
+	cTransform*				pTransForCamera;		//카메라용
+
+													// 도형 피킹에 쓸것.
 	Ray						cRay; //케릭터에 들어갈 레이.
 	bool                    objectHit;
+
 	// 움직임에 써볼것.
 	D3DXVECTOR3		m_currentPos;// 내 케릭터의 위치
 	D3DXVECTOR3		m_prePos;// 내가 갈곳의 위치
@@ -27,7 +33,11 @@ private:
 	bool isTerrain;
 	bool isClick;
 
-	int current_State;
+
+	bool isCharView, isAltView;		//카메라용
+
+	ACTOR_STATE current_State;
+	ACTOR_STATE m_state;
 	std::string current_Ani;
 
 

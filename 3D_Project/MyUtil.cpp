@@ -444,6 +444,197 @@ namespace MyUtil{
 		return *pDword;
 	}
 
+	std::string SetAnimation(ACTOR_STATE state)
+	{
+		std::string state_name;
+		switch (state)
+		{
+		case ROBBY_IDLE:  state_name = "STF_IDLE";
+			break;
+		case PET_IDLE:  state_name = "PET_IDLE";
+			break;
+		case PET_RUN:  state_name = "PET_RUN";
+			break;
+		case SIT_SRT:  state_name = "SIT_SRT";
+			break;
+		case SIT_LOOP:  state_name = "SIT_LOOP";
+			break;
+		case SIT_UP:  state_name = "SIT_UP";
+			break;
+		case LOOP:  state_name = "LOOP";
+			break;
+		case HELLO:  state_name = "HELLO";
+			break;
+		case CRY:  state_name = "CRY";
+			break;
+		case DANCE:  state_name = "DANCE";
+			break;
+		case STF_DMG:  state_name = "STF_DMG";
+			break;
 
+		case STF_DIE:  state_name = "STF_DIE";
+			break;
+
+		case STF_DEAD:  state_name = "STF_DEAD";
+			break;
+		case STF_DOWN:  state_name = "STF_DOWN";
+			break;
+		case STF_STUN:  state_name = "STF_STUN";
+			break;
+		case STF_WAKEUP:  state_name = "STF_WAKEUP";
+			break;
+		case STF_IDLE:  state_name = "STF_IDLE";
+			break;
+		case STF_WAIT:  state_name = "STF_WAIT";
+			break;
+		case STF_WALK:  state_name = "STF_WALK";
+			break;
+		case STF_WALK_BACK:  state_name = "STF_WALK_BACK";
+			break;
+		case STF_RUN:  state_name = "STF_RUN";
+			break;
+		case RUN_R:  state_name = "RUN_R";
+			break;
+		case RUN_L:  state_name = "RUN_L";
+			break;
+		case STF_STOP:  state_name = "STF_STOP";
+			break;
+		case STF_PASSOUT:  state_name = "STF_PASSOUT";
+			break;
+		case STF_JUMP:  state_name = "STF_JUMP";
+			break;
+		case STF_WEAPON:  state_name = "STF_WEAPON";
+			break;
+		case STF_UNWEAPON:  state_name = "STF_UNWEAPON";
+			break;
+		case STF_ATK1:  state_name = "STF_ATK1";
+			break;
+		case STF_ATK2:  state_name = "STF_ATK2";
+			break;
+		case STF_BUFF:  state_name = "STF_BUFF";
+			break;
+		case STF_TYFUNG:  state_name = "STF_TYFUNG";
+			break;
+		case STF_THUNDER:  state_name = "STF_THUNDER";
+			break;
+		case STF_FROZEN:  state_name = "STF_FROZEN";
+			break;
+		case STF_FIRE:  state_name = "STF_FIRE";
+			break;
+		case STF_SPLASH:  state_name = "STF_SPLASH";
+			break;
+		case STF_BUMB:  state_name = "STF_BUMB";
+			break;
+		case STF_DRAIN:  state_name = "STF_DRAIN";
+			break;
+		case STF_SWING:  state_name = "STF_SWING";
+			break;
+		case STF_STORM:  state_name = "STF_STORM";
+			break;
+		case STF_MAGIC_SHOT:  state_name = "STF_MAGIC_SHOT";
+			break;
+		case STF_BLINK:  state_name = "STF_BLINK";
+			break;
+		default: state_name = "STF_IDLE";
+			break;
+		}
+
+		return state_name;
+	}
+
+	void SetAnimation(ACTOR_STATE state, std::string str)
+	{
+		switch (state)
+		{
+		case ROBBY_IDLE:  str = "STF_IDLE";
+			break;
+		case PET_IDLE:  str = "PET_IDLE";
+			break;
+		case PET_RUN:  str = "PET_RUN";
+			break;
+		case SIT_SRT:  str = "SIT_SRT";
+			break;
+		case SIT_LOOP:  str = "SIT_LOOP";
+			break;
+		case SIT_UP:  str = "SIT_UP";
+			break;
+		case LOOP:  str = "LOOP";
+			break;
+		case HELLO:  str = "HELLO";
+			break;
+		case CRY:  str = "CRY";
+			break;
+		case DANCE:  str = "DANCE";
+			break;
+		case STF_DMG:  str = "STF_DMG";
+			break;
+
+		case STF_DIE:  str = "STF_DIE";
+			break;
+
+		case STF_DEAD:  str = "STF_DEAD";
+			break;
+		case STF_DOWN:  str = "STF_DOWN";
+			break;
+		case STF_STUN:  str = "STF_STUN";
+			break;
+		case STF_WAKEUP:  str = "STF_WAKEUP";
+			break;
+		case STF_IDLE:  str = "STF_IDLE";
+			break;
+		case STF_WAIT:  str = "STF_WAIT";
+			break;
+		case STF_WALK:  str = "STF_WALK";
+			break;
+		case STF_WALK_BACK:  str = "STF_WALK_BACK";
+			break;
+		case STF_RUN:  str = "STF_RUN";
+			break;
+		case RUN_R:  str = "RUN_R";
+			break;
+		case RUN_L:  str = "RUN_L";
+			break;
+		case STF_STOP:  str = "STF_STOP";
+			break;
+		case STF_PASSOUT:  str = "STF_PASSOUT";
+			break;
+		case STF_JUMP:  str = "STF_JUMP";
+			break;
+		case STF_WEAPON:  str = "STF_WEAPON";
+			break;
+		case STF_UNWEAPON:  str = "STF_UNWEAPON";
+			break;
+		case STF_ATK1:  str = "STF_ATK1";
+			break;
+		case STF_ATK2:  str = "STF_ATK2";
+			break;
+		case STF_BUFF:  str = "STF_BUFF";
+			break;
+		case STF_TYFUNG:  str = "STF_TYFUNG";
+			break;
+		case STF_THUNDER:  str = "STF_THUNDER";
+			break;
+		case STF_FROZEN:  str = "STF_FROZEN";
+			break;
+		case STF_FIRE:  str = "STF_FIRE";
+			break;
+		case STF_SPLASH:  str = "STF_SPLASH";
+			break;
+		case STF_BUMB:  str = "STF_BUMB";
+			break;
+		case STF_DRAIN:  str = "STF_DRAIN";
+			break;
+		case STF_SWING:  str = "STF_SWING";
+			break;
+		case STF_STORM:  str = "STF_STORM";
+			break;
+		case STF_MAGIC_SHOT:  str = "STF_MAGIC_SHOT";
+			break;
+		case STF_BLINK:  str = "STF_BLINK";
+			break;
+		default: str = "STF_IDLE";
+			break;
+		}
+	}
 
 }

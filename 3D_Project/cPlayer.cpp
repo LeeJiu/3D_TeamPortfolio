@@ -74,7 +74,7 @@ void cPlayer::BaseObjectUpdate(float timeDelta)
 	{
 		if (m_state != AS_WALK)
 		{
-			m_state = AS_WALK;
+			m_state = AS_WALK;;;;
 			m_pState->EnterState(m_state, 'E');
 		}
 	}
@@ -117,6 +117,6 @@ void cPlayer::BaseObjectUpdate(float timeDelta)
 		//m_pInput->DeleteKey('1');
 		m_pInput->SwapKey('1', '2');
 	}
-
-	m_pMove->update(timeDelta, NULL);
+	if(m_pMove)
+		m_pMove->update(timeDelta, NULL);
 }
