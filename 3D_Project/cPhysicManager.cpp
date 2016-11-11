@@ -649,6 +649,12 @@ bool cPhysicManager::IsOverlap(cTransform* pTransA, cBoundBox* pBoundA, cTransfo
 
 	pBoundA->GetWorldCenterRadius(pTransA, &centerA, &radiusA);
 	pBoundB->GetWorldCenterRadius(pTransB, &centerB, &radiusB);
+	
+	//testBox->RenderGizmo(colliTest);
+	//GIZMO_MGR->WireSphere(centerA
+	//	, radiusA, 0xff0000ff);
+	//GIZMO_MGR->WireSphere(centerB
+	//	, radiusB, 0xffff00ff);
 
 	D3DXVECTOR3 dirTo = centerB - centerA;
 

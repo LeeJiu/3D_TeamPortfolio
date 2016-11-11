@@ -222,8 +222,13 @@
     <ClInclude Include="moveClass.h">
       <Filter>Component</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="cImage.h">
       <Filter>Common</Filter>
+=======
+    <ClInclude Include="monster_Test.h">
+      <Filter>Scenes</Filter>
+>>>>>>> origin/master
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -416,8 +421,13 @@
     <ClCompile Include="moveClass.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="cImage.cpp">
       <Filter>Common</Filter>
+=======
+    <ClCompile Include="monster_Test.cpp">
+      <Filter>Scenes</Filter>
+>>>>>>> origin/master
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
