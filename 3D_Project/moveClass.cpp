@@ -27,7 +27,7 @@ void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* t
 	//================레이 추가. 아래 방향 바뀌지 않음 .
 	moveRay.direction = D3DXVECTOR3(0, -1, 0);
 	moveRay.origin = pCharTrans->GetWorldPosition();
-	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 3; // 머리위에 붙일예정
+	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
 	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
 	m_prePos = pCharTrans->GetWorldPosition();
 
@@ -48,7 +48,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	// 레이 업데이트 
 	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);
-	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 3; // 머리위에 붙일예정
+	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
 
 
 	if (KEY_MGR->IsStayDown('W'))
@@ -223,7 +223,7 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 
 
 	// 터레인과 충돌 했다면. 
-	if (m_pTerrain->IsIntersectRay(&m_prePos, &moveRay))
+	if (m_pTerrain->IsIntersectRay(&m_prePos, &moveRay) == true)
 	{
 		if (test == false)
 		{
@@ -249,12 +249,11 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 	}
 
 
-	// 혹시 모를 예외 처리 ( 만약 둘다 충돌 되지 않았다면 일단 터레인 위치로 좌표를 수정 )
-	if (objColl == false && terrainColl == false)
+	// 예외처리 / 맨 처음 한번은 쿼드 트리에서 레이체크를 못한다.
+	if (objColl == true && terrainColl == false)
 	{
 		m_prePos.y = m_pTerrain->GetHeight(m_prePos.x, m_prePos.z);
 		this->pCharTrans->SetWorldPosition(m_prePos);
-
 	}
 
 
@@ -338,7 +337,7 @@ void moveClass::moveJumpCheck(float timeDelta)
 	}
 
 	// 위와 마찬가지 갈 곳이 더 높으면 +값이 나온다. (prePos) --__ (current)
-	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f&&isMove==true  && isJump == false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈 때. )
+	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true  && isJump == false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈 때. )
 	{
 		this->pCharTrans->SetWorldPosition(m_prePos);
 		m_currentPos = m_prePos; // 좌표 갱신

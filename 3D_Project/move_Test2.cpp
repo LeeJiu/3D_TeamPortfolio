@@ -22,7 +22,7 @@ HRESULT move_Test2::Scene_Init()
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
 		"../Resources/Textures/MyHeight512.bmp",
-		"../Resources/Textures/terrain1.jpg",
+		"../Resources/Textures/terrain1.png",
 		"../Resources/Textures/terrain2.png",
 		"../Resources/Textures/terrain3.png",
 		"../Resources/Textures/terrain4.png",
@@ -64,10 +64,10 @@ HRESULT move_Test2::Scene_Init()
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
-	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0)+2.f, 0);
+	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0)/*+2.f*/, 0);
 
 	move = new moveClass;
-	move->init(pSkinned1, pSkinnedTrans, m_pTerrain,pMainCamera);
+	move->init(pSkinned1, pSkinnedTrans, m_pTerrain, pMainCamera);
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
@@ -95,7 +95,6 @@ HRESULT move_Test2::Scene_Init()
 
 	//================레이 추가. 아래 방향 바뀌지 않음 .
 	//=============== 레이 초기화 끝.
-	pMainCamera->SetWorldPosition(2, 5, 2);
 	return S_OK;
 }
 
@@ -117,11 +116,14 @@ void move_Test2::Scene_Update(float timeDelta)
 	this->pSkinned1->Update(timeDelta);
 
 
-	if (KEY_MGR->IsOnceDown(VK_SPACE))
+	if (KEY_MGR->IsOnceDown('I'))
 	{
 		LOG_MGR->AddLog("T:%.2f,P:%.2f",
 			m_pTerrain->GetHeight(0, 0), pSkinnedTrans->GetWorldPosition().y);
 
+
+		LOG_MGR->AddLog("캐릭터 현재 위치");
+		LOG_MGR->AddLog("Y : %.2f", pSkinnedTrans->GetWorldPosition().y);
 	}
 
 
