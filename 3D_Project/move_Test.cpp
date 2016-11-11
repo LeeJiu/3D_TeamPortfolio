@@ -62,6 +62,8 @@ HRESULT move_Test::Scene_Init()
 	//
 	pSkinnedBox = new cBoundBox;
 	pSkinnedBox->Init(D3DXVECTOR3(-1, -1, -1), D3DXVECTOR3(1, 1, 1));
+	//pSkinnedBox->Init(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(2, 2, 2));
+
 	// pSkinnedBox->localCenter = D3DXVECTOR3(0, 0, 0);
 	// pSkinnedBox->localMaxPos = D3DXVECTOR3(2, 2, 2);
 	// pSkinnedBox->localMinPos = D3DXVECTOR3(-2, -2, -2);
@@ -107,7 +109,8 @@ HRESULT move_Test::Scene_Init()
 	colliTest->SetWorldPosition(3, m_pTerrain->GetHeight(3, 3) + 2, 3);
 
 	testBox = new cBoundBox;
-	testBox->Init(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(3, 3, 3));
+	//testBox->Init(D3DXVECTOR3(-2, -2, -2), D3DXVECTOR3(2, 2, 2));
+	testBox->Init(D3DXVECTOR3(-1, -2, -1), D3DXVECTOR3(3, 2, 3));
 
 	//testBox->localCenter = D3DXVECTOR3(0, 0, 0);
 	//testBox->localMaxPos = D3DXVECTOR3(3, 3, 3);
@@ -120,6 +123,8 @@ HRESULT move_Test::Scene_Init()
 	quad[1] = D3DXVECTOR3(3, 0, 3);
 	quad[2] = D3DXVECTOR3(-3, 0, -3);
 	quad[3] = D3DXVECTOR3(3, 0, -3);
+
+	boundHit = false;
 
 	return S_OK;
 }
@@ -232,31 +237,43 @@ void move_Test::Scene_Update(float timeDelta)
 	}
 
 	// PHYSICS_MRG->IsOverlap();
-	if (
-		PHYSICS_MGR->IsOverlap(pSkinnedTrans, pSkinnedBox, colliTest, testBox))
-	{
-	    if (isMove == true)
-		{
-			if (
-				PHYSICS_MGR->IsRayHitBound(
-				&cRay,				//레이
-				testBox,			//바운드
-				colliTest,	//바운드의 Transform
-				NULL,     //Hit 위치 ( NULL 이면 대입 안됨 )
-				NULL	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
-				))
-			{
-				LOG_MGR->AddLog("츙돌");
+	frontRay.origin = pSkinnedTrans->GetWorldPosition();
+	frontRay.origin.y = pSkinnedTrans->GetWorldPosition().y+2;
+	frontRay.direction = cRay.direction;
 
-				PHYSICS_MGR->IsBlocking(
-					pSkinnedTrans, pSkinnedBox, colliTest, testBox, 0.5f);
-				{
-					cRay.origin = pSkinnedTrans->GetWorldPosition();
-				}
-			}
-	
+
+	//if (PHYSICS_MGR->IsOverlap(pSkinnedTrans, pSkinnedBox, colliTest, testBox))
+	//{
+	//	boundHit = true;
+	//	if (PHYSICS_MGR->IsRayHitBound(&cRay, testBox, colliTest, NULL, NULL))
+	//	{
+	//		LOG_MGR->AddLog("충돌1");
+
+	//	}
+		if(PHYSICS_MGR->IsBlocking(
+			pSkinnedTrans, 
+			pSkinnedBox, 
+			colliTest, testBox, 1.f))
+		{
+			cRay.origin = pSkinnedTrans->GetWorldPosition();
+			cRay.origin.y = pSkinnedTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
+			LOG_MGR->AddLog("충돌2");
 		}
-	}
+	
+
+	
+
+	//if (
+	//	PHYSICS_MGR->IsRayHitBound(
+	//	&cRay,				//레이
+	//	testBox,			//바운드
+	//	colliTest,	//바운드의 Transform
+	//	NULL,     //Hit 위치 ( NULL 이면 대입 안됨 )
+	//	NULL	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
+	//	))
+	//{
+	//	LOG_MGR->AddLog("츙돌");
+	//}
 
 	//D3DXIntersectTri()
 
@@ -416,16 +433,22 @@ void move_Test::Scene_Render1()
 	m_Land->Render();
 	//========== 레이 기지모
 	GIZMO_MGR->Line(this->cRay.origin, this->cRay.origin + this->cRay.direction * 100, 0xffffff00);
+	GIZMO_MGR->Line(this->frontRay.origin, this->frontRay.origin + this->frontRay.direction * 100, 0xffff0000);
+
 	//
 	pSkinnedBox->RenderGizmo(pSkinnedTrans);
 
-	GIZMO_MGR->WireSphere(pSkinnedTrans->GetWorldPosition()
-		, pSkinnedBox->radius, 0xffff0000);
+	//GIZMO_MGR->WireSphere(pSkinnedTrans->GetWorldPosition()
+	//	, pSkinnedBox->radius, 0xffff0000);
 	//
 	testBox->RenderGizmo(colliTest);
-	GIZMO_MGR->WireSphere(colliTest->GetWorldPosition()
-		, testBox->radius, 0xff0000ff);
+	//GIZMO_MGR->WireSphere(colliTest->GetWorldPosition()
+	//	, testBox->radius, 0xff0000ff);
 	QuadRender();
+	//if(PHYSICS_MGR->IsOverlap(pSkinnedTrans, pSkinnedBox, colliTest, testBox))
+	//{
+	//	LOG_MGR->AddLog("충돌1");
+	//}
 
 }
 
@@ -462,22 +485,22 @@ void move_Test::QuadRender()
 	MyUtil::createQuad(quad, 5, 5, pSkinnedTrans, &m_mousePos);
 	//createQuad(quad, 5, 5, pSkinnedTrans, &m_mousePos);
 	PHYSICS_MGR->IsPointQuad(quad, &cRay);
-							
+
 
 	//0    1
 	//
 	//2    3
 
 	//GIZMO_MGR->Quad(*quad);
-	
-//
-//GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
-//GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
-//GIZMO_MGR->Line(quad[3], quad[0], 0xff00ff00);
-//
-//GIZMO_MGR->Line(quad[0], quad[3], 0xffff0000);
-//GIZMO_MGR->Line(quad[3], quad[2], 0xffff0000);
-//GIZMO_MGR->Line(quad[2], quad[0], 0xffff0000);
+
+	//
+	//GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
+	//GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
+	//GIZMO_MGR->Line(quad[3], quad[0], 0xff00ff00);
+	//
+	//GIZMO_MGR->Line(quad[0], quad[3], 0xffff0000);
+	//GIZMO_MGR->Line(quad[3], quad[2], 0xffff0000);
+	//GIZMO_MGR->Line(quad[2], quad[0], 0xffff0000);
 
 
 
@@ -508,7 +531,7 @@ void move_Test::createQuad(D3DXVECTOR3* quad, float row, float col, cTransform* 
 	GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
 	GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
 	GIZMO_MGR->Line(quad[3], quad[0], 0xff00ff00);
-	
+
 	GIZMO_MGR->Line(quad[0], quad[3], 0xffff0000);
 	GIZMO_MGR->Line(quad[3], quad[2], 0xffff0000);
 	GIZMO_MGR->Line(quad[2], quad[0], 0xffff0000);

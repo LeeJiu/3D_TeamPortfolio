@@ -5,7 +5,7 @@
 #include "cTerrain.h"
 #include "cBaseObject.h"
 #include "cCamera.h"
-
+#include "cBoundBox.h"
 moveClass::moveClass()
 {
 }
@@ -15,13 +15,15 @@ moveClass::~moveClass()
 {
 }
 
-void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain, cCamera* camera)
+void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain, cCamera* camera, cBoundBox* pBox)
 {
 	//=================== 전방선언 값 대입.
 	pMainCamera = camera;
 	pChar = pSkinned;
 	pCharTrans = trans;
+	pCharBound = pBox;
 	m_pTerrain = terrain;
+	
 	isMove = false;
 
 	//================레이 추가. 아래 방향 바뀌지 않음 .
@@ -43,7 +45,7 @@ void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* t
 
 	objTest = true;
 }
-void moveClass::update(float timeDelta, cBaseObject* collObj)
+void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox, cTransform* collTrans)
 {
 	// 레이 업데이트 
 	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
@@ -95,62 +97,17 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 			moveRay.origin.z);
 	}
 
-	if (KEY_MGR->IsOnceDown('P'))
-	{
-		objTest = !objTest;
-		if (objTest == true)
-		{
-			LOG_MGR->AddLog("objTest true");
 
-		}
-		else
-		{
-			LOG_MGR->AddLog("objTest false");
-
-		}
-	
-	}
 	clickUpdate(collObj); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
 
 	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
 	//=========================
-	if (test == false)
-	{
-		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-			m_prePos.x,
-			m_prePos.y,
-			m_prePos.z);
 
-		LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
-			moveRay.origin.x,
-			moveRay.origin.y,
-			moveRay.origin.z);
-		test = true;
-	}
 
-	if (objTest == false)
-	{
-		getLastHeight(NULL);
-	}
-	else if (objTest == true)
-	{
-		getLastHeight(collObj);
-
-	}
-
-	if (test == false)
-	{
-		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-			m_prePos.x,
-			m_prePos.y,
-			m_prePos.z);
-
-		LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
-			moveRay.origin.x,
-			moveRay.origin.y,
-			moveRay.origin.z);
-		test = true;
-	}
+	//getLastHeight(NULL);
+	
+getLastHeight(collObj);
+	
 
 	//아래 피직스 매니져 사용 법
 	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
@@ -178,19 +135,9 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	//===============================
 
 	moveJumpCheck(timeDelta);
-	if (test == false)
-	{
-		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-			m_prePos.x,
-			m_prePos.y,
-			m_prePos.z);
-
-		LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
-			moveRay.origin.x,
-			moveRay.origin.y,
-			moveRay.origin.z);
-		test = true;
-	}
+	boundCheck( collBox, collTrans);
+	
+	isMove = false;
 
 }
 void moveClass::getLastHeight(cBaseObject* enumy)
@@ -225,18 +172,7 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 	// 터레인과 충돌 했다면. 
 	if (m_pTerrain->IsIntersectRay(&m_prePos, &moveRay))
 	{
-		if (test == false)
-		{
-			LOG_MGR->AddLog("시벌: %.2f, Ty : %.2f, Tz : %.2f",
-				m_prePos.x,
-				m_prePos.y,
-				m_prePos.z);
 
-			LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
-				moveRay.origin.x,
-				moveRay.origin.y,
-				moveRay.origin.z);
-		}
 		terrainColl = true;
 
 		if (objColl == true) // 충돌 했다면 . tempLast = obj의 좌표와 같다. ( 그중에 Y축 값이 높은것으로 반환)
@@ -367,5 +303,21 @@ void moveClass::moveJumpCheck(float timeDelta)
 		moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
 	}
 
-	isMove = false;
+
+}
+void moveClass::boundCheck(cBoundBox* collBox, cTransform* collTrans)
+{
+	if (
+	PHYSICS_MGR->IsBlocking(
+		pCharTrans,
+		pCharBound,
+		collTrans, collBox, 1.f))
+	{
+		moveRay.origin = pCharTrans->GetWorldPosition();
+		moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
+
+		m_currentPos = pCharTrans->GetWorldPosition();
+		m_prePos = pCharTrans->GetWorldPosition();
+
+	}
 }

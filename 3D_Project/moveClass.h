@@ -5,11 +5,14 @@ class cTerrain;
 class cSkinnedAnimation;
 class cBaseObject;
 class cCamera;
+class cBoundBox;
 
 class moveClass 
 {
 	cSkinnedAnimation*		pChar;  //케릭터
 	cTransform*				pCharTrans;//케릭터움직일 trans
+	cBoundBox*              pCharBound;
+
 	cBaseObject*            pEnumy;    //애너미 주소값 ( 전방선언)
 	cCamera*				pMainCamera;
 	Ray                     moveRay;
@@ -32,15 +35,18 @@ class moveClass
 	bool test;
 	bool objTest;
 public:
-	void init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain,cCamera* camera);
+	void init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain,cCamera* camera,cBoundBox* pBox);
 	
 	// 충돌 오브젝트는 여러개 일 수 있음 나중에 벡터 형으로 바뀔 수도 있다.
-	void update(float timeDelta, cBaseObject* collObj);
+	void update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox, cTransform* collTrans);
+
 	void render();
 
+	void boundCheck(cBoundBox* collBox,cTransform* collTrans);
 	void getLastHeight(cBaseObject* enumy);
 	void clickUpdate(cBaseObject* enumy);
 	void moveJumpCheck(float timeDelta);
+	
 	moveClass();
 	~moveClass();
 };

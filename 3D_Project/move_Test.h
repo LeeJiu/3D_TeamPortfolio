@@ -22,6 +22,8 @@ private:
 
 	// 도형 피킹에 쓸것.
 	Ray						cRay; //케릭터에 들어갈 레이.
+	Ray						frontRay; //케릭터에 들어갈 레이.
+
 	bool                    objectHit;
 	// 움직임에 써볼것.
 	D3DXVECTOR3		m_currentPos;// 내 케릭터의 위치
@@ -48,6 +50,7 @@ private:
 
 	D3DXMATRIXA16 temp;
 
+	bool boundHit;
 
 public:
 	move_Test(void);

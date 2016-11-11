@@ -15,6 +15,7 @@ private:
 
 	cSkinnedAnimation*		pSkinned1;
 	cTransform*				pSkinnedTrans;
+	cBoundBox*              pSkinnedBound;
 	// 도형 피킹에 쓸것.
 	Ray						cRay; //케릭터에 들어갈 레이.
 	bool                    objectHit;
@@ -38,6 +39,9 @@ private:
 	D3DXMATRIXA16 temp;
 
 	moveClass* move;
+
+	cTransform*				collTrans;
+	cBoundBox*              collBox;
 
 public:
 	move_Test2(void);
