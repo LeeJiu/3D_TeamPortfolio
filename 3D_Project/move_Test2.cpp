@@ -64,7 +64,7 @@ HRESULT move_Test2::Scene_Init()
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
-	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0)+2.f, 0);
+	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0,0)+3.f, 0);
 	
 	pSkinnedBound = new cBoundBox;
 	pSkinnedBound->Init(D3DXVECTOR3(-2, -2, -2), D3DXVECTOR3(2, 2, 2));

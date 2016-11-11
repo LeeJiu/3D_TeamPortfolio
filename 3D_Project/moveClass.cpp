@@ -29,10 +29,12 @@ void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* t
 	//================레이 추가. 아래 방향 바뀌지 않음 .
 	moveRay.direction = D3DXVECTOR3(0, -1, 0);
 	moveRay.origin = pCharTrans->GetWorldPosition();
-	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 3; // 머리위에 붙일예정
+	moveRay.origin.y = pCharTrans->GetWorldPosition().y + HEADPOS; // 머리위에 붙일예정
+	
 	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
 	m_prePos = pCharTrans->GetWorldPosition();
 
+	this->pCharTrans->SetWorldPosition(m_prePos);
 
 	//================
 	isClick = false;
@@ -50,7 +52,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 	// 레이 업데이트 
 	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);
-	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 3; // 머리위에 붙일예정
+	moveRay.origin.y = pCharTrans->GetWorldPosition().y + HEADPOS; // 머리위에 붙일예정
 
 
 	if (KEY_MGR->IsStayDown('W'))
@@ -105,7 +107,14 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 
 
 	//getLastHeight(NULL);
-	
+	if (test == false)
+	{
+
+	LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
+		moveRay.origin.x,
+		moveRay.origin.y,
+		moveRay.origin.z);
+	}
 getLastHeight(collObj);
 	
 
@@ -139,6 +148,7 @@ getLastHeight(collObj);
 	
 	isMove = false;
 
+	test = true;
 }
 void moveClass::getLastHeight(cBaseObject* enumy)
 {
@@ -167,7 +177,14 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 		//}
 	}
 	// 오브젝트와 충돌 했다면 - tempLast 에 값이 들어간다. 
+	if (test == false)
+	{
 
+		LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
+			moveRay.origin.x,
+			moveRay.origin.y,
+			moveRay.origin.z);
+	}
 
 	// 터레인과 충돌 했다면. 
 	if (m_pTerrain->IsIntersectRay(&m_prePos, &moveRay))
@@ -261,7 +278,7 @@ void moveClass::moveJumpCheck(float timeDelta)
 
 		// 레이 업데이트 및 m_currentPos 갱신/
 		m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
-		moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
+		moveRay.origin.y = pCharTrans->GetWorldPosition().y + HEADPOS; // 머리위에 붙일예정
 
 	}
 
@@ -301,7 +318,7 @@ void moveClass::moveJumpCheck(float timeDelta)
 	if (rayCheckDis > 0.21f) // 상수 값은 속력 보다 조금 높은 값.
 	{
 		moveRay.origin = pCharTrans->GetWorldPosition();
-		moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
+		moveRay.origin.y = pCharTrans->GetWorldPosition().y + HEADPOS; // 머리위에 붙일예정
 	}
 
 
@@ -315,7 +332,7 @@ void moveClass::boundCheck(cBoundBox* collBox, cTransform* collTrans)
 		collTrans, collBox, 1.f))
 	{
 		moveRay.origin = pCharTrans->GetWorldPosition();
-		moveRay.origin.y = pCharTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
+		moveRay.origin.y = pCharTrans->GetWorldPosition().y + HEADPOS; // 머리위에 붙일예정
 
 		m_currentPos = pCharTrans->GetWorldPosition();
 		m_prePos = pCharTrans->GetWorldPosition();

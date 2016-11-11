@@ -7,6 +7,7 @@ class cBaseObject;
 class cCamera;
 class cBoundBox;
 
+#define HEADPOS 4.f
 class moveClass 
 {
 	cSkinnedAnimation*		pChar;  //ди╦╞ем
