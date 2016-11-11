@@ -101,9 +101,6 @@ void cPlayer::MovePoint(float timeDelta)
 			return;
 		}
 
-		D3DXVec3Normalize(&dirToTarget, &dirToTarget);
-
-		dirToTarget.y = 0;
 
 		//방향을 구한다.
 		this->pTransform->LookDirection(dirToTarget);
