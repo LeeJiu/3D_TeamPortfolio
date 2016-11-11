@@ -203,7 +203,7 @@ void moveClass::render()
 
 }
 
-void moveClass::clickUpdate(cBaseObject* enumy)
+void moveClass::clickUpdate(cBaseObject* enemy)
 {
 	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
 	//m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
@@ -217,7 +217,7 @@ void moveClass::clickUpdate(cBaseObject* enumy)
 		this->pMainCamera->ComputeRay(&ray, &screenPos);
 
 		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
-		m_mousePos = PHYSICS_MGR->getLastHeight(enumy, &ray, m_pTerrain, &m_mousePos);
+		m_mousePos = PHYSICS_MGR->getLastHeight(enemy, &ray, m_pTerrain, &m_mousePos);
 		isClick = true;
 	}
 
@@ -272,8 +272,9 @@ void moveClass::moveJumpCheck(float timeDelta)
 	{
 		isJump = true;
 	}
-	// 위와 마찮가지 갈 곳이 더 높으면 +값이 나온다. (prePos) --__ (current)
-	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f && isJump == false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
+
+	// 위와 마찬가지 갈 곳이 더 높으면 +값이 나온다. (prePos) --__ (current)
+	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f&&isMove==true  && isJump == false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈 때. )
 	{
 		this->pCharTrans->SetWorldPosition(m_prePos);
 		m_currentPos = m_prePos; // 좌표 갱신

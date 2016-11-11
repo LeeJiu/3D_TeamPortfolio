@@ -15,7 +15,6 @@ cMage::~cMage()
 {
 	SAFE_DELETE(m_pInput);
 	SAFE_DELETE(m_pMove);
-	SAFE_DELETE(m_pState);
 }
 
 void cMage::BaseObjectEnable()
