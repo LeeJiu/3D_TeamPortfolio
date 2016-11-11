@@ -201,12 +201,6 @@
     <ClInclude Include="cSoundManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="cIdleState.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cMoveState.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cMonster.h">
       <Filter>GameActor</Filter>
     </ClInclude>
@@ -216,12 +210,6 @@
     <ClInclude Include="sector_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cState.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cStateHandler.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="moveClass.h">
       <Filter>GameActor</Filter>
     </ClInclude>
@@ -230,6 +218,15 @@
     </ClInclude>
     <ClInclude Include="cBaseskill.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_BoundBoxTool.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cWayPoint.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="mage_Test.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,12 +392,6 @@
     <ClCompile Include="cSoundManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="cIdleState.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cMoveState.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cMonster.cpp">
       <Filter>GameActor</Filter>
     </ClCompile>
@@ -413,12 +404,6 @@
     <ClCompile Include="sector_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cState.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cStateHandler.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="moveClass.cpp">
       <Filter>GameActor</Filter>
     </ClCompile>
@@ -427,6 +412,15 @@
     </ClCompile>
     <ClCompile Include="cBaseskill.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_BoundBoxTool.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cWayPoint.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="mage_Test.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

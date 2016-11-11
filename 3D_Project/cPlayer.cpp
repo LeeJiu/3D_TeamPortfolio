@@ -134,5 +134,5 @@ void cPlayer::MovePoint(float timeDelta)
 	//	pos.y = this->pTerrain->GetHeight(pos.x, pos.z);
 	//
 	//	this->pTransform->SetWorldPosition(pos);
-	//}
+	}
 }
