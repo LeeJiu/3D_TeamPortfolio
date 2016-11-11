@@ -8,6 +8,7 @@
 #include "cScene_testPlayer.h"
 #include "sector_Test.h"
 #include "animation_Test.h"
+#include "cScene_BoundBoxTool.h"
 
 
 cMainGame::cMainGame(void)
@@ -48,12 +49,20 @@ HRESULT cMainGame::Init(void)
 
 	SCENE_MGR->AddScene("sector_Test", new sector_Test());
 	SCENE_MGR->AddScene("animation_Test", new animation_Test());
+	SCENE_MGR->AddScene("cScene_BoundBoxTool", new cScene_BoundBoxTool());
 
 	SOUND_MGR->addSound("bgm1", "../Answers.mp3", true, true);
 	
 	////°ÔÀÓ ½ÃÀÛ¾À
 	SCENE_MGR->ChangeScene( "animation_Test" );
-	
+	//SCENE_MGR->ChangeScene( "move_Test" );
+	//SCENE_MGR->ChangeScene( "move_Test2" );
+	//SCENE_MGR->ChangeScene( "sector_Test" );
+	//SCENE_MGR->ChangeScene( "animation_Test" );
+	//SCENE_MGR->ChangeScene("sector_Test");
+	//SCENE_MGR->ChangeScene("cScene_testPlayer");
+	//SCENE_MGR->ChangeScene("move_Test");
+
 
 	return S_OK;		
 }	

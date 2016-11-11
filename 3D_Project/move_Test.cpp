@@ -136,6 +136,9 @@ void move_Test::Scene_Update(float timeDelta)
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);
 	cRay.origin.y = pSkinnedTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
 
+	//PHYSICS_MRG->
+
+
 
 	if (KEY_MGR->IsStayDown('W'))
 	{
@@ -398,48 +401,32 @@ void move_Test::Scene_RenderSprite()
 
 void move_Test::QuadRender()
 {
-
 	//  원점 기준
 	// 0----1
 	//
 	// 2----3
+	//float x, z;
+	//x = z = 10.f;
+	//
+	//quad[0] = D3DXVECTOR3(-x, 0, z);
+	//quad[1] = D3DXVECTOR3(x, 0, z);
+	//quad[2] = D3DXVECTOR3(-x, 0, -z);
+	//quad[3] = D3DXVECTOR3(x, 0, -z);
+	//
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	D3DXVec3TransformCoord(&quad[i], &quad[i], &pSkinnedTrans->GetWorldRotateMatrix() );
+	//}
+	//
+	//quad[0] += D3DXVECTOR3( m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
+	//quad[1] += D3DXVECTOR3(m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
+	//quad[2] += D3DXVECTOR3( m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
+	//quad[3] += D3DXVECTOR3( m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
 
-	quad[0] = D3DXVECTOR3(-3, 0, 5);
-	quad[1] = D3DXVECTOR3(3, 0, 5);
-	quad[2] = D3DXVECTOR3(-3, 0, -5);
-	quad[3] = D3DXVECTOR3(3, 0, -5);
-
-	//quad[0] = D3DXVECTOR3(-3, 0, 3);
-	//quad[1] = D3DXVECTOR3(3, 0, 3);
-	//quad[2] = D3DXVECTOR3(-3, 0, -3);
-	//quad[3] = D3DXVECTOR3(3, 0, -3);
-
-	for (int i = 0; i < 4; i++)
-	{
-		D3DXVec3TransformCoord(&quad[i], &quad[i], &pSkinnedTrans->GetWorldRotateMatrix() );
-	}
-
-	// quad[0] = D3DXVECTOR3(-3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, 3 + m_mousePos.z);
-	// quad[1] = D3DXVECTOR3(3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, 3 + m_mousePos.z);
-	// quad[2] = D3DXVECTOR3(-3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, -3 + m_mousePos.z);
-	// quad[3] = D3DXVECTOR3(3 + m_mousePos.x, 0 + m_mousePos.y + 0.5f, -3 + m_mousePos.z);
-	
-	quad[0] += D3DXVECTOR3( m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
-	quad[1] += D3DXVECTOR3(m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
-	quad[2] += D3DXVECTOR3( m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
-	quad[3] += D3DXVECTOR3( m_mousePos.x, 0 + m_mousePos.y + 0.5f,  m_mousePos.z);
-
-
-
-	if (D3DXIntersectTri(&quad[0], &quad[1], &quad[3], &cRay.origin, &cRay.direction, NULL, NULL, NULL))
-	{
-		LOG_MGR->AddLog("위에삼각 ");
-	}
-	if (D3DXIntersectTri(&quad[0], &quad[1], &quad[2], &cRay.origin, &cRay.direction, NULL, NULL, NULL))
-	{
-		LOG_MGR->AddLog("아래삼각");
-	}
-
+	MyUtil::createQuad(quad, 5, 5, pSkinnedTrans, &m_mousePos);
+	//createQuad(quad, 5, 5, pSkinnedTrans, &m_mousePos);
+	PHYSICS_MGR->IsPointQuad(quad, &cRay);
+							
 
 	//0    1
 	//
@@ -447,14 +434,47 @@ void move_Test::QuadRender()
 
 	//GIZMO_MGR->Quad(*quad);
 	
-	
-	GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
-	GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
-	GIZMO_MGR->Line(quad[3], quad[2], 0xff00ff00);
-	GIZMO_MGR->Line(quad[2], quad[0], 0xff00ff00);
+//
+//GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
+//GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
+//GIZMO_MGR->Line(quad[3], quad[0], 0xff00ff00);
+//
+//GIZMO_MGR->Line(quad[0], quad[3], 0xffff0000);
+//GIZMO_MGR->Line(quad[3], quad[2], 0xffff0000);
+//GIZMO_MGR->Line(quad[2], quad[0], 0xffff0000);
 
 
 
 }
-//GIZMO_MGR->Line(startPos, finalPos, 0xff00ff00);
-//GIZMO_MGR->Line(startPos, finalPos2, 0xff00ff00);
+
+void move_Test::createQuad(D3DXVECTOR3* quad, float row, float col, cTransform* myTrans, D3DXVECTOR3* createPos)
+{
+	//  원점 기준
+	// 0----1
+	//
+	// 2----3
+
+	quad[0] = D3DXVECTOR3(-row, 0, col);
+	quad[1] = D3DXVECTOR3(row, 0, col);
+	quad[2] = D3DXVECTOR3(-row, 0, -col);
+	quad[3] = D3DXVECTOR3(row, 0, -col);
+
+	for (int i = 0; i < 4; i++)
+	{
+		D3DXVec3TransformCoord(&quad[i], &quad[i], &myTrans->GetWorldRotateMatrix());
+	}
+
+	quad[0] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+	quad[1] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+	quad[2] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+	quad[3] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+
+	GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
+	GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
+	GIZMO_MGR->Line(quad[3], quad[0], 0xff00ff00);
+	
+	GIZMO_MGR->Line(quad[0], quad[3], 0xffff0000);
+	GIZMO_MGR->Line(quad[3], quad[2], 0xffff0000);
+	GIZMO_MGR->Line(quad[2], quad[0], 0xffff0000);
+
+}

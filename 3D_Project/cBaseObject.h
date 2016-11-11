@@ -15,7 +15,6 @@ public:
 
 	cSkinnedAnimation*	pSkinned;	//스킨드 Animtion
 
-
 protected:
 	bool				bActive;	//활성화 여부
 	cTerrain*			pTerrain;	//터레인 정보

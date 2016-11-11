@@ -1,4 +1,5 @@
 #pragma once
+#include "cTransform.h"
 
 
 #define		FEPSILON		0.00001f		//Float 비교를 할때 이값 이하의 오차는 같은 걸로 따진다.
@@ -165,5 +166,6 @@ namespace MyUtil{
 	DWORD FloatToDWORD( float f );
 
 	std::string SetAnimation(ACTOR_STATE state);
-	void SetAnimation(ACTOR_STATE state, std::string str);
+	void createQuad(D3DXVECTOR3* quad, float row, float col, cTransform* myTrans, D3DXVECTOR3* createPos);
+
 }

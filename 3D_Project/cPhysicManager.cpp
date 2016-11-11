@@ -1450,17 +1450,87 @@ bool cPhysicManager::IsPointSphere(cTransform* pTransA, float radiusA, D3DXVECTO
 	return false;
 }
 
+D3DXVECTOR3 cPhysicManager::getLastHeight(cBaseObject* enumy, Ray* ray, cTerrain* terrain, D3DXVECTOR3* outPos)
+{
+	D3DXVECTOR3 tempLast(0, 0, 0); // 임시 저장 변수.
+
+	bool objColl = false;
+	bool terrainColl = false;
+
+	if (enumy != NULL)
+	{
+		if ((
+			PHYSICS_MGR->IsRayHitStaticMeshObject(
+			ray,
+			enumy,
+			enumy->pTransform,
+			outPos,
+			NULL)))
+		{
+			tempLast = *outPos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
+			objColl = true;      // 오브젝트 충돌 했다. 
+		}
+		// 오브젝트와 충돌 하지 않았다면 - 현재 위치 보다 낮은 값이 들어간다. ( 이 값이 없으면 아래로 내려가지 않는다. )
+		//else
+		//{
+		//	tempLast.y = pCharTrans->GetWorldPosition().y - 10; // 
+		//}
+	}
+	// 오브젝트와 충돌 했다면 - tempLast 에 값이 들어간다. 
+
+
+	// 터레인과 충돌 했다면. 
+	if (terrain->IsIntersectRay(outPos, ray))
+	{
+		terrainColl = true;
+
+		if (objColl == true) // 충돌 했다면 . tempLast = obj의 좌표와 같다. ( 그중에 Y축 값이 높은것으로 반환)
+		{
+			if (tempLast.y > outPos->y) // obj 좌표와 terrain 좌표와 비교 한다. 
+			{
+				*outPos = tempLast;     // 큰 값을 넣어줌. 
+			}
+		}
+	}
+
+	// 혹시 모를 예외 처리 ( 만약 둘다 충돌 되지 않았다면 일단 터레인 위치로 좌표를 수정 )
+	if (objColl == false && terrainColl == false)
+	{
+		outPos->y = terrain->GetHeight(outPos->x, outPos->z);
+
+		return *outPos;
+	}
+
+	return *outPos;
+}
+
 bool cPhysicManager::IsPointQuad(D3DXVECTOR3* quadA, Ray* rayB)//쿼드A와 비교 대상 B레이
 {
-
+	//0    1
+	//
+	//2    3
 	if (D3DXIntersectTri(&quadA[0], &quadA[1], &quadA[3], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
 	{
+		LOG_MGR->AddLog("위에삼각 ");
+
 		return true;
 	}
-	if (D3DXIntersectTri(&quadA[0], &quadA[1], &quadA[2], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
+	if (D3DXIntersectTri(&quadA[0], &quadA[3], &quadA[2], &rayB->origin, &rayB->direction, NULL, NULL, NULL))
 	{
+		LOG_MGR->AddLog("아래삼각");
+
 		return true;
 	}
+
+	//==================== 피직스에 들어온 쿼드 그릴떄 쓰셈 ============
+	//GIZMO_MGR->Line(quadA[0], quadA[1], 0xff00ff00);
+	//GIZMO_MGR->Line(quadA[1], quadA[3], 0xff00ff00);
+	//GIZMO_MGR->Line(quadA[3], quadA[0], 0xff00ff00);
+	//
+	//GIZMO_MGR->Line(quadA[0], quadA[3], 0xffff0000);
+	//GIZMO_MGR->Line(quadA[3], quadA[2], 0xffff0000);
+	//GIZMO_MGR->Line(quadA[2], quadA[0], 0xffff0000);
+
 
 	return false;
 }

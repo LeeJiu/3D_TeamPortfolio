@@ -2,7 +2,6 @@
 #include "MyUtil.h"
 
 
-
 namespace MyUtil{
 
 	 DWORD MaxAnisotropic;				//이방성 필터링 최대 단계
@@ -542,99 +541,34 @@ namespace MyUtil{
 		return state_name;
 	}
 
-	void SetAnimation(ACTOR_STATE state, std::string str)
+	void createQuad(D3DXVECTOR3* quad, float row, float col, cTransform* myTrans, D3DXVECTOR3* createPos)
 	{
-		switch (state)
+		//  원점 기준
+		// 0----1
+		//
+		// 2----3
+
+		quad[0] = D3DXVECTOR3(-row, 0, col);
+		quad[1] = D3DXVECTOR3(row, 0, col);
+		quad[2] = D3DXVECTOR3(-row, 0, -col);
+		quad[3] = D3DXVECTOR3(row, 0, -col);
+
+		for (int i = 0; i < 4; i++)
 		{
-		case ROBBY_IDLE:  str = "STF_IDLE";
-			break;
-		case PET_IDLE:  str = "PET_IDLE";
-			break;
-		case PET_RUN:  str = "PET_RUN";
-			break;
-		case SIT_SRT:  str = "SIT_SRT";
-			break;
-		case SIT_LOOP:  str = "SIT_LOOP";
-			break;
-		case SIT_UP:  str = "SIT_UP";
-			break;
-		case LOOP:  str = "LOOP";
-			break;
-		case HELLO:  str = "HELLO";
-			break;
-		case CRY:  str = "CRY";
-			break;
-		case DANCE:  str = "DANCE";
-			break;
-		case STF_DMG:  str = "STF_DMG";
-			break;
-
-		case STF_DIE:  str = "STF_DIE";
-			break;
-
-		case STF_DEAD:  str = "STF_DEAD";
-			break;
-		case STF_DOWN:  str = "STF_DOWN";
-			break;
-		case STF_STUN:  str = "STF_STUN";
-			break;
-		case STF_WAKEUP:  str = "STF_WAKEUP";
-			break;
-		case STF_IDLE:  str = "STF_IDLE";
-			break;
-		case STF_WAIT:  str = "STF_WAIT";
-			break;
-		case STF_WALK:  str = "STF_WALK";
-			break;
-		case STF_WALK_BACK:  str = "STF_WALK_BACK";
-			break;
-		case STF_RUN:  str = "STF_RUN";
-			break;
-		case RUN_R:  str = "RUN_R";
-			break;
-		case RUN_L:  str = "RUN_L";
-			break;
-		case STF_STOP:  str = "STF_STOP";
-			break;
-		case STF_PASSOUT:  str = "STF_PASSOUT";
-			break;
-		case STF_JUMP:  str = "STF_JUMP";
-			break;
-		case STF_WEAPON:  str = "STF_WEAPON";
-			break;
-		case STF_UNWEAPON:  str = "STF_UNWEAPON";
-			break;
-		case STF_ATK1:  str = "STF_ATK1";
-			break;
-		case STF_ATK2:  str = "STF_ATK2";
-			break;
-		case STF_BUFF:  str = "STF_BUFF";
-			break;
-		case STF_TYFUNG:  str = "STF_TYFUNG";
-			break;
-		case STF_THUNDER:  str = "STF_THUNDER";
-			break;
-		case STF_FROZEN:  str = "STF_FROZEN";
-			break;
-		case STF_FIRE:  str = "STF_FIRE";
-			break;
-		case STF_SPLASH:  str = "STF_SPLASH";
-			break;
-		case STF_BUMB:  str = "STF_BUMB";
-			break;
-		case STF_DRAIN:  str = "STF_DRAIN";
-			break;
-		case STF_SWING:  str = "STF_SWING";
-			break;
-		case STF_STORM:  str = "STF_STORM";
-			break;
-		case STF_MAGIC_SHOT:  str = "STF_MAGIC_SHOT";
-			break;
-		case STF_BLINK:  str = "STF_BLINK";
-			break;
-		default: str = "STF_IDLE";
-			break;
+			D3DXVec3TransformCoord(&quad[i], &quad[i], &myTrans->GetWorldRotateMatrix());
 		}
-	}
 
+		quad[0] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+		quad[1] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+		quad[2] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+		quad[3] += D3DXVECTOR3(createPos->x, 0 + createPos->y + 0.5f, createPos->z);
+
+		GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
+		GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
+		GIZMO_MGR->Line(quad[3], quad[0], 0xff00ff00);
+
+		GIZMO_MGR->Line(quad[0], quad[3], 0xffff0000);
+		GIZMO_MGR->Line(quad[3], quad[2], 0xffff0000);
+		GIZMO_MGR->Line(quad[2], quad[0], 0xffff0000);
+	}
 }

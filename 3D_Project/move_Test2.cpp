@@ -61,12 +61,13 @@ HRESULT move_Test2::Scene_Init()
 	this->pSkinned1 = new cSkinnedAnimation();
 	this->pSkinned1->Init(pSkinned);
 
+
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
-	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0)+4.f, 0);
-	
+	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0)+2.f, 0);
+
 	move = new moveClass;
-	move->init(pSkinned1, pSkinnedTrans, m_pTerrain);
+	move->init(pSkinned1, pSkinnedTrans, m_pTerrain,pMainCamera);
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
@@ -118,10 +119,8 @@ void move_Test2::Scene_Update(float timeDelta)
 
 	if (KEY_MGR->IsOnceDown(VK_SPACE))
 	{
-		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-			this->pSkinnedTrans->GetWorldPosition().x,
-			this->pSkinnedTrans->GetWorldPosition().y,
-			this->pSkinnedTrans->GetWorldPosition().z);
+		LOG_MGR->AddLog("T:%.2f,P:%.2f",
+			m_pTerrain->GetHeight(0, 0), pSkinnedTrans->GetWorldPosition().y);
 
 	}
 
