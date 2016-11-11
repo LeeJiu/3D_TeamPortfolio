@@ -176,6 +176,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	//	m_lastPos.y = pCharTrans->GetWorldPosition().y - 10;
 	//}
 	//===============================
+
 	moveJumpCheck(timeDelta);
 	if (test == false)
 	{

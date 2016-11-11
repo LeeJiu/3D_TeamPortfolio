@@ -61,7 +61,7 @@ HRESULT move_Test::Scene_Init()
 	this->pSkinned1->Init(pSkinned);
 	//
 	pSkinnedBox = new cBoundBox;
-	pSkinnedBox->Init(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(2, 2, 2));
+	pSkinnedBox->Init(D3DXVECTOR3(-1, -1, -1), D3DXVECTOR3(1, 1, 1));
 	// pSkinnedBox->localCenter = D3DXVECTOR3(0, 0, 0);
 	// pSkinnedBox->localMaxPos = D3DXVECTOR3(2, 2, 2);
 	// pSkinnedBox->localMinPos = D3DXVECTOR3(-2, -2, -2);
@@ -246,7 +246,7 @@ void move_Test::Scene_Update(float timeDelta)
 				NULL	  //Hit ÀÇ ³ë¸» ( NULL ÀÌ¸é ´ëÀÔ ¾ÈµÊ )
 				))
 			{
-				LOG_MGR->AddLog("±â¸ðÂî");
+				LOG_MGR->AddLog("Ãöµ¹");
 
 				PHYSICS_MGR->IsBlocking(
 					pSkinnedTrans, pSkinnedBox, colliTest, testBox, 0.5f);
