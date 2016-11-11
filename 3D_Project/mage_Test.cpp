@@ -1,5 +1,5 @@
-#include "StdAfx.h"
-#include "move_Test2.h"
+#include "stdafx.h"
+#include "mage_Test.h"
 #include "cLight_Direction.h"
 #include "cXMesh_Static.h"
 #include "cBaseObject.h"
@@ -8,16 +8,17 @@
 #include "cTerrain.h"
 #include "cSkinnedAnimation.h"
 #include "cLight_Point.h"
+#include "cMage.h"
 
-move_Test2::move_Test2(void)
+mage_Test::mage_Test(void)
 {
 }
 
-move_Test2::~move_Test2(void)
+mage_Test::~mage_Test(void)
 {
 }
 
-HRESULT move_Test2::Scene_Init()
+HRESULT mage_Test::Scene_Init()
 {
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
@@ -42,11 +43,12 @@ HRESULT move_Test2::Scene_Init()
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
-	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection);
+	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Elf/Elf_Master.X", &matCorrection);
 
-	//=================== 스태틱 렌더 그림.
+
+	//+++애니메이션 체크 관련+++++
+
 	D3DXMatrixScaling(&matScale, 1, 1, 1);
-
 	matCorrection = matScale * matRotate;
 	m_Land = new cBaseObject;
 	m_Land->SetMesh(RESOURCE_STATICXMESH->GetResource(
@@ -56,18 +58,22 @@ HRESULT move_Test2::Scene_Init()
 	//m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
 	m_Land->pTransform->SetWorldPosition(0, 0, 0);
 
-
-	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
-	this->pSkinned1 = new cSkinnedAnimation();
-	this->pSkinned1->Init(pSkinned);
-
+	this->pMage = new cMage;
+	this->pMage->SetMesh(pSkinned);
+	this->pMage->SetTerrain(m_pTerrain);
+	this->pMage->SetActive(true);
 
 	//캐릭터가 그려질 위치 트랜스폼
-	this->pSkinnedTrans = new cTransform();
-	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0)+2.f, 0);
+	this->pMage->pTransform = new cTransform();
+	this->pMage->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
 
-	move = new moveClass;
-	move->init(pSkinned1, pSkinnedTrans, m_pTerrain,pMainCamera);
+	this->pTransForCamera = new cTransform();
+
+	this->pMage->pTransform->AddChild(this->pMainCamera);
+	this->pMainCamera->SetLocalPosition(0, 5, -10);
+	isCharView = true;
+	isAltView = false;
+
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
@@ -93,41 +99,84 @@ HRESULT move_Test2::Scene_Init()
 	this->lights.push_back(pLight2);
 	this->lights.push_back(pLight3);
 
+	isMove = false;
 	//================레이 추가. 아래 방향 바뀌지 않음 .
+	cRay.direction = D3DXVECTOR3(0, -1, 0);
+	cRay.origin = pMage->pTransform->GetWorldPosition();
 	//=============== 레이 초기화 끝.
 	pMainCamera->SetWorldPosition(2, 5, 2);
+	isClick = false;
+
+
+
 	return S_OK;
 }
 
-void move_Test2::Scene_Release()
+void mage_Test::Scene_Release()
 {
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
 
-	SAFE_DELETE(this->pSkinnedTrans);
+	SAFE_DELETE(this->pMage);
+	SAFE_DELETE(this->pMage->pTransform);
+	SAFE_DELETE(this->pTransForCamera);
 
 	this->pSkinned1->Release();
 	SAFE_DELETE(this->pSkinned1);
 }
 
-void move_Test2::Scene_Update(float timeDelta)
+void mage_Test::Scene_Update(float timeDelta)
 {
-	move->update(timeDelta, m_Land);
 
-	this->pSkinned1->Update(timeDelta);
+	// 레이 업데이트
+	m_currentPos = pMage->pTransform->GetWorldPosition(); // 현재 위치.
+														  //cRay.direction = D3DXVECTOR3(0, -1, 0);
+	cRay.origin.y = pMage->pTransform->GetWorldPosition().y + 5; // 머리위에 붙일예정
 
+	this->pTransForCamera->SetWorldPosition(this->pMage->pTransform->GetWorldPosition());
+
+	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
+	{
+		isAltView = true;
+		isCharView = false;
+		this->pMainCamera->ReleaseParent();
+		this->pTransForCamera->AddChild(this->pMainCamera);
+	}
+	if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
+	{
+		this->pMainCamera->Reset();
+		this->pTransForCamera->Reset();
+		this->pTransForCamera->SetWorldMatrix(this->pMage->pTransform->GetFinalMatrix());
+
+		this->pMage->pTransform->AddChild(this->pMainCamera);
+		this->pMainCamera->SetLocalPosition(0, 5, -10);
+		isCharView = true;
+		isAltView = false;
+	}
+
+
+	if (isCharView)
+	{
+		pMainCamera->DefaultControl3(timeDelta, this->pMage->pTransform);
+	}
+	else if (isAltView)
+	{
+		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
+	}
+
+	this->pMage->Update(timeDelta);
+	
 
 	if (KEY_MGR->IsOnceDown(VK_SPACE))
-	{
-		LOG_MGR->AddLog("T:%.2f,P:%.2f",
-			m_pTerrain->GetHeight(0, 0), pSkinnedTrans->GetWorldPosition().y);
 
+	{
+		LOG_MGR->AddLog("%d %d %s", KEY_MGR->IsOnceUp('W'), current_State, current_Ani.c_str());
 	}
 
 
 }
 
-void move_Test2::Scene_Render1()
+void mage_Test::Scene_Render1()
 {
 	m_pTerrain->Render(this->pMainCamera, dynamic_cast<cLight_Direction*>(lights[0]));
 
@@ -145,14 +194,10 @@ void move_Test2::Scene_Render1()
 	//m_pSkinnedEffect->SetMatrix( "matViewProjection", &matViewProjection );
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
+	this->pMage->Render();
 
-	this->pSkinned1->Render(pSkinnedTrans);
-
-	//가지고 있는 Animation 을출력해보자..
-	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X")->ShowAnimationName(0, 100);
-
-	//Hit 위move_Test2치에 구
-	//GIZMO_MGR->WireSphere(this->m_mousePos, 0.5f, 0xffff0000);
+	//Hit 위치에 구
+	GIZMO_MGR->WireSphere(this->m_mousePos, 0.5f, 0xffff0000);
 
 	//셰이더에 라이팅 셋팅
 	cXMesh_Static::SetCamera(this->pMainCamera);
@@ -161,11 +206,12 @@ void move_Test2::Scene_Render1()
 
 	m_Land->Render();
 	//========== 레이 기지모
-	move->render();
+	GIZMO_MGR->Line(this->cRay.origin, this->cRay.origin + this->cRay.direction * 100, 0xffffff00);
+
 }
 
 
-void move_Test2::Scene_RenderSprite()
+void mage_Test::Scene_RenderSprite()
 {
 }
 

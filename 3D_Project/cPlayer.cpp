@@ -62,6 +62,13 @@ void cPlayer::KeyControl(float timeDelta)
 {
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	{
+		//HEAD
+		//if (m_state != AS_WALK)
+		//{
+		//	m_state = AS_WALK;;;;
+		//	m_pState->EnterState(m_state, 'E');
+		//}
+	
 		Ray ray;
 		POINT ptMousePos = GetMousePos();
 		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
@@ -109,12 +116,20 @@ void cPlayer::MovePoint(float timeDelta)
 		float deltaMove = 5.0f * timeDelta;
 		float t = Clamp01(deltaMove / dist);
 
-		//현재 위치에서 웨이 포인트로
-		D3DXVECTOR3 pos = VecLerp(this->pTransform->GetWorldPosition(), wayPoint, t);
-
-		//높이 얻는다. / 터레인의 높이
-		pos.y = this->pTerrain->GetHeight(pos.x, pos.z);
-
-		this->pTransform->SetWorldPosition(pos);
+	if (KEY_MGR->IsOnceDown('P'))
+	{
+		//m_pInput->ChangeKey('3', new cTestCommand);	//없으면 추가된다.
+		//m_pInput->DeleteKey('1');
+		m_pInput->SwapKey('1', '2');
+	}
+	//if(m_pMove)
+	//	m_pMove->update(timeDelta, NULL);
+	//	//현재 위치에서 웨이 포인트로
+	//	D3DXVECTOR3 pos = VecLerp(this->pTransform->GetWorldPosition(), wayPoint, t);
+	//
+	//	//높이 얻는다. / 터레인의 높이
+	//	pos.y = this->pTerrain->GetHeight(pos.x, pos.z);
+	//
+	//	this->pTransform->SetWorldPosition(pos);
 	}
 }

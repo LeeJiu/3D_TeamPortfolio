@@ -6,14 +6,14 @@ class cCamera;
 class cTerrain;
 class cSkinnedAnimation;
 class cPlayer;
+class cMage;
 
-class animation_Test : public cScene
+class mage_Test : public cScene
 {
 private:
 
 	cSkinnedAnimation*		pSkinned1;
-	cPlayer*				pPlayer;
-	cTransform*				pSkinnedTrans;
+	cMage*					pMage;
 	cTransform*				pTransForCamera;		//카메라용
 
 													// 도형 피킹에 쓸것.
@@ -54,8 +54,8 @@ private:
 
 
 public:
-	animation_Test(void);
-	~animation_Test(void);
+	mage_Test(void);
+	~mage_Test(void);
 
 
 	virtual HRESULT Scene_Init();
@@ -70,4 +70,6 @@ public:
 
 
 };
+
+
 

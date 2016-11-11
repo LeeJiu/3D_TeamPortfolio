@@ -8,6 +8,8 @@
 #include "cTerrain.h"
 #include "cSkinnedAnimation.h"
 #include "cLight_Point.h"
+#include "cPlayer.h"
+#include "cMage.h"
 
 animation_Test::animation_Test(void)
 {
@@ -45,16 +47,9 @@ HRESULT animation_Test::Scene_Init()
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Elf/Elf_Master.X", &matCorrection);
 
 
-     //+++애니메이션 체크 관련+++++
+	//+++애니메이션 체크 관련+++++
 
-	current_State = 0;             //현재 상태 ENUM 초기화
-	current_Ani = "STF_IDLE";      //현재 상태 넘버를 문자열로 바꿔서 실시간으로 애니가 바뀜
-
-
-
-	//=================== 스태틱 렌더 그림.
 	D3DXMatrixScaling(&matScale, 1, 1, 1);
-
 	matCorrection = matScale * matRotate;
 	m_Land = new cBaseObject;
 	m_Land->SetMesh(RESOURCE_STATICXMESH->GetResource(
@@ -66,12 +61,23 @@ HRESULT animation_Test::Scene_Init()
 
 
 	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
-	this->pSkinned1 = new cSkinnedAnimation();
-	this->pSkinned1->Init(pSkinned);
+	this->pPlayer = new cPlayer;
+	this->pPlayer->SetMesh(pSkinned);
+	this->pPlayer->SetTerrain(m_pTerrain);
+	this->pPlayer->SetActive(true);
+	this->current_State = STF_IDLE;
 
 	//캐릭터가 그려질 위치 트랜스폼
-	this->pSkinnedTrans = new cTransform();
-	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
+	this->pPlayer->pTransform = new cTransform();
+	this->pPlayer->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
+
+	this->pTransForCamera = new cTransform();
+
+	this->pPlayer->pTransform->AddChild(this->pMainCamera);
+	this->pMainCamera->SetLocalPosition(0, 5, -10);
+	isCharView = true;
+	isAltView = false;
+
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
 	pLight1->Color = D3DXCOLOR(1, 1, 1, 1);
@@ -99,10 +105,13 @@ HRESULT animation_Test::Scene_Init()
 	isMove = false;
 	//================레이 추가. 아래 방향 바뀌지 않음 .
 	cRay.direction = D3DXVECTOR3(0, -1, 0);
-	cRay.origin = pSkinnedTrans->GetWorldPosition();
+	cRay.origin = pPlayer->pTransform->GetWorldPosition();
 	//=============== 레이 초기화 끝.
 	pMainCamera->SetWorldPosition(2, 5, 2);
 	isClick = false;
+
+
+
 	return S_OK;
 }
 
@@ -111,7 +120,8 @@ void animation_Test::Scene_Release()
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
 
-	SAFE_DELETE(this->pSkinnedTrans);
+	SAFE_DELETE(this->pPlayer->pTransform);
+	SAFE_DELETE(this->pTransForCamera);
 
 	this->pSkinned1->Release();
 	SAFE_DELETE(this->pSkinned1);
@@ -119,309 +129,138 @@ void animation_Test::Scene_Release()
 
 void animation_Test::Scene_Update(float timeDelta)
 {
-	// 레이 업데이트 
-	m_currentPos = pSkinnedTrans->GetWorldPosition(); // 현재 위치. 
-	//cRay.direction = D3DXVECTOR3(0, -1, 0);
-	cRay.origin.y = pSkinnedTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
+	this->pPlayer->Update(timeDelta);
 
+	// 레이 업데이트
+	m_currentPos = pPlayer->pTransform->GetWorldPosition(); // 현재 위치.
+													  //cRay.direction = D3DXVECTOR3(0, -1, 0);
+	cRay.origin.y = pPlayer->pTransform->GetWorldPosition().y + 5; // 머리위에 붙일예정
 
+	this->pTransForCamera->SetWorldPosition(this->pPlayer->pTransform->GetWorldPosition());
 
-//+=======================================애니메이션 체크 관련 ==============================+
-	if (KEY_MGR->IsOnceDown(VK_UP)) // UP키를 눌러 애니를 볼 수 있다
+	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
 	{
-		current_State++;
-		if (END == current_State) current_State = 0;
+		isAltView = true;
+		isCharView = false;
+		this->pMainCamera->ReleaseParent();
+		this->pTransForCamera->AddChild(this->pMainCamera);
 	}
-
-	switch (current_State)
+	if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
 	{
-	case ROBBY_IDLE:  current_Ani = "STF_IDLE";
-		break;
-	case PET_IDLE:  current_Ani = "PET_IDLE";
-		break;
-	case PET_RUN:  current_Ani = "PET_RUN";
-		break;
-	case SIT_SRT:  current_Ani = "SIT_SRT";
-		break;
-	case SIT_LOOP:  current_Ani = "SIT_LOOP";
-		break;
-	case SIT_UP:  current_Ani = "SIT_UP";
-		break;
-	case LOOP:  current_Ani = "LOOP";
-		break;
-	case HELLO:  current_Ani = "HELLO";
-		break;
-	case CRY:  current_Ani = "CRY";
-		break;
-	case DANCE:  current_Ani = "DANCE";
-		break;
-	case STF_DMG:  current_Ani = "STF_DMG";
-		break;
+		this->pMainCamera->Reset();
+		this->pTransForCamera->Reset();
+		this->pTransForCamera->SetWorldMatrix(this->pPlayer->pTransform->GetFinalMatrix());
 
-	case STF_DIE:  current_Ani = "STF_DIE";
-		break;
-
-	case STF_DEAD:  current_Ani = "STF_DEAD";
-		break;
-	case STF_DOWN:  current_Ani = "STF_DOWN";
-		break;
-	case STF_STUN:  current_Ani = "STF_STUN";
-		break;
-	case STF_WAKEUP:  current_Ani = "STF_WAKEUP";
-		break;
-	case STF_IDLE:  current_Ani = "STF_IDLE";
-		break;
-	case STF_WAIT:  current_Ani = "STF_WAIT";
-		break;
-	case STF_WALK:  current_Ani = "STF_WALK";
-		break;
-	case STF_WALK_BACK:  current_Ani = "STF_WALK_BACK";
-		break;
-	case STF_RUN:  current_Ani = "STF_RUN";
-		break;
-	case RUN_R:  current_Ani = "RUN_R";
-		break;
-	case RUN_L:  current_Ani = "RUN_L";
-		break;
-	case STF_STOP:  current_Ani = "STF_STOP";
-		break;
-	case STF_PASSOUT:  current_Ani = "STF_PASSOUT";
-		break;
-	case STF_JUMP:  current_Ani = "STF_JUMP";
-		break;
-	case STF_WEAPON:  current_Ani = "STF_WEAPON";
-		break;
-	case STF_UNWEAPON:  current_Ani = "STF_UNWEAPON";
-		break;
-	case STF_ATK1:  current_Ani = "STF_ATK1";
-		break;
-	case STF_ATK2:  current_Ani = "STF_ATK2";
-		break;
-	case STF_BUFF:  current_Ani = "STF_BUFF";
-		break;
-	case STF_TYFUNG:  current_Ani = "STF_TYFUNG";
-		break;
-	case STF_THUNDER:  current_Ani = "STF_THUNDER";
-		break;
-	case STF_FROZEN:  current_Ani = "STF_FROZEN";
-		break;
-	case STF_FIRE:  current_Ani = "STF_FIRE";
-		break;
-	case STF_SPLASH:  current_Ani = "STF_SPLASH";
-		break;
-	case STF_BUMB:  current_Ani = "STF_BUMB";
-		break;
-	case STF_DRAIN:  current_Ani = "STF_DRAIN";
-		break;
-	case STF_SWING:  current_Ani = "STF_SWING";
-		break;
-	case STF_STORM:  current_Ani = "STF_STORM";
-		break;
-	case STF_MAGIC_SHOT:  current_Ani = "STF_MAGIC_SHOT";
-		break;
-	case STF_BLINK:  current_Ani = "STF_BLINK";
-		break;
-	default: current_Ani = "STF_IDLE";
-		break;
+		this->pPlayer->pTransform->AddChild(this->pMainCamera);
+		this->pMainCamera->SetLocalPosition(0, 5, -10);
+		isCharView = true;
+		isAltView = false;
 	}
 
 
-	pSkinned1->Play(current_Ani,0.3f);
-
-//+===========================================================================================+
-
-
-	if (KEY_MGR->IsStayDown('W'))
+	if (isCharView)
 	{
-		isMove = true;
-		cRay.origin += pSkinnedTrans->GetForward()*0.2f;
+		pMainCamera->DefaultControl3(timeDelta, this->pPlayer->pTransform);
 	}
-	if (KEY_MGR->IsStayDown('S'))
+	else if (isAltView)
 	{
-		isMove = true;
-		cRay.origin -= pSkinnedTrans->GetForward()*0.2f;
-
-	}
-	if (KEY_MGR->IsStayDown('Q'))
-	{
-		isMove = true;
-		cRay.origin += pSkinnedTrans->GetRight()*0.2f;
-
-	}
-	if (KEY_MGR->IsStayDown('E'))
-	{
-		isMove = true;
-		cRay.origin -= pSkinnedTrans->GetRight()*0.2f;
-	}
-	if (KEY_MGR->IsStayDown('A'))
-	{
-		pSkinnedTrans->RotateSelf(0, -2 * ONE_RAD, 0);
+		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
 	}
 
-	if (KEY_MGR->IsStayDown('D'))
-	{
-		pSkinnedTrans->RotateSelf(0, 2 * ONE_RAD, 0);
-	}
+	//+=======================================애니메이션 체크 관련 ==============================+
+	
+	
 	//=========================
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	{
-		Ray ray;
-		POINT ptMousePos = GetMousePos();
-		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-		this->pMainCamera->ComputeRay(&ray, &screenPos);
-
-		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
-		isClick = true;
-
-	}
-
-	if (isClick == true)
-	{
-		D3DXVECTOR3 dir = m_mousePos - cRay.origin;	// 방향 및 mousePos의 원점 이동.	
-		dir.y = 0;
-
-
-		if (D3DXVec3Length(&dir) > 0.5f)
-		{
-			isMove = true;
-			D3DXVec3Normalize(&dir, &dir);
-			D3DXVECTOR3 lerp = pSkinnedTrans->GetForward();
-			D3DXVec3Lerp(&lerp, &lerp, &dir, 0.2);
-			pSkinnedTrans->LookDirection(lerp, D3DXVECTOR3(0, 1, 0));
-
-			cRay.origin += dir*0.2f;
-		}
-		else
-		{
-			isMove = false;
-			isClick = false;
-
-			LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-				cRay.origin.x,
-				cRay.origin.y,
-				cRay.origin.z);
-		}
-	}
-
-
-
-
-	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
-
-	//m_lastPos = this->pSkinnedTrans->GetWorldPosition();
-	//m_lastPos.y = -1000;
-	// 추후에 거리 값을 이용해서 2,3번째 인자 값을 걸러 낼꺼임.
-	if ((
-		PHYSICS_MGR->IsRayHitStaticMeshObject(
-		&this->cRay,
-		this->m_Land,
-		this->m_Land->pTransform,
-		&this->m_prePos,
-		NULL)) == true)
-	{
-		m_lastPos = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
-	}
-	else
-	{
-		m_lastPos.y = pSkinnedTrans->GetWorldPosition().y - 10;
-	}
-
-	// 터레인과 충돌 했다면. 
-	if (this->m_pTerrain->IsIntersectRay(&m_prePos, &cRay) == true)
-	{
-		if (m_lastPos.y > m_prePos.y)
-		{
-			m_prePos = m_lastPos;
-		}
-	}
-
-
-
-	//=================================== 케릭터를 최종적으로 움직이게 하는 부분 
-	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
-	{
-		this->pSkinnedTrans->SetWorldPosition(m_prePos);
-		m_currentPos = m_prePos; // 좌표 갱신
-	}
-	// 레이랑 케릭터 거리가 멀어지면 레이가 더이상 넘어가지 못하게 만든다.
-	float rayCheckDis = D3DXVec3Length(&(cRay.origin - pSkinnedTrans->GetWorldPosition()));
-	if (rayCheckDis > 0.25f) // 상수 값은 속력 보다 조금 높은 값.
-	{
-		cRay.origin = pSkinnedTrans->GetWorldPosition();
-		cRay.origin.y = pSkinnedTrans->GetWorldPosition().y + 5; // 머리위에 붙일예정
-
-	}
-
-	isMove = false;
-	//=================================== 케릭터를 최종적으로 움직이게 하는 부분  끗.
-
-	this->pSkinned1->Update(timeDelta);
-
-
-
-
-
-	//if (KEY_MGR->IsStayDown(VK_LCONTROL))
+	//if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	//{
-
-	//	if (KEY_MGR->IsOnceDown('1'))
-	//		this->pSkinned1->Play("Idle_01", 0.3f);
-
-	//	if (KEY_MGR->IsOnceDown('2'))
-	//		this->pSkinned1->Play("Idle_02", 0.3f);
-
-	//	if (KEY_MGR->IsOnceDown('3'))
-	//		this->pSkinned1->PlayOneShot("Walk", 0.3f);
-
+	//	pSkinned1->Play("STF_IDLE", 0.3f);
+	//	Ray ray;
+	//	POINT ptMousePos = GetMousePos();
+	//	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+	//	this->pMainCamera->ComputeRay(&ray, &screenPos);
+	//
+	//	this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+	//	isClick = true;
+	//
 	//}
-
-
-
-	//if (m_bMove == true)
+	//
+	//if (isClick == true)
 	//{
-	//	//거리를 구한다.
-	//	D3DXVECTOR3 dirToTarget = this->m_hitPos - this->pSkinnedTrans->GetWorldPosition();
-	//	float dist = D3DXVec3Length(&dirToTarget);
-
-	//	//히트 포인트에 위치하게 되면 lookdirection을 하지 않는다.
-	//	//자신이 자신의 위치를 보게 되면 모델이 사라져버린다.
-	//	if (dist <= 0.001)
+	//	D3DXVECTOR3 dir = m_mousePos - cRay.origin;	// 방향 및 mousePos의 원점 이동.
+	//	dir.y = 0;
+	//
+	//
+	//	if (D3DXVec3Length(&dir) > 0.5f)
 	//	{
-	//		m_bMove = false;
-	//		this->pSkinned1->Play("Idle_01", 0.3f);
-	//		return;
+	//		isMove = true;
+	//		D3DXVec3Normalize(&dir, &dir);
+	//		D3DXVECTOR3 lerp = pPlayer->pTransform->GetForward();
+	//		D3DXVec3Lerp(&lerp, &lerp, &dir, 0.2);
+	//		pPlayer->pTransform->LookDirection(lerp, D3DXVECTOR3(0, 1, 0));
+	//
+	//		cRay.origin += dir*0.2f;
 	//	}
-
-	//	D3DXVec3Normalize(&dirToTarget, &dirToTarget);
-
-	//	//방향을 구한다.
-	//	this->pSkinnedTrans->LookDirection(dirToTarget);
-
-	//	//이동량
-	//	float deltaMove = 5.0f * timeDelta;
-	//	float t = Clamp01(deltaMove / dist);
-
-	//	//현재 위치에서 히트 포인트로
-	//	D3DXVECTOR3 pos = VecLerp(this->pSkinnedTrans->GetWorldPosition(), this->m_hitPos, t);
-
-	//	//높이 얻는다. / 터레인의 높이
-	//	pos.y = this->m_pTerrain->GetHeight(pos.x, pos.z);
-
-	//	this->pSkinnedTrans->SetWorldPosition(pos);
+	//	else
+	//	{
+	//		isMove = false;
+	//		isClick = false;
+	//
+	//		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+	//			cRay.origin.x,
+	//			cRay.origin.y,
+	//			cRay.origin.z);
+	//	}
 	//}
+	//
+	//
+	//if ((
+	//	PHYSICS_MGR->IsRayHitStaticMeshObject(
+	//		&this->cRay,
+	//		this->m_Land,
+	//		this->m_Land->pTransform,
+	//		&this->m_prePos,
+	//		NULL)) == true)
+	//{
+	//	m_lastPos = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다.
+	//}
+	//else
+	//{
+	//	m_lastPos.y = pPlayer->pTransform->GetWorldPosition().y - 10;
+	//}
+	//
+	//// 터레인과 충돌 했다면.
+	//if (this->m_pTerrain->IsIntersectRay(&m_prePos, &cRay) == true)
+	//{
+	//	if (m_lastPos.y > m_prePos.y)
+	//	{
+	//		m_prePos = m_lastPos;
+	//	}
+	//}
+	//
+	//
+	//
+	////=================================== 케릭터를 최종적으로 움직이게 하는 부분
+	//if (fabs(m_prePos.y - m_currentPos.y) < 0.5f && isMove == true) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈떄. )
+	//{
+	//	this->pPlayer->pTransform->SetWorldPosition(m_prePos);
+	//	m_currentPos = m_prePos; // 좌표 갱신
+	//}
+	//// 레이랑 케릭터 거리가 멀어지면 레이가 더이상 넘어가지 못하게 만든다.
+	//float rayCheckDis = D3DXVec3Length(&(cRay.origin - pPlayer->pTransform->GetWorldPosition()));
+	//if (rayCheckDis > 0.25f) // 상수 값은 속력 보다 조금 높은 값.
+	//{
+	//	cRay.origin = pPlayer->pTransform->GetWorldPosition();
+	//	cRay.origin.y = pPlayer->pTransform->GetWorldPosition().y + 5; // 머리위에 붙일예정
+	//
+	//}
+	//else isMove = false;
+	////=================================== 케릭터를 최종적으로 움직이게 하는 부분  끗.
+
 
 	if (KEY_MGR->IsOnceDown(VK_SPACE))
+	
 	{
-		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-			this->pSkinnedTrans->GetWorldPosition().x,
-			this->pSkinnedTrans->GetWorldPosition().y,
-			this->pSkinnedTrans->GetWorldPosition().z);
-
-		LOG_MGR->AddLog("Rx: %.2f, Ry : %.2f, Rz : %.2f",
-			m_prePos.x,
-			m_prePos.y,
-			m_prePos.z);
-
+		LOG_MGR->AddLog("%d %d %s", KEY_MGR->IsOnceUp('W'), current_State, current_Ani.c_str());
 	}
 
 
@@ -445,10 +284,7 @@ void animation_Test::Scene_Render1()
 	//m_pSkinnedEffect->SetMatrix( "matViewProjection", &matViewProjection );
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
-	this->pSkinned1->Render(pSkinnedTrans);
-
-	//가지고 있는 Animation 을출력해보자..
-	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X")->ShowAnimationName(0, 100);
+	this->pPlayer->Render();
 
 	//Hit 위치에 구
 	GIZMO_MGR->WireSphere(this->m_mousePos, 0.5f, 0xffff0000);

@@ -30,7 +30,7 @@ class moveClass
 	float m_gravity;
 
 	bool test;
-
+	bool objTest;
 public:
 	void init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain,cCamera* camera);
 	

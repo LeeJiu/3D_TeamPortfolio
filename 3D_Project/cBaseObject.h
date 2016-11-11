@@ -12,12 +12,11 @@ public:
 	cXMesh*				pMesh;						//니가 사용하는 메쉬가 뭐니?
 	cBoundBox			BoundBox;
 	bool				IgnoreCreateShadow;			//쉐도우맵 만들때 무시되니
-	
 
+	cSkinnedAnimation*	pSkinned;	//스킨드 Animtion
 
 protected:
 	bool				bActive;	//활성화 여부
-	cSkinnedAnimation*	pSkinned;	//스킨드 Animtion
 	cTerrain*			pTerrain;	//터레인 정보
 
 

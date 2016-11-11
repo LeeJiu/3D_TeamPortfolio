@@ -35,12 +35,13 @@ void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* t
 	//================
 	isClick = false;
 	isJump = false;
+
 	m_jumpPower = 0;
 	m_gravity = 19.8f;
 
 	test = false;
 
-	
+	objTest = true;
 }
 void moveClass::update(float timeDelta, cBaseObject* collObj)
 {
@@ -48,7 +49,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);
 	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 3; // 머리위에 붙일예정
-	
+
 
 	if (KEY_MGR->IsStayDown('W'))
 	{
@@ -94,14 +95,62 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 			moveRay.origin.z);
 	}
 
+	if (KEY_MGR->IsOnceDown('P'))
+	{
+		objTest = !objTest;
+		if (objTest == true)
+		{
+			LOG_MGR->AddLog("objTest true");
 
+		}
+		else
+		{
+			LOG_MGR->AddLog("objTest false");
+
+		}
+	
+	}
 	clickUpdate(collObj); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
 
 	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
 	//=========================
-	
-	getLastHeight(collObj);
+	if (test == false)
+	{
+		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+			m_prePos.x,
+			m_prePos.y,
+			m_prePos.z);
 
+		LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
+			moveRay.origin.x,
+			moveRay.origin.y,
+			moveRay.origin.z);
+		test = true;
+	}
+
+	if (objTest == false)
+	{
+		getLastHeight(NULL);
+	}
+	else if (objTest == true)
+	{
+		getLastHeight(collObj);
+
+	}
+
+	if (test == false)
+	{
+		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+			m_prePos.x,
+			m_prePos.y,
+			m_prePos.z);
+
+		LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
+			moveRay.origin.x,
+			moveRay.origin.y,
+			moveRay.origin.z);
+		test = true;
+	}
 
 	//아래 피직스 매니져 사용 법
 	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
@@ -109,7 +158,25 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 
 	//================================ 여기 사이에 코딩 하면됨
 
+	//m_lastPos = this->pSkinnedTrans->GetWorldPosition();
+	//m_lastPos.y = -1000;
+	// 추후에 거리 값을 이용해서 2,3번째 인자 값을 걸러 낼꺼임.
+	//if ((
+	//	PHYSICS_MGR->IsRayHitStaticMeshObject(
+	//	&this->moveRay,
+	//	collObj,
+	//	collObj->pTransform,
+	//	&this->m_prePos,
+	//	NULL)) == true )
+	//{
+	//	m_lastPos = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
+	//}
+	//else
+	//{
+	//	m_lastPos.y = pCharTrans->GetWorldPosition().y - 10;
+	//}
 	//===============================
+
 	moveJumpCheck(timeDelta);
 	if (test == false)
 	{
@@ -144,9 +211,9 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 		{
 			tempLast = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
 			objColl = true;      // 오브젝트 충돌 했다. 
-		
+
 		}
-	    // 오브젝트와 충돌 하지 않았다면 - 현재 위치 보다 낮은 값이 들어간다. ( 이 값이 없으면 아래로 내려가지 않는다. )
+		// 오브젝트와 충돌 하지 않았다면 - 현재 위치 보다 낮은 값이 들어간다. ( 이 값이 없으면 아래로 내려가지 않는다. )
 		//else
 		//{
 		//	tempLast.y = pCharTrans->GetWorldPosition().y - 10; // 
@@ -154,11 +221,22 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 	}
 	// 오브젝트와 충돌 했다면 - tempLast 에 값이 들어간다. 
 
-	
+
 	// 터레인과 충돌 했다면. 
 	if (m_pTerrain->IsIntersectRay(&m_prePos, &moveRay))
 	{
-	
+		if (test == false)
+		{
+			LOG_MGR->AddLog("시벌: %.2f, Ty : %.2f, Tz : %.2f",
+				m_prePos.x,
+				m_prePos.y,
+				m_prePos.z);
+
+			LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
+				moveRay.origin.x,
+				moveRay.origin.y,
+				moveRay.origin.z);
+		}
 		terrainColl = true;
 
 		if (objColl == true) // 충돌 했다면 . tempLast = obj의 좌표와 같다. ( 그중에 Y축 값이 높은것으로 반환)
@@ -170,8 +248,9 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 		}
 	}
 
+
 	// 혹시 모를 예외 처리 ( 만약 둘다 충돌 되지 않았다면 일단 터레인 위치로 좌표를 수정 )
-	if (objColl == false && terrainColl == false) 
+	if (objColl == false && terrainColl == false)
 	{
 		m_prePos.y = m_pTerrain->GetHeight(m_prePos.x, m_prePos.z);
 		this->pCharTrans->SetWorldPosition(m_prePos);
@@ -184,6 +263,7 @@ void moveClass::render()
 {
 	//	pChar->Render(pCharTrans);
 	GIZMO_MGR->Line(this->moveRay.origin, this->moveRay.origin + this->moveRay.direction * 100, 0xffffff00);
+	GIZMO_MGR->WireSphere(this->m_mousePos, 0.5f, 0xffff0000);
 
 }
 
@@ -256,6 +336,7 @@ void moveClass::moveJumpCheck(float timeDelta)
 	{
 		isJump = true;
 	}
+
 	// 위와 마찬가지 갈 곳이 더 높으면 +값이 나온다. (prePos) --__ (current)
 	if (fabs(m_prePos.y - m_currentPos.y) < 0.5f&&isMove==true  && isJump == false) // 숫자는 넘어갈 수 있는 높이. ( 아래에서 위로 갈 때. )
 	{
@@ -271,7 +352,7 @@ void moveClass::moveJumpCheck(float timeDelta)
 		m_currentPos = jumpPos; // 좌표 갱신
 
 		//================ 지상이랑 체크. 
-		if (fabs(m_prePos.y - m_currentPos.y) <= 0.2f)// 0.2은 EPSILON 값.
+		if (fabs(m_prePos.y - m_currentPos.y) <= 0.3f)// 0.2은 EPSILON 값.
 		{
 			isJump = false;
 			m_jumpPower = 0;
