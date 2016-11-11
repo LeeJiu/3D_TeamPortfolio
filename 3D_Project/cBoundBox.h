@@ -12,6 +12,8 @@ public:
 public:
 	cBoundBox(void);
 	~cBoundBox(void);
+	
+	void Init(D3DXVECTOR3 minPos, D3DXVECTOR3 maxPos);
 
 	void GetWorldBox(const cTransform* pTrans, D3DXVECTOR3* outBoxPos );
 	void GetWorldAABBMinMax( const cTransform* pTrans, D3DXVECTOR3* min, D3DXVECTOR3* max );
@@ -19,9 +21,6 @@ public:
 
 	//월드 단위로 그려진다.
 	virtual void RenderGizmo( const cTransform* pTrans ) override;
-
-	
-
 	virtual void SetBound( const D3DXVECTOR3* pCenter, const D3DXVECTOR3* pHalfSize ) override;
 
 };

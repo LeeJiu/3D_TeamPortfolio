@@ -61,10 +61,12 @@ HRESULT move_Test::Scene_Init()
 	this->pSkinned1->Init(pSkinned);
 	//
 	pSkinnedBox = new cBoundBox;
-	pSkinnedBox->localCenter = D3DXVECTOR3(0, 0, 0);
-	pSkinnedBox->localMaxPos = D3DXVECTOR3(2, 2, 2);
-	pSkinnedBox->localMinPos = D3DXVECTOR3(-2, -2, -2);
-	pSkinnedBox->radius = 3.f;
+	pSkinnedBox->Init(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(2, 2, 2));
+	// pSkinnedBox->localCenter = D3DXVECTOR3(0, 0, 0);
+	// pSkinnedBox->localMaxPos = D3DXVECTOR3(2, 2, 2);
+	// pSkinnedBox->localMinPos = D3DXVECTOR3(-2, -2, -2);
+	// pSkinnedBox->halfSize = D3DXVECTOR3(2, 2, 2);
+	// pSkinnedBox->radius = 3.f;
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
@@ -102,13 +104,17 @@ HRESULT move_Test::Scene_Init()
 	isClick = false;
 	//
 	colliTest = new cTransform;
-	colliTest->SetWorldPosition(3, m_pTerrain->GetHeight(3, 3) + 1, 3);
+	colliTest->SetWorldPosition(3, m_pTerrain->GetHeight(3, 3) + 2, 3);
 
 	testBox = new cBoundBox;
-	testBox->localCenter = D3DXVECTOR3(0, 0, 0);
-	testBox->localMaxPos = D3DXVECTOR3(4, 4, 4);
-	testBox->localMinPos = D3DXVECTOR3(-3, -3, -3);
-	testBox->radius = 0.5f;
+	testBox->Init(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(3, 3, 3));
+
+	//testBox->localCenter = D3DXVECTOR3(0, 0, 0);
+	//testBox->localMaxPos = D3DXVECTOR3(3, 3, 3);
+	//testBox->localMinPos = D3DXVECTOR3(-3, -3, -3);
+	//testBox->halfSize = D3DXVECTOR3(3, 3, 3);
+	//
+	//testBox->radius = 3.f;
 	//
 	quad[0] = D3DXVECTOR3(-3, 0, 3);
 	quad[1] = D3DXVECTOR3(3, 0, 3);
@@ -131,6 +137,10 @@ void move_Test::Scene_Release()
 
 void move_Test::Scene_Update(float timeDelta)
 {
+
+
+
+
 	// 레이 업데이트 
 	m_currentPos = pSkinnedTrans->GetWorldPosition(); // 현재 위치. 
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);
@@ -221,6 +231,32 @@ void move_Test::Scene_Update(float timeDelta)
 		}
 	}
 
+	// PHYSICS_MRG->IsOverlap();
+	if (
+		PHYSICS_MGR->IsOverlap(pSkinnedTrans, pSkinnedBox, colliTest, testBox))
+	{
+	    if (isMove == true)
+		{
+			if (
+				PHYSICS_MGR->IsRayHitBound(
+				&cRay,				//레이
+				testBox,			//바운드
+				colliTest,	//바운드의 Transform
+				NULL,     //Hit 위치 ( NULL 이면 대입 안됨 )
+				NULL	  //Hit 의 노말 ( NULL 이면 대입 안됨 )
+				))
+			{
+				LOG_MGR->AddLog("기모찌");
+
+				PHYSICS_MGR->IsBlocking(
+					pSkinnedTrans, pSkinnedBox, colliTest, testBox, 0.5f);
+				{
+					cRay.origin = pSkinnedTrans->GetWorldPosition();
+				}
+			}
+	
+		}
+	}
 
 	//D3DXIntersectTri()
 

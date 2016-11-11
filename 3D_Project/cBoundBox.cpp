@@ -149,3 +149,19 @@ void cBoundBox::SetBound( const D3DXVECTOR3* pCenter, const D3DXVECTOR3* pHalfSi
 	this->localMinPos = this->localCenter - this->halfSize;
 	this->localMaxPos = this->localCenter + this->halfSize;
 }
+
+void cBoundBox::Init(D3DXVECTOR3 minPos, D3DXVECTOR3 maxPos)
+{
+
+	//Bound 추가 계산
+	this->localMinPos = minPos;
+	this->localMaxPos = maxPos;
+	this->localCenter = (this->localMinPos + this->localMaxPos) * 0.5f;
+	D3DXVECTOR3 Bound_Size = D3DXVECTOR3(
+		localMaxPos.x - localMinPos.x,
+		localMaxPos.y - localMinPos.y,
+		localMaxPos.z - localMinPos.z);
+	this->halfSize = Bound_Size * 0.5f;
+	this->radius = D3DXVec3Length(&(this->localCenter - this->localMinPos));
+
+}
