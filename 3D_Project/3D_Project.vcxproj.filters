@@ -141,9 +141,6 @@
     <ClInclude Include="cSkinnedAnimation.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="cSpriteManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cPartcleEmitter.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -198,9 +195,6 @@
     <ClInclude Include="move_Test2.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cSoundManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cMonster.h">
       <Filter>GameActor</Filter>
     </ClInclude>
@@ -226,7 +220,13 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="mage_Test.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cSpriteManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="cSoundManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -332,9 +332,6 @@
     <ClCompile Include="cSkinnedAnimation.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="cSpriteManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cParticle.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -389,17 +386,11 @@
     <ClCompile Include="move_Test2.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cSoundManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cMonster.cpp">
       <Filter>GameActor</Filter>
     </ClCompile>
     <ClCompile Include="animation_Test.cpp">
       <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="animation_Test_backup.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="sector_Test.cpp">
       <Filter>Scenes</Filter>
@@ -420,7 +411,13 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="mage_Test.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cSpriteManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="cSoundManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

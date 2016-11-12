@@ -26,6 +26,7 @@ private:
 	D3DXTRACK_DESC					m_Track_Desc_0;				//0번 Track_Desc ( 0 번 Track 의 정보 )
 	
 	bool							m_bPlay;					//지금 플레이 중이니?
+	std::string						m_NowPlay;
 	bool							m_bLoop;					//루프 플레이니?
 	LPD3DXANIMATIONSET				m_pPrevPlayAnimationSet;	//OneShot 플레이시 한번 Animation 플레이되고 다시 되돌아갈 Animaiton
 
@@ -62,7 +63,8 @@ public:
 	void RemoveBoneTransform( std::string boneName );
 	void RemoveApplyTransform( std::string boneName );
 
-
+	bool GetIsPlaying() { return m_bPlay; }
+	std::string GetNowPlaying() { return m_NowPlay; }
 
 public:
 	cSkinnedAnimation(void);

@@ -173,7 +173,7 @@ void cSkinnedAnimation::Play( std::string animName, float crossFadeTime )
 {
 	m_bPlay = true;
 	m_bLoop = true;
-
+	m_NowPlay = animName;
 
 	MAP_ANIMSET::iterator find = this->m_mapAnimSet.find( animName );
 	if( find != this->m_mapAnimSet.end() ){

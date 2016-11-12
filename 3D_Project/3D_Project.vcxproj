@@ -144,7 +144,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
-    <ClCompile Include="animation_Test_backup.cpp" />
     <ClCompile Include="BoneHierachy.cpp" />
     <ClCompile Include="camera_Test.cpp" />
     <ClCompile Include="cBaseObject.cpp" />

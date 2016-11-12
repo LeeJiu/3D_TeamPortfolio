@@ -68,7 +68,6 @@ public:
 
 	virtual void Scene_RenderSprite();
 
-
 };
 
 

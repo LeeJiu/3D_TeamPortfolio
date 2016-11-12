@@ -61,10 +61,11 @@ HRESULT mage_Test::Scene_Init()
 	this->pMage = new cMage;
 	this->pMage->SetMesh(pSkinned);
 	this->pMage->SetTerrain(m_pTerrain);
+	this->pMage->SetCamera(this->pMainCamera);
 	this->pMage->SetActive(true);
-
+	
 	//캐릭터가 그려질 위치 트랜스폼
-	this->pMage->pTransform = new cTransform();
+	//this->pMage->pTransform = new cTransform();
 	this->pMage->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
 
 	this->pTransForCamera = new cTransform();
@@ -189,10 +190,6 @@ void mage_Test::Scene_Render1()
 	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrixArray("matLights", matLights, 10);
 	cXMesh_Skinned::sSkinnedMeshEffect->SetInt("LightNum", this->lights.size());
 
-	//SkinnedEffect CameraMatrix 적용
-	//D3DXMATRIXA16 matViewProjection = pCamera->GetViewProjectionMatrix();
-	//m_pSkinnedEffect->SetMatrix( "matViewProjection", &matViewProjection );
-
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 	this->pMage->Render();
 
@@ -214,4 +211,3 @@ void mage_Test::Scene_Render1()
 void mage_Test::Scene_RenderSprite()
 {
 }
-

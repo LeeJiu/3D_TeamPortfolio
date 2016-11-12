@@ -2,13 +2,11 @@
 
 //============= 전방 선언 =========
 class cTerrain;
-class cSkinnedAnimation;
 class cBaseObject;
 class cCamera;
 
 class moveClass 
 {
-	cSkinnedAnimation*		pChar;  //케릭터
 	cTransform*				pCharTrans;//케릭터움직일 trans
 	cBaseObject*            pEnumy;    //애너미 주소값 ( 전방선언)
 	cCamera*				pMainCamera;
@@ -23,7 +21,6 @@ class moveClass
 	bool isClick;   // 클릭했니?
 	cTerrain*		m_pTerrain; // 전방 선언.
 
-
 	//==================== jump 
 	bool isJump;
 	float m_jumpPower;
@@ -31,8 +28,9 @@ class moveClass
 
 	bool test;
 	bool objTest;
+
 public:
-	void init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain,cCamera* camera);
+	void init(cTransform* trans, cTerrain* terrain, cCamera* camera);
 	
 	// 충돌 오브젝트는 여러개 일 수 있음 나중에 벡터 형으로 바뀔 수도 있다.
 	void update(float timeDelta, cBaseObject* collObj);
@@ -41,6 +39,9 @@ public:
 	void getLastHeight(cBaseObject* enumy);
 	void clickUpdate(cBaseObject* enumy);
 	void moveJumpCheck(float timeDelta);
+
+	bool GetIsMove() { return isMove; }
+
 	moveClass();
 	~moveClass();
 };

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "moveClass.h"
 #include "cTransform.h"
-#include "cSkinnedAnimation.h"
 #include "cTerrain.h"
 #include "cBaseObject.h"
 #include "cCamera.h"
@@ -15,11 +14,10 @@ moveClass::~moveClass()
 {
 }
 
-void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain, cCamera* camera)
+void moveClass::init(cTransform* trans, cTerrain* terrain, cCamera* camera)
 {
 	//=================== 전방선언 값 대입.
 	pMainCamera = camera;
-	pChar = pSkinned;
 	pCharTrans = trans;
 	m_pTerrain = terrain;
 	isMove = false;
@@ -43,24 +41,24 @@ void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* t
 
 	objTest = true;
 }
+
 void moveClass::update(float timeDelta, cBaseObject* collObj)
 {
 	// 레이 업데이트 
 	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
-	//cRay.direction = D3DXVECTOR3(0, -1, 0);
 	moveRay.origin.y = pCharTrans->GetWorldPosition().y + 3; // 머리위에 붙일예정
-
 
 	if (KEY_MGR->IsStayDown('W'))
 	{
 		isMove = true;
 		moveRay.origin += pCharTrans->GetForward()*0.2f;
+		LOG_MGR->AddLog("들어옴!!!!");
+		pCharTrans->MovePositionSelf(0, 0, 1);
 	}
 	if (KEY_MGR->IsStayDown('S'))
 	{
 		isMove = true;
 		moveRay.origin -= pCharTrans->GetForward()*0.2f;
-
 	}
 	if (KEY_MGR->IsStayDown('Q'))
 	{
@@ -73,7 +71,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 		isMove = true;
 		moveRay.origin += pCharTrans->GetRight()*0.2f;
 	}
-	if (KEY_MGR->IsStayDown('A'))
+		if (KEY_MGR->IsStayDown('A'))
 	{
 		pCharTrans->RotateSelf(0, -2 * ONE_RAD, 0);
 	}
@@ -108,12 +106,12 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 			LOG_MGR->AddLog("objTest false");
 
 		}
-	
+
 	}
 	clickUpdate(collObj); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
 
-	// 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
-	//=========================
+						  // 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
+						  //=========================
 	if (test == false)
 	{
 		LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
@@ -191,8 +189,9 @@ void moveClass::update(float timeDelta, cBaseObject* collObj)
 			moveRay.origin.z);
 		test = true;
 	}
-
 }
+
+
 void moveClass::getLastHeight(cBaseObject* enumy)
 {
 	D3DXVECTOR3 tempLast(0, 0, 0); // 임시 저장 변수.
@@ -254,7 +253,6 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 	{
 		m_prePos.y = m_pTerrain->GetHeight(m_prePos.x, m_prePos.z);
 		this->pCharTrans->SetWorldPosition(m_prePos);
-
 	}
 
 

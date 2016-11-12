@@ -15,9 +15,12 @@ class cMage : public cBaseObject
 {
 private:
 	cCamera*			m_camera;
+	
 
 	ACTOR_STATE			m_state;
+	bool				m_isMove;
 	std::string			m_current_Ani;
+	std::string			m_Aniname;
 
 	//컴포넌트를 달아준다.
 	cInputHandler*		m_pInput;
