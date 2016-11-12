@@ -46,17 +46,10 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
+	selectObject = new cBaseObject;
+	selectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection));
+	
 	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X", &matCorrection);
-
-	selectObject = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection);
-
-	/*object2 = new cBaseObject();
-	object2->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X", &matCorrection));
-	object2->SetActive(true);
-	object2->pTransform->SetWorldPosition(-110, m_pTerrain->GetHeight(-110, 145) - 0.5f, 145);*/
-
-
-
 
 
 
@@ -110,6 +103,13 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 	this->lights.push_back(pLight3);*/
 
 
+	//
+	//오브젝트 보정을 위한 변수 세팅
+	//
+	vecScale = selectObject->pTransform->GetScale();
+	vecRotate = D3DXVECTOR3(90 * ONE_RAD, 0, 0);
+
+
 	return S_OK;
 }
 
@@ -117,9 +117,8 @@ void cScene_BoundBoxTool::Scene_Release()
 {
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
-	/*SAFE_DELETE(object);
-	SAFE_DELETE(object2);*/
 	SAFE_DELETE(m_pMonster);
+	SAFE_DELETE(selectObject);
 }
 
 void cScene_BoundBoxTool::Scene_Update(float timeDelta)
@@ -143,9 +142,8 @@ void cScene_BoundBoxTool::Scene_Render1()
 	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
 	cXMesh_Static::SetBaseLight(dynamic_cast<cLight_Direction*>(lights[0]));
 
-	/*object->Render();
-	object2->Render();*/
 	int size = objects.size();
+	LOG_MGR->AddLog("%d", size);
 	for (int i = 0; i < size; ++i)
 	{
 		objects[i]->Render();
@@ -178,17 +176,22 @@ void cScene_BoundBoxTool::Scene_Render1()
 void cScene_BoundBoxTool::KeyControl(float timeDelta)
 {
 	//다이렉션 라이트 조종
-	lights[0]->pTransform->DefaultControl2(timeDelta);
+	//lights[0]->pTransform->DefaultControl2(timeDelta);
 
 	//설치할 오브젝트를 변경한다.
 	if (KEY_MGR->IsOnceDown('1'))
 	{
-		selectObject = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X");
+		selectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X"));
 	}
 	if (KEY_MGR->IsOnceDown('2'))
 	{
-		selectObject = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X");
+		selectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X"));
 	}
+
+
+	//오브젝트 위치 이동한다.
+	selectObject->pTransform->DefaultControl4(timeDelta);
+
 
 	//피킹해서 그 위치에 오브젝트를 놓고,
 	//위치 시킨 오브젝트를 벡터에 추가한다.
@@ -203,13 +206,14 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 		D3DXVECTOR3 pos;
 		m_pTerrain->IsIntersectRay(&pos, &ray);
 
-		cBaseObject* obj = new cBaseObject();
-		obj->SetMesh(selectObject);
-		obj->SetActive(true);
+		//오브젝트를 벡터에 추가한다.
+		cBaseObject* obj = new cBaseObject;
+		obj->SetMesh(selectObject->pMesh);
 		obj->pTransform->SetWorldPosition(pos);
+		obj->SetActive(true);
 		objects.push_back(obj);
 
-
+		//selectObject = objects.back();
 
 		//vector<cSetBoundObject*> hitBounds;
 		//vector<float>	hitdistances;

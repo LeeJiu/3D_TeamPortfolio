@@ -226,6 +226,7 @@ public:
 	void DefaultControl( float timeDelta );
 	void DefaultControl2( float timeDelta );
 	void DefaultControl3(float timeDelta, cTransform* charactor);
+	void DefaultControl4(float timeDelta);	//오브젝트 움직이는 용 컨트롤4
 
 
 	//Transform 에 대한 기즈모를 그린다.
