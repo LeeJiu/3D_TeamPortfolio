@@ -219,13 +219,16 @@
     <ClInclude Include="cWayPoint.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="monster_Test.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="mage_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cSpriteManager.h">
+    <ClInclude Include="cSoundManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="cSoundManager.h">
+    <ClInclude Include="cSpriteManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -410,13 +413,16 @@
     <ClCompile Include="cWayPoint.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="monster_Test.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="mage_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cSpriteManager.cpp">
+    <ClCompile Include="cSoundManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="cSoundManager.cpp">
+    <ClCompile Include="cSpriteManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>

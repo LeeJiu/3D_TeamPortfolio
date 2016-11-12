@@ -22,7 +22,7 @@ HRESULT move_Test2::Scene_Init()
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
 		"../Resources/Textures/MyHeight512.bmp",
-		"../Resources/Textures/terrain1.jpg",
+		"../Resources/Textures/terrain1.png",
 		"../Resources/Textures/terrain2.png",
 		"../Resources/Textures/terrain3.png",
 		"../Resources/Textures/terrain4.png",
@@ -64,10 +64,13 @@ HRESULT move_Test2::Scene_Init()
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pSkinnedTrans = new cTransform();
-	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0)+2.f, 0);
+	pSkinnedTrans->SetWorldPosition(0, m_pTerrain->GetHeight(0,0)+3.f, 0);
+	
+	pSkinnedBound = new cBoundBox;
+	pSkinnedBound->Init(D3DXVECTOR3(-2, -2, -2), D3DXVECTOR3(2, 2, 2));
 
 	move = new moveClass;
-	move->init(pSkinnedTrans, m_pTerrain,pMainCamera);
+	move->init(pSkinned1, pSkinnedTrans, m_pTerrain,pMainCamera,pSkinnedBound);
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
@@ -93,9 +96,15 @@ HRESULT move_Test2::Scene_Init()
 	this->lights.push_back(pLight2);
 	this->lights.push_back(pLight3);
 
+
+	collTrans = new cTransform;
+	collTrans->SetWorldPosition(3, m_pTerrain->GetHeight(3, 3) + 2.f, 3);
+
+
+	collBox = new cBoundBox;
+	collBox->Init(D3DXVECTOR3(-2, -2, -2), D3DXVECTOR3(2, 2, 2));
 	//================레이 추가. 아래 방향 바뀌지 않음 .
 	//=============== 레이 초기화 끝.
-	pMainCamera->SetWorldPosition(2, 5, 2);
 	return S_OK;
 }
 
@@ -112,16 +121,19 @@ void move_Test2::Scene_Release()
 
 void move_Test2::Scene_Update(float timeDelta)
 {
-	move->update(timeDelta, m_Land);
+	move->update(timeDelta, m_Land,collBox,collTrans);
 
 	this->pSkinned1->Update(timeDelta);
 
 
-	if (KEY_MGR->IsOnceDown(VK_SPACE))
+	if (KEY_MGR->IsOnceDown('I'))
 	{
 		LOG_MGR->AddLog("T:%.2f,P:%.2f",
 			m_pTerrain->GetHeight(0, 0), pSkinnedTrans->GetWorldPosition().y);
 
+
+		LOG_MGR->AddLog("캐릭터 현재 위치");
+		LOG_MGR->AddLog("Y : %.2f", pSkinnedTrans->GetWorldPosition().y);
 	}
 
 
@@ -162,6 +174,14 @@ void move_Test2::Scene_Render1()
 	m_Land->Render();
 	//========== 레이 기지모
 	move->render();
+
+	collBox->RenderGizmo(collTrans);
+
+	//GIZMO_MGR->WireSphere(pSkinnedTrans->GetWorldPosition()
+	//	, pSkinnedBox->radius, 0xffff0000);
+	//
+	pSkinnedBound->RenderGizmo(pSkinnedTrans);
+
 }
 
 

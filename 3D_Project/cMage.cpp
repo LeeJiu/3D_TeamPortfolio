@@ -14,7 +14,6 @@ cMage::~cMage()
 {
 	SAFE_DELETE(m_pInput);
 	SAFE_DELETE(m_pMove);
-	SAFE_DELETE(m_pState);
 }
 
 void cMage::BaseObjectEnable()
@@ -22,7 +21,6 @@ void cMage::BaseObjectEnable()
 	m_pInput = new cInputHandler;
 	m_pInput->AddKey('1', new cTestCommand);
 	m_pInput->AddKey('2', new cTestCommand2);
-
 	
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
@@ -84,7 +82,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	//===============무브==============================
 	
-	m_pMove->update(timeDelta, NULL);
+	m_pMove->update(timeDelta, NULL, NULL, NULL);
 
 	if (KEY_MGR->IsOnceDown('P'))
 	{

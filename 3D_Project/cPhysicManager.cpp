@@ -649,6 +649,12 @@ bool cPhysicManager::IsOverlap(cTransform* pTransA, cBoundBox* pBoundA, cTransfo
 
 	pBoundA->GetWorldCenterRadius(pTransA, &centerA, &radiusA);
 	pBoundB->GetWorldCenterRadius(pTransB, &centerB, &radiusB);
+	
+	//testBox->RenderGizmo(colliTest);
+	//GIZMO_MGR->WireSphere(centerA
+	//	, radiusA, 0xff0000ff);
+	//GIZMO_MGR->WireSphere(centerB
+	//	, radiusB, 0xffff00ff);
 
 	D3DXVECTOR3 dirTo = centerB - centerA;
 
@@ -1496,7 +1502,7 @@ D3DXVECTOR3 cPhysicManager::getLastHeight(cBaseObject* enumy, Ray* ray, cTerrain
 	// 혹시 모를 예외 처리 ( 만약 둘다 충돌 되지 않았다면 일단 터레인 위치로 좌표를 수정 )
 	if (objColl == false && terrainColl == false)
 	{
-		outPos->y = terrain->GetHeight(outPos->x, outPos->z);
+		//outPos->y = terrain->GetHeight(outPos->x, outPos->z);
 
 		return *outPos;
 	}

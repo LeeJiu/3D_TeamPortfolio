@@ -1,5 +1,6 @@
 #pragma once
 #include "cScene.h"
+#include "cSetBoundObject.h"
 
 class cTerrain;
 class cMonster;
@@ -10,8 +11,14 @@ class cScene_BoundBoxTool : public cScene
 private:
 	cTerrain*			m_pTerrain;
 	cMonster*			m_pMonster;
+	
+	cBaseObject*		object;
+	cBaseObject*		object2;
+	cXMesh_Static*		selectObject;
+	std::vector<cBaseObject*>		objects;
 
-	cLight*				testLight;
+	cSetBoundObject*				selectBound;
+	std::vector<cSetBoundObject*>	boundObjects;
 
 	std::vector<cLight*>	lights;
 
@@ -26,5 +33,7 @@ public:
 	void Scene_Update(float timeDelta);
 
 	void Scene_Render1();
+
+	void KeyControl(float timeDelta);
 };
 

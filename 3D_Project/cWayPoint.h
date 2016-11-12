@@ -11,6 +11,12 @@ private:
 	bool		m_bStart;
 	bool		m_bEnd;
 
+	Ray					m_ray;
+
+	D3DXVECTOR3			m_prePos;
+	D3DXVECTOR3			m_currentPos;
+
+
 	vector<D3DXVECTOR3>				m_vWayPoint;
 	vector<D3DXVECTOR3>::iterator	m_viWayPoint;
 

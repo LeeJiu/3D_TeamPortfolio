@@ -3,8 +3,6 @@
 #include "cTestCommand.h"
 #include "cTestCommand2.h"
 #include "moveClass.h"
-#include "cIdleState.h"
-#include "cMoveState.h"
 
 class cTerrain;
 class cCamera;
@@ -25,7 +23,6 @@ private:
 	//컴포넌트를 달아준다.
 	cInputHandler*		m_pInput;
 	moveClass*			m_pMove;
-	cStateHandler*		m_pState;
 
 public:
 	cMage();
