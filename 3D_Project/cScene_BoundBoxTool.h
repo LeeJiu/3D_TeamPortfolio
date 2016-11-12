@@ -11,10 +11,14 @@ class cScene_BoundBoxTool : public cScene
 private:
 	cTerrain*			m_pTerrain;
 	cMonster*			m_pMonster;
+
+
+	//보정 행렬 변수
+	D3DXVECTOR3			vecScale;
+	D3DXVECTOR3			vecRotate;
+
 	
-	cBaseObject*		object;
-	cBaseObject*		object2;
-	cXMesh_Static*		selectObject;
+	cBaseObject*					selectObject;
 	std::vector<cBaseObject*>		objects;
 
 	cSetBoundObject*				selectBound;

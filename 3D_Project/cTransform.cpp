@@ -1625,6 +1625,46 @@ void cTransform::DefaultControl2( float timeDelta )
 }
 
 
+void cTransform::DefaultControl4(float timeDelta)
+{
+	float deltaMove = 3.0f * timeDelta;
+	float deltaAngle = 90.0f * ONE_RAD * timeDelta;
+
+	if (KEY_MGR->IsStayDown(VK_LSHIFT))
+		deltaMove *= 5.0f;
+
+	if (KEY_MGR->IsStayDown(VK_RBUTTON) == false)
+	{
+		if (KEY_MGR->IsStayDown('A'))
+			this->MovePositionSelf(-deltaMove, 0.0f, 0.0f);
+		else if (KEY_MGR->IsStayDown('D'))
+			this->MovePositionSelf(deltaMove, 0.0f, 0.0f);
+
+		if (KEY_MGR->IsStayDown('W'))
+			this->MovePositionSelf(0.0f, 0.0f, deltaMove);
+		else if (KEY_MGR->IsStayDown('S'))
+			this->MovePositionSelf(0.0f, 0.0f, -deltaMove);
+
+		if (KEY_MGR->IsStayDown(VK_LEFT))
+			this->RotateSelf(0.0f, -deltaAngle, 0.0f);
+		else if (KEY_MGR->IsStayDown(VK_RIGHT))
+			this->RotateSelf(0.0f, deltaAngle, 0.0f);
+
+		if (KEY_MGR->IsStayDown(VK_UP))
+			this->MovePositionSelf(0.0f, deltaMove, 0.0f);
+		else if (KEY_MGR->IsStayDown(VK_DOWN))
+			this->MovePositionSelf(0.0f, -deltaMove, 0.0f);
+
+
+		//크기 조정
+		if (KEY_MGR->IsStayDown('Q'))
+			this->Scaling(-timeDelta, -timeDelta, -timeDelta);
+		else if (KEY_MGR->IsStayDown('E'))
+			this->Scaling(timeDelta, timeDelta, timeDelta);
+	}
+}
+
+
 
 //Transform 에 대한 기즈모를 그린다.
 void cTransform::RenderGimozo( bool applyScale ) const
