@@ -142,8 +142,8 @@ void monster_Test::Light_Push()
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
 	pLight1->Color = D3DXCOLOR(1, 1, 1, 1);
-	pLight1->Intensity = 0.5f;
-	pLight1->pTransform->SetRotateWorld(45 * ONE_RAD, 45 * ONE_RAD, 45 * ONE_RAD);
+	pLight1->Intensity = 1.0f;
+	pLight1->pTransform->SetRotateWorld(45 * ONE_RAD, 90 * ONE_RAD, 45 * ONE_RAD);
 
 	cLight_Point* pLight2 = new cLight_Point();
 	pLight2->Color = D3DXCOLOR(1, 1, 1, 0);
@@ -477,6 +477,7 @@ void monster_Test::Monster_Update(float timeDelta)
 
 			if (D3DXVec3Length(&mobReturnDir) > 0.5f)
 			{
+				aniCount[i] = 1;
 				isMobMove[i] = true;
 				D3DXVec3Normalize(&mobReturnDir, &mobReturnDir);
 				D3DXVECTOR3 mobLerp = pMonsterTrans[i]->GetForward();
@@ -512,7 +513,7 @@ void monster_Test::Monster_Update(float timeDelta)
 			this->pMonsterTrans[i]->SetWorldPosition(m_mob_prePos[i]);
 			m_mob_currentPos[i] = m_mob_prePos[i]; // 좌표 갱신
 
-
+		}
 
 			// 레이랑 케릭터 거리가 멀어지면 레이가 더이상 넘어가지 못하게 만든다.
 			float mob_rayCheckDis = D3DXVec3Length(&(cMobRay[i].origin - pMonsterTrans[i]->GetWorldPosition()));
@@ -534,13 +535,17 @@ void monster_Test::Monster_Update(float timeDelta)
 				break;
 			case 1: pMonster[i]->Play("RUN", 0.3);
 				break;
-			default: pMonster[i]->Play("ATK_01", 0.3);
+			case 2: pMonster[i]->Play("ATK_01", 0.3);
+				break;
+			case 3: pMonster[i]->Play("DMG", 0.3);
+				break;
+			default: pMonster[i]->Play("IDLE", 0.3);
 				break;
 			}
 
 		}
 	}
-}
+
 
 
 void monster_Test::Monster_Render()
@@ -549,9 +554,6 @@ void monster_Test::Monster_Render()
 	{
 
 		this->pMonster[i]->Render(pMonsterTrans[i]);
-
-
-
 
 	}
 
@@ -580,30 +582,49 @@ void monster_Test::Player_ATK_Update(float timeDelta)
 	{
 		D3DXVECTOR3 atkLength = m_mousePos - pMonsterTrans[i]->GetWorldPosition();
 
-		if (D3DXVec3Length(&atkLength) < 0.5f)
-		{
-			isTarget = true;
-			LOG_MGR->AddLog("타겟팅중");
-		}
+		//if (D3DXVec3Length(&atkLength) < 0.5f)
+		//{
+		//	isTarget = true;
+		//	LOG_MGR->AddLog("타겟팅중");
+		//}
 
 	}
 
 	if (KEY_MGR->IsOnceDown(VK_SPACE))
 	{
 		isATK = true;
-
+		pSkinned1->Play("STF_ATK1", 0.3);
 	}
 
 	if (isATK)
 	{
+	
+		pATKTrans->MovePositionSelf(D3DXVECTOR3(0, 0, 0.3f * 1.0f));
 
-		pATKTrans->MovePositionSelf(D3DXVECTOR3(0, 0, 1.0f * 3.0f));
+		
 	}
-	else
+	
+	D3DXVECTOR3 atkLength1 = pSkinnedTrans->GetWorldPosition() - pATKTrans->GetWorldPosition();
+	if (D3DXVec3Length(&atkLength1) > 20.0f)
 	{
-		//pATKTrans->SetWorldPosition(pSkinnedTrans->GetWorldPosition() + D3DXVECTOR3(0, 2.0f, 0));
-		//pATKTrans->LookDirection(pSkinnedTrans->GetForward(), 90.0f);
+		
+		pATKTrans->SetLocalPosition(D3DXVECTOR3(0, 2.5f, 0));
+		isATK = false;
 	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		D3DXVECTOR3 hitLength = pMonsterTrans[i]->GetWorldPosition() - pATKTrans->GetWorldPosition();
+
+		if (D3DXVec3Length(&hitLength) < 10.0f)
+		{
+			aniCount[i] = 3;
+
+		}
+	
+
+	}
+
 
 	isMove = true;
 

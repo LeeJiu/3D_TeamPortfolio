@@ -33,7 +33,7 @@ void ComputeLight(
 		float diff = saturate(NdotL);
 
 		//라이트 반사
-		float3 lightRefl = normalize(dir + 2.0f * NdotL * normal);
+		float3 lightRefl = normalize(dir + 1.0f * NdotL * normal);
 			float spec = saturate(dot(lightRefl, viewDir));
 		spec = pow(spec, fSpecPower);
 
@@ -70,7 +70,7 @@ void ComputeLight(
 		diff *= t;			//받는 광원 량에 감쇠율 적용
 
 		//라이트 반사
-		float3 lightRefl = normalize(-lightDir + 2.0f * NdotL * normal);
+		float3 lightRefl = normalize(-lightDir + 1.0f * NdotL * normal);
 			float spec = saturate(dot(lightRefl, viewDir));
 		spec = pow(spec, fSpecPower);
 

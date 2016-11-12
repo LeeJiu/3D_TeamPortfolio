@@ -93,6 +93,7 @@ public:
 
 	void Player_ATK_Init();
 	void Player_ATK_Update(float timeDelta);
+	void Player_Mob_Collision();
 
 	void Monster_Init();
 	void Monster_Update(float timeDelta);
