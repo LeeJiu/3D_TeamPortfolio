@@ -119,7 +119,6 @@ void mage_Test::Scene_Release()
 	SAFE_DELETE(m_pTerrain);
 
 	SAFE_DELETE(this->pMage);
-	SAFE_DELETE(this->pMage->pTransform);
 	SAFE_DELETE(this->pTransForCamera);
 
 	this->pSkinned1->Release();
