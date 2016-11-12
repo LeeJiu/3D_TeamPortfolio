@@ -121,8 +121,7 @@ void mage_Test::Scene_Release()
 	SAFE_DELETE(this->pMage);
 	SAFE_DELETE(this->pTransForCamera);
 
-	this->pSkinned1->Release();
-	SAFE_DELETE(this->pSkinned1);
+
 }
 
 void mage_Test::Scene_Update(float timeDelta)
