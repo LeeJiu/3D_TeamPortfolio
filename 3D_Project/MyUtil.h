@@ -168,4 +168,11 @@ namespace MyUtil{
 	std::string SetAnimation(ACTOR_STATE state);
 	void createQuad(D3DXVECTOR3* quad, float row, float col, cTransform* myTrans, D3DXVECTOR3* createPos);
 
+	
+	RECT RectMake(int x, int y, int width, int height);
+
+
+	RECT RectMakeCenter(int x, int y, int width, int height);
+	
+
 }

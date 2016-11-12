@@ -1,6 +1,7 @@
 
 #pragma once
 #include "cScene.h"
+#include "cSkillUi.h"
 
 class cBaseObject;
 class cCamera;
@@ -19,7 +20,8 @@ private:
 	cBoundBox*              testBox;
 
 	D3DXVECTOR3             quad[6];
-
+	
+	cSkillUi*               skill;
 	// 도형 피킹에 쓸것.
 	Ray						cRay; //케릭터에 들어갈 레이.
 	Ray						frontRay; //케릭터에 들어갈 레이.

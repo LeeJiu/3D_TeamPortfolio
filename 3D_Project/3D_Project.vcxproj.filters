@@ -37,6 +37,9 @@
     <Filter Include="ObjClass">
       <UniqueIdentifier>{d3a61c23-fd41-4ccc-8701-141554358b36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="JiHotest">
+      <UniqueIdentifier>{445f4c23-1c39-434a-8f5b-cf642451f236}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -165,9 +168,6 @@
     <ClInclude Include="cSceneChangeEffectUpDown.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="move_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="t_Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -180,9 +180,6 @@
     <ClInclude Include="cCommand.h">
       <Filter>Handler</Filter>
     </ClInclude>
-    <ClInclude Include="cScene_testPlayer.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="cPlayer.h">
       <Filter>GameActor</Filter>
     </ClInclude>
@@ -192,14 +189,8 @@
     <ClInclude Include="cTestCommand2.h">
       <Filter>Handler</Filter>
     </ClInclude>
-    <ClInclude Include="move_Test2.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="cMonster.h">
       <Filter>GameActor</Filter>
-    </ClInclude>
-    <ClInclude Include="animation_Test.h">
-      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="sector_Test.h">
       <Filter>Scenes</Filter>
@@ -230,6 +221,21 @@
     </ClInclude>
     <ClInclude Include="cSpriteManager.h">
       <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="move_Test2.h">
+      <Filter>JiHotest</Filter>
+    </ClInclude>
+    <ClInclude Include="move_Test.h">
+      <Filter>JiHotest</Filter>
+    </ClInclude>
+    <ClInclude Include="animation_Test.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_testPlayer.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkillUi.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -362,9 +368,6 @@
     <ClCompile Include="t_Scene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="move_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="cInputHandler.cpp">
       <Filter>Handler</Filter>
     </ClCompile>
@@ -373,9 +376,6 @@
     </ClCompile>
     <ClCompile Include="cCommand.cpp">
       <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_testPlayer.cpp">
-      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="cPlayer.cpp">
       <Filter>GameActor</Filter>
@@ -386,14 +386,8 @@
     <ClCompile Include="cTestCommand2.cpp">
       <Filter>Handler</Filter>
     </ClCompile>
-    <ClCompile Include="move_Test2.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="cMonster.cpp">
       <Filter>GameActor</Filter>
-    </ClCompile>
-    <ClCompile Include="animation_Test.cpp">
-      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="sector_Test.cpp">
       <Filter>Scenes</Filter>
@@ -424,6 +418,21 @@
     </ClCompile>
     <ClCompile Include="cSpriteManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="move_Test2.cpp">
+      <Filter>JiHotest</Filter>
+    </ClCompile>
+    <ClCompile Include="move_Test.cpp">
+      <Filter>JiHotest</Filter>
+    </ClCompile>
+    <ClCompile Include="animation_Test.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_testPlayer.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkillUi.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
