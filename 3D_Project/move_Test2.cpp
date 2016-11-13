@@ -70,7 +70,7 @@ HRESULT move_Test2::Scene_Init()
 	pSkinnedBound->Init(D3DXVECTOR3(-2, -2, -2), D3DXVECTOR3(2, 2, 2));
 
 	move = new moveClass;
-	move->init(pSkinned1, pSkinnedTrans, m_pTerrain,pMainCamera,pSkinnedBound);
+	move->init(pSkinnedTrans, m_pTerrain,pMainCamera,pSkinnedBound);
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();

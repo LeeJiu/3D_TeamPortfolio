@@ -11,8 +11,6 @@ class cMage;
 class mage_Test : public cScene
 {
 private:
-
-	cSkinnedAnimation*		pSkinned1;
 	cMage*					pMage;
 	cTransform*				pTransForCamera;		//카메라용
 

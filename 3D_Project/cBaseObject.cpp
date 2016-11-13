@@ -63,9 +63,10 @@ void cBaseObject::BaseObjectRender() {
 
 		else
 			this->pMesh->Render(this->pTransform);
-
+	
+		this->pTransform->RenderGimozo();
+		this->BoundBox.RenderGizmo( this->pTransform );
 	}
-	//this->BoundBox.RenderGizmo( this->pTransform );
 }		
 
 

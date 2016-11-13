@@ -22,7 +22,7 @@ HRESULT mage_Test::Scene_Init()
 {
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
-		"../Resources/Textures/MyHeight512.bmp",
+		"../Resources/Textures/MyHeight256.bmp",
 		"../Resources/Textures/terrain1.jpg",
 		"../Resources/Textures/terrain2.png",
 		"../Resources/Textures/terrain3.png",
@@ -121,7 +121,11 @@ void mage_Test::Scene_Release()
 	SAFE_DELETE(this->pMage);
 	SAFE_DELETE(this->pTransForCamera);
 
-
+	for (int i = 0; i < lights.size(); i++)
+	{
+		SAFE_DELETE(lights[i]);
+	}
+	lights.clear();
 }
 
 void mage_Test::Scene_Update(float timeDelta)

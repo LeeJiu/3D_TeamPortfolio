@@ -109,7 +109,6 @@ extern bool			ex_wheelDown;
 #include <list>
 
 
-
 //
 // ∏≈¥œ¡Æ
 //

@@ -571,4 +571,16 @@ namespace MyUtil{
 		GIZMO_MGR->Line(quad[3], quad[2], 0xffff0000);
 		GIZMO_MGR->Line(quad[2], quad[0], 0xffff0000);
 	}
+
+	 RECT RectMake(int x, int y, int width, int height)
+	{
+		RECT rc = { x, y, x + width, y + height };
+		return rc;
+	}
+
+	 RECT RectMakeCenter(int x, int y, int width, int height)
+	{
+		RECT rc = { x - (width / 2), y - (height / 2), x + (width / 2), y + (height / 2) };
+		return rc;
+	}
 }
