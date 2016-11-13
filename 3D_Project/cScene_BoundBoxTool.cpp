@@ -47,6 +47,7 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 	selectObject = new cBaseObject;
+	selectObject->SetActive(true);
 	selectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection));
 	
 	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X", &matCorrection);
@@ -213,7 +214,7 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 		obj->SetActive(true);
 		objects.push_back(obj);
 
-		//selectObject = objects.back();
+		selectObject = objects.back();
 
 		//vector<cSetBoundObject*> hitBounds;
 		//vector<float>	hitdistances;
