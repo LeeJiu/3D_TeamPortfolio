@@ -213,7 +213,7 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 		obj->SetActive(true);
 		objects.push_back(obj);
 
-		//selectObject = objects.back();
+		selectObject = objects.back();
 
 		//vector<cSetBoundObject*> hitBounds;
 		//vector<float>	hitdistances;

@@ -31,15 +31,19 @@ class moveClass
 	float m_jumpPower;
 	float m_gravity;
 
+	//==================== control
+	std::map<int, bool>	m_InputKey;
+
 	//bool test;
 	//bool objTest;
 
 public:
 	void init(cTransform* trans, cTerrain* terrain, cCamera* camera);
-	void init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain,cCamera* camera,cBoundBox* pBox);
-	
+	void init(cTransform* trans, cTerrain* terrain,cCamera* camera,cBoundBox* pBox);
+
 	// 충돌 오브젝트는 여러개 일 수 있음 나중에 벡터 형으로 바뀔 수도 있다.
 	void update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox, cTransform* collTrans);
+	void update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox, cTransform* collTrans, std::map<int, bool> key);
 
 	void render();
 

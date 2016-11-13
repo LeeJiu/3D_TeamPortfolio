@@ -40,15 +40,13 @@ void moveClass::init(cTransform* trans, cTerrain* terrain, cCamera* camera)
 	m_gravity = 19.8f;
 }
 
-void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* terrain, cCamera* camera, cBoundBox* pBox)
+void moveClass::init(cTransform* trans, cTerrain* terrain, cCamera* camera, cBoundBox* pBox)
 {
 	//=================== 전방선언 값 대입.
 	pMainCamera = camera;
 	pCharTrans = trans;
 	pCharBound = pBox;
 	m_pTerrain = terrain;
-
-	isMove = false;
 
 	//================레이 추가. 아래 방향 바뀌지 않음 .
 	moveRay.direction = D3DXVECTOR3(0, -1, 0);
@@ -61,6 +59,7 @@ void moveClass::init(cSkinnedAnimation* pSkinned, cTransform* trans, cTerrain* t
 	//================
 	isClick = false;
 	isJump = false;
+	isMove = false;
 
 	m_jumpPower = 0;
 	m_gravity = 19.8f;
@@ -76,43 +75,54 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);
 	moveRay.origin.y = pCharTrans->GetWorldPosition().y + HEADPOS; // 머리위에 붙일예정
 
-	if (KEY_MGR->IsStayDown('W'))
+	this->isMove = false;
+
+	LOG_MGR->AddLog("move %d", m_InputKey.find('W')->second);
+
+	if (m_InputKey.find('W')->second)		//m_InputKey.find(키값)->second이 true이면.
 	{
-		isMove = true;
+		this->isMove = true;
 		moveRay.origin += pCharTrans->GetForward()*0.2f;
 	}
-	if (KEY_MGR->IsStayDown('S'))
+
+	if (m_InputKey.find('S')->second)
 	{
-		isMove = true;
+		this->isMove = true;
 		moveRay.origin -= pCharTrans->GetForward()*0.2f;
 	}
-	if (KEY_MGR->IsStayDown('Q'))
-	{
-		isMove = true;
-		moveRay.origin -= pCharTrans->GetRight()*0.2f;
 
-	}
-	if (KEY_MGR->IsStayDown('E'))
+//	if (m_InputKey.find('Q')->second)
+//	{
+//		this->isMove = true;
+//		moveRay.origin -= pCharTrans->GetRight()*0.2f;
+//
+//	}
+//
+//	if (m_InputKey.find('E')->second)
+//	{
+//		this->isMove = true;
+//		moveRay.origin += pCharTrans->GetRight()*0.2f;
+//	}
+
+	if (m_InputKey.find('A')->second)
 	{
-		isMove = true;
-		moveRay.origin += pCharTrans->GetRight()*0.2f;
-	}
-	if (KEY_MGR->IsStayDown('A'))
-	{
+		this->isMove = true;
 		pCharTrans->RotateSelf(0, -2 * ONE_RAD, 0);
 	}
 
-	if (KEY_MGR->IsStayDown('D'))
+	if (m_InputKey.find('D')->second)
 	{
+		this->isMove = true;
 		pCharTrans->RotateSelf(0, 2 * ONE_RAD, 0);
 	}
 
 	if (KEY_MGR->IsStayDown(VK_SPACE))
 	{
 		m_jumpPower = 6;
-
-		isJump = true;
+		this->isJump = true;
 	}
+
+	
 
 	clickUpdate(collObj); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
 
@@ -127,12 +137,9 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
 	m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
 
-	//================================ 여기 사이에 코딩 하면됨
-
 	moveJumpCheck(timeDelta);
 	boundCheck(collBox, collTrans);
 	
-	isMove = false;
 
 	/*	if (test == false)
 		{
@@ -147,7 +154,82 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 				moveRay.origin.z);
 			test = true;
 		}*/
+	//test = true;
+}
 
+void moveClass::update(float timeDelta, cBaseObject * collObj, cBoundBox * collBox, cTransform * collTrans, std::map<int, bool> key)
+{
+	m_InputKey = key;	//키값 캐릭터에서 받아와
+
+	// 레이 업데이트 
+	m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 
+												   //cRay.direction = D3DXVECTOR3(0, -1, 0);
+	moveRay.origin.y = pCharTrans->GetWorldPosition().y + HEADPOS; // 머리위에 붙일예정
+
+	this->isMove = false;
+
+	if (m_InputKey.find('W')->second)		//m_InputKey.find(키값)->second이 true이면.
+	{
+		this->isMove = true;
+		moveRay.origin += pCharTrans->GetForward()*0.2f;
+	}
+
+	if (m_InputKey.find('S')->second)
+	{
+		this->isMove = true;
+		moveRay.origin -= pCharTrans->GetForward()*0.2f;
+	}
+
+	if (m_InputKey.find('A')->second)
+	{
+		this->isMove = true;
+		pCharTrans->RotateSelf(0, -2 * ONE_RAD, 0);
+	}
+
+	if (m_InputKey.find('D')->second)
+	{
+		this->isMove = true;
+		pCharTrans->RotateSelf(0, 2 * ONE_RAD, 0);
+	}
+
+	if (KEY_MGR->IsStayDown(VK_SPACE))
+	{
+		m_jumpPower = 6;
+		this->isJump = true;
+	}
+
+
+
+	clickUpdate(collObj); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
+
+						  // 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
+						  //=========================
+						  //getLastHeight(NULL);
+
+	getLastHeight(collObj);
+
+
+	//아래 피직스 매니져 사용 법
+	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
+	m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
+
+	moveJumpCheck(timeDelta);
+	boundCheck(collBox, collTrans);
+
+
+	/*	if (test == false)
+	{
+	LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+	m_prePos.x,
+	m_prePos.y,
+	m_prePos.z);
+
+	LOG_MGR->AddLog("Ray: %.2f, Ray : %.2f, Ray : %.2f",
+	moveRay.origin.x,
+	moveRay.origin.y,
+	moveRay.origin.z);
+	test = true;
+	}*/
 	//test = true;
 }
 
@@ -200,6 +282,7 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 	}
 
 }
+
 void moveClass::render()
 {
 	//	pChar->Render(pCharTrans);
@@ -305,7 +388,7 @@ void moveClass::moveJumpCheck(float timeDelta)
 		moveRay.origin.y = pCharTrans->GetWorldPosition().y + HEADPOS; // 머리위에 붙일예정
 	}
 
-		isMove = false;
+	
 }
 
 void moveClass::boundCheck(cBoundBox* collBox, cTransform* collTrans)

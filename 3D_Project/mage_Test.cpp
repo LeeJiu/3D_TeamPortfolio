@@ -120,6 +120,12 @@ void mage_Test::Scene_Release()
 
 	SAFE_DELETE(this->pMage);
 	SAFE_DELETE(this->pTransForCamera);
+
+	for (int i = 0; i < lights.size(); i++)
+	{
+		SAFE_DELETE(lights[i]);
+	}
+	lights.clear();
 }
 
 void mage_Test::Scene_Update(float timeDelta)
