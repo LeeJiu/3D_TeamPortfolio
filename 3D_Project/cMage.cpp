@@ -28,7 +28,7 @@ void cMage::BaseObjectEnable()
 	D3DXVECTOR3	maxPos(1, 3, 1);
 	BoundBox.Init(minPos, maxPos);
 
-	m_state = STF_IDLE;
+	m_state = IDLE;
 	m_Aniname = SetAnimation(m_state);
 
 	m_pMove = new moveClass;
@@ -77,7 +77,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
 		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
 	{
-		m_state = STF_IDLE;
+		m_state = IDLE;
 		m_Aniname = SetAnimation(m_state);
 		this->pSkinned->Play(m_Aniname, 0.3);
 	}
