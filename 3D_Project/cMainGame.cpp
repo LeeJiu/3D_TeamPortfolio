@@ -11,6 +11,8 @@
 #include "cScene_BoundBoxTool.h"
 #include "mage_Test.h"
 #include "monster_Test.h"
+#include "cScene_testMonster.h"
+#include "berserker_test.h"
 
 cMainGame::cMainGame(void)
 {
@@ -53,19 +55,22 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->AddScene("animation_Test", new animation_Test());
 	SCENE_MGR->AddScene("cScene_BoundBoxTool", new cScene_BoundBoxTool());
 	SCENE_MGR->AddScene("monster_Test", new monster_Test());
+	SCENE_MGR->AddScene("cScene_testMonster", new cScene_testMonster());
+	SCENE_MGR->AddScene("berserker_test", new berserker_test());
 
 	SOUND_MGR->addSound("bgm1", "../Answers.mp3", true, true);
 	
 	////°ÔÀÓ ½ÃÀÛ¾À
 	//SCENE_MGR->ChangeScene( "mage_Test" );
+	//SCENE_MGR->ChangeScene("berserker_test");
+	//SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "move_Test2" );
-	SCENE_MGR->ChangeScene( "move_Test" );
-
 	//SCENE_MGR->ChangeScene( "sector_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
 	//SCENE_MGR->ChangeScene("sector_Test");
 	//SCENE_MGR->ChangeScene("cScene_testPlayer");
 	//SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
+	SCENE_MGR->ChangeScene("cScene_testMonster");
 
 
 	return S_OK;		

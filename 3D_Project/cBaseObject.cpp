@@ -67,6 +67,11 @@ void cBaseObject::BaseObjectRender() {
 		this->pTransform->RenderGimozo();
 		this->BoundBox.RenderGizmo( this->pTransform );
 	}
+	this->BoundBox.RenderGizmo( this->pTransform );
+}
+
+void cBaseObject::BaseObjectBoundBox()
+{
 }		
 
 
@@ -90,12 +95,9 @@ void cBaseObject::ComputeBoundBox()
 		//셋팅된 메쉬가 cXMesh_Skinned 라면... ( 임시로 바운드 박스 )
 		else
 		{
-			this->BoundBox.SetBound( &D3DXVECTOR3( 0, 0, 0), &D3DXVECTOR3( 10.0f, 10.0f, 10.0f ) );
-
-
+			this->BaseObjectBoundBox();
 		}
 	}
-
 }
 
 

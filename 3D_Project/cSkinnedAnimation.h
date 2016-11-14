@@ -63,9 +63,6 @@ public:
 	void RemoveBoneTransform( std::string boneName );
 	void RemoveApplyTransform( std::string boneName );
 
-	bool GetIsPlaying() { return m_bPlay; }
-	std::string GetNowPlaying() { return m_NowPlay; }
-
 public:
 	cSkinnedAnimation(void);
 	~cSkinnedAnimation(void);

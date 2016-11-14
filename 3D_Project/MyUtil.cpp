@@ -448,7 +448,7 @@ namespace MyUtil{
 		std::string state_name;
 		switch (state)
 		{
-		case ROBBY_IDLE:  state_name = "STF_IDLE";
+		case ROBBY_IDLE:  state_name = "ROBBY_IDLE";
 			break;
 		case PET_IDLE:  state_name = "PET_IDLE";
 			break;
@@ -468,47 +468,47 @@ namespace MyUtil{
 			break;
 		case DANCE:  state_name = "DANCE";
 			break;
-		case STF_DMG:  state_name = "STF_DMG";
+		case DMG:  state_name = "DMG";
 			break;
-
-		case STF_DIE:  state_name = "STF_DIE";
+		case DIE:  state_name = "DIE";
 			break;
-
-		case STF_DEAD:  state_name = "STF_DEAD";
+		case DEAD:  state_name = "DEAD";
 			break;
-		case STF_DOWN:  state_name = "STF_DOWN";
+		case DOWN:  state_name = "DOWN";
 			break;
-		case STF_STUN:  state_name = "STF_STUN";
+		case STUN:  state_name = "STUN";
 			break;
 		case STF_WAKEUP:  state_name = "STF_WAKEUP";
 			break;
-		case STF_IDLE:  state_name = "STF_IDLE";
+		case IDLE:  state_name = "IDLE";
 			break;
-		case STF_WAIT:  state_name = "STF_WAIT";
+		case WAIT:  state_name = "WAIT";
 			break;
-		case STF_WALK:  state_name = "STF_WALK";
+		case WALK:  state_name = "WALK";
 			break;
-		case STF_WALK_BACK:  state_name = "STF_WALK_BACK";
+		case WALK_BACK:  state_name = "WALK_BACK";
 			break;
-		case STF_RUN:  state_name = "STF_RUN";
+		case RUN:  state_name = "RUN";
 			break;
 		case RUN_R:  state_name = "RUN_R";
 			break;
 		case RUN_L:  state_name = "RUN_L";
 			break;
-		case STF_STOP:  state_name = "STF_STOP";
+		case RUN_STOP:  state_name = "RUN_STOP";
 			break;
 		case STF_PASSOUT:  state_name = "STF_PASSOUT";
 			break;
-		case STF_JUMP:  state_name = "STF_JUMP";
+		case JUMP:  state_name = "JUMP";
 			break;
-		case STF_WEAPON:  state_name = "STF_WEAPON";
+		case WEAPON:  state_name = "WEAPON";
 			break;
-		case STF_UNWEAPON:  state_name = "STF_UNWEAPON";
+		case UNWEAPON:  state_name = "UNWEAPON";
 			break;
-		case STF_ATK1:  state_name = "STF_ATK1";
+		case ATK_01:  state_name = "ATK_01";
 			break;
-		case STF_ATK2:  state_name = "STF_ATK2";
+		case ATK_02:  state_name = "ATK_02";
+			break;
+		case ATK_03:  state_name = "ATK_03";
 			break;
 		case STF_BUFF:  state_name = "STF_BUFF";
 			break;
@@ -534,7 +534,28 @@ namespace MyUtil{
 			break;
 		case STF_BLINK:  state_name = "STF_BLINK";
 			break;
-		default: state_name = "STF_IDLE";
+	    //버서커전용
+		case SK_BUFF:  state_name = "SK_BUFF";
+			break;
+		case SK_ATKUP:  state_name = "SK_ATKUP";
+			break;
+		case SK_CRASH:  state_name = "SK_CRASH";
+			break;
+		case SK_SWING:  state_name = "SK_SWING";
+			break;
+		case SK_CHARGE:  state_name = "SK_CHARGE";
+			break;
+		case SK_CHARGE_ATK:  state_name = "SK_CHARGE_ATK";
+			break;
+		case SK_HOWL:  state_name = "SK_HOWL";
+			break;
+		case SK_ESCAPE:  state_name = "SK_ESCAPE";
+			break;
+		case SK_ACCEL:  state_name = "SK_ACCEL";
+			break;
+		case SK_JUMPATK:  state_name = "SK_JUMPATK";
+			break;
+		default: state_name = "IDLE";
 			break;
 		}
 

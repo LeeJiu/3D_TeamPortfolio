@@ -79,10 +79,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="animation_Test.h" />
+    <ClInclude Include="berserker_test.h" />
     <ClInclude Include="BoneHierachy.h" />
     <ClInclude Include="camera_Test.h" />
     <ClInclude Include="cBaseObject.h" />
     <ClInclude Include="cBaseskill.h" />
+    <ClInclude Include="cBerserker.h" />
     <ClInclude Include="cBoundBox.h" />
     <ClInclude Include="cBoundSphere.h" />
     <ClInclude Include="cCamera.h" />
@@ -119,6 +121,7 @@
     <ClInclude Include="cSceneChangeEffectUpDown.h" />
     <ClInclude Include="cScene_BoundBoxTool.h" />
     <ClInclude Include="cScene_Mgr.h" />
+    <ClInclude Include="cScene_testMonster.h" />
     <ClInclude Include="cScene_testPlayer.h" />
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
@@ -148,10 +151,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
+    <ClCompile Include="berserker_test.cpp" />
     <ClCompile Include="BoneHierachy.cpp" />
     <ClCompile Include="camera_Test.cpp" />
     <ClCompile Include="cBaseObject.cpp" />
     <ClCompile Include="cBaseskill.cpp" />
+    <ClCompile Include="cBerserker.cpp" />
     <ClCompile Include="cBoundBox.cpp" />
     <ClCompile Include="cBoundSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
@@ -188,6 +193,7 @@
     <ClCompile Include="cSceneChangeEffectUpDown.cpp" />
     <ClCompile Include="cScene_BoundBoxTool.cpp" />
     <ClCompile Include="cScene_Mgr.cpp" />
+    <ClCompile Include="cScene_testMonster.cpp" />
     <ClCompile Include="cScene_testPlayer.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />

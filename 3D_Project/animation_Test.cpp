@@ -65,7 +65,7 @@ HRESULT animation_Test::Scene_Init()
 	this->pPlayer->SetMesh(pSkinned);
 	this->pPlayer->SetTerrain(m_pTerrain);
 	this->pPlayer->SetActive(true);
-	this->current_State = STF_IDLE;
+	this->current_State = IDLE;
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pPlayer->pTransform = new cTransform();

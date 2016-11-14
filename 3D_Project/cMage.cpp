@@ -28,7 +28,7 @@ void cMage::BaseObjectEnable()
 	D3DXVECTOR3	maxPos(1, 3, 1);
 	BoundBox.Init(minPos, maxPos);
 
-	m_state = STF_IDLE;
+	m_state = IDLE;
 	m_Aniname = SetAnimation(m_state);
 
 	m_pMove = new moveClass;
@@ -57,43 +57,34 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	}
 
 	//애니메이션셋
-	m_current_Ani = pSkinned->GetNowPlaying();
-
-
 	if ((KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
 		|| KEY_MGR->IsOnceDown('A')))
 	{
-		m_state = STF_WALK;
+		m_state = WALK;
 		m_Aniname = SetAnimation(m_state);
-		if (m_current_Ani != SetAnimation(m_state))
-		{
-			this->pSkinned->Play(m_Aniname, 0.3);
-		}
+		this->pSkinned->Play(m_Aniname, 0.3);
 	}
 
 	
 	if (m_isMove && KEY_MGR->IsOnceDown('S'))
 	{
-		m_state = STF_WALK_BACK;
+		m_state = WALK_BACK;
 		m_Aniname = SetAnimation(m_state);
-		if (m_current_Ani != SetAnimation(m_state))
-		{
-			this->pSkinned->Play(m_Aniname, 0.3);
-		}
+		this->pSkinned->Play(m_Aniname, 0.3);
 	}
 
 	if (!m_isMove && (KEY_MGR->IsOnceUp('W') || KEY_MGR->IsOnceUp('S')
 		|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
 		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
 	{
-		m_state = STF_IDLE;
+		m_state = IDLE;
 		m_Aniname = SetAnimation(m_state);
-		if (m_current_Ani != SetAnimation(m_state))
-		{
-			this->pSkinned->Play(m_Aniname, 0.3);
-		}
+		this->pSkinned->Play(m_Aniname, 0.3);
 	}
 
+
+
+	LOG_MGR->AddLog("%s", m_Aniname.c_str());
 	
 
 	//===============무브==============================

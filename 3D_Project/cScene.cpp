@@ -105,7 +105,6 @@ void cScene::Release()
 
 void cScene::Update( float timeDelta )
 {
-	
 	pMainCamera->DefaultControl( timeDelta );
 	
 	pMainCamera->UpdateCamToDevice( Device );
