@@ -51,6 +51,7 @@ public:
 	void Play( int animIndex, float crossFadeTime = 0.0 );
 	void Play( LPD3DXANIMATIONSET animSet, float crossFadeTime = 0.0 );
 	void PlayOneShot( std::string animName, float inCrossFadeTime = 0.0, float outCrossFadeTime = 0.0f );
+	void PlayOneShotAFTERIDLE(std::string animName, float crossFadeTime = 0.0);
 	void PlayOneShotAfterHold( std::string animName, float crossFadeTime = 0.0 );
 	void Stop(){
 		this->m_bPlay = false;
@@ -63,6 +64,8 @@ public:
 	void RemoveBoneTransform( std::string boneName );
 	void RemoveApplyTransform( std::string boneName );
 
+	bool GetIsPlay() { return m_bPlay; }
+	float GetTime() { return m_AnimationPlayFactor; }
 public:
 	cSkinnedAnimation(void);
 	~cSkinnedAnimation(void);

@@ -34,6 +34,13 @@ void cInputHandler::AddKey(int nVKey, cCommand * command)
 	m_mKey.insert(pair<int, cCommand*>(nVKey, command));
 }
 
+void cInputHandler::ReSetKey(int nVKey, cCommand * command)
+{
+	if(m_mKey.find(nVKey)->second != command)
+		m_mKey.find(nVKey)->second = command;
+	else return;
+}
+
 void cInputHandler::DeleteKey(int nVKey)
 {
 	//해당 키값이 있다면

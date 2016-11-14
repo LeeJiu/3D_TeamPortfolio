@@ -9,6 +9,7 @@ public:
 
 	cCommand* HandleInput();
 	void AddKey(int nVKey, cCommand* command);		//VK값과 command를 등록한다.
+	void ReSetKey(int nVKey, cCommand* command);		//VK값과 command를 변경.
 	void DeleteKey(int nVKey);						//해당 키를 삭제한다.
 	void ChangeKey(int nVKey, cCommand* command);	//키와 커맨드를 변경한다.
 	void SwapKey(int nFromVKey, int nToVKey);
