@@ -28,7 +28,7 @@ void cBerserker::BaseObjectEnable()
 	D3DXVECTOR3	maxPos(1, 3, 1);
 	BoundBox.Init(minPos, maxPos);
 
-	m_state = STF_IDLE;
+	m_state = IDLE;
 	m_Aniname = SetAnimation(m_state);
 
 	m_pMove = new moveClass;

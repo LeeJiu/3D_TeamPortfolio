@@ -84,7 +84,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	if (KEY_MGR->IsOnceDown(VK_SPACE))
 	{
-		m_state =
+		m_state = ATK_01;
 	}
 
 	LOG_MGR->AddLog("%s", m_Aniname.c_str());

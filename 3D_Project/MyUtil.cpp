@@ -482,13 +482,9 @@ namespace MyUtil{
 			break;
 		case STF_WAKEUP:  state_name = "STF_WAKEUP";
 			break;
-		case STF_IDLE:  state_name = "STF_IDLE";
+		case IDLE:  state_name = "IDLE";
 			break;
-		case IDLE:		state_name = "IDLE";
-			break;
-		case STF_WAIT:  state_name = "STF_WAIT";
-			break;
-		case WAIT:		state_name = "WAIT";
+		case WAIT:  state_name = "WAIT";
 			break;
 		case WALK:  state_name = "WALK";
 			break;
