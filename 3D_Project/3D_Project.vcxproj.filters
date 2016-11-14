@@ -1,460 +1,148 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Managers">
-      <UniqueIdentifier>{363a7c58-b58a-4a20-b1d7-bdfe8d16d07e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes">
-      <UniqueIdentifier>{a75ff49d-ed99-4035-ad9d-d5e43b0b8914}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{4df8fbb7-444a-4298-bd48-08c3880c617b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="BaseObject">
-      <UniqueIdentifier>{41599c7b-b182-4887-8ba8-dce59ccf7f11}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Handler">
-      <UniqueIdentifier>{3829eae1-802e-4bf9-a6a0-1f7937c7218b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameActor">
-      <UniqueIdentifier>{485420e6-2a98-48de-afd1-6d5503dc3252}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{8d2a1705-2813-409f-9e6c-6b5d6da36a26}</UniqueIdentifier>
-    </Filter>
-<<<<<<< HEAD
-=======
-    <Filter Include="ObjClass">
-      <UniqueIdentifier>{d3a61c23-fd41-4ccc-8701-141554358b36}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="JiHotest">
-      <UniqueIdentifier>{445f4c23-1c39-434a-8f5b-cf642451f236}</UniqueIdentifier>
-    </Filter>
->>>>>>> origin/master
+    <ClCompile Include="animation_Test.cpp" />
+    <ClCompile Include="berserker_test.cpp" />
+    <ClCompile Include="BoneHierachy.cpp" />
+    <ClCompile Include="camera_Test.cpp" />
+    <ClCompile Include="cBaseObject.cpp" />
+    <ClCompile Include="cBaseskill.cpp" />
+    <ClCompile Include="cBerserker.cpp" />
+    <ClCompile Include="cBoundBox.cpp" />
+    <ClCompile Include="cBoundSphere.cpp" />
+    <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cCommand.cpp" />
+    <ClCompile Include="cDXFontManager.cpp" />
+    <ClCompile Include="cFrustum.cpp" />
+    <ClCompile Include="cGizmoManager.cpp" />
+    <ClCompile Include="cImage.cpp" />
+    <ClCompile Include="cInputHandler.cpp" />
+    <ClCompile Include="cKeyMgr.cpp" />
+    <ClCompile Include="cLight.cpp" />
+    <ClCompile Include="cLight_Direction.cpp" />
+    <ClCompile Include="cLight_Point.cpp" />
+    <ClCompile Include="cLogMgr.cpp" />
+    <ClCompile Include="cMage.cpp" />
+    <ClCompile Include="cMainGame.cpp" />
+    <ClCompile Include="cMonster.cpp" />
+    <ClCompile Include="cPartcleEmitter.cpp" />
+    <ClCompile Include="cParticle.cpp" />
+    <ClCompile Include="cParticleQuad.cpp" />
+    <ClCompile Include="cPhysicManager.cpp" />
+    <ClCompile Include="cPlayer.cpp" />
+    <ClCompile Include="cQuadParticleEmitter.cpp" />
+    <ClCompile Include="cQuadTree.cpp" />
+    <ClCompile Include="cResourceMgr_XSkinnedMesh.cpp" />
+    <ClCompile Include="cResourceMgr.cpp" />
+    <ClCompile Include="cResourceMgr_ShaderFX.cpp" />
+    <ClCompile Include="cResourceMgr_Texture.cpp" />
+    <ClCompile Include="cResourceMgr_XStaticMesh.cpp" />
+    <ClCompile Include="cScene.cpp" />
+    <ClCompile Include="cSceneChangeEffect.cpp" />
+    <ClCompile Include="cSceneChangeEffectUpDown.cpp" />
+    <ClCompile Include="cScene_BoundBoxTool.cpp" />
+    <ClCompile Include="cScene_Mgr.cpp" />
+    <ClCompile Include="cScene_testMonster.cpp" />
+    <ClCompile Include="cScene_testPlayer.cpp" />
+    <ClCompile Include="cSetBoundObject.cpp" />
+    <ClCompile Include="cSingletonBase.cpp" />
+    <ClCompile Include="cSkinnedAnimation.cpp" />
+    <ClCompile Include="cSoundManager.cpp" />
+    <ClCompile Include="cSpriteManager.cpp" />
+    <ClCompile Include="cTerrain.cpp" />
+    <ClCompile Include="cTestCommand.cpp" />
+    <ClCompile Include="cTestCommand2.cpp" />
+    <ClCompile Include="cTimeMgr.cpp" />
+    <ClCompile Include="cTransform.cpp" />
+    <ClCompile Include="cSkillUi.cpp" />
+    <ClCompile Include="cWayPoint.cpp" />
+    <ClCompile Include="cXMesh.cpp" />
+    <ClCompile Include="cXMesh_Skinned.cpp" />
+    <ClCompile Include="cXMesh_Static.cpp" />
+    <ClCompile Include="mage_Test.cpp" />
+    <ClCompile Include="monster_Test.cpp" />
+    <ClCompile Include="moveClass.cpp" />
+    <ClCompile Include="move_Test.cpp" />
+    <ClCompile Include="move_Test2.cpp" />
+    <ClCompile Include="MyUtil.cpp" />
+    <ClCompile Include="sector_Test.cpp" />
+    <ClCompile Include="t_Scene.cpp" />
+    <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="cWeapon.cpp" />
+    <ClCompile Include="cPet.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cMainGame.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cTimeMgr.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cSingletonBase.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cKeyMgr.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cLogMgr.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="MyUtil.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cDXFontManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cGizmoManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cTransform.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cCamera.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cResourceMgr.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cResourceMgr_Texture.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cResourceMgr_ShaderFX.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cTerrain.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cXMesh.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cXMesh_Static.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cLight.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cLight_Direction.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cLight_Point.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cResourceMgr_XStaticMesh.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cBaseObject.h">
-      <Filter>BaseObject</Filter>
-    </ClInclude>
-    <ClInclude Include="cPhysicManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cSetBoundObject.h">
-      <Filter>BaseObject</Filter>
-    </ClInclude>
-    <ClInclude Include="cQuadTree.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="BoneHierachy.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cXMesh_Skinned.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cResourceMgr_XSkinnedMesh.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkinnedAnimation.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cPartcleEmitter.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cParticle.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cParticleQuad.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cQuadParticleEmitter.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene_Mgr.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cSceneChangeEffect.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cSceneChangeEffectUpDown.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="t_Scene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cInputHandler.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="camera_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommand.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="cPlayer.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
-    <ClInclude Include="cTestCommand.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="cTestCommand2.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="cMonster.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
-    <ClInclude Include="sector_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cMage.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
-    <ClInclude Include="cBaseskill.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cSpriteManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="cSoundManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="mage_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene_BoundBoxTool.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cBoundBox.h">
-      <Filter>BaseObject</Filter>
-    </ClInclude>
-    <ClInclude Include="cBoundSphere.h">
-      <Filter>BaseObject</Filter>
-    </ClInclude>
-    <ClInclude Include="cFrustum.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cWayPoint.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="moveClass.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="monster_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cImage.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene_testMonster.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="move_Test2.h">
-      <Filter>JiHotest</Filter>
-    </ClInclude>
-    <ClInclude Include="move_Test.h">
-      <Filter>JiHotest</Filter>
-    </ClInclude>
-    <ClInclude Include="animation_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene_testPlayer.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkillUi.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cBerserker.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
-    <ClInclude Include="berserker_test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="WinMain.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cMainGame.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cTimeMgr.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cSingletonBase.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cKeyMgr.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cLogMgr.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="MyUtil.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cDXFontManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cGizmoManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cTransform.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cCamera.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cResourceMgr.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cResourceMgr_Texture.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cResourceMgr_ShaderFX.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cTerrain.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cXMesh.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cXMesh_Static.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cLight.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cLight_Direction.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cLight_Point.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cResourceMgr_XStaticMesh.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cBaseObject.cpp">
-      <Filter>BaseObject</Filter>
-    </ClCompile>
-    <ClCompile Include="cPhysicManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cSetBoundObject.cpp">
-      <Filter>BaseObject</Filter>
-    </ClCompile>
-    <ClCompile Include="cQuadTree.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="BoneHierachy.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cXMesh_Skinned.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cResourceMgr_XSkinnedMesh.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkinnedAnimation.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cParticle.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cPartcleEmitter.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cParticleQuad.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cQuadParticleEmitter.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_Mgr.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cSceneChangeEffect.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cSceneChangeEffectUpDown.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="t_Scene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cInputHandler.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="camera_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommand.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="cPlayer.cpp">
-      <Filter>GameActor</Filter>
-    </ClCompile>
-    <ClCompile Include="cTestCommand.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="cTestCommand2.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="cMonster.cpp">
-      <Filter>GameActor</Filter>
-    </ClCompile>
-    <ClCompile Include="sector_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cMage.cpp">
-      <Filter>GameActor</Filter>
-    </ClCompile>
-    <ClCompile Include="cBaseskill.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cSpriteManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="cSoundManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="mage_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_BoundBoxTool.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cBoundBox.cpp">
-      <Filter>BaseObject</Filter>
-    </ClCompile>
-    <ClCompile Include="cBoundSphere.cpp">
-      <Filter>BaseObject</Filter>
-    </ClCompile>
-    <ClCompile Include="cFrustum.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cWayPoint.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="moveClass.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="monster_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cImage.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_testMonster.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="move_Test2.cpp">
-      <Filter>JiHotest</Filter>
-    </ClCompile>
-    <ClCompile Include="move_Test.cpp">
-      <Filter>JiHotest</Filter>
-    </ClCompile>
-    <ClCompile Include="animation_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_testPlayer.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkillUi.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cBerserker.cpp">
-      <Filter>GameActor</Filter>
-    </ClCompile>
-    <ClCompile Include="berserker_test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
+    <ClInclude Include="animation_Test.h" />
+    <ClInclude Include="berserker_test.h" />
+    <ClInclude Include="BoneHierachy.h" />
+    <ClInclude Include="camera_Test.h" />
+    <ClInclude Include="cBaseObject.h" />
+    <ClInclude Include="cBaseskill.h" />
+    <ClInclude Include="cBerserker.h" />
+    <ClInclude Include="cBoundBox.h" />
+    <ClInclude Include="cBoundSphere.h" />
+    <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cCommand.h" />
+    <ClInclude Include="cDXFontManager.h" />
+    <ClInclude Include="cFrustum.h" />
+    <ClInclude Include="cGizmoManager.h" />
+    <ClInclude Include="cImage.h" />
+    <ClInclude Include="cInputHandler.h" />
+    <ClInclude Include="cKeyMgr.h" />
+    <ClInclude Include="cLight.h" />
+    <ClInclude Include="cLight_Direction.h" />
+    <ClInclude Include="cLight_Point.h" />
+    <ClInclude Include="cLogMgr.h" />
+    <ClInclude Include="cMage.h" />
+    <ClInclude Include="cMainGame.h" />
+    <ClInclude Include="cMonster.h" />
+    <ClInclude Include="cPartcleEmitter.h" />
+    <ClInclude Include="cParticle.h" />
+    <ClInclude Include="cParticleQuad.h" />
+    <ClInclude Include="cPhysicManager.h" />
+    <ClInclude Include="cPlayer.h" />
+    <ClInclude Include="cQuadParticleEmitter.h" />
+    <ClInclude Include="cQuadTree.h" />
+    <ClInclude Include="cResourceMgr_XSkinnedMesh.h" />
+    <ClInclude Include="cResourceMgr.h" />
+    <ClInclude Include="cResourceMgr_ShaderFX.h" />
+    <ClInclude Include="cResourceMgr_Texture.h" />
+    <ClInclude Include="cResourceMgr_XStaticMesh.h" />
+    <ClInclude Include="cScene.h" />
+    <ClInclude Include="cSceneChangeEffect.h" />
+    <ClInclude Include="cSceneChangeEffectUpDown.h" />
+    <ClInclude Include="cScene_BoundBoxTool.h" />
+    <ClInclude Include="cScene_Mgr.h" />
+    <ClInclude Include="cScene_testMonster.h" />
+    <ClInclude Include="cScene_testPlayer.h" />
+    <ClInclude Include="cSetBoundObject.h" />
+    <ClInclude Include="cSingletonBase.h" />
+    <ClInclude Include="cSkinnedAnimation.h" />
+    <ClInclude Include="cSoundManager.h" />
+    <ClInclude Include="cSpriteManager.h" />
+    <ClInclude Include="cTerrain.h" />
+    <ClInclude Include="cTestCommand.h" />
+    <ClInclude Include="cTestCommand2.h" />
+    <ClInclude Include="cTimeMgr.h" />
+    <ClInclude Include="cTransform.h" />
+    <ClInclude Include="cSkillUi.h" />
+    <ClInclude Include="cWayPoint.h" />
+    <ClInclude Include="cXMesh.h" />
+    <ClInclude Include="cXMesh_Skinned.h" />
+    <ClInclude Include="cXMesh_Static.h" />
+    <ClInclude Include="mage_Test.h" />
+    <ClInclude Include="monster_Test.h" />
+    <ClInclude Include="moveClass.h" />
+    <ClInclude Include="move_Test.h" />
+    <ClInclude Include="MyUtil.h" />
+    <ClInclude Include="sector_Test.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="t_Scene.h" />
+    <ClInclude Include="move_Test2.h" />
+    <ClInclude Include="cWeapon.h" />
+    <ClInclude Include="cPet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
