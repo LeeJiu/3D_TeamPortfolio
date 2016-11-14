@@ -62,7 +62,7 @@ HRESULT cMainGame::Init(void)
 	
 	////°ÔÀÓ ½ÃÀÛ¾À
 	//SCENE_MGR->ChangeScene( "mage_Test" );
-	//SCENE_MGR->ChangeScene("berserker_test");
+	SCENE_MGR->ChangeScene("berserker_test");
 	//SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "move_Test2" );
 	//SCENE_MGR->ChangeScene( "sector_Test" );
@@ -70,7 +70,7 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene("sector_Test");
 	//SCENE_MGR->ChangeScene("cScene_testPlayer");
 	//SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
-	SCENE_MGR->ChangeScene("cScene_testMonster");
+	//SCENE_MGR->ChangeScene("cScene_testMonster");
 
 
 	return S_OK;		

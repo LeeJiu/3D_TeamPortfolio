@@ -22,7 +22,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -85,6 +85,9 @@
     <ClInclude Include="cBaseObject.h" />
     <ClInclude Include="cBaseskill.h" />
     <ClInclude Include="cBerserker.h" />
+    <ClInclude Include="cBerserKer_Attack.h" />
+    <ClInclude Include="cBerserKer_Attack2.h" />
+    <ClInclude Include="cBerserKer_Attack3.h" />
     <ClInclude Include="cBoundBox.h" />
     <ClInclude Include="cBoundSphere.h" />
     <ClInclude Include="cCamera.h" />
@@ -155,6 +158,9 @@
     <ClCompile Include="cBaseObject.cpp" />
     <ClCompile Include="cBaseskill.cpp" />
     <ClCompile Include="cBerserker.cpp" />
+    <ClCompile Include="cBerserKer_Attack.cpp" />
+    <ClCompile Include="cBerserKer_Attack2.cpp" />
+    <ClCompile Include="cBerserKer_Attack3.cpp" />
     <ClCompile Include="cBoundBox.cpp" />
     <ClCompile Include="cBoundSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
