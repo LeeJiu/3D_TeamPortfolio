@@ -238,10 +238,10 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="cBerserker.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>GameActor</Filter>
     </ClInclude>
     <ClInclude Include="berserker_test.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -441,10 +441,10 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cBerserker.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>GameActor</Filter>
     </ClCompile>
     <ClCompile Include="berserker_test.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
