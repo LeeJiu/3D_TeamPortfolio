@@ -63,14 +63,16 @@ void cBaseObject::BaseObjectRender() {
 
 		else
 			this->pMesh->Render(this->pTransform);
-
+	
+		this->pTransform->RenderGimozo();
+		this->BoundBox.RenderGizmo( this->pTransform );
 	}
 	this->BoundBox.RenderGizmo( this->pTransform );
 }
 
 void cBaseObject::BaseObjectBoundBox()
 {
-}
+}		
 
 
 //셋팅된 메쉬에 따라 바운드박스를 재계산 한다.

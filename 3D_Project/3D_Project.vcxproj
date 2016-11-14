@@ -79,10 +79,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="animation_Test.h" />
+    <ClInclude Include="berserker_test.h" />
     <ClInclude Include="BoneHierachy.h" />
     <ClInclude Include="camera_Test.h" />
     <ClInclude Include="cBaseObject.h" />
     <ClInclude Include="cBaseskill.h" />
+    <ClInclude Include="cBerserker.h" />
     <ClInclude Include="cBoundBox.h" />
     <ClInclude Include="cBoundSphere.h" />
     <ClInclude Include="cCamera.h" />
@@ -129,6 +131,7 @@
     <ClInclude Include="cTestCommand2.h" />
     <ClInclude Include="cTimeMgr.h" />
     <ClInclude Include="cTransform.h" />
+    <ClInclude Include="cSkillUi.h" />
     <ClInclude Include="cWayPoint.h" />
     <ClInclude Include="cXMesh.h" />
     <ClInclude Include="cXMesh_Skinned.h" />
@@ -146,10 +149,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
+    <ClCompile Include="berserker_test.cpp" />
     <ClCompile Include="BoneHierachy.cpp" />
     <ClCompile Include="camera_Test.cpp" />
     <ClCompile Include="cBaseObject.cpp" />
     <ClCompile Include="cBaseskill.cpp" />
+    <ClCompile Include="cBerserker.cpp" />
     <ClCompile Include="cBoundBox.cpp" />
     <ClCompile Include="cBoundSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
@@ -196,6 +201,7 @@
     <ClCompile Include="cTestCommand2.cpp" />
     <ClCompile Include="cTimeMgr.cpp" />
     <ClCompile Include="cTransform.cpp" />
+    <ClCompile Include="cSkillUi.cpp" />
     <ClCompile Include="cWayPoint.cpp" />
     <ClCompile Include="cXMesh.cpp" />
     <ClCompile Include="cXMesh_Skinned.cpp" />

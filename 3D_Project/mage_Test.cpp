@@ -22,8 +22,8 @@ HRESULT mage_Test::Scene_Init()
 {
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
-		"../Resources/Textures/MyHeight512.bmp",
-		"../Resources/Textures/terrain1.jpg",
+		"../Resources/Textures/MyHeight256.bmp",
+		"../Resources/Textures/terrain1.png",
 		"../Resources/Textures/terrain2.png",
 		"../Resources/Textures/terrain3.png",
 		"../Resources/Textures/terrain4.png",
@@ -121,18 +121,15 @@ void mage_Test::Scene_Release()
 	SAFE_DELETE(this->pMage);
 	SAFE_DELETE(this->pTransForCamera);
 
-	this->pSkinned1->Release();
-	SAFE_DELETE(this->pSkinned1);
+	for (int i = 0; i < lights.size(); i++)
+	{
+		SAFE_DELETE(lights[i]);
+	}
+	lights.clear();
 }
 
 void mage_Test::Scene_Update(float timeDelta)
 {
-
-	// 레이 업데이트
-	m_currentPos = pMage->pTransform->GetWorldPosition(); // 현재 위치.
-														  //cRay.direction = D3DXVECTOR3(0, -1, 0);
-	cRay.origin.y = pMage->pTransform->GetWorldPosition().y + 5; // 머리위에 붙일예정
-
 	this->pTransForCamera->SetWorldPosition(this->pMage->pTransform->GetWorldPosition());
 
 	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
@@ -165,15 +162,6 @@ void mage_Test::Scene_Update(float timeDelta)
 	}
 
 	this->pMage->Update(timeDelta);
-	
-
-	if (KEY_MGR->IsOnceDown(VK_SPACE))
-
-	{
-		LOG_MGR->AddLog("%d %d %s", KEY_MGR->IsOnceUp('W'), current_State, current_Ani.c_str());
-	}
-
-
 }
 
 void mage_Test::Scene_Render1()
@@ -201,9 +189,6 @@ void mage_Test::Scene_Render1()
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	m_Land->Render();
-	//========== 레이 기지모
-	GIZMO_MGR->Line(this->cRay.origin, this->cRay.origin + this->cRay.direction * 100, 0xffffff00);
-
 }
 
 

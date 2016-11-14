@@ -126,6 +126,9 @@ HRESULT move_Test::Scene_Init()
 
 	boundHit = false;
 
+	skill = new cSkillUi;
+	skill->init();
+
 	return S_OK;
 }
 
@@ -197,16 +200,16 @@ void move_Test::Scene_Update(float timeDelta)
 		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
 	}
 	//=========================
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	{
-		Ray ray;
-		POINT ptMousePos = GetMousePos();
-		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-		this->pMainCamera->ComputeRay(&ray, &screenPos);
+	//if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+	//{
+	//	Ray ray;
+	//	POINT ptMousePos = GetMousePos();
+	//	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+	//	this->pMainCamera->ComputeRay(&ray, &screenPos);
 
-		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
-		isClick = true;
-	}
+	//	this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+	//	isClick = true;
+	//}
 
 	if (isClick == true)
 	{
@@ -327,7 +330,7 @@ void move_Test::Scene_Update(float timeDelta)
 	//=================================== 케릭터를 최종적으로 움직이게 하는 부분  끗.
 
 	this->pSkinned1->Update(timeDelta);
-
+	skill->update();
 
 
 
@@ -455,6 +458,7 @@ void move_Test::Scene_Render1()
 
 void move_Test::Scene_RenderSprite()
 {
+	skill->uiRender();
 }
 
 

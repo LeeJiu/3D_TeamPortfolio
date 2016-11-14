@@ -4,6 +4,8 @@
 #include "cTestCommand2.h"
 #include "moveClass.h"
 
+#define CONTROL_KEY 5
+
 class cTerrain;
 class cCamera;
 class cInputHandler;
@@ -13,12 +15,11 @@ class cMage : public cBaseObject
 {
 private:
 	cCamera*			m_camera;
-	
-
 	ACTOR_STATE			m_state;
-	bool				m_isMove;
 	std::string			m_current_Ani;
 	std::string			m_Aniname;
+	std::map<int, bool> m_InputKeys;
+	bool				m_isMove;
 
 	//컴포넌트를 달아준다.
 	cInputHandler*		m_pInput;
