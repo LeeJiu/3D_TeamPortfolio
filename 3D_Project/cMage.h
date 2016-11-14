@@ -13,6 +13,13 @@ class cInputHandler;
 class cStateHandler;
 class cWeapon;
 
+//스킬이펙트에 관한것
+class cQuadParticleEmitter;
+class cPartcleEmitter;
+class cParticleQuad;
+class cParticle;
+
+
 
 class cMage : public cBaseObject
 {
@@ -38,6 +45,15 @@ private:
 	cInputHandler*		m_pInput;
 	moveClass*			m_pMove;
 
+
+	//스킬에 관한 것
+	cQuadParticleEmitter*  m_snowStrom;
+	cQuadParticleEmitter*  m_snowStrom_under;
+	cPartcleEmitter*       m_snow;
+	bool                   m_isSnowStorm;
+	int                    m_aniCount;
+
+
 public:
 	cMage();
 	~cMage();
@@ -47,7 +63,18 @@ public:
 	void ATKBoxRender();
 	void WeaponRender();
 	
+	//펫
 	void PetOnUpdate();
+
+	void SkillInit();
+	void SkillUpdate();
+	void SkillRender();
+
+	//스킬
+	void SnowStormInit();
+	void SnowStormUpdate();
+	void SnowStormRender();
+
 
 	void SetCamera(cCamera* camera) { m_camera = camera; }
 
