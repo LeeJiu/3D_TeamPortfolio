@@ -38,8 +38,8 @@ HRESULT cMainGame::Init(void)
 	DXFONT_MGR->Init( Device );	
 	GIZMO_MGR->Init( Device );
 	SPRITE_MGR->Init( Device );
-	
-	
+	ITEM_MGR->init();
+
 	//게임에 사용되는 씬 추가
 	SCENE_MGR->AddScene("model_Test", new t_Scene());
 	SCENE_MGR->AddScene("move_Test", new move_Test());

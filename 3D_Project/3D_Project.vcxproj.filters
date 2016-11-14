@@ -237,6 +237,12 @@
     <ClInclude Include="cSkillUi.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="cItem.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cItemManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -433,6 +439,12 @@
     </ClCompile>
     <ClCompile Include="cSkillUi.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cItem.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cItemManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
