@@ -16,6 +16,7 @@ class cItem
 	bool m_active;          // 활성화 여부
 	int m_row,m_coll;         // 행렬 
 	unsigned int m_itemNum; // 아이템 고유 번호 .
+
 public:
 	void init();
 	void createList(string name,cBaseObject item,D3DXVECTOR3 scale
