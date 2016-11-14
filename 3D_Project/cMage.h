@@ -46,7 +46,8 @@ public:
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
 	void ATKBoxRender();
 	void WeaponRender();
-
+	
+	void PetOnUpdate();
 
 	void SetCamera(cCamera* camera) { m_camera = camera; }
 

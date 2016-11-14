@@ -17,6 +17,7 @@ cMage::~cMage()
 {
 	SAFE_DELETE(m_pInput);
 	SAFE_DELETE(m_pMove);
+	SAFE_DELETE(m_ATKBox);
 
 	SAFE_DELETE(pWeapon);
 	
@@ -92,114 +93,124 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		command->Execute();
 	}
 
-	//애니메이션셋
-	if ((KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
-		|| KEY_MGR->IsOnceDown('A')))
+	//펫에 타고 있냐
+	if (KEY_MGR->IsOnceDown('9'))
 	{
-		m_state = RUN;
-		m_Aniname = SetAnimation(m_state);
-		this->pSkinned->Play(m_Aniname, 0.3);
-	}
-
-	
-	if (m_isMove && KEY_MGR->IsOnceDown('S'))
-	{
-		m_state = WALK_BACK;
-		m_Aniname = SetAnimation(m_state);
-		this->pSkinned->Play(m_Aniname, 0.3);
-	}
-
-	if (!m_isMove && (KEY_MGR->IsOnceUp('W') || KEY_MGR->IsOnceUp('S')
-		|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
-		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
-	{
-		m_state = WAIT;
-		m_Aniname = SetAnimation(m_state);
-		this->pSkinned->Play(m_Aniname, 0.3);
-	}
-
-	if (KEY_MGR->IsOnceDown('5'))
-	{
-		m_state = STF_FROZEN;
-		m_Aniname = SetAnimation(m_state);
-		this->pSkinned->PlayOneShot(m_Aniname, 0.3);
-	}
-
-	if (KEY_MGR->IsOnceDown('6'))
-	{
-		m_state = STF_BUFF;
-		m_Aniname = SetAnimation(m_state);
-		this->pSkinned->PlayOneShot(m_Aniname, 0.3);
-	}
-
-	if (KEY_MGR->IsOnceDown('7'))
-	{
-		m_state = STF_STORM;
-		m_Aniname = SetAnimation(m_state);
-		this->pSkinned->PlayOneShot(m_Aniname, 0.3);
+		if (m_isPetOn) m_isPetOn = false;
+		else
+		{
+			m_state = PET_IDLE;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->Play(m_Aniname, 0.3);
+			m_isPetOn = true;
+		}
 	}
 
 
-
-	LOG_MGR->AddLog("%s", m_Aniname.c_str());
-	
-
-	//===============무브==============================
-
-	if (KEY_MGR->IsStayDown('W'))
+	if (m_isPetOn)
 	{
-		m_InputKeys.find('W')->second = true;
+		
 	}
-	else m_InputKeys.find('W')->second = false;
-
-
-	if (KEY_MGR->IsStayDown('S'))
+	else
 	{
-		m_InputKeys.find('S')->second = true;
-	}
-	else m_InputKeys.find('S')->second = false;
-
-	if (KEY_MGR->IsStayDown('A'))
-	{
-		m_InputKeys.find('A')->second = true;
-	}
-	else m_InputKeys.find('A')->second = false;
-
-	if (KEY_MGR->IsStayDown('D'))
-	{
-		m_InputKeys.find('D')->second = true;
-	
-	}
-	else m_InputKeys.find('D')->second = false;
 
 
-	m_pMove->update(timeDelta, NULL, NULL, NULL, m_InputKeys);
-	m_isMove = m_pMove->GetIsMove();
+		//애니메이션셋
+		if ((KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
+			|| KEY_MGR->IsOnceDown('A')))
+		{
+			m_state = RUN;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->Play(m_Aniname, 0.3);
+		}
 
-	if (KEY_MGR->IsOnceDown('P'))
-	{
-		m_pInput->SwapKey('1', '2');
+
+		if (m_isMove && KEY_MGR->IsOnceDown('S'))
+		{
+			m_state = WALK_BACK;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->Play(m_Aniname, 0.3);
+		}
+
+		if (!m_isMove && (KEY_MGR->IsOnceUp('W') || KEY_MGR->IsOnceUp('S')
+			|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
+			|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
+		{
+			m_state = WAIT;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->Play(m_Aniname, 0.3);
+		}
+
+		if (KEY_MGR->IsOnceDown('5'))
+		{
+			m_state = STF_FROZEN;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
+		}
+
+		if (KEY_MGR->IsOnceDown('6'))
+		{
+			m_state = STF_BUFF;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
+		}
+
+		if (KEY_MGR->IsOnceDown('7'))
+		{
+			m_state = STF_STORM;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
+		}
+
+
+		//===============무브==============================
+
+		if (KEY_MGR->IsStayDown('W'))
+		{
+			m_InputKeys.find('W')->second = true;
+		}
+		else m_InputKeys.find('W')->second = false;
+
+
+		if (KEY_MGR->IsStayDown('S'))
+		{
+			m_InputKeys.find('S')->second = true;
+		}
+		else m_InputKeys.find('S')->second = false;
+
+		if (KEY_MGR->IsStayDown('A'))
+		{
+			m_InputKeys.find('A')->second = true;
+		}
+		else m_InputKeys.find('A')->second = false;
+
+		if (KEY_MGR->IsStayDown('D'))
+		{
+			m_InputKeys.find('D')->second = true;
+
+		}
+		else m_InputKeys.find('D')->second = false;
+
+		if (KEY_MGR->IsOnceDown('P'))
+		{
+			m_pInput->SwapKey('1', '2');
+		}
+
+		m_pMove->update(timeDelta, NULL, NULL, NULL, m_InputKeys);
+
+		m_isMove = m_pMove->GetIsMove();
+
+		LOG_MGR->AddLog("%s", m_Aniname.c_str());
+
 	}
 
 	this->pWeapon->Update(timeDelta);
-	
 
 	
-	
-	//펫에 타고 있냐
-
-
-	if (KEY_MGR->IsOnceDown('9'))
-	{
-		m_isPetOn = true;
-		m_state = PET_IDLE;
-		m_Aniname = SetAnimation(m_state);
-		this->pSkinned->PlayOneShot(m_Aniname, 0.3);
-
-	}
 
 
 }
+
 
 void cMage::ATKBoxRender()
 {

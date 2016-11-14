@@ -71,6 +71,11 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="cWeapon.cpp" />
     <ClCompile Include="cPet.cpp" />
+    <ClCompile Include="cBerserKer_Attack.cpp" />
+    <ClCompile Include="cBerserKer_Attack2.cpp" />
+    <ClCompile Include="cBerserKer_Attack3.cpp" />
+    <ClCompile Include="cItem.cpp" />
+    <ClCompile Include="cItemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation_Test.h" />
@@ -143,6 +148,11 @@
     <ClInclude Include="move_Test2.h" />
     <ClInclude Include="cWeapon.h" />
     <ClInclude Include="cPet.h" />
+    <ClInclude Include="cBerserKer_Attack.h" />
+    <ClInclude Include="cBerserKer_Attack2.h" />
+    <ClInclude Include="cBerserKer_Attack3.h" />
+    <ClInclude Include="cItem.h" />
+    <ClInclude Include="cItemManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
