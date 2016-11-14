@@ -134,3 +134,4 @@ using namespace std;
 #include "cResourceMgr_XStaticMesh.h"
 #include "cResourceMgr_XSkinnedMesh.h"
 #include "cSoundManager.h"
+#include "cItemManager.h"

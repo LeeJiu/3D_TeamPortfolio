@@ -57,7 +57,7 @@ void cSkillUi::uiRender()
 			emtyBotton.skillImage,
 			&emtyBotton.rcSize,
 			skillBotton[i].x, skillBotton[i].y,
-			0x80ffffff,
+			0xf0ffffff,
 			NULL);
 
 		if (skillBotton[i].skillImage != NULL)

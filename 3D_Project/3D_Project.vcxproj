@@ -97,6 +97,8 @@
     <ClInclude Include="cGizmoManager.h" />
     <ClInclude Include="cImage.h" />
     <ClInclude Include="cInputHandler.h" />
+    <ClInclude Include="cItem.h" />
+    <ClInclude Include="cItemManager.h" />
     <ClInclude Include="cKeyMgr.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cLight_Direction.h" />
@@ -170,6 +172,8 @@
     <ClCompile Include="cGizmoManager.cpp" />
     <ClCompile Include="cImage.cpp" />
     <ClCompile Include="cInputHandler.cpp" />
+    <ClCompile Include="cItem.cpp" />
+    <ClCompile Include="cItemManager.cpp" />
     <ClCompile Include="cKeyMgr.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLight_Direction.cpp" />
