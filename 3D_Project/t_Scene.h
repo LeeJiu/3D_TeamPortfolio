@@ -1,10 +1,6 @@
 #pragma once
 #include "cScene.h"
 
-enum c_STATE {
-	IDLE,
-	WALK
-};
 
 class cBaseObject;
 class cCamera;
@@ -29,7 +25,6 @@ private:
 	
 	D3DXMATRIXA16 temp;
 
-	c_STATE			m_state;
 
 
 public:

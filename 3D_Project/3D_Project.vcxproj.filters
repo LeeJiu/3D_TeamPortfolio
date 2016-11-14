@@ -237,6 +237,12 @@
     <ClInclude Include="cSkillUi.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="cBerserker.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="berserker_test.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -433,6 +439,12 @@
     </ClCompile>
     <ClCompile Include="cSkillUi.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cBerserker.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="berserker_test.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

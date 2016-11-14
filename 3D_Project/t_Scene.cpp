@@ -111,7 +111,6 @@ void t_Scene::Scene_Release()
 
 void t_Scene::Scene_Update(float timeDelta)
 {
-	this->m_state = IDLE;
 	this->pSkinned1->Play("Idle_01", 0.3f);
 	this->pSkinned1->Update(timeDelta);
 	
@@ -130,18 +129,6 @@ void t_Scene::Scene_Update(float timeDelta)
 		//this->pSkinned1->Play("Walk", 0.3f);
 	}
 	
-	if (KEY_MGR->IsStayDown(VK_LCONTROL))
-	{
-	
-		//if (KEY_MGR->IsOnceDown('1'))
-		//	this->pSkinned1->Play("Idle_01", 0.3f);
-		//
-		//if (KEY_MGR->IsOnceDown('2'))
-		//	this->pSkinned1->Play("Idle_02", 0.3f);
-		//
-		//if (KEY_MGR->IsOnceDown('3'))
-		//	this->pSkinned1->PlayOneShot("Walk", 0.3f);
-	}
 
 	if (!KEY_MGR->IsStayDown(VK_RBUTTON))
 	{

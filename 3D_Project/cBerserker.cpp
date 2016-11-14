@@ -1,22 +1,22 @@
 #include "stdafx.h"
-#include "cMage.h"
+#include "cBerserker.h"
 #include "cTerrain.h"
 #include "cCamera.h"
 #include "cInputHandler.h"
 
-cMage::cMage()
-{
 
+cBerserker::cBerserker()
+{
 }
 
-
-cMage::~cMage()
+cBerserker::~cBerserker()
 {
 	SAFE_DELETE(m_pInput);
 	SAFE_DELETE(m_pMove);
 }
 
-void cMage::BaseObjectEnable()
+
+void cBerserker::BaseObjectEnable()
 {
 	m_pInput = new cInputHandler;
 	m_pInput->AddKey('1', new cTestCommand);
@@ -43,11 +43,11 @@ void cMage::BaseObjectEnable()
 	m_InputKeys.insert(key_S);
 	m_InputKeys.insert(key_A);
 	m_InputKeys.insert(key_D);
-	
+
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 }
 
-void cMage::BaseObjectUpdate(float timeDelta)
+void cBerserker::BaseObjectUpdate(float timeDelta)
 {
 
 	cCommand* command = m_pInput->HandleInput();
@@ -57,6 +57,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	}
 
 	//애니메이션셋
+
 	if ((KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
 		|| KEY_MGR->IsOnceDown('A')))
 	{
@@ -65,7 +66,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		this->pSkinned->Play(m_Aniname, 0.3);
 	}
 
-	
+
 	if (m_isMove && KEY_MGR->IsOnceDown('S'))
 	{
 		m_state = WALK_BACK;
@@ -77,13 +78,12 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
 		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
 	{
-		m_state = STF_IDLE;
+		m_state = IDLE;
 		m_Aniname = SetAnimation(m_state);
 		this->pSkinned->Play(m_Aniname, 0.3);
 	}
 
-	LOG_MGR->AddLog("%s", m_Aniname.c_str());
-	
+
 
 	//===============무브==============================
 
@@ -122,4 +122,3 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	}
 
 }
-

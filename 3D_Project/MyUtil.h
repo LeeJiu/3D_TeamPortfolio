@@ -47,32 +47,34 @@ enum ACTOR_STATE
 	CRY,               //울기
 	DANCE,             //춤을춰라 나의 인형아!
 
-	STF_DMG,           //피격
-	STF_DIE,           //죽어가는 중
-	STF_DEAD,          //죽음
-	STF_DOWN,          //넉백
-	STF_STUN,          //넉백상태_루프
+	DMG,           //피격
+	DIE,           //죽어가는 중
+	DEAD,          //죽음
+	DOWN,          //넉백
+	STUN,          //넉백상태_루프
 	STF_WAKEUP,        //넉백 일어나기
 
-	STF_IDLE,            //평화상태
-	STF_WAIT,            //전투대기
-	STF_WALK,            //걷기
-	STF_WALK_BACK,       //뒤로걷기
-	STF_RUN,             //달리기
+	STF_IDLE,            //법사 평화상태
+	IDLE,				 //전사 평화상태
+	STF_WAIT,            //법사 전투대기
+	WAIT,				 //전사 평화상태
+	WALK,            //걷기
+	WALK_BACK,       //뒤로걷기
+	RUN,             //달리기
 	RUN_R,               //오른쪽으로 달리기
 	RUN_L,               //왼쪽으로 달리기
-	STF_STOP,            //달리다 멈추기
+	RUN_STOP,            //달리다 멈추기
 	STF_PASSOUT,         //기력소모
-	STF_JUMP,            //점프
+	JUMP,            //점프
 
 
-	STF_WEAPON,          //무기 착용
-	STF_UNWEAPON,        //무기 해제
+	WEAPON,          //무기 착용
+	UNWEAPON,        //무기 해제
 
 						 //공격 상태
 
-	STF_ATK1,           //기본공격 1
-	STF_ATK2,           //기본공격 2
+	ATK_01,           //기본공격 1
+	ATK_02,           //기본공격 2
 
 	STF_BUFF,           //스킬_버프
 	STF_TYFUNG,         //스킬_태풍
