@@ -448,7 +448,7 @@ namespace MyUtil{
 		std::string state_name;
 		switch (state)
 		{
-		case ROBBY_IDLE:  state_name = "STF_IDLE";
+		case ROBBY_IDLE:  state_name = "ROBBY_IDLE";
 			break;
 		case PET_IDLE:  state_name = "PET_IDLE";
 			break;
@@ -470,10 +470,8 @@ namespace MyUtil{
 			break;
 		case DMG:  state_name = "DMG";
 			break;
-
 		case DIE:  state_name = "DIE";
 			break;
-
 		case DEAD:  state_name = "DEAD";
 			break;
 		case DOWN:  state_name = "DOWN";
@@ -510,6 +508,8 @@ namespace MyUtil{
 			break;
 		case ATK_02:  state_name = "ATK_02";
 			break;
+		case ATK_03:  state_name = "ATK_03";
+			break;
 		case STF_BUFF:  state_name = "STF_BUFF";
 			break;
 		case STF_TYFUNG:  state_name = "STF_TYFUNG";
@@ -534,7 +534,28 @@ namespace MyUtil{
 			break;
 		case STF_BLINK:  state_name = "STF_BLINK";
 			break;
-		default: state_name = "STF_IDLE";
+	    //버서커전용
+		case SK_BUFF:  state_name = "SK_BUFF";
+			break;
+		case SK_ATKUP:  state_name = "SK_ATKUP";
+			break;
+		case SK_CRASH:  state_name = "SK_CRASH";
+			break;
+		case SK_SWING:  state_name = "SK_SWING";
+			break;
+		case SK_CHARGE:  state_name = "SK_CHARGE";
+			break;
+		case SK_CHARGE_ATK:  state_name = "SK_CHARGE_ATK";
+			break;
+		case SK_HOWL:  state_name = "SK_HOWL";
+			break;
+		case SK_ESCAPE:  state_name = "SK_ESCAPE";
+			break;
+		case SK_ACCEL:  state_name = "SK_ACCEL";
+			break;
+		case SK_JUMPATK:  state_name = "SK_JUMPATK";
+			break;
+		default: state_name = "IDLE";
 			break;
 		}
 
