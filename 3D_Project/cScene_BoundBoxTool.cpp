@@ -103,13 +103,6 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 	this->lights.push_back(pLight3);*/
 
 
-	//
-	//오브젝트 보정을 위한 변수 세팅
-	//
-	vecScale = selectObject->pTransform->GetScale();
-	vecRotate = D3DXVECTOR3(90 * ONE_RAD, 0, 0);
-
-
 	return S_OK;
 }
 
@@ -119,6 +112,23 @@ void cScene_BoundBoxTool::Scene_Release()
 	SAFE_DELETE(m_pTerrain);
 	SAFE_DELETE(m_pMonster);
 	SAFE_DELETE(selectObject);
+
+
+	vector<cBaseObject*>::iterator obj_iter;
+	for (obj_iter = objects.begin(); obj_iter != objects.end();)
+	{
+		SAFE_DELETE(*obj_iter);
+		obj_iter = objects.erase(obj_iter);
+	}
+	objects.clear();
+
+	vector<cLight*>::iterator light_iter;
+	for (light_iter = lights.begin(); light_iter != lights.end();)
+	{
+		SAFE_DELETE(*light_iter);
+		light_iter = lights.erase(light_iter);
+	}
+	lights.clear();
 }
 
 void cScene_BoundBoxTool::Scene_Update(float timeDelta)
@@ -143,7 +153,6 @@ void cScene_BoundBoxTool::Scene_Render1()
 	cXMesh_Static::SetBaseLight(dynamic_cast<cLight_Direction*>(lights[0]));
 
 	int size = objects.size();
-	LOG_MGR->AddLog("%d", size);
 	for (int i = 0; i < size; ++i)
 	{
 		objects[i]->Render();
@@ -157,9 +166,6 @@ void cScene_BoundBoxTool::Scene_Render1()
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 
 	m_pMonster->Render();
-
-	
-
 
 
 
@@ -189,7 +195,7 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 	}
 
 
-	//오브젝트 위치 이동한다.
+	//선택한 오브젝트 크기 및 이동 설정
 	selectObject->pTransform->DefaultControl4(timeDelta);
 
 
@@ -213,7 +219,7 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 		obj->SetActive(true);
 		objects.push_back(obj);
 
-		//selectObject = objects.back();
+		selectObject = objects.back();
 
 		//vector<cSetBoundObject*> hitBounds;
 		//vector<float>	hitdistances;

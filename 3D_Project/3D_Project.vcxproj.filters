@@ -34,9 +34,6 @@
     <Filter Include="Component">
       <UniqueIdentifier>{8d2a1705-2813-409f-9e6c-6b5d6da36a26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ObjClass">
-      <UniqueIdentifier>{d3a61c23-fd41-4ccc-8701-141554358b36}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -46,9 +43,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="cMainGame.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cImage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="cTimeMgr.h">
@@ -114,12 +108,6 @@
     <ClInclude Include="cBaseObject.h">
       <Filter>BaseObject</Filter>
     </ClInclude>
-    <ClInclude Include="cBoundSphere.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cBoundBox.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cPhysicManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -152,9 +140,6 @@
     </ClInclude>
     <ClInclude Include="cQuadParticleEmitter.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cFrustum.h">
-      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="cScene_Mgr.h">
       <Filter>Managers</Filter>
@@ -204,32 +189,47 @@
     <ClInclude Include="sector_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="moveClass.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
     <ClInclude Include="cMage.h">
       <Filter>GameActor</Filter>
     </ClInclude>
     <ClInclude Include="cBaseskill.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="cScene_BoundBoxTool.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cWayPoint.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="monster_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="mage_Test.h">
-      <Filter>Scenes</Filter>
+    <ClInclude Include="cSpriteManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="cSoundManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="cSpriteManager.h">
-      <Filter>Managers</Filter>
+    <ClInclude Include="mage_Test.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_BoundBoxTool.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cBoundBox.h">
+      <Filter>BaseObject</Filter>
+    </ClInclude>
+    <ClInclude Include="cBoundSphere.h">
+      <Filter>BaseObject</Filter>
+    </ClInclude>
+    <ClInclude Include="cFrustum.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cWayPoint.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="moveClass.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="monster_Test.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cImage.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_testMonster.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -240,9 +240,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cMainGame.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cImage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cTimeMgr.cpp">
@@ -308,12 +305,6 @@
     <ClCompile Include="cBaseObject.cpp">
       <Filter>BaseObject</Filter>
     </ClCompile>
-    <ClCompile Include="cBoundSphere.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cBoundBox.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cPhysicManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -346,9 +337,6 @@
     </ClCompile>
     <ClCompile Include="cQuadParticleEmitter.cpp">
       <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cFrustum.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cScene_Mgr.cpp">
       <Filter>Managers</Filter>
@@ -398,32 +386,47 @@
     <ClCompile Include="sector_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="moveClass.cpp">
-      <Filter>GameActor</Filter>
-    </ClCompile>
     <ClCompile Include="cMage.cpp">
       <Filter>GameActor</Filter>
     </ClCompile>
     <ClCompile Include="cBaseskill.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="cScene_BoundBoxTool.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cWayPoint.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="monster_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="mage_Test.cpp">
-      <Filter>Scenes</Filter>
+    <ClCompile Include="cSpriteManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="cSoundManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="cSpriteManager.cpp">
-      <Filter>Managers</Filter>
+    <ClCompile Include="mage_Test.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_BoundBoxTool.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cBoundBox.cpp">
+      <Filter>BaseObject</Filter>
+    </ClCompile>
+    <ClCompile Include="cBoundSphere.cpp">
+      <Filter>BaseObject</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrustum.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cWayPoint.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="moveClass.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="monster_Test.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cImage.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_testMonster.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

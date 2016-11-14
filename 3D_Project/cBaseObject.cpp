@@ -65,8 +65,12 @@ void cBaseObject::BaseObjectRender() {
 			this->pMesh->Render(this->pTransform);
 
 	}
-	//this->BoundBox.RenderGizmo( this->pTransform );
-}		
+	this->BoundBox.RenderGizmo( this->pTransform );
+}
+
+void cBaseObject::BaseObjectBoundBox()
+{
+}
 
 
 //셋팅된 메쉬에 따라 바운드박스를 재계산 한다.
@@ -89,12 +93,9 @@ void cBaseObject::ComputeBoundBox()
 		//셋팅된 메쉬가 cXMesh_Skinned 라면... ( 임시로 바운드 박스 )
 		else
 		{
-			this->BoundBox.SetBound( &D3DXVECTOR3( 0, 0, 0), &D3DXVECTOR3( 10.0f, 10.0f, 10.0f ) );
-
-
+			this->BaseObjectBoundBox();
 		}
 	}
-
 }
 
 
