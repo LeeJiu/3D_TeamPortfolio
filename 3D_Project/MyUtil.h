@@ -54,10 +54,8 @@ enum ACTOR_STATE
 	STUN,          //넉백상태_루프
 	STF_WAKEUP,        //넉백 일어나기
 
-	STF_IDLE,            //법사 평화상태
-	IDLE,				 //전사 평화상태
-	STF_WAIT,            //법사 전투대기
-	WAIT,				 //전사 평화상태
+	IDLE,				 //평화상태
+	WAIT,				 //대기상태
 	WALK,            //걷기
 	WALK_BACK,       //뒤로걷기
 	RUN,             //달리기
@@ -75,6 +73,7 @@ enum ACTOR_STATE
 
 	ATK_01,           //기본공격 1
 	ATK_02,           //기본공격 2
+	ATK_03,           //버서커 - 추가 기본공격 3
 
 	STF_BUFF,           //스킬_버프
 	STF_TYFUNG,         //스킬_태풍
@@ -87,8 +86,20 @@ enum ACTOR_STATE
 	STF_SWING,          //스킬_후려찍기
 	STF_STORM,          //스킬_천둥벼락
 	STF_MAGIC_SHOT,     //스킬_마법발사
-
 	STF_BLINK,          //스킬_ 점멸
+
+	//버서커 전용 스킬
+	SK_BUFF,               // 스킬_버프
+	SK_ATKUP,              //스킬_올려치기
+	SK_CRASH,              //스킬_도끼찍기
+	SK_SWING,              //스킬_도끼돌리기
+	SK_CHARGE,             //스킬_광역찍기_차지
+	SK_CHARGE_ATK,         //스킬_광역찍기_시전
+	SK_HOWL,               //스킬_고함지르기
+	SK_ESCAPE,             //스킬_돌진회피
+	SK_ACCEL,              //스킬_트리플악셀
+	SK_JUMPATK,            // 스킬_날아서 찍기
+	
 	END,
 
 	AS_IDLE,
