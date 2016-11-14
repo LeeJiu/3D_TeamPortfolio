@@ -63,7 +63,7 @@ HRESULT cMainGame::Init(void)
 	////게임 시작씬
 	SCENE_MGR->ChangeScene( "mage_Test" );
 	//SCENE_MGR->ChangeScene("berserker_test");
-	//SCENE_MGR->ChangeScene( "move_Test" );
+	SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "move_Test2" );
 	//SCENE_MGR->ChangeScene( "sector_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
@@ -98,6 +98,10 @@ void cMainGame::Release()
 	SOUND_MGR->Release();
 	cSoundManager::ReleaseInstance();
 
+	ITEM_MGR->release();
+	cItemManager::ReleaseInstance();
+
+
 	RESOURCE_TEXTURE->ClearResource();
 	cResourceMgr_Texture::ReleaseInstance();
 	RESOURCE_FX->ClearResource();
@@ -107,7 +111,7 @@ void cMainGame::Release()
 	RESOURCE_SKINNEDXMESH->ClearResource();
 	cResourceMgr_XSkinnedMesh::ReleaseInstance();
 
-
+	
 
 
 	//디바이스 해제

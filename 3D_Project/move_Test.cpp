@@ -128,7 +128,10 @@ HRESULT move_Test::Scene_Init()
 
 	skill = new cSkillUi;
 	skill->init();
-
+	//====================== 매니져
+	D3DXVECTOR3 itmePos = D3DXVECTOR3(0, m_pTerrain->GetHeight(0, 0),0);
+	ITEM_MGR->createItem(0, itmePos);
+	//======================
 	return S_OK;
 }
 
@@ -198,6 +201,11 @@ void move_Test::Scene_Update(float timeDelta)
 		this->pMainCamera->ComputeRay(&ray, &screenPos);
 
 		this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+	}
+	if (KEY_MGR->IsOnceDown('O'))
+	{
+		ITEM_MGR->createItem(0, D3DXVECTOR3(0, 9, 0));
+
 	}
 	//=========================
 	//if (KEY_MGR->IsOnceDown(VK_LBUTTON))
@@ -398,7 +406,7 @@ void move_Test::Scene_Update(float timeDelta)
 
 	}
 	PHYSICS_MGR->IsPointSphere(pSkinnedTrans, 3.f, colliTest);
-
+	ITEM_MGR->update();
 }
 
 void move_Test::Scene_Render1()
@@ -452,7 +460,7 @@ void move_Test::Scene_Render1()
 	//{
 	//	LOG_MGR->AddLog("충돌1");
 	//}
-
+	ITEM_MGR->render();
 }
 
 
