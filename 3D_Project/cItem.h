@@ -19,6 +19,8 @@ class cItem : public cBaseObject
 
 public:
 	float m_lifeTime;       // 아이템 생존 시간. 
+	int getRow(){ return m_row; }
+	int getColl(){ return m_coll; }
 
 	void init(cItem* copyItem);
 //void init(cItem copyItem);

@@ -60,3 +60,4 @@ void cItem::createList(string name, int row, int coll)
 	m_coll = coll;         // ¿­|
 
 }
+

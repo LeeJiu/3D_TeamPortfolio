@@ -210,9 +210,6 @@
     <ClInclude Include="cWayPoint.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="cSkillUi.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cBerserker.h">
       <Filter>GameActor</Filter>
     </ClInclude>
@@ -265,6 +262,12 @@
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="cItem.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cInven.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkillUi.h">
       <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
@@ -437,9 +440,6 @@
     <ClCompile Include="cWayPoint.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="cSkillUi.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cBerserker.cpp">
       <Filter>GameActor</Filter>
     </ClCompile>
@@ -492,6 +492,12 @@
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="cItem.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cInven.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkillUi.cpp">
       <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>

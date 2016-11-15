@@ -50,7 +50,6 @@ void cItemManager::render()
 	{
 		(*v_iter)->Render();
 	}
-
 }
 void cItemManager::release()
 {

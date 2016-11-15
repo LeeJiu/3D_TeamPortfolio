@@ -132,6 +132,8 @@ HRESULT move_Test::Scene_Init()
 	D3DXVECTOR3 itmePos = D3DXVECTOR3(0, m_pTerrain->GetHeight(0, 0),0);
 	ITEM_MGR->createItem(0, itmePos);
 	//======================
+	m_inven = new cInven;
+	m_inven->init();
 	return S_OK;
 }
 
@@ -406,6 +408,8 @@ void move_Test::Scene_Update(float timeDelta)
 
 	}
 	PHYSICS_MGR->IsPointSphere(pSkinnedTrans, 3.f, colliTest);
+	
+	m_inven->update();
 	ITEM_MGR->update(timeDelta);
 }
 
@@ -466,7 +470,9 @@ void move_Test::Scene_Render1()
 
 void move_Test::Scene_RenderSprite()
 {
+	m_inven->render();
 	skill->uiRender();
+
 }
 
 
