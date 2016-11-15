@@ -83,7 +83,7 @@ void cItemManager::createItemList()
 	item->SetMesh(mesh);
 	item->SetActive(true);
 
-	item->createList("m_staff",	2, 2);
+	item->createList("m_staff",	2, 2);// 2 x 2 크기를 넣을때 .
 	item->pTransform->SetRotateWorld( 90 * ONE_RAD,0, 0);
 	m_itemList.insert(std::make_pair(0, item));
 	//==================== 위와 같이 아이템 하나하나

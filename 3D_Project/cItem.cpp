@@ -6,7 +6,7 @@ unsigned int cItem::increaseNum = 0;
 
 cItem::cItem()
 {
-	m_lifeTime = 10.f; // 아이템 생존 시간. 
+	m_lifeTime = 60.f; // 아이템 생존 시간. 
 	m_itemNum = 0.f;
 	m_active = true;
 }

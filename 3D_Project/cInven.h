@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cItem.h"
-
+#include "cCamera.h"
 #define INVEN_COUNT 6
 #define RECT_SIZE 64
 // 6 x 6 
@@ -21,6 +21,7 @@ struct stInven
 class cInven
 {
 	bool isActive;
+	bool pickUp;
 	int row;//За 
 	int col;//ї­
 	stInven inven[INVEN_COUNT][INVEN_COUNT];
@@ -29,13 +30,15 @@ class cInven
 
 	stInven emptyInven;
 
+	cItem* clickItem;
 public:
 
 	void init();
-	void update();
+	void update(float timeDelta, cCamera* camera);
 	void render();
+	D3DXVECTOR3 screenPos(int x,int y);
 
-	bool inputItem(cItem* item);
+	bool inputItem(int row, int coll,cItem* item);
 
 	cInven();
 	~cInven();
