@@ -2,6 +2,7 @@
 #include "cScene_testMonster.h"
 #include "cLight_Direction.h"
 #include "cLight_Point.h"
+#include "cCamera.h"
 
 
 cScene_testMonster::cScene_testMonster()
@@ -31,11 +32,9 @@ HRESULT cScene_testMonster::Scene_Init()
 		3,
 		100);
 
-
 	//
-	//몬스터 세팅
+	//플레이어 세팅
 	//
-	m_pMonster = new cMonster;
 
 	//캐릭터 보정 행렬 세팅
 	D3DXMATRIXA16 matScale;
@@ -44,10 +43,22 @@ HRESULT cScene_testMonster::Scene_Init()
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
-	//캐릭터에게 지형 전달
+	m_pMage = new cMage;
+	m_pMage->SetTerrain(m_pTerrain);
+	m_pMage->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Elf/Elf_Master.X", &matCorrection));
+	m_pMage->SetActive(true);
+
+
+
+	//
+	//몬스터 세팅
+	//
+	m_pMonster = new cMonster;
 	m_pMonster->SetTerrain(m_pTerrain);
 	m_pMonster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Surcubus/surcubus.X", &matCorrection));
+	m_pMonster->SetPlayerMemoryLink(m_pMage);
 	m_pMonster->SetActive(true);
+	
 
 
 	//
@@ -91,11 +102,13 @@ void cScene_testMonster::Scene_Release()
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
 	SAFE_DELETE(m_pMonster);
+	SAFE_DELETE(m_pMage);
 }
 
 void cScene_testMonster::Scene_Update(float timeDelta)
 {
 	m_pMonster->Update(timeDelta);
+	m_pMage->Update(timeDelta);
 }
 
 void cScene_testMonster::Scene_Render1()
@@ -126,4 +139,5 @@ void cScene_testMonster::Scene_Render1()
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 
 	m_pMonster->Render();
+	m_pMage->Render();
 }

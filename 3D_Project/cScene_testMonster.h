@@ -1,6 +1,7 @@
 #pragma once
 #include "cScene.h"
 #include "cMonster.h"
+#include "cMage.h"
 #include "cSetBoundObject.h"
 
 
@@ -9,10 +10,7 @@ class cScene_testMonster : public cScene
 private:
 	cTerrain*					m_pTerrain;
 	cMonster*					m_pMonster;
-
-	//임시로 바운드 박스들을 설치할 변수
-	cSetBoundObject*				selectBound;
-	std::vector<cSetBoundObject*>	boundObjects;
+	cMage*						m_pMage;
 
 	std::vector<cLight*>		lights;
 
@@ -27,5 +25,11 @@ public:
 	virtual void Scene_Update(float timeDelta);
 
 	virtual void Scene_Render1();
+
+	void AddBoundBox(float timeDelta);
+	void SetBoundBox();
+	
+	
+	std::vector<cBaseObject*>		objects;
 };
 

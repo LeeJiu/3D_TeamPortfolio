@@ -18,10 +18,13 @@ cWayPoint::~cWayPoint()
 
 void cWayPoint::Init(cTransform * trans, float fRadius)
 {
+	m_vWayPoint.push_back(trans->GetWorldPosition());
+	
 	m_nPointNum = RandomIntRange(3, 5);
 
 	float tX = trans->GetWorldPosition().x;
 	float tZ = trans->GetWorldPosition().z;
+
 
 	for (int i = 0; i < m_nPointNum; ++i)
 	{
@@ -35,6 +38,9 @@ void cWayPoint::Init(cTransform * trans, float fRadius)
 	
 	m_bStart = true;
 	m_bEnd = false;
+	m_bHit = false;
+
+	m_pTarget = NULL;
 }
 
 void cWayPoint::Update(cTransform * trans)
@@ -56,6 +62,7 @@ void cWayPoint::Update(cTransform * trans)
 	//다음 위치로 이동하게 만들자.
 	if (dist <= 0.001)
 	{
+		//웨이 포인트 인덱스 갱신
 		if (m_bStart == true && m_bEnd == false)
 		{
 			m_nIndex++;
@@ -76,6 +83,7 @@ void cWayPoint::Update(cTransform * trans)
 				m_bEnd = false;
 			}
 		}
+		
 		return;
 	}
 
@@ -121,5 +129,61 @@ void cWayPoint::Update(cTransform * trans)
 	{
 		m_ray.origin = m_currentPos;
 		m_ray.origin.y += 3;
+	}
+}
+
+bool cWayPoint::HitObjects(cTransform* trans)
+{
+	//오브젝트 체크용 레이 세팅
+	m_objCheckRay.direction = trans->GetForward();
+	m_objCheckRay.origin = m_currentPos;
+
+	vector<cBaseObject*> hitBounds;
+	vector<float>	hitDistances;
+	D3DXVECTOR3 hitPos;
+
+	//진행 방향 레이 체크
+	int size = this->m_vObjects.size();
+	for (int i = 0; i < size; i++)
+	{
+		if (PHYSICS_MGR->IsRayHitBound(
+			&m_objCheckRay,
+			&this->m_vObjects[i]->BoundBox,
+			this->m_vObjects[i]->pTransform,
+			&hitPos,
+			NULL)) 
+		{
+			//충돌된 놈이라면...
+			hitBounds.push_back(this->m_vObjects[i]);
+
+			//몬스터로부터의 거리 제곱도 푸쉬
+			hitDistances.push_back(D3DXVec3LengthSq(
+				&(hitPos - trans->GetWorldPosition())));
+		}
+	}
+
+
+	//히트 된 놈이 있다면...
+	if (hitBounds.size() > 0)
+	{
+		//일단 첫번째 
+		m_pTarget = hitBounds[0];
+		m_fNearest = hitDistances[0];
+
+		int size = hitBounds.size();
+		for (int i = 1; i < size; i++)
+		{
+			//갱신
+			if (m_fNearest > hitDistances[i])
+			{
+				m_fNearest = hitDistances[i];
+				m_pTarget = hitBounds[i];
+			}
+		}
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
