@@ -40,7 +40,8 @@ HRESULT cMainGame::Init(void)
 	DXFONT_MGR->Init( Device );	
 	GIZMO_MGR->Init( Device );
 	SPRITE_MGR->Init( Device );
-	
+	ITEM_MGR->init();
+
 	
 	//게임에 사용되는 씬 추가
 	SCENE_MGR->AddScene("model_Test", new t_Scene());
@@ -61,9 +62,9 @@ HRESULT cMainGame::Init(void)
 	SOUND_MGR->addSound("bgm1", "../Answers.mp3", true, true);
 	
 	////게임 시작씬
-	SCENE_MGR->ChangeScene( "mage_Test" );
+	//SCENE_MGR->ChangeScene( "mage_Test" );
 	//SCENE_MGR->ChangeScene("berserker_test");
-	//SCENE_MGR->ChangeScene( "move_Test" );
+	SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "move_Test2" );
 	//SCENE_MGR->ChangeScene( "sector_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );

@@ -20,7 +20,7 @@ public:
 	~cItemManager();
 
 	void init();
-	void update();
+	void update(float timeDelta);
 	void render();
 	void release();
 	void createItemList(); // 아이템 목록 만드는 함수. 

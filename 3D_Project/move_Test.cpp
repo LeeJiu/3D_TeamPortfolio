@@ -204,7 +204,7 @@ void move_Test::Scene_Update(float timeDelta)
 	}
 	if (KEY_MGR->IsOnceDown('O'))
 	{
-		ITEM_MGR->createItem(0, D3DXVECTOR3(0, 9, 0));
+		ITEM_MGR->createItem(0, D3DXVECTOR3(0, MyUtil::RandomFloatRange(3,10), 0));
 
 	}
 	//=========================
@@ -406,7 +406,7 @@ void move_Test::Scene_Update(float timeDelta)
 
 	}
 	PHYSICS_MGR->IsPointSphere(pSkinnedTrans, 3.f, colliTest);
-	ITEM_MGR->update();
+	ITEM_MGR->update(timeDelta);
 }
 
 void move_Test::Scene_Render1()

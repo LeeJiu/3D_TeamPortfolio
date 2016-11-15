@@ -18,15 +18,37 @@ cItem::~cItem()
 
 void cItem::init(cItem* copyItem)
 {
-	*this = *copyItem;
+	//cItem ===================
+	m_itemName = copyItem->m_itemName;
+	m_basicScale = copyItem->m_basicScale;
+	m_basicRotation = copyItem->m_basicRotation;
+	//m_lifeTime = copyItem->m_lifeTime;
+	m_active = copyItem->m_active;
+	m_row = copyItem->m_row;
+	m_coll = copyItem->m_coll;
+	//cBaseObj=================
+	*pTransform = *copyItem->pTransform;
+	pMesh = copyItem->pMesh;
+	BoundBox = copyItem->BoundBox;
+	IgnoreCreateShadow = copyItem->IgnoreCreateShadow;
+
+	pSkinned = copyItem->pSkinned;
+	bActive = copyItem->bActive;
+	pTerrain = copyItem->pTerrain;
+
+
+
+
+
 	m_itemNum = ++increaseNum;
+
 }
 
-void cItem::init(cItem copyItem)
-{
-	*this = copyItem;
-	m_itemNum = ++increaseNum;
-}
+//void cItem::init(cItem copyItem)
+//{
+//	*this = copyItem;
+//	m_itemNum = ++increaseNum;
+//}
 void cItem::createList(string name, int row, int coll)
 {
 
