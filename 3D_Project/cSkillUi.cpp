@@ -32,20 +32,20 @@ void cSkillUi::init()
 }
 void cSkillUi::update()
 {
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	{
-		POINT ptMousePos = GetMousePos();
-		//D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-		for (int i = 0; i < SKILLNUM; i++)
-		{
-			if (PtInRect(&skillBotton[i].rcColl, ptMousePos))
-			{
-				LOG_MGR->AddLog("i = %d",
-					i);
-			}
-
-		}
-	}
+	//if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+	//{
+	//	POINT ptMousePos = GetMousePos();
+	//	//D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+	//	for (int i = 0; i < SKILLNUM; i++)
+	//	{
+	//		if (PtInRect(&skillBotton[i].rcColl, ptMousePos))
+	//		{
+	//			LOG_MGR->AddLog("i = %d",
+	//				i);
+	//		}
+	//
+	//	}
+	//}
 }
 
 void cSkillUi::uiRender()
@@ -57,7 +57,7 @@ void cSkillUi::uiRender()
 			emtyBotton.skillImage,
 			&emtyBotton.rcSize,
 			skillBotton[i].x, skillBotton[i].y,
-			0x80ffffff,
+			0xf0ffffff,
 			NULL);
 
 		if (skillBotton[i].skillImage != NULL)

@@ -2,7 +2,7 @@
 #pragma once
 #include "cScene.h"
 #include "cSkillUi.h"
-
+#include "cInven.h"
 class cBaseObject;
 class cCamera;
 class cTerrain;
@@ -53,7 +53,7 @@ private:
 	D3DXMATRIXA16 temp;
 
 	bool boundHit;
-
+	cInven*        m_inven;
 public:
 	move_Test(void);
 	~move_Test(void);

@@ -9,6 +9,8 @@
 #include "cSkinnedAnimation.h"
 #include "cLight_Point.h"
 #include "cMage.h"
+#include "cPet.h"
+
 
 mage_Test::mage_Test(void)
 {
@@ -44,6 +46,8 @@ HRESULT mage_Test::Scene_Init()
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Elf/Elf_Master.X", &matCorrection);
+	cXMesh_Skinned* pPet_Elephant = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Elephant/pet_Elephant.X", &matCorrection);
+	
 
 
 	//+++애니메이션 체크 관련+++++
@@ -63,6 +67,15 @@ HRESULT mage_Test::Scene_Init()
 	this->pMage->SetTerrain(m_pTerrain);
 	this->pMage->SetCamera(this->pMainCamera);
 	this->pMage->SetActive(true);
+
+	//펫 관련
+	this->pPet = new cPet;
+	this->pPet->SetMesh(pPet_Elephant);
+	this->pPet->SetTerrain(m_pTerrain);
+	this->pPet->SetActive(true);
+	this->pPet->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
+	//this->pPet->pTransform->LookDirection(this->pMage->pTransform->GetForward(), 90.0f*ONE_RAD);
+
 	
 	//캐릭터가 그려질 위치 트랜스폼
 	//this->pMage->pTransform = new cTransform();
@@ -120,6 +133,7 @@ void mage_Test::Scene_Release()
 
 	SAFE_DELETE(this->pMage);
 	SAFE_DELETE(this->pTransForCamera);
+	SAFE_DELETE(this->pPet);
 
 	for (int i = 0; i < lights.size(); i++)
 	{
@@ -161,7 +175,30 @@ void mage_Test::Scene_Update(float timeDelta)
 		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
 	}
 
+
+
+	if (pMage->GetIsPetOn())
+	{
+		this->pPet->Update(timeDelta);
+		D3DXVECTOR3 petSpace(0, 6, 0);
+		this->pPet->pTransform->AddChild(this->pMage->pTransform);
+		this->pMage->pTransform->SetLocalPosition(petSpace);
+		
+	}
+	else
+	{
+		this->pMage->pTransform->ReleaseParent();
+		this->pPet->pTransform->LookDirection(this->pMage->pTransform->GetForward(), 90.0f*ONE_RAD);
+		this->pPet->pTransform->SetWorldPosition(this->pMage->pTransform->GetWorldPosition().x, m_pTerrain->GetHeight(0, 0), this->pMage->pTransform->GetWorldPosition().z);
+	}
+	
+
+
 	this->pMage->Update(timeDelta);
+
+	
+	
+
 }
 
 void mage_Test::Scene_Render1()
@@ -179,6 +216,14 @@ void mage_Test::Scene_Render1()
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 	this->pMage->Render();
+	this->pMage->ATKBoxRender();
+	this->pMage->WeaponRender();
+	
+	if (pMage->GetIsPetOn())
+	{
+		this->pPet->Render();
+	}
+	
 
 	//Hit 위치에 구
 	GIZMO_MGR->WireSphere(this->m_mousePos, 0.5f, 0xffff0000);
@@ -189,6 +234,7 @@ void mage_Test::Scene_Render1()
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	m_Land->Render();
+
 }
 
 

@@ -174,7 +174,7 @@ void berserker_test::Scene_Render1()
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 	this->pBerserker->Render();
-	this->pBerserker->pSkinned->RenderBoneName(this->pMainCamera, this->pBerserker->pTransform);
+	//this->pBerserker->pSkinned->RenderBoneName(this->pMainCamera, this->pBerserker->pTransform);
 
 	//셰이더에 라이팅 셋팅
 	cXMesh_Static::SetCamera(this->pMainCamera);
