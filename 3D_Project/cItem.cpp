@@ -2,7 +2,7 @@
 #include "cItem.h"
 
 
-unsigned int increaseNum = 0;
+unsigned int cItem::increaseNum = 0;
 
 cItem::cItem()
 {

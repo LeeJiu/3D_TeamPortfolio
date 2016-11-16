@@ -3,10 +3,11 @@
 #include "cBaseObject.h"
 #include <string>
 
-static unsigned int increaseNum; // 고유번호 계산
 
 class cItem
 {
+	static unsigned int increaseNum; // 고유번호 계산
+
 	string m_itemName;
 	cBaseObject m_itemObj; // 아이템 오브젝트
 	D3DXVECTOR3 m_scale;   // 아이엠 스케일

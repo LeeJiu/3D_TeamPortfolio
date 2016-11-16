@@ -241,6 +241,29 @@ void cSkinnedAnimation::PlayOneShot( std::string animName, float inCrossFadeTime
 	}
 }
 
+void cSkinnedAnimation::PlayOneShotAFTERIDLE(std::string animName, float inCrossFadeTime, float outCrossFadeTime)
+{
+	m_bPlay = true;
+	m_bLoop = false;
+	m_NowPlay = animName;
+
+	MAP_ANIMSET::iterator find = this->m_mapAnimSet.find(animName);
+	if (find != this->m_mapAnimSet.end()) {
+
+		//현재 Animaiton 을 기억한다.
+		this->m_pPrevPlayAnimationSet = m_mapAnimSet.find("IDLE")->second;
+
+		//크로스 페이드 타임 기억
+		m_fCrossFadeTime = inCrossFadeTime;
+		m_fLeftCrossFadeTime = inCrossFadeTime;
+
+		//나갈때 크로스페이드 타입 기억
+		m_fOutCrossFadeTime = outCrossFadeTime;
+
+		this->SetAnimation(find->second);
+	}
+}
+
 void cSkinnedAnimation::PlayOneShotAFTERIDLE(std::string animName, float inCrossFadeTime)
 {
 	m_bPlay = true;
@@ -286,11 +309,38 @@ void cSkinnedAnimation::SetPlaySpeed( float speed )
 	m_pAnimController->SetTrackSpeed( 0, speed );
 }
 
+bool cSkinnedAnimation::IsCurrentBone(std::string boneName)
+{
+	BONE* pBone = this->m_pSkinnedMesh->GetFineBONE(boneName);
+	MAP_BONETRANSFORM::iterator boneIter = m_mapBoneTransform.find(pBone);
+
+	if (boneIter != m_mapBoneTransform.end())
+		return true;
+	else
+		return false;
+}
+
 void cSkinnedAnimation::AddBoneTransform( std::string boneName, cTransform* pTransform  )
 {
 	BONE* pBone = this->m_pSkinnedMesh->GetFineBONE( boneName );
 	this->m_mapBoneTransform.insert( std::make_pair( pBone, pTransform ) );
 }
+
+void cSkinnedAnimation::ChangeBoneTransform(std::string boneName, std::string changeboneName)
+{
+	//예외처리해줘 이미 boneName이잇으면, 리턴해조 
+	BONE* pBoneChange = this->m_pSkinnedMesh->GetFineBONE(changeboneName);
+	BONE* pBone = this->m_pSkinnedMesh->GetFineBONE(boneName);
+	
+	if (!IsCurrentBone(boneName))
+		return;
+	
+	this->m_mapBoneTransform.insert(std::make_pair(pBoneChange, m_mapBoneTransform.find(pBone)->second));
+
+	RemoveBoneTransform(boneName);
+}
+
+
 
 void cSkinnedAnimation::AddApplyTransform( std::string boneName, cTransform* pTransform )
 {

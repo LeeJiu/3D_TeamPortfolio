@@ -91,19 +91,6 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 		moveRay.origin -= pCharTrans->GetForward()*0.2f;
 	}
 
-//	if (m_InputKey.find('Q')->second)
-//	{
-//		this->isMove = true;
-//		moveRay.origin -= pCharTrans->GetRight()*0.2f;
-//
-//	}
-//
-//	if (m_InputKey.find('E')->second)
-//	{
-//		this->isMove = true;
-//		moveRay.origin += pCharTrans->GetRight()*0.2f;
-//	}
-
 	if (m_InputKey.find('A')->second)
 	{
 		this->isMove = true;
@@ -292,47 +279,48 @@ void moveClass::render()
 
 void moveClass::clickUpdate(cBaseObject* enemy)
 {
-	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
-	//m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	{
-		Ray ray;
-		POINT ptMousePos = GetMousePos();
-		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-		this->pMainCamera->ComputeRay(&ray, &screenPos);
-
-	//	this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
-		m_mousePos = PHYSICS_MGR->getLastHeight(enemy, &ray, m_pTerrain, &m_mousePos);
-		isClick = true;
-	}
-
-	if (isClick == true)
-	{
-		D3DXVECTOR3 dir = m_mousePos - moveRay.origin;	// 방향 및 mousePos의 원점 이동.	
-		dir.y = 0;
-
-
-		if (D3DXVec3Length(&dir) > 0.5f)
-		{
-			isMove = true;
-			D3DXVec3Normalize(&dir, &dir);
-			D3DXVECTOR3 lerp = pCharTrans->GetForward();
-			D3DXVec3Lerp(&lerp, &lerp, &dir, 0.2);
-			pCharTrans->LookDirection(lerp, D3DXVECTOR3(0, 1, 0));
-
-			moveRay.origin += dir*0.2f;
-		}
-		else
-		{
-			isMove = false;
-			isClick = false;
-			// LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
-			// 	moveRay.origin.x,
-			// 	moveRay.origin.y,
-			// 	moveRay.origin.z);
-		}
-	}
+//	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
+//	//m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
+//	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+//	{
+//		Ray ray;
+//		POINT ptMousePos = GetMousePos();
+//		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+//		this->pMainCamera->ComputeRay(&ray, &screenPos);
+//
+//	//	this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+//		m_mousePos = PHYSICS_MGR->getLastHeight(enemy, &ray, m_pTerrain, &m_mousePos);
+//		isClick = true;
+//	}
+//
+//	if (isClick == true)
+//	{
+//		D3DXVECTOR3 dir = m_mousePos - moveRay.origin;	// 방향 및 mousePos의 원점 이동.	
+//		dir.y = 0;
+//
+//
+//		if (D3DXVec3Length(&dir) > 0.5f)
+//		{
+//			isMove = true;
+//			D3DXVec3Normalize(&dir, &dir);
+//			D3DXVECTOR3 lerp = pCharTrans->GetForward();
+//			D3DXVec3Lerp(&lerp, &lerp, &dir, 0.2);
+//			pCharTrans->LookDirection(lerp, D3DXVECTOR3(0, 1, 0));
+//
+//			moveRay.origin += dir*0.2f;
+//		}
+//		else
+//		{
+//			isMove = false;
+//			isClick = false;
+//			// LOG_MGR->AddLog("Tx: %.2f, Ty : %.2f, Tz : %.2f",
+//			// 	moveRay.origin.x,
+//			// 	moveRay.origin.y,
+//			// 	moveRay.origin.z);
+//		}
+//	}
 }
+
 void moveClass::moveJumpCheck(float timeDelta)
 {
 	//===================== 테스트용 점프 코드 ====================

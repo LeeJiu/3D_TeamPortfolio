@@ -18,13 +18,11 @@ class cMage : public cBaseObject
 {
 private:
 
-	cWeapon*             pWeapon;
+	cWeapon*            pWeapon;
 	
-
 	cCamera*			m_camera;
-	
-	cBoundBox*           m_ATKBox;
-	cTransform*          m_ATKBoxTrans;
+	cBoundBox*          m_ATKBox;
+	cTransform*         m_ATKBoxTrans;
 
 	ACTOR_STATE			m_state;
 	std::string			m_current_Ani;

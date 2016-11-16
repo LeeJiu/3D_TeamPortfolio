@@ -9,6 +9,7 @@
 #include "cSkinnedAnimation.h"
 #include "cLight_Point.h"
 #include "cBerserker.h"
+#include "cMonster.h"
 
 berserker_test::berserker_test(void)
 {
@@ -43,7 +44,7 @@ HRESULT berserker_test::Scene_Init()
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Pant/Pant_Master.X", &matCorrection);
-
+	cXMesh_Skinned* pSkinned_mon = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Griff/MOB_HipGriff.X", &matCorrection);
 
 	//+++애니메이션 체크 관련+++++
 
@@ -57,14 +58,26 @@ HRESULT berserker_test::Scene_Init()
 	//m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
 	m_Land->pTransform->SetWorldPosition(0, 0, 0);
 
+	//몬스터
+	pGriff = new cMonster;
+	pGriff->SetTerrain(m_pTerrain);
+	pGriff->SetMesh(pSkinned_mon);
+	pGriff->SetActive(true);
+
+	this->pGriff->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 10);
+
+	vMonsters.push_back(pGriff);
+
 	this->pBerserker = new cBerserker;
 	this->pBerserker->SetMesh(pSkinned);
 	this->pBerserker->SetTerrain(m_pTerrain);
 	this->pBerserker->SetCamera(this->pMainCamera);
+	this->pBerserker->SetMonsters(this->vMonsters);
 	this->pBerserker->SetActive(true);
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pBerserker->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
+
 
 	this->pTransForCamera = new cTransform();
 
@@ -72,6 +85,8 @@ HRESULT berserker_test::Scene_Init()
 	this->pMainCamera->SetLocalPosition(0, 5, -10);
 	isCharView = true;
 	isAltView = false;
+
+
 
 
 	//라이트 푸쉬
@@ -114,6 +129,7 @@ void berserker_test::Scene_Release()
 	SAFE_DELETE(m_pTerrain);
 
 	SAFE_DELETE(this->pBerserker);
+	SAFE_DELETE(this->pGriff);
 	SAFE_DELETE(this->pTransForCamera);
 
 	for (int i = 0; i < lights.size(); i++)
@@ -157,6 +173,8 @@ void berserker_test::Scene_Update(float timeDelta)
 	}
 
 	this->pBerserker->Update(timeDelta);
+	this->pGriff->Update(timeDelta);
+
 }
 
 void berserker_test::Scene_Render1()
@@ -174,6 +192,11 @@ void berserker_test::Scene_Render1()
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 	this->pBerserker->Render();
+	this->pBerserker->ATKBoxRender();
+	this->pBerserker->WeaponRender();
+
+	pGriff->Render();
+
 	//this->pBerserker->pSkinned->RenderBoneName(this->pMainCamera, this->pBerserker->pTransform);
 
 	//셰이더에 라이팅 셋팅

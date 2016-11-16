@@ -260,7 +260,7 @@ void animation_Test::Scene_Update(float timeDelta)
 	if (KEY_MGR->IsOnceDown(VK_SPACE))
 	
 	{
-		LOG_MGR->AddLog("%d %d %s", KEY_MGR->IsOnceUp('W'), current_State, current_Ani.c_str());
+		//LOG_MGR->AddLog("%d %d %s", KEY_MGR->IsOnceUp('W'), current_State, current_Ani.c_str());
 	}
 
 

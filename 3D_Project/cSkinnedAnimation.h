@@ -51,6 +51,7 @@ public:
 	void Play( int animIndex, float crossFadeTime = 0.0 );
 	void Play( LPD3DXANIMATIONSET animSet, float crossFadeTime = 0.0 );
 	void PlayOneShot( std::string animName, float inCrossFadeTime = 0.0, float outCrossFadeTime = 0.0f );
+	void PlayOneShotAFTERIDLE(std::string animName, float inCrossFadeTime, float outCrossFadeTime);
 	void PlayOneShotAFTERIDLE(std::string animName, float crossFadeTime = 0.0);
 	void PlayOneShotAfterHold( std::string animName, float crossFadeTime = 0.0 );
 	void Stop(){
@@ -58,8 +59,9 @@ public:
 	}
 	void SetPlaySpeed( float speed );
 
-
+	bool IsCurrentBone(std::string boneName);
 	void AddBoneTransform( std::string boneName, cTransform* pTransform  );
+	void ChangeBoneTransform(std::string boneName, std::string cangeboneName);
 	void AddApplyTransform( std::string boneName, cTransform* pTransform );
 	void RemoveBoneTransform( std::string boneName );
 	void RemoveApplyTransform( std::string boneName );
