@@ -1,16 +1,18 @@
 #pragma once
 #include "cScene.h"
-#include "cMonster.h"
-#include "cMage.h"
 #include "cSetBoundObject.h"
+#include "cPlayer.h"
+#include "cMonsterManager.h"
 
 
 class cScene_testMonster : public cScene
 {
 private:
-	cTerrain*					m_pTerrain;
-	cMonster*					m_pMonster;
-	cMage*						m_pMage;
+	cTerrain*			m_pTerrain;
+	cPlayer*			m_pPlayer;
+
+	cMonsterManager*	m_pMonMgr;
+
 
 	std::vector<cLight*>		lights;
 
@@ -25,8 +27,5 @@ public:
 	virtual void Scene_Update(float timeDelta);
 
 	virtual void Scene_Render1();
-	
-	
-	std::vector<cBaseObject*>		objects;
 };
 

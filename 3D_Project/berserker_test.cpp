@@ -9,7 +9,7 @@
 #include "cSkinnedAnimation.h"
 #include "cLight_Point.h"
 #include "cBerserker.h"
-#include "cMonster.h"
+#include "cSpider.h"
 
 berserker_test::berserker_test(void)
 {
@@ -59,7 +59,7 @@ HRESULT berserker_test::Scene_Init()
 	m_Land->pTransform->SetWorldPosition(0, 0, 0);
 
 	//¸ó½ºÅÍ
-	pGriff = new cMonster;
+	pGriff = new cSpider(1000, 10);
 	pGriff->SetTerrain(m_pTerrain);
 	pGriff->SetMesh(pSkinned_mon);
 	pGriff->SetActive(true);

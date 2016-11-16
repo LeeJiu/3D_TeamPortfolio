@@ -14,9 +14,6 @@ cBerserker::~cBerserker()
 {
 	SAFE_DELETE(m_pInput);
 	SAFE_DELETE(m_pMove);
-	SAFE_DELETE(m_attak1);
-	SAFE_DELETE(m_attak2);
-	SAFE_DELETE(m_attak3);
 
 
 	SAFE_DELETE(m_Weapon);

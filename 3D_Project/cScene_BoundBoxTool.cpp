@@ -55,22 +55,6 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 
 
 	//
-	//몬스터 세팅
-	//
-	m_pMonster = new cMonster;
-
-	//캐릭터 보정 행렬 세팅
-	D3DXMATRIXA16 matScale2;
-	D3DXMatrixScaling(&matScale2, 0.1f, 0.1f, 0.1f);
-	matCorrection = matScale2 * matRotate;
-
-	//캐릭터에게 지형 전달
-	m_pMonster->SetTerrain(m_pTerrain);
-	m_pMonster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Surcubus/surcubus.X", &matCorrection));
-	m_pMonster->SetActive(true);
-
-
-	//
 	//라이트 세팅
 	//
 
@@ -111,7 +95,6 @@ void cScene_BoundBoxTool::Scene_Release()
 {
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
-	SAFE_DELETE(m_pMonster);
 	SAFE_DELETE(selectObject);
 
 
@@ -134,7 +117,6 @@ void cScene_BoundBoxTool::Scene_Release()
 
 void cScene_BoundBoxTool::Scene_Update(float timeDelta)
 {
-	m_pMonster->Update(timeDelta);
 
 	KeyControl(timeDelta);	
 }
@@ -161,12 +143,11 @@ void cScene_BoundBoxTool::Scene_Render1()
 
 
 	//셰이더에 라이팅 셋팅
-	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrixArray("matLights", matLights, 10);
+	/*cXMesh_Skinned::sSkinnedMeshEffect->SetMatrixArray("matLights", matLights, 10);
 	cXMesh_Skinned::sSkinnedMeshEffect->SetInt("LightNum", this->lights.size());
 
-	cXMesh_Skinned::SetCamera(this->pMainCamera);
+	cXMesh_Skinned::SetCamera(this->pMainCamera);*/
 
-	m_pMonster->Render();
 
 
 

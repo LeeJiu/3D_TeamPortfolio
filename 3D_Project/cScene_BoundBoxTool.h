@@ -10,7 +10,6 @@ class cScene_BoundBoxTool : public cScene
 {
 private:
 	cTerrain*			m_pTerrain;
-	cMonster*			m_pMonster;
 
 
 	//보정 행렬 변수

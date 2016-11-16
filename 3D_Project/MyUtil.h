@@ -23,11 +23,11 @@ b = 10.000095f
 #define		RS(a,b)			Device->SetRenderState((a),(b))		
 
 
-//캐릭터 상태
-//enum ACTOR_STATE
-//{
-//	AS_IDLE, AS_WALK, AS_ATTACK
-//};
+//몬스터 타입
+enum MONSTER_TYPE
+{
+	BASILISK, GRIFF, MINO, SPIDER, SPIDER_QUEEN, SUCCUBUS
+};
 
 
 //캐릭터 상태 디파인문

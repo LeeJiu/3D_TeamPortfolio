@@ -6,7 +6,7 @@ class cBaseObject;
 
 class cMonster : public cBaseObject
 {
-private:
+protected:
 	cWayPoint*		m_pWayPoint;
 	cBaseObject*	m_pPlayer;
 
@@ -19,17 +19,17 @@ private:
 
 public:
 	cMonster();
-	~cMonster();
+	virtual ~cMonster();
 
-	void BaseObjectEnable();
-	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
-	void BaseObjectBoundBox();
+	virtual void BaseObjectEnable();
+	virtual void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
+	virtual void BaseObjectBoundBox();
 
-	void MoveToPlayer();
-	void Attack01();
-	void Damage(float fDamage);
+	virtual void MoveToPlayer();
+	virtual void Attack01() = 0;
+	virtual void Damage(float fDamage) = 0;
 
-	void SetPlayerMemoryLink(cBaseObject* pPlayer) { m_pPlayer = pPlayer; }
-	void SetBoundObjects(vector<cBaseObject*> vObjects) { m_vObjects = vObjects; }
+	virtual void SetPlayer(cBaseObject* pPlayer) { m_pPlayer = pPlayer; }
+	virtual void SetBoundObjects(vector<cBaseObject*> vObjects) { m_vObjects = vObjects; }
 };
 
