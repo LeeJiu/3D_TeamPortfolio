@@ -47,11 +47,24 @@ private:
 
 
 	//스킬에 관한 것
+	//매직 실드
+	cQuadParticleEmitter*  m_magicShild;
+	bool                   m_isMagicShild;
+
+
+	// 스노우 스톰
 	cQuadParticleEmitter*  m_snowStrom;
 	cQuadParticleEmitter*  m_snowStrom_under;
 	cPartcleEmitter*       m_snow;
 	bool                   m_isSnowStorm;
 	int                    m_aniCount;
+
+	//평타
+	cQuadParticleEmitter*  m_magicATK;
+	cQuadParticleEmitter*  m_magicATK2;
+	bool                   m_isMagicATK;
+
+
 
 
 public:
@@ -71,6 +84,10 @@ public:
 	void SkillRender();
 
 	//스킬
+	void MagicATKInit();
+	void MagicShildInit();
+
+
 	void SnowStormInit();
 	void SnowStormUpdate();
 	void SnowStormRender();

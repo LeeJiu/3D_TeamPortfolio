@@ -407,3 +407,4 @@ void moveClass::boundCheck(cBoundBox* collBox, cTransform* collTrans)
 
 	}
 }
+

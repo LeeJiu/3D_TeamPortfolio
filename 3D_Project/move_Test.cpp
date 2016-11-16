@@ -409,7 +409,7 @@ void move_Test::Scene_Update(float timeDelta)
 	}
 	PHYSICS_MGR->IsPointSphere(pSkinnedTrans, 3.f, colliTest);
 	
-	m_inven->update();
+	m_inven->update(timeDelta,pMainCamera);
 	ITEM_MGR->update(timeDelta);
 }
 

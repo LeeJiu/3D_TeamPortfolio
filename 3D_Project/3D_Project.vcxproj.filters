@@ -28,11 +28,11 @@
     <Filter Include="Handler">
       <UniqueIdentifier>{3829eae1-802e-4bf9-a6a0-1f7937c7218b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameActor">
-      <UniqueIdentifier>{485420e6-2a98-48de-afd1-6d5503dc3252}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{8d2a1705-2813-409f-9e6c-6b5d6da36a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameActor">
+      <UniqueIdentifier>{485420e6-2a98-48de-afd1-6d5503dc3252}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -231,38 +231,38 @@
     <ClInclude Include="cScene_testMonster.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="berserker_test.h">
-      <Filter>Scenes</Filter>
+    <ClInclude Include="cPet.h">
+      <Filter>GameActor</Filter>
     </ClInclude>
     <ClInclude Include="cBerserker.h">
       <Filter>GameActor</Filter>
     </ClInclude>
-    <ClInclude Include="cSkillUi.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cItemManager.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cItem.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cInven.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cWeapon.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cPet.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cBerserKer_Attack3.h">
+    <ClInclude Include="cBerserKer_Attack.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="cBerserKer_Attack2.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="cBerserKer_Attack.h">
+    <ClInclude Include="cBerserKer_Attack3.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cInven.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cItem.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cItemManager.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkillUi.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cWeapon.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="berserker_test.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -458,22 +458,19 @@
     <ClCompile Include="cImage.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="berserker_test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="cScene_testMonster.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cPet.cpp">
+      <Filter>GameActor</Filter>
     </ClCompile>
     <ClCompile Include="cBerserker.cpp">
       <Filter>GameActor</Filter>
     </ClCompile>
-    <ClCompile Include="cSkillUi.cpp">
+    <ClCompile Include="cItem.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cItemManager.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cItem.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cInven.cpp">
@@ -488,11 +485,14 @@
     <ClCompile Include="cBerserKer_Attack.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="cPet.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="cWeapon.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkillUi.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="berserker_test.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
