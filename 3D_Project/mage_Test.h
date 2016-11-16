@@ -15,7 +15,7 @@ class mage_Test : public cScene
 {
 private:
 	cMage*					pMage;
-	cPet*                pPet;
+	cPet*                   pPet;
 	cTransform*				pTransForCamera;		//카메라용
 
 													// 도형 피킹에 쓸것.

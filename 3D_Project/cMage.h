@@ -13,6 +13,13 @@ class cInputHandler;
 class cStateHandler;
 class cWeapon;
 
+//스킬이펙트에 관한것
+class cQuadParticleEmitter;
+class cPartcleEmitter;
+class cParticleQuad;
+class cParticle;
+
+
 
 class cMage : public cBaseObject
 {
@@ -36,6 +43,38 @@ private:
 	cInputHandler*		m_pInput;
 	moveClass*			m_pMove;
 
+
+	//스킬에 관한 것
+	//매직 실드
+	cQuadParticleEmitter*  m_magicShild;
+	bool                   m_isMagicShild;
+
+
+	// 스노우 스톰
+	cQuadParticleEmitter*  m_snowStrom;
+	cQuadParticleEmitter*  m_snowStrom_under;
+	cPartcleEmitter*       m_snow;
+	bool                   m_isSnowStorm;
+	int                    m_aniCount;
+
+
+	// 플레임 로드
+	cQuadParticleEmitter*  m_flameRoad;
+	cQuadParticleEmitter*  m_flameRoad2;
+	cPartcleEmitter*       m_flameRoad3;
+	bool                   m_isFlameRoad;
+	bool                   m_flameRoad_cast;
+	int                    m_flameRoad_cast_count;
+
+
+	//평타
+	cQuadParticleEmitter*  m_magicATK;
+	cQuadParticleEmitter*  m_magicATK2;
+	bool                   m_isMagicATK;
+
+
+
+
 public:
 	cMage();
 	~cMage();
@@ -44,6 +83,25 @@ public:
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
 	void ATKBoxRender();
 	void WeaponRender();
+	
+	//펫
+	void PetOnUpdate();
+
+	void SkillInit();
+	void SkillUpdate();
+	void SkillRender();
+
+	//스킬
+	void MagicATKInit();
+	void MagicShildInit();
+
+	void FlameRoadInit();
+
+
+
+	void SnowStormInit();
+	void SnowStormUpdate();
+	void SnowStormRender();
 
 
 	void SetCamera(cCamera* camera) { m_camera = camera; }

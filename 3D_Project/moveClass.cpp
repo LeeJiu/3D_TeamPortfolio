@@ -187,7 +187,7 @@ void moveClass::update(float timeDelta, cBaseObject * collObj, cBoundBox * collB
 
 
 
-	clickUpdate(collObj); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
+	//clickUpdate(collObj); // 클릭 했을때랑 업데이트 도는 부분 들어가 있음.
 
 						  // 오브젝트와 충돌했다면. ( 걸러 낼려면 반지름 값을 넣어놔야 한다. )
 						  //=========================
@@ -395,3 +395,4 @@ void moveClass::boundCheck(cBoundBox* collBox, cTransform* collTrans)
 
 	}
 }
+

@@ -40,7 +40,8 @@ HRESULT cMainGame::Init(void)
 	DXFONT_MGR->Init( Device );	
 	GIZMO_MGR->Init( Device );
 	SPRITE_MGR->Init( Device );
-	
+	ITEM_MGR->init();
+
 	
 	//게임에 사용되는 씬 추가
 	SCENE_MGR->AddScene("model_Test", new t_Scene());
@@ -70,7 +71,7 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene("sector_Test");
 	//SCENE_MGR->ChangeScene("cScene_testPlayer");
 	//SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
-	//SCENE_MGR->ChangeScene("cScene_testMonster");
+	SCENE_MGR->ChangeScene("cScene_testMonster");
 
 
 	return S_OK;		
@@ -98,6 +99,10 @@ void cMainGame::Release()
 	SOUND_MGR->Release();
 	cSoundManager::ReleaseInstance();
 
+	ITEM_MGR->release();
+	cItemManager::ReleaseInstance();
+
+
 	RESOURCE_TEXTURE->ClearResource();
 	cResourceMgr_Texture::ReleaseInstance();
 	RESOURCE_FX->ClearResource();
@@ -107,7 +112,7 @@ void cMainGame::Release()
 	RESOURCE_SKINNEDXMESH->ClearResource();
 	cResourceMgr_XSkinnedMesh::ReleaseInstance();
 
-
+	
 
 
 	//디바이스 해제
