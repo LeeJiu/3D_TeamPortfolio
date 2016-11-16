@@ -148,16 +148,31 @@ void cMage::BaseObjectUpdate(float timeDelta)
 			this->pSkinned->Play(m_Aniname, 0.3);
 		}
 
-		if (KEY_MGR->IsOnceDown('5'))
+
+		if (KEY_MGR->IsOnceDown('4'))
 		{
-			m_state = STF_FROZEN;
+			m_state = ATK_01;
 			m_Aniname = SetAnimation(m_state);
 			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
+			m_magicATK->StartEmission();
+			m_isMagicATK = true;
+			m_aniCount = 0;
+			
+		}
+
+		if (KEY_MGR->IsOnceDown('5'))
+		{
+			m_state = STF_BUFF;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
+			m_magicShild->StartEmission();
+			m_isMagicShild = true;
+			m_aniCount = 0;
 		}
 
 		if (KEY_MGR->IsOnceDown('6'))
 		{
-			m_state = STF_BUFF;
+			m_state = STF_FROZEN;
 			m_Aniname = SetAnimation(m_state);
 			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
 		}
@@ -173,7 +188,10 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		{
 			m_state = STF_TYFUNG;
 			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->PlayOneShot(m_Aniname, 0.3);	
+			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
+			m_snowStrom->StartEmission();
+			m_snowStrom_under->StartEmission();
+			m_snow->StartEmission();
 			m_isSnowStorm = true;
 			m_aniCount = 0;
 		}
@@ -226,8 +244,36 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	//스킬 사용 관련
 	if (m_aniCount == 480)
 	{
-		m_isSnowStorm = false;
+		m_snowStrom->StopEmission();
+		m_snowStrom_under->StopEmission();
+		m_snow->StopEmission();
+		//m_isSnowStorm = false;
 	}
+
+	if (m_aniCount == 120)
+	{
+		m_magicATK->StopEmission();
+		//m_isMagicATK = false;
+	}
+
+	if (m_aniCount == 300)
+	{
+		m_magicShild->StopEmission();
+		m_isMagicShild = false;
+	}
+
+
+
+
+	if (m_isMagicATK)
+	{
+		m_aniCount++;
+		m_magicATK->Update(timeDelta);
+		m_magicATK->pTransform->SetWorldPosition(this->m_ATKBoxTrans->GetWorldPosition());
+	}
+	
+
+
 
 	if (m_isSnowStorm)
 	{
@@ -239,8 +285,13 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_snow->pTransform->SetWorldPosition(pTransform->GetWorldPosition() + D3DXVECTOR3(0,7,0));
 		m_snow->Update(timeDelta);
 	}
-	else
+
+
+	if (m_isMagicShild)
 	{
+		m_aniCount++;
+		m_magicShild->Update(timeDelta);
+		m_magicShild->pTransform->SetWorldPosition(this->pTransform->GetWorldPosition());
 
 	}
 	
@@ -267,7 +318,11 @@ void  cMage::SkillInit()
 {
 	m_aniCount = 0;
 	SnowStormInit();
+	MagicATKInit();
+	MagicShildInit();
 	m_isSnowStorm = false;
+	m_isMagicATK = false;
+	m_isMagicShild = false;
 
 }
 
@@ -281,10 +336,100 @@ void  cMage::SkillRender()
 		m_snow->Render();
 		
 	}
+
+	if (m_isMagicATK)
+	{
+		m_magicATK->Render();
+	}
+
+	if (m_isMagicShild)
+	{
+		m_magicShild->Render();
+	}
 	
 }
 
 
+//평타
+void cMage::MagicATKInit()
+{
+
+	m_magicATK = new cQuadParticleEmitter;
+	m_magicATK->SetActive(true);
+
+	VEC_COLOR colors;
+	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+
+	VEC_SCALE scales;
+	scales.push_back(1.5f);  //초반 크기
+	scales.push_back(0.5f);
+
+	m_magicATK->Init(
+		100,
+		50.0f,     //이펙트 몇장
+		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
+		5.0f,
+		D3DXVECTOR3(0, 0, 0),     //시작위치에서 끝점까지의 거리
+		D3DXVECTOR3(0, 1, 0),
+		D3DXVECTOR3(0, 1, 0),     //회전량
+		D3DXVECTOR3(1, 1, 1),     //축회전 없이 태풍같은 이펙트는 고정
+		D3DXVECTOR3(90 * ONE_RAD, 90 * ONE_RAD, 0),	//초기시작시 회전 min
+		D3DXVECTOR3(180 * ONE_RAD, 180 * ONE_RAD, 0),     //초기시작시 회전Max
+		D3DXVECTOR3(0, 0, 0),				//초당 회전할 회전 량 Min
+		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
+		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
+		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
+		colors, scales,
+		1.0f, 0.5f,
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/magicalATK.tga"),
+		true);
+
+	m_magicATK->StartEmission();
+
+
+
+
+}
+
+//매직 실드
+
+void cMage::MagicShildInit()
+{
+	m_magicShild = new cQuadParticleEmitter();
+	m_magicShild->SetActive(true);
+
+	VEC_COLOR colors;
+	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+
+	VEC_SCALE scales;
+	scales.push_back(5.0f);  //초반 크기
+	scales.push_back(5.0f);
+
+	m_magicShild->Init(
+		10,
+		30.0f,     //이펙트 몇장
+		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
+		5.0f,
+		D3DXVECTOR3(0, 0, 0),     //시작위치에서 끝점까지의 거리
+		D3DXVECTOR3(0, 0, 0),
+		D3DXVECTOR3(0, 0, 0),     //회전량
+		D3DXVECTOR3(0, 0, 0),     //축회전 없이 태풍같은 이펙트는 고정
+		D3DXVECTOR3(0, 0, 0),	//초기시작시 회전 min
+		D3DXVECTOR3(0, 180 * ONE_RAD, 0),     //초기시작시 회전Max
+		D3DXVECTOR3(0, 0, 0),				//초당 회전할 회전 량 Min
+		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
+		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
+		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
+		colors, scales,
+		2.0f, 2.0f,
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/magicShild.tga"),
+		true);
+
+}
 
 
 //스노우 스톰 

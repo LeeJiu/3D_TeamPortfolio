@@ -21,7 +21,7 @@ private:
 	std::string           m_current_Ani;
 	std::string           m_Aniname;
 	std::map<int, bool>   m_InputKeys;
-
+	
 	bool                  m_isMove;
 
 	//컴포넌트를 달아준다.

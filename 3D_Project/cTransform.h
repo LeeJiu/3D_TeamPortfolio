@@ -103,6 +103,7 @@ public:
 	//부모와 안녕
 	void ReleaseParent();
 
+
 	//위치를 월드 좌표계로 셋팅한다. 
 	void SetWorldPosition( float x, float y, float z );	
 	void SetWorldPosition( D3DXVECTOR3 pos );
