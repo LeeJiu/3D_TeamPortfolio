@@ -59,6 +59,16 @@ private:
 	bool                   m_isSnowStorm;
 	int                    m_aniCount;
 
+
+	// 플레임 로드
+	cQuadParticleEmitter*  m_flameRoad;
+	cQuadParticleEmitter*  m_flameRoad2;
+	cPartcleEmitter*       m_flameRoad3;
+	bool                   m_isFlameRoad;
+	bool                   m_flameRoad_cast;
+	int                    m_flameRoad_cast_count;
+
+
 	//평타
 	cQuadParticleEmitter*  m_magicATK;
 	cQuadParticleEmitter*  m_magicATK2;
@@ -86,6 +96,9 @@ public:
 	//스킬
 	void MagicATKInit();
 	void MagicShildInit();
+
+	void FlameRoadInit();
+
 
 
 	void SnowStormInit();
