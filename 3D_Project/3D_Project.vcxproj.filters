@@ -34,6 +34,15 @@
     <Filter Include="GameActor">
       <UniqueIdentifier>{485420e6-2a98-48de-afd1-6d5503dc3252}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameActor\Player">
+      <UniqueIdentifier>{0240fa50-2388-4545-bcc6-6dbb7652936f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameActor\Monster">
+      <UniqueIdentifier>{f3f3eabc-ddd8-41bc-94cf-d9fa026dc85e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameActor\Pet">
+      <UniqueIdentifier>{a7ba2d61-c162-4653-ad89-2d7b1b05d421}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -168,9 +177,6 @@
     <ClInclude Include="cScene_testPlayer.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cPlayer.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
     <ClInclude Include="cTestCommand.h">
       <Filter>Handler</Filter>
     </ClInclude>
@@ -180,17 +186,11 @@
     <ClInclude Include="move_Test2.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cMonster.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
     <ClInclude Include="animation_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="sector_Test.h">
       <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cMage.h">
-      <Filter>GameActor</Filter>
     </ClInclude>
     <ClInclude Include="cBaseskill.h">
       <Filter>Component</Filter>
@@ -231,12 +231,6 @@
     <ClInclude Include="cScene_testMonster.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cPet.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
-    <ClInclude Include="cBerserker.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
     <ClInclude Include="cBerserKer_Attack.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -263,6 +257,24 @@
     </ClInclude>
     <ClInclude Include="berserker_test.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cBerserker.h">
+      <Filter>GameActor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="cMage.h">
+      <Filter>GameActor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="cPet.h">
+      <Filter>GameActor\Pet</Filter>
+    </ClInclude>
+    <ClInclude Include="cMonster.h">
+      <Filter>GameActor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayer.h">
+      <Filter>GameActor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="cSpider.h">
+      <Filter>GameActor\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -398,9 +410,6 @@
     <ClCompile Include="cScene_testPlayer.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cPlayer.cpp">
-      <Filter>GameActor</Filter>
-    </ClCompile>
     <ClCompile Include="cTestCommand.cpp">
       <Filter>Handler</Filter>
     </ClCompile>
@@ -410,17 +419,11 @@
     <ClCompile Include="move_Test2.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cMonster.cpp">
-      <Filter>GameActor</Filter>
-    </ClCompile>
     <ClCompile Include="animation_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="sector_Test.cpp">
       <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cMage.cpp">
-      <Filter>GameActor</Filter>
     </ClCompile>
     <ClCompile Include="cBaseskill.cpp">
       <Filter>Component</Filter>
@@ -461,12 +464,6 @@
     <ClCompile Include="cScene_testMonster.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cPet.cpp">
-      <Filter>GameActor</Filter>
-    </ClCompile>
-    <ClCompile Include="cBerserker.cpp">
-      <Filter>GameActor</Filter>
-    </ClCompile>
     <ClCompile Include="cItem.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -493,6 +490,24 @@
     </ClCompile>
     <ClCompile Include="berserker_test.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cBerserker.cpp">
+      <Filter>GameActor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="cMage.cpp">
+      <Filter>GameActor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="cPet.cpp">
+      <Filter>GameActor\Pet</Filter>
+    </ClCompile>
+    <ClCompile Include="cMonster.cpp">
+      <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayer.cpp">
+      <Filter>GameActor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="cSpider.cpp">
+      <Filter>GameActor\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

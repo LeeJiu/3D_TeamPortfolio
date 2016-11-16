@@ -132,6 +132,7 @@
     <ClInclude Include="cSingletonBase.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSoundManager.h" />
+    <ClInclude Include="cSpider.h" />
     <ClInclude Include="cSpriteManager.h" />
     <ClInclude Include="cTerrain.h" />
     <ClInclude Include="cTestCommand.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="cSingletonBase.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSoundManager.cpp" />
+    <ClCompile Include="cSpider.cpp" />
     <ClCompile Include="cSpriteManager.cpp" />
     <ClCompile Include="cTerrain.cpp" />
     <ClCompile Include="cTestCommand.cpp" />
