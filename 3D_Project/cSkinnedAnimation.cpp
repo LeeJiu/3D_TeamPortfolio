@@ -261,6 +261,29 @@ void cSkinnedAnimation::PlayOneShotAFTERIDLE(std::string animName, float inCross
 	}
 }
 
+void cSkinnedAnimation::PlayOneShotAfterOther(std::string fromAnimName, std::string toAnimName2, float crossFadeTime)
+{
+	m_bPlay = true;
+	m_bLoop = false;
+	m_NowPlay = fromAnimName;
+
+	MAP_ANIMSET::iterator find = this->m_mapAnimSet.find(fromAnimName);
+	if (find != this->m_mapAnimSet.end()) {
+
+		//전이할 Animation을 기억한다.
+		this->m_pPrevPlayAnimationSet = m_mapAnimSet.find(toAnimName2)->second;
+
+		//크로스 페이드 타임 기억
+		m_fCrossFadeTime = crossFadeTime;
+		m_fLeftCrossFadeTime = crossFadeTime;
+
+		//나갈때 크로스페이드 타입 기억
+		m_fOutCrossFadeTime = crossFadeTime;
+
+		this->SetAnimation(find->second);
+	}
+}
+
 void cSkinnedAnimation::PlayOneShotAfterHold( std::string animName, float crossFadeTime )
 {
 	m_bPlay = true;

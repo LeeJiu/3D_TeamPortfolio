@@ -52,6 +52,7 @@ public:
 	void Play( LPD3DXANIMATIONSET animSet, float crossFadeTime = 0.0 );
 	void PlayOneShot( std::string animName, float inCrossFadeTime = 0.0, float outCrossFadeTime = 0.0f );
 	void PlayOneShotAFTERIDLE(std::string animName, float crossFadeTime = 0.0);
+	void PlayOneShotAfterOther(std::string fromAnimName, std::string toAnimName2, float crossFadeTime = 0.0);
 	void PlayOneShotAfterHold( std::string animName, float crossFadeTime = 0.0 );
 	void Stop(){
 		this->m_bPlay = false;
@@ -66,6 +67,8 @@ public:
 
 	bool GetIsPlay() { return m_bPlay; }
 	float GetTime() { return m_AnimationPlayFactor; }
+	string GetNowPlayingAni() { return m_NowPlay; }
+
 public:
 	cSkinnedAnimation(void);
 	~cSkinnedAnimation(void);

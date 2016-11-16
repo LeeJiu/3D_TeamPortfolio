@@ -8,7 +8,9 @@
 
 cMonster::cMonster()
 {
-	range = 10.0f;
+	m_fHP = 50.0f;
+	m_fRange = 10.0f;
+	m_state = WALK;
 }
 
 
@@ -30,17 +32,17 @@ void cMonster::BaseObjectUpdate(float timeDelta)
 {
 	float distance = D3DXVec3Length(&(m_pPlayer->pTransform->GetWorldPosition() - pTransform->GetWorldPosition()));
 
-	if (distance < range)
+	if (distance < m_fRange)
 	{
 		MoveToPlayer();
 	}
 	else
 	{
 		//조건 추가해주자.
-		if (m_vObjects.empty() == false)
+		/*if (m_vObjects.empty() == false)
 		{
 			m_pWayPoint->SetBoundObjects(m_vObjects);
-		}
+		}*/
 		m_pWayPoint->Update(pTransform);
 	}
 }
@@ -115,5 +117,41 @@ void cMonster::MoveToPlayer()
 	{
 		ray.origin = currentPos;
 		ray.origin.y += 3;
+	}
+}
+
+void cMonster::Attack01()
+{
+	if (m_state != ATK_01)
+	{
+		m_state = ATK_01;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->PlayOneShotAfterOther(m_strName, "IDLE", 0.5f);
+		m_state = IDLE;
+	}
+
+
+	//피격 판정 + 플레이어에게 데미지 전달
+	//m_pPlayer->Damage(damagePower);
+}
+
+void cMonster::Damage(float fDamage)
+{
+	m_fHP -= fDamage;
+	if (m_fHP <= FEPSILON)
+	{
+		m_fHP = 0.0f;
+		m_state = DEAD;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->PlayOneShotAfterHold(m_strName);
+		return;
+	}
+
+	if (m_state != DMG)
+	{
+		m_state = DMG;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->PlayOneShotAfterOther(m_strName, "IDLE", 0.5f);
+		m_state = IDLE;
 	}
 }

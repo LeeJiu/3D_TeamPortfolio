@@ -25,9 +25,6 @@ public:
 	virtual void Scene_Update(float timeDelta);
 
 	virtual void Scene_Render1();
-
-	void AddBoundBox(float timeDelta);
-	void SetBoundBox();
 	
 	
 	std::vector<cBaseObject*>		objects;

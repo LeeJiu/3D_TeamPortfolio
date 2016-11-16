@@ -165,7 +165,7 @@ bool cInven::inputItem(cItem* item)
 				}
 				else
 				{
-					return;
+					return true;
 				}
 
 

@@ -12,7 +12,10 @@ private:
 
 	std::vector<cBaseObject*>		m_vObjects;
 	
-	float			range;
+	float			m_fHP;
+	float			m_fRange;
+	ACTOR_STATE		m_state;
+	string			m_strName;
 
 public:
 	cMonster();
@@ -23,6 +26,8 @@ public:
 	void BaseObjectBoundBox();
 
 	void MoveToPlayer();
+	void Attack01();
+	void Damage(float fDamage);
 
 	void SetPlayerMemoryLink(cBaseObject* pPlayer) { m_pPlayer = pPlayer; }
 	void SetBoundObjects(vector<cBaseObject*> vObjects) { m_vObjects = vObjects; }

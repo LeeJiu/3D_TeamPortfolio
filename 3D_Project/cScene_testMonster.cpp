@@ -55,7 +55,7 @@ HRESULT cScene_testMonster::Scene_Init()
 	//
 	m_pMonster = new cMonster;
 	m_pMonster->SetTerrain(m_pTerrain);
-	m_pMonster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Surcubus/surcubus.X", &matCorrection));
+	m_pMonster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_SpiderQueen.X", &matCorrection));
 	m_pMonster->SetPlayerMemoryLink(m_pMage);
 	m_pMonster->SetActive(true);
 	
@@ -108,7 +108,19 @@ void cScene_testMonster::Scene_Release()
 void cScene_testMonster::Scene_Update(float timeDelta)
 {
 	m_pMonster->Update(timeDelta);
-	m_pMage->Update(timeDelta);
+	//m_pMage->Update(timeDelta);
+
+	if (KEY_MGR->IsOnceDown('H'))
+	{
+		LOG_MGR->AddLog("맞았다");
+		m_pMonster->Damage(10);
+	}
+
+	if (KEY_MGR->IsOnceDown('J'))
+	{
+		LOG_MGR->AddLog("때린다");
+		m_pMonster->Attack01();
+	}
 }
 
 void cScene_testMonster::Scene_Render1()
@@ -139,5 +151,5 @@ void cScene_testMonster::Scene_Render1()
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 
 	m_pMonster->Render();
-	m_pMage->Render();
+	//m_pMage->Render();
 }
