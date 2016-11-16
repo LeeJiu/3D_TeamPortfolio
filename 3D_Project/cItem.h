@@ -25,11 +25,10 @@ public:
 	int getColl(){ return m_coll; }
 
 	void init(cItem* copyItem);
-//void init(cItem copyItem);
-
 	void createList(string name, int row, int coll);
 	//cTransform* getTrans(){ return pTransform; }
 	unsigned int getItemNum(){ return m_itemNum; }
+	D3DXQUATERNION getBasicRotaion(){ return m_basicRotation; }
 	cItem();
 	~cItem();
 	

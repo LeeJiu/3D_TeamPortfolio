@@ -20,8 +20,11 @@ struct stInven
 
 class cInven
 {
-	bool isActive;
-	bool pickUp;
+	bool invenOpen; // 인벤이 열렸을때
+	bool pickUp;   // 아이템을 들었을 때
+
+	std::vector<cItem*>::iterator item_iter; //아이템 인덱스
+	int itemIndex;
 	int row;//행 
 	int col;//열
 	stInven inven[INVEN_COUNT][INVEN_COUNT];
@@ -36,9 +39,14 @@ public:
 	void init();
 	void update(float timeDelta, cCamera* camera);
 	void render();
+	void release();
 	D3DXVECTOR3 screenPos(int x,int y);
 
 	bool inputItem(int row, int coll,cItem* item);
+	void invenItemClick();
+	int findItemNum();    // 아이템 번호 찾는거 .
+	
+	bool selctRect(int* row, int* coll, POINT mouse);
 
 	cInven();
 	~cInven();

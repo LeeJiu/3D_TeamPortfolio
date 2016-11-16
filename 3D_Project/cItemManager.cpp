@@ -103,3 +103,15 @@ void cItemManager::createItem(int itemNum, D3DXVECTOR3 pos)
 	//============= Çª½¬¹é ============
 	v_item.push_back(temp);
 }
+int cItemManager::findItem(int itemNum)
+{
+	for (int i = 0; i < ITEM_MGR->v_item.size(); i++)
+	{
+		if (ITEM_MGR->v_item[i]->getItemNum() == itemNum)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
