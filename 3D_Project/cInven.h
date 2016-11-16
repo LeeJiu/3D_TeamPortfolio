@@ -44,11 +44,23 @@ public:
 
 	bool inputItem(int row, int coll,cItem* item);
 	void invenItemClick();
+	void putItem();
+
 	int findItemNum();    // 아이템 번호 찾는거 .
-	
+	stInven* findInven(cItem* item);
+	LPDIRECT3DTEXTURE9 findIcon(string name);
+
 	bool selctRect(int* row, int* coll, POINT mouse);
 
 	cInven();
 	~cInven();
 };
 
+/*
+cItem* temp;
+temp = weapon.m_Item;
+weapon.m_Item = clickItem;
+clickItem = temp;
+
+ITEM_MGR->v_item[itemIndex] = temp;
+*/

@@ -51,6 +51,8 @@ void cInven::init()
 	weapon.isPoint = false; // 진짜 포인트가지고 있는 놈
 	weapon.itemNum = 0;//아이템은 1부터 만들어짐. 
 
+
+	clickItem = NULL;
 	pickUp = false;
 }
 void cInven::release()
@@ -105,10 +107,12 @@ void cInven::update(float timeDelta, cCamera* camera)
 		//============ 아이템 장착 안되 있으면..
 		if (itemIndex == -1 && pickUp == true && clickItem != NULL) //아이템을 버리거나 장착 해야댐.( 이조건이면)
 		{
-			if (PtInRect(&weapon.rcColl, ptMousePos) && weapon.m_Item ==NULL)
+			if (PtInRect(&weapon.rcColl, ptMousePos) && weapon.m_Item == NULL)
 			{
 				weapon.m_Item = clickItem;
-				weapon.skillImage = RESOURCE_TEXTURE->GetResource("../Resources/UI/fot_lightingspear.bmp");
+				weapon.skillImage = findIcon(clickItem->getItemName());
+
+				//weapon.skillImage = RESOURCE_TEXTURE->GetResource("../Resources/UI/fot_lightingspear.bmp");
 				weapon.isPoint = true;
 
 				itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
@@ -121,28 +125,44 @@ void cInven::update(float timeDelta, cCamera* camera)
 
 				clickItem = NULL;
 				pickUp = false;
+				itemIndex = -1;
 			}//============ 아이템 장착 되 있다면.
-			else if (PtInRect(&weapon.rcColl, ptMousePos) && weapon.m_Item != NULL)
-			{  //staff _ basic master ,
-				//stInven* temp;
-				//temp = &weapon;
-				//weapon = clickItem;
-			}
-			else // 아이템 버리기. 
+		
+			else  // 아이템 버리기. 
 			{
-				pickUp = false;
-				//케릭터 좌표 ====================================
-				clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
-				clickItem = NULL;
+				putItem();
 
+				//pickUp = false;
+				////케릭터 좌표 ====================================
+				//clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
+				//clickItem = NULL;
 			}
+		}
+		else if (PtInRect(&weapon.rcColl, ptMousePos) && weapon.m_Item != NULL
+			&&pickUp == false && clickItem == NULL)
+		{  //staff _ basic master ,
 
+			pickUp = true; //트루.
+			clickItem = weapon.m_Item;//아이템 넣고 .
+			clickItem->m_lifeTime = 60.f;
+
+			ITEM_MGR->v_item.push_back(clickItem);//
+
+			weapon.m_Item = NULL;
+			weapon.skillImage = NULL;
+			weapon.isPoint = false; // 진짜 포인트가지고 있는 놈
+			weapon.itemNum = 0;//아이템은 1부터 만들어짐. 
+
+			itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
 
 		}
+
+		// 인벤토리에서 아이템 꺼내오는 함수. 
 		invenItemClick(); // 이거 먼저 체크 해야됨.
 
 
 		//	this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
+		//  바운드 충돌을 해서 아이템 인덱스를 찾아 낸다.
 		for (int i = 0; i < ITEM_MGR->v_item.size(); i++)
 		{
 			if (PHYSICS_MGR->IsRayHitBound(&ray, &(ITEM_MGR->v_item[i]->BoundBox), (ITEM_MGR->v_item[i])->pTransform, NULL, NULL))
@@ -158,7 +178,7 @@ void cInven::update(float timeDelta, cCamera* camera)
 
 		if (selctRect(&cRow, &cCol, ptMousePos))
 		{
-			if (inputItem(cRow, cCol, clickItem) == true)
+			if (inputItem(cRow, cCol, clickItem))
 			{
 				// 아이템 집어 넣음. 
 				ITEM_MGR->v_item.erase(ITEM_MGR->v_item.begin() + itemIndex);
@@ -167,6 +187,7 @@ void cInven::update(float timeDelta, cCamera* camera)
 				itemIndex = -1;
 			}
 		}
+
 
 	}
 
@@ -267,7 +288,9 @@ bool cInven::inputItem(int row, int coll, cItem* item)
 				inven[i][j].itemNum = clickItem->getItemNum();
 				inven[i][j].rcSize = RectMake(0, 0, item->getRow()*RECT_SIZE, item->getColl()*RECT_SIZE);
 				// 아이템 string 값으로 이미지 소스 바꺼줘야댐			
-				inven[i][j].skillImage = RESOURCE_TEXTURE->GetResource("../Resources/UI/fot_lightingspear.bmp");
+				inven[i][j].skillImage = findIcon(item->getItemName());
+
+				//inven[i][j].skillImage = RESOURCE_TEXTURE->GetResource("../Resources/UI/fot_lightingspear.bmp");
 			}
 			else
 			{
@@ -409,4 +432,43 @@ D3DXVECTOR3 cInven::screenPos(int x, int y)
 	screenPos.y = d * Dir.y + Org.y;
 
 	return screenPos;
+}
+void cInven::putItem()
+{
+	if (clickItem == NULL) return;
+	//케릭터 좌표 =================================== 받아야댐 =
+	pickUp = false;
+	clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
+	clickItem = NULL;
+	itemIndex = -1;
+
+}
+stInven* cInven::findInven(cItem* item)
+{
+	if (item == NULL)return NULL;
+	for (int i = 0; i < INVEN_COUNT; i++)
+	{
+		for (int j = 0; j < INVEN_COUNT; j++)
+		{
+			if (inven[i][j].itemNum == item->getItemNum() && inven[i][j].isPoint==true) // 0이 아니라면 아이템이 들어 있는것.
+			{
+				return &inven[i][j];
+			}
+		}
+	}
+
+}
+LPDIRECT3DTEXTURE9 cInven::findIcon(string name)
+{
+	//m_staff ,m_axe
+	if (strcmp(name.c_str(), "m_staff") == 0)
+	{
+		return RESOURCE_TEXTURE->GetResource("../Resources/UI/fot_lightingspear.bmp");
+	}
+	else if (strcmp(name.c_str(), "m_axe") == 0)
+	{
+		return RESOURCE_TEXTURE->GetResource("../Resources/UI/fot_firestorm.bmp");
+	}
+	return RESOURCE_TEXTURE->GetResource("../Resources/UI/ele_tonadoflare.bmp");
+
 }

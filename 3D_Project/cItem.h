@@ -17,7 +17,6 @@ class cItem : public cBaseObject
 	
 	
 	unsigned int m_itemNum; // 아이템 고유 번호 .
-	static unsigned int increaseNum; // 고유번호 계산
 
 public:
 	float m_lifeTime;       // 아이템 생존 시간. 
@@ -29,6 +28,7 @@ public:
 	//cTransform* getTrans(){ return pTransform; }
 	unsigned int getItemNum(){ return m_itemNum; }
 	D3DXQUATERNION getBasicRotaion(){ return m_basicRotation; }
+	string getItemName(){ return m_itemName; }
 	cItem();
 	~cItem();
 	

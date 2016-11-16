@@ -213,9 +213,6 @@
     <ClInclude Include="cWayPoint.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="cSkillUi.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cBerserker.h">
       <Filter>GameActor</Filter>
     </ClInclude>
@@ -249,12 +246,6 @@
     <ClInclude Include="cBerserKer_Attack3.h">
       <Filter>Handler</Filter>
     </ClInclude>
-    <ClInclude Include="cItem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cItemManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cPet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -263,6 +254,21 @@
     </ClInclude>
     <ClInclude Include="mage_Test.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cSpider.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cInven.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cItemManager.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cItem.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkillUi.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -440,9 +446,6 @@
     <ClCompile Include="cWayPoint.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="cSkillUi.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cBerserker.cpp">
       <Filter>GameActor</Filter>
     </ClCompile>
@@ -479,17 +482,26 @@
     <ClCompile Include="cBerserKer_Attack3.cpp">
       <Filter>Handler</Filter>
     </ClCompile>
-    <ClCompile Include="cItem.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cItemManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cPet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cWeapon.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cSpider.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cInven.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cItem.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cItemManager.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkillUi.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
