@@ -23,6 +23,16 @@ b = 10.000095f
 #define		RS(a,b)			Device->SetRenderState((a),(b))		
 
 
+//오브젝트 타입
+enum OBJECT_TYPE
+{
+	MIGDAL_WALL, MIGDAL_HOUSE,
+	TREE01, TREE02, TREE03, TREE04, TREE05,
+	TREE01_D, TREE02_D, TREE03_D, TREE04_D, TREE05_D
+};
+
+
+
 //몬스터 타입
 enum MONSTER_TYPE
 {

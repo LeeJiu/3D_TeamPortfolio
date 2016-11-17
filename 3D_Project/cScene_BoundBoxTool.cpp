@@ -50,9 +50,19 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 	m_pSelectObject = new cBaseObject;
 	m_pSelectObject->SetActive(true);
 	m_pSelectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection));
+	m_pSelectObject->objType = MIGDAL_WALL;
 	
 	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X", &matCorrection);
-
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_01.X", &matCorrection);
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_02.X", &matCorrection);
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_03.X", &matCorrection);
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_04.X", &matCorrection);
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_05.X", &matCorrection);
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_01.X", &matCorrection);
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_02.X", &matCorrection);
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_03.X", &matCorrection);
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_04.X", &matCorrection);
+	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_05.X", &matCorrection);
 
 
 	//
@@ -124,8 +134,18 @@ void cScene_BoundBoxTool::Scene_Update(float timeDelta)
 	//다이렉션 라이트 조종
 	//lights[0]->pTransform->DefaultControl2(timeDelta);
 
-	//선택한 오브젝트 크기 및 이동 설정
-	m_pSelectObject->pTransform->DefaultControl4(timeDelta);
+	if(objects.empty())
+	{
+		m_pSelectObject = new cBaseObject;
+		m_pSelectObject->SetActive(true);
+		m_pSelectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X"));
+		m_pSelectObject->objType = MIGDAL_WALL;
+	}
+	else
+	{
+		//선택한 오브젝트 크기 및 이동 설정
+		m_pSelectObject->pTransform->DefaultControl4(timeDelta);
+	}
 
 	KeyControl(timeDelta);
 }
@@ -175,13 +195,41 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 	//설치할 오브젝트를 변경한다.
 	if (KEY_MGR->IsOnceDown('1'))
 	{
-		m_pSelectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X"));
+		m_pSelectObject->objType = MIGDAL_WALL;
+		SelectObjMesh(m_pSelectObject->objType);
+		m_pSelectObject->SetMesh(m_pMesh);
 	}
 	if (KEY_MGR->IsOnceDown('2'))
 	{
-		m_pSelectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X"));
+		m_pSelectObject->objType = MIGDAL_HOUSE;
+		SelectObjMesh(m_pSelectObject->objType);
+		m_pSelectObject->SetMesh(m_pMesh);
+	}
+	if (KEY_MGR->IsOnceDown('3'))
+	{
+		int typeNum = (int)(m_pSelectObject->objType);
+		if (typeNum < TREE01)
+		{
+			m_pSelectObject->objType = TREE01;
+			SelectObjMesh(m_pSelectObject->objType);
+		}
+		else
+		{
+			typeNum++;
+			if (typeNum > TREE05_D)
+			{
+				m_pSelectObject->objType = TREE01;
+			}
+			else
+			{
+				m_pSelectObject->objType = (OBJECT_TYPE)typeNum;
+			}
+			SelectObjMesh(m_pSelectObject->objType);
+		}
+		m_pSelectObject->SetMesh(m_pMesh);
 	}
 
+	//오브젝트 선택 / 세팅 전환
 	if (KEY_MGR->IsOnceDown(VK_RETURN))
 	{
 		m_bSelectObj = !m_bSelectObj;
@@ -191,34 +239,45 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 			LOG_MGR->AddLog("오브젝트 세팅");
 	}
 
-	//피킹해서 그 위치에 오브젝트를 놓고,
-	//위치 시킨 오브젝트를 벡터에 추가한다.
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+
+	if (m_bSelectObj == true)
 	{
-		if (m_bSelectObj == true)
-		{
+		//오브젝트 선택
+		if (KEY_MGR->IsStayDown(VK_LCONTROL) == true && KEY_MGR->IsOnceDown(VK_LBUTTON))
 			SelectObject();
+
+		//선택된 오브젝트 드래그
+		if (KEY_MGR->IsStayDown(VK_LCONTROL) == false && KEY_MGR->IsStayDown(VK_LBUTTON))
+		{
+			Ray ray;
+			POINT ptMouse = GetMousePos();
+			D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
+			this->pMainCamera->ComputeRay(&ray, &screenPos);
+
+			//레이의 터레인 히트 포인트를 얻는다.
+			D3DXVECTOR3 pos;
+			m_pTerrain->IsIntersectRay(&pos, &ray);
+
+			m_pSelectObject->pTransform->SetWorldPosition(pos);
 		}
-		else
+
+		//선택된 오브젝트 삭제
+		if (KEY_MGR->IsOnceDown(VK_DELETE))
+		{
+			DeleteObject();
+		}
+	}
+	else
+	{
+		//오브젝트 세팅
+		if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 		{
 			SetObjects();
 		}
 	}
+	
 
-	if (m_bSelectObj && KEY_MGR->IsStayDown(VK_LBUTTON))
-	{
-		Ray ray;
-		POINT ptMouse = GetMousePos();
-		D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
-		this->pMainCamera->ComputeRay(&ray, &screenPos);
-
-		//레이의 터레인 히트 포인트를 얻는다.
-		D3DXVECTOR3 pos;
-		m_pTerrain->IsIntersectRay(&pos, &ray);
-
-		m_pSelectObject->pTransform->SetWorldPosition(pos);
-	}
-
+	//세이브 & 로드
 	if (KEY_MGR->IsStayDown(VK_LCONTROL) && KEY_MGR->IsOnceDown('S'))
 	{
 		SaveObjects();
@@ -244,6 +303,7 @@ void cScene_BoundBoxTool::SetObjects()
 	//오브젝트를 벡터에 추가한다.
 	cBaseObject* obj = new cBaseObject;
 	obj->SetMesh(m_pSelectObject->pMesh);
+	obj->objType = m_pSelectObject->objType;
 	obj->pTransform->SetWorldPosition(pos);
 	obj->SetActive(true);
 	objects.push_back(obj);
@@ -306,6 +366,79 @@ void cScene_BoundBoxTool::SelectObject()
 	}
 }
 
+void cScene_BoundBoxTool::DeleteObject()
+{
+	if (m_pSelectObject != NULL)
+	{
+		//벡터에서 날리고
+		for (m_viObjects = objects.begin(); m_viObjects != objects.end(); ++m_viObjects)
+		{
+			if (*m_viObjects == m_pSelectObject)
+			{
+				objects.erase(m_viObjects);
+				if (objects.empty())
+				{
+					SAFE_DELETE(m_pSelectObject);
+				}
+				else
+				{
+					m_pSelectObject = objects.back();	//가장 마지막에 들어간 오브젝트를 선택
+				}
+				break;
+			}
+		}
+	}
+}
+
+void cScene_BoundBoxTool::SelectObjMesh(OBJECT_TYPE type)
+{
+	switch (type)
+	{
+	case MIGDAL_WALL:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X");
+		break;
+	case MIGDAL_HOUSE:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X");
+		break;
+	case TREE01:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_01.X");
+		break;
+	case TREE02:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_02.X");
+		break;
+	case TREE03:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_03.X");
+		break;
+	case TREE04:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_04.X");
+		break;
+	case TREE05:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_05.X");
+		break;
+	case TREE01_D:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_01.X");
+		break;
+	case TREE02_D:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_02.X");
+		break;
+	case TREE03_D:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_03.X");
+		break;
+	case TREE04_D:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_04.X");
+		break;
+	case TREE05_D:
+		m_pMesh = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Tree/tree_desert_05.X");
+		break;
+	default:
+		break;
+	}
+}
+
+void cScene_BoundBoxTool::SelectMonMesh(MONSTER_TYPE type)
+{
+}
+
 void cScene_BoundBoxTool::SaveObjects()
 {
 	fstream file;
@@ -315,6 +448,9 @@ void cScene_BoundBoxTool::SaveObjects()
 	for (int i = 0; i < objects.size(); i++)
 	{
 		cBaseObject* pObj = objects[i];
+
+		//오브젝트 타입 값 얻는다.
+		OBJECT_TYPE type = pObj->objType;
 
 		//위치 값 얻는다.
 		D3DXVECTOR3 pos = pObj->pTransform->GetWorldPosition();
@@ -326,6 +462,7 @@ void cScene_BoundBoxTool::SaveObjects()
 		D3DXVECTOR3 scale = pObj->pTransform->GetScale();
 
 		file <<
+			"[" << type << "]" <<  //Type 쓴다.
 			"[" << pos.x << "," << pos.y << "," << pos.z << "]" <<  //Pos 쓴다.
 			"[" << quat.x << "," << quat.y << "," << quat.z << "," << quat.w << "]" <<		//사원수 쓴다
 			"[" << scale.x << "," << scale.y << "," << scale.z << "]" <<	//스케일쓴다.
@@ -365,9 +502,14 @@ void cScene_BoundBoxTool::LoadObjects()
 
 		char* pc;
 
+		//오브젝트 타입
+		OBJECT_TYPE type;
+		pc = strtok(cStr, "][,");
+		type = (OBJECT_TYPE)atoi(pc);
+
 		//위치
 		D3DXVECTOR3 pos;
-		pc = strtok(cStr, "][,");			
+		pc = strtok(NULL, "][,");			
 
 		pos.x = atof(pc);
 		pc = strtok(NULL, "][,");			
@@ -399,6 +541,9 @@ void cScene_BoundBoxTool::LoadObjects()
 
 		//위의 정보로 오브젝트 생성
 		cBaseObject* pObject = new cBaseObject();
+		pObject->objType = type;
+		SelectObjMesh(pObject->objType);
+		pObject->SetMesh(m_pMesh);
 		pObject->SetActive(true);
 		pObject->pTransform->SetWorldPosition(pos);
 		pObject->pTransform->SetRotateWorld(quat);

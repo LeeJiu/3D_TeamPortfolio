@@ -12,11 +12,14 @@ private:
 	
 	cBaseObject*					m_pSelectObject;
 	std::vector<cBaseObject*>		objects;
+	vector<cBaseObject*>::iterator	m_viObjects;
 
 	cSetBoundObject*				selectBound;
 	std::vector<cSetBoundObject*>	boundObjects;
 
 	std::vector<cLight*>	lights;
+
+	cXMesh*		m_pMesh;
 
 	bool		m_bSelectObj;
 
@@ -35,8 +38,14 @@ public:
 	void KeyControl(float timeDelta);
 	void SetObjects();
 	void SelectObject();
+	void DeleteObject();
+	
+	void SelectObjMesh(OBJECT_TYPE type);
+	void SelectMonMesh(MONSTER_TYPE type);
 
 	void SaveObjects();
 	void LoadObjects();
+
+
 };
 

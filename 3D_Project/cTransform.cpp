@@ -1635,7 +1635,7 @@ void cTransform::DefaultControl4(float timeDelta)
 	if (KEY_MGR->IsStayDown(VK_LSHIFT))
 		deltaMove *= 5.0f;
 
-	if (KEY_MGR->IsStayDown(VK_RBUTTON) == false)
+	if (KEY_MGR->IsStayDown(VK_RBUTTON) == false && KEY_MGR->IsStayDown(VK_LCONTROL) == false)
 	{
 		if (KEY_MGR->IsStayDown('A'))
 			this->MovePositionSelf(-deltaMove, 0.0f, 0.0f);
