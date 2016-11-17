@@ -88,6 +88,9 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 	this->lights.push_back(pLight3);*/
 
 
+	m_bSelectObj = false;
+
+
 	return S_OK;
 }
 
@@ -117,8 +120,13 @@ void cScene_BoundBoxTool::Scene_Release()
 
 void cScene_BoundBoxTool::Scene_Update(float timeDelta)
 {
+	//다이렉션 라이트 조종
+	//lights[0]->pTransform->DefaultControl2(timeDelta);
 
-	KeyControl(timeDelta);	
+	//선택한 오브젝트 크기 및 이동 설정
+	selectObject->pTransform->DefaultControl4(timeDelta);
+
+	KeyControl(timeDelta);
 }
 
 void cScene_BoundBoxTool::Scene_Render1()
@@ -163,9 +171,6 @@ void cScene_BoundBoxTool::Scene_Render1()
 
 void cScene_BoundBoxTool::KeyControl(float timeDelta)
 {
-	//다이렉션 라이트 조종
-	//lights[0]->pTransform->DefaultControl2(timeDelta);
-
 	//설치할 오브젝트를 변경한다.
 	if (KEY_MGR->IsOnceDown('1'))
 	{
@@ -176,77 +181,112 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 		selectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X"));
 	}
 
-
-	//선택한 오브젝트 크기 및 이동 설정
-	selectObject->pTransform->DefaultControl4(timeDelta);
-
+	if (KEY_MGR->IsOnceDown(VK_RETURN))
+	{
+		m_bSelectObj = !m_bSelectObj;
+		if(m_bSelectObj)
+			LOG_MGR->AddLog("오브젝트 선택");
+		else
+			LOG_MGR->AddLog("오브젝트 세팅");
+	}
 
 	//피킹해서 그 위치에 오브젝트를 놓고,
 	//위치 시킨 오브젝트를 벡터에 추가한다.
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	{
-		Ray ray;
-		POINT ptMouse = GetMousePos();
-		D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
-		this->pMainCamera->ComputeRay(&ray, &screenPos);
+		if (m_bSelectObj == true)
+		{
+			SelectObject();
+		}
+		else
+		{
+			SetObjects();
+		}
+	}
 
-		//레이의 터레인 히트 포인트를 얻는다.
-		D3DXVECTOR3 pos;
-		m_pTerrain->IsIntersectRay(&pos, &ray);
+	if (m_bSelectObj && KEY_MGR->IsStayDown(VK_LBUTTON))
+	{
+		//화면의 중심위치
+		int screenCenterX = WINSIZE_X / 2;
+		int screenCenterY = WINSIZE_Y / 2;
 
-		//오브젝트를 벡터에 추가한다.
-		cBaseObject* obj = new cBaseObject;
-		obj->SetMesh(selectObject->pMesh);
-		obj->pTransform->SetWorldPosition(pos);
-		obj->SetActive(true);
-		objects.push_back(obj);
+		//다시 마우스 위치를 센터로...
+		SetMousePos(screenCenterX, screenCenterY);
+	}
+}
 
-		selectObject = objects.back();
+void cScene_BoundBoxTool::SetObjects()
+{
+	Ray ray;
+	POINT ptMouse = GetMousePos();
+	D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
+	this->pMainCamera->ComputeRay(&ray, &screenPos);
 
-		//vector<cSetBoundObject*> hitBounds;
-		//vector<float>	hitdistances;
+	//레이의 터레인 히트 포인트를 얻는다.
+	D3DXVECTOR3 pos;
+	m_pTerrain->IsIntersectRay(&pos, &ray);
 
-		////현재 있는 놈들 레이체크
-		//for (int i = 0; i < this->boundObjects.size(); i++)
-		//{
-		//	D3DXVECTOR3 hitPos;
-		//	if (PHYSICS_MGR->IsRayHitBound(
-		//		&ray,
-		//		&this->boundObjects[i]->BoundBox,
-		//		this->boundObjects[i]->pTransform,
-		//		&hitPos,
-		//		NULL)) {
+	//오브젝트를 벡터에 추가한다.
+	cBaseObject* obj = new cBaseObject;
+	obj->SetMesh(selectObject->pMesh);
+	obj->pTransform->SetWorldPosition(pos);
+	obj->SetActive(true);
+	objects.push_back(obj);
 
-		//		//충돌된 놈이라면...
-		//		hitBounds.push_back(this->boundObjects[i]);
+	//마지막에 넣은 오브젝트를 선택된 오브젝트로
+	selectObject = objects.back();
+}
 
-		//		//카메라로부터의 거리 제곱도 푸쉬
-		//		hitdistances.push_back(D3DXVec3LengthSq(
-		//			&(hitPos - this->pMainCamera->GetWorldPosition())));
+void cScene_BoundBoxTool::SelectObject()
+{
+	Ray ray;
+	POINT ptMouse = GetMousePos();
+	D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
+	this->pMainCamera->ComputeRay(&ray, &screenPos);
 
-		//	}
-		//}
+	vector<cBaseObject*> hitObjects;
+	vector<float>	hitDistances;
+
+	//현재 있는 놈들 레이체크
+	int size = objects.size();
+	for (int i = 0; i < size; ++i)
+	{
+		D3DXVECTOR3 hitPos;
+		if (PHYSICS_MGR->IsRayHitBound(
+			&ray,
+			&this->objects[i]->BoundBox,
+			this->objects[i]->pTransform,
+			&hitPos,
+			NULL)) 
+		{
+			//충돌된 놈이라면...
+			hitObjects.push_back(this->objects[i]);
+
+			//카메라로부터의 거리 제곱도 푸쉬
+			hitDistances.push_back(D3DXVec3LengthSq(
+				&(hitPos - this->pMainCamera->GetWorldPosition())));
+		}
+	}
 
 
-		////히트 된 놈이 있다면...
-		//if (hitBounds.size() > 0)
-		//{
-		//	//일단 첫번째 
-		//	cSetBoundObject* pTarget = hitBounds[0];
-		//	float nearest = hitdistances[0];
+	//히트 된 놈이 있다면...
+	if (hitObjects.size() > 0)
+	{
+		//일단 첫번째 
+		cBaseObject* pTarget = hitObjects[0];
+		float nearest = hitDistances[0];
 
-		//	for (int i = 1; i < hitBounds.size(); i++)
-		//	{
-		//		//갱신
-		//		if (nearest > hitdistances[i])
-		//		{
-		//			nearest = hitdistances[i];
-		//			pTarget = hitBounds[i];
-		//		}
+		for (int i = 1; i < hitObjects.size(); i++)
+		{
+			//갱신
+			if (nearest > hitDistances[i])
+			{
+				nearest = hitDistances[i];
+				pTarget = hitObjects[i];
+			}
+		}
 
-		//	}
-
-		//	this->selectBound = pTarget;
-		//}
+		//선택된 오브젝트
+		selectObject = pTarget;
 	}
 }

@@ -11583,3 +11583,12 @@ D:\YeungJin\jum5\trunk\Direct3D\Resources\Shaders\SkinnedMesh.fx(890,38): error 
 (data[11/03/16] time[16:55:50] ) : x: 0.00, y : 0.00, z : 0.00
 >>>>>>> origin/master
 
+오브젝트 선택
+오브젝트 세팅
+오브젝트 선택
+오브젝트 세팅
+오브젝트 선택
+오브젝트 세팅
+오브젝트 선택
+오브젝트 세팅
+오브젝트 선택

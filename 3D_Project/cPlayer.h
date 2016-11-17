@@ -6,7 +6,6 @@
 
 class cTerrain;
 class cCamera;
-class cInputHandler;
 class cMonsterManager;
 
 class cPlayer : public cBaseObject 

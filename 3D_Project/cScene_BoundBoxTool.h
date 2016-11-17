@@ -18,6 +18,8 @@ private:
 
 	std::vector<cLight*>	lights;
 
+	bool		m_bSelectObj;
+
 public:
 	cScene_BoundBoxTool();
 	~cScene_BoundBoxTool();
@@ -31,5 +33,7 @@ public:
 	void Scene_Render1();
 
 	void KeyControl(float timeDelta);
+	void SetObjects();
+	void SelectObject();
 };
 
