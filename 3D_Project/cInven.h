@@ -7,13 +7,13 @@
 // 6 x 6 
 struct stInven
 {
-	cItem* m_Item;                   
-	unsigned int itemNum;                    // 아이템 번호 ( 아이템 번호는 모두 양수)
+	cItem* m_Item;                  // 아이템 포인터.
+	unsigned int itemNum;           // 아이템 번호 ( 아이템 번호는 모두 양수)
 	RECT rcSize;					// 스킬 렉트 사각형
 	RECT rcColl;                    // 충돌 할 렉트
-	LPDIRECT3DTEXTURE9 skillImage;	//이미지
-	float x, y;						//화면에 그려질 좌표. 
-	bool isPoint;                   //포인트가 있는지 없는지  
+	LPDIRECT3DTEXTURE9 skillImage;	// 이미지
+	float x, y;						// 화면에 그려질 좌표. 
+	bool isPoint;                   // 포인트가 있는지 없는지  
 	//LPDIRECT3DTEXTURE9 emtyImage;
 	int i, j;                        // 인덱스 
 };
@@ -40,18 +40,19 @@ public:
 	void update(float timeDelta, cCamera* camera);
 	void render();
 	void release();
+	void invenItemClick();
+	void putItem();
+	void weaponClick(POINT mouse);
+
 	D3DXVECTOR3 screenPos(int x,int y);
 
 	bool inputItem(int row, int coll,cItem* item);
-	void invenItemClick();
-	void putItem();
 
 	int findItemNum();    // 아이템 번호 찾는거 .
 	stInven* findInven(cItem* item);
 	LPDIRECT3DTEXTURE9 findIcon(string name);
 
 	bool selctRect(int* row, int* coll, POINT mouse);
-
 	cInven();
 	~cInven();
 };
