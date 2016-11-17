@@ -17,7 +17,6 @@ private:
 	cBerserker*				pBerserker;
 	cMonster*				pGriff;
 
-
 	cTransform*				pTransForCamera;		//카메라용
 
 													// 도형 피킹에 쓸것.

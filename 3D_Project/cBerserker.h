@@ -1,8 +1,5 @@
 #pragma once
 #include "cBaseObject.h"
-#include "cBerserKer_Attack.h"
-#include "cBerserKer_Attack2.h"
-#include "cBerserKer_Attack3.h"
 #include "moveClass.h"
 
 #define CONTROL_KEY 5
@@ -43,17 +40,13 @@ private:
 		float				m_time;			//커맨드체크할 타이머
 		float				m_fadeOut;		//애니 끝나는시간
 
-		cBerserKer_Attack*	m_attak1;
-		cBerserKer_Attack2*	m_attak2;
-		cBerserKer_Attack3*	m_attak3;
-
 		cMonster*			m_target;
 		
 		//status
 		float				m_hp;
 		float				m_sp;
 		float				m_attackLength;//공격가능범위
-		int				m_damage;
+		int					m_damage;
 
 		float				m_testtime;		//로그찎는용 타이머
 

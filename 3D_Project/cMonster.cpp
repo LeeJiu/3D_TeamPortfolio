@@ -8,7 +8,7 @@
 
 cMonster::cMonster()
 {
-	m_fHP = 50.0f;
+	m_fHP = 1000.0f;
 	m_fRange = 10.0f;
 	m_state = WALK;
 }
@@ -24,13 +24,13 @@ void cMonster::BaseObjectEnable()
 	pTransform->SetWorldPosition(20, pTerrain->GetHeight(20, 3), 3);
 	pSkinned->Play("IDLE");
 
-	//m_pWayPoint = new cWayPoint(pTerrain);
-	//m_pWayPoint->Init(pTransform, 10.0f);
+	m_pWayPoint = new cWayPoint(pTerrain);
+	m_pWayPoint->Init(pTransform, 10.0f);
 }
 
 void cMonster::BaseObjectUpdate(float timeDelta)
 {
-	//m_pWayPoint->Update(pTransform);
+	m_pWayPoint->Update(pTransform);
 	float distance = D3DXVec3Length(&(m_pPlayer->pTransform->GetWorldPosition() - pTransform->GetWorldPosition()));
 
 	if (distance < m_fRange)

@@ -59,16 +59,17 @@ HRESULT berserker_test::Scene_Init()
 	m_Land->pTransform->SetWorldPosition(0, 0, 0);
 
 	//¸ó½ºÅÍ
-	pGriff = new cMonster;
-	pGriff->SetTerrain(m_pTerrain);
-	pGriff->SetMesh(pSkinned_mon);
-	pGriff->SetActive(true);
-
+	this->pGriff = new cMonster;
+	this->pBerserker = new cBerserker;
+	
+	this->pGriff->SetTerrain(m_pTerrain);
+	this->pGriff->SetMesh(pSkinned_mon);
+	this->pGriff->SetPlayerMemoryLink(pBerserker);
+	this->pGriff->SetActive(true);
 	this->pGriff->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 10);
 
 	vMonsters.push_back(pGriff);
 
-	this->pBerserker = new cBerserker;
 	this->pBerserker->SetMesh(pSkinned);
 	this->pBerserker->SetTerrain(m_pTerrain);
 	this->pBerserker->SetCamera(this->pMainCamera);

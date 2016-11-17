@@ -14,10 +14,6 @@ cBerserker::~cBerserker()
 {
 	SAFE_DELETE(m_pInput);
 	SAFE_DELETE(m_pMove);
-	SAFE_DELETE(m_attak1);
-	SAFE_DELETE(m_attak2);
-	SAFE_DELETE(m_attak3);
-
 
 	SAFE_DELETE(m_Weapon);
 	SAFE_DELETE(m_ATKBox);
@@ -125,6 +121,9 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	m_time += timeDelta;
 	m_testtime += timeDelta;
 
+	//
+	//=================ÆòÅ¸=================
+	//
 	if (LengthCheck() && !m_isAttack && KEY_MGR->IsOnceDown('1'))
 	{
 		m_isAttack = true;
@@ -187,7 +186,9 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		m_testtime = 0;
 	}
 	
+	//
 	//===============¹«ºê==============================
+	//
 
 	if (KEY_MGR->IsStayDown('W'))
 	{
@@ -219,11 +220,6 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	m_isMove = m_pMove->GetIsMove();
 
 	Monster_pick();
-
-	if (m_target && m_isAttack)
-	{
-		this->pTransform->LookDirection(m_target->pTransform->GetWorldPosition(), 10 * ONE_RAD);
-	}
 }
 
 
@@ -285,27 +281,42 @@ bool cBerserker::LengthCheck()
 
 void cBerserker::Attac_first()
 {
+	if (m_target)
+	{
+		this->pTransform->LookDirection(m_target->pTransform->GetWorldPosition(), 10 * ONE_RAD);
+	}
+
 	int damage = m_damage * 1;
 	damage = RandomIntRange(damage - 10, damage + 10);
 	
 	LOG_MGR->AddLog("%dµ¥¹ÌÁö ÁÜ", damage);
-	//m_target->Damage(damage);
+	m_target->Damage(damage);
 }
 
 void cBerserker::Attac_second()
 {
+	if (m_target)
+	{
+		this->pTransform->LookDirection(m_target->pTransform->GetWorldPosition(), 10 * ONE_RAD);
+	}
+
 	int damage = m_damage * 2;
 	damage = RandomIntRange(damage - 10, damage + 10);
 
 	LOG_MGR->AddLog("%dµ¥¹ÌÁö ÁÜ", damage);
-	//m_target->Damage(damage);
+	m_target->Damage(damage);
 }
 
 void cBerserker::Attac_third()
 {
+	if (m_target)
+	{
+		this->pTransform->LookDirection(m_target->pTransform->GetWorldPosition(), 10 * ONE_RAD);
+	}
+
 	int damage = m_damage * 3;
 	damage = RandomIntRange(damage - 10, damage + 10);
 
 	LOG_MGR->AddLog("%dµ¥¹ÌÁö ÁÜ", damage);
-	//m_target->Damage(damage);
+	m_target->Damage(damage);
 }

@@ -237,16 +237,7 @@
     <ClInclude Include="monster_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cBerserKer_Attack.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
     <ClInclude Include="cBaseskill.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="cBerserKer_Attack2.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="cBerserKer_Attack3.h">
       <Filter>Handler</Filter>
     </ClInclude>
     <ClInclude Include="cItem.h">
@@ -263,6 +254,12 @@
     </ClInclude>
     <ClInclude Include="mage_Test.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cInven.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cSpider.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -467,16 +464,7 @@
     <ClCompile Include="mage_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cBerserKer_Attack.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
     <ClCompile Include="cBaseskill.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="cBerserKer_Attack2.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="cBerserKer_Attack3.cpp">
       <Filter>Handler</Filter>
     </ClCompile>
     <ClCompile Include="cItem.cpp">
@@ -489,6 +477,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cWeapon.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cInven.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cSpider.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
