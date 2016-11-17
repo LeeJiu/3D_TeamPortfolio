@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "cSpider.h"
+#include "cPlayer.h"
 
 
 cSpider::cSpider(float fHP, float fRange)
@@ -42,7 +43,7 @@ void cSpider::BaseObjectUpdate(float timeDelta)
 
 	if (KEY_MGR->IsOnceDown('K'))
 	{
-		pSkinned->PlayOneShot("GET_UP");
+		m_pPlayer->Damage();
 	}
 }
 

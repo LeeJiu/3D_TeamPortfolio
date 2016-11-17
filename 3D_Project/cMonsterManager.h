@@ -1,7 +1,7 @@
 #pragma once
 #include "cSpider.h"
 
-class cBaseObject;
+class cPlayer;
 class cTerrain;
 
 class cMonsterManager
@@ -12,7 +12,7 @@ private:
 
 
 	//링크 걸어줄 객체
-	cBaseObject*	m_pPlayer;
+	cPlayer*		m_pPlayer;
 	cTerrain*		m_pTerrain;
 
 public:
@@ -28,7 +28,7 @@ public:
 
 	void CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos);
 
-	void SetPlayer(cBaseObject* pPlayer) { m_pPlayer = pPlayer; }
+	void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
 	void SetTerrain(cTerrain* pTerrain) { m_pTerrain = pTerrain; }
 };
 

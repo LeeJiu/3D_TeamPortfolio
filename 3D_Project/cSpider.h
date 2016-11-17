@@ -17,6 +17,6 @@ public:
 	void Attack01();
 	void Damage(float fDamage);
 
-	void SetPlayer(cBaseObject* pPlayer) { m_pPlayer = pPlayer; }
+	void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
 };
 

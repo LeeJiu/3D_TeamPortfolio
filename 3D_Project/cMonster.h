@@ -2,13 +2,13 @@
 #include "cBaseObject.h"
 
 class cWayPoint;
-class cBaseObject;
+class cPlayer;
 
 class cMonster : public cBaseObject
 {
 protected:
 	cWayPoint*		m_pWayPoint;
-	cBaseObject*	m_pPlayer;
+	cPlayer*		m_pPlayer;
 
 	std::vector<cBaseObject*>		m_vObjects;
 	
@@ -29,7 +29,7 @@ public:
 	virtual void Attack01() = 0;
 	virtual void Damage(float fDamage) = 0;
 
-	virtual void SetPlayer(cBaseObject* pPlayer) { m_pPlayer = pPlayer; }
+	virtual void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
 	virtual void SetBoundObjects(vector<cBaseObject*> vObjects) { m_vObjects = vObjects; }
 };
 

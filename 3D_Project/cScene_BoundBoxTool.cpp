@@ -206,7 +206,7 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 		//vector<cSetBoundObject*> hitBounds;
 		//vector<float>	hitdistances;
 
-		////현제 있는 놈들 레이체크
+		////현재 있는 놈들 레이체크
 		//for (int i = 0; i < this->boundObjects.size(); i++)
 		//{
 		//	D3DXVECTOR3 hitPos;
