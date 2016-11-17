@@ -10,13 +10,15 @@ class cScene_BoundBoxTool : public cScene
 private:
 	cTerrain*			m_pTerrain;
 	
-	cBaseObject*					selectObject;
+	cBaseObject*					m_pSelectObject;
 	std::vector<cBaseObject*>		objects;
 
 	cSetBoundObject*				selectBound;
 	std::vector<cSetBoundObject*>	boundObjects;
 
 	std::vector<cLight*>	lights;
+
+	bool		m_bSelectObj;
 
 public:
 	cScene_BoundBoxTool();
@@ -31,5 +33,10 @@ public:
 	void Scene_Render1();
 
 	void KeyControl(float timeDelta);
+	void SetObjects();
+	void SelectObject();
+
+	void SaveObjects();
+	void LoadObjects();
 };
 

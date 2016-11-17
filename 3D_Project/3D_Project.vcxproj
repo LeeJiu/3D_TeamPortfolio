@@ -81,19 +81,16 @@
     <ClInclude Include="animation_Test.h" />
     <ClInclude Include="berserker_test.h" />
     <ClInclude Include="BoneHierachy.h" />
-    <ClInclude Include="camera_Test.h" />
     <ClInclude Include="cBaseObject.h" />
     <ClInclude Include="cBaseskill.h" />
     <ClInclude Include="cBerserker.h" />
     <ClInclude Include="cBoundBox.h" />
     <ClInclude Include="cBoundSphere.h" />
     <ClInclude Include="cCamera.h" />
-    <ClInclude Include="cCommand.h" />
     <ClInclude Include="cDXFontManager.h" />
     <ClInclude Include="cFrustum.h" />
     <ClInclude Include="cGizmoManager.h" />
     <ClInclude Include="cImage.h" />
-    <ClInclude Include="cInputHandler.h" />
     <ClInclude Include="cInven.h" />
     <ClInclude Include="cItem.h" />
     <ClInclude Include="cItemManager.h" />
@@ -132,8 +129,6 @@
     <ClInclude Include="cSpider.h" />
     <ClInclude Include="cSpriteManager.h" />
     <ClInclude Include="cTerrain.h" />
-    <ClInclude Include="cTestCommand.h" />
-    <ClInclude Include="cTestCommand2.h" />
     <ClInclude Include="cTimeMgr.h" />
     <ClInclude Include="cTrailRender.h" />
     <ClInclude Include="cTransform.h" />
@@ -148,30 +143,24 @@
     <ClInclude Include="moveClass.h" />
     <ClInclude Include="move_Test.h" />
     <ClInclude Include="MyUtil.h" />
-    <ClInclude Include="sector_Test.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="t_Scene.h" />
-    <ClInclude Include="move_Test2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
     <ClCompile Include="berserker_backup.cpp" />
     <ClCompile Include="berserker_test.cpp" />
     <ClCompile Include="BoneHierachy.cpp" />
-    <ClCompile Include="camera_Test.cpp" />
     <ClCompile Include="cBaseObject.cpp" />
     <ClCompile Include="cBaseskill.cpp" />
     <ClCompile Include="cBerserker.cpp" />
     <ClCompile Include="cBoundBox.cpp" />
     <ClCompile Include="cBoundSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
-    <ClCompile Include="cCommand.cpp" />
     <ClCompile Include="cDXFontManager.cpp" />
     <ClCompile Include="cFrustum.cpp" />
     <ClCompile Include="cGizmoManager.cpp" />
     <ClCompile Include="cImage.cpp" />
-    <ClCompile Include="cInputHandler.cpp" />
     <ClCompile Include="cInven.cpp" />
     <ClCompile Include="cItem.cpp" />
     <ClCompile Include="cItemManager.cpp" />
@@ -210,8 +199,6 @@
     <ClCompile Include="cSpider.cpp" />
     <ClCompile Include="cSpriteManager.cpp" />
     <ClCompile Include="cTerrain.cpp" />
-    <ClCompile Include="cTestCommand.cpp" />
-    <ClCompile Include="cTestCommand2.cpp" />
     <ClCompile Include="cTimeMgr.cpp" />
     <ClCompile Include="cTrailRender.cpp" />
     <ClCompile Include="cTransform.cpp" />
@@ -225,10 +212,7 @@
     <ClCompile Include="monster_Test.cpp" />
     <ClCompile Include="moveClass.cpp" />
     <ClCompile Include="move_Test.cpp" />
-    <ClCompile Include="move_Test2.cpp" />
     <ClCompile Include="MyUtil.cpp" />
-    <ClCompile Include="sector_Test.cpp" />
-    <ClCompile Include="t_Scene.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

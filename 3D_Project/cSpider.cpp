@@ -18,7 +18,6 @@ cSpider::~cSpider()
 
 void cSpider::BaseObjectEnable()
 {
-	pTransform->SetWorldPosition(20, pTerrain->GetHeight(20, 3), 3);
 	pSkinned->Play("IDLE");
 }
 

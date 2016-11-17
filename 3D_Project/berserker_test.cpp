@@ -68,6 +68,7 @@ HRESULT berserker_test::Scene_Init()
 	this->pBerserker->SetMesh(pSkinned);
 	this->pBerserker->SetTerrain(m_pTerrain);
 	this->pBerserker->SetCamera(this->pMainCamera);
+	//this->pBerserker->SetMonsters(this->vMonsters);
 	this->pBerserker->SetActive(true);
 
 	//캐릭터가 그려질 위치 트랜스폼
@@ -192,7 +193,7 @@ void berserker_test::Scene_Render1()
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	this->pBerserker->Render();
-	m_pMonMgr->Render();
+	this->m_pMonMgr->Render();
 
 	m_Land->Render();
 }

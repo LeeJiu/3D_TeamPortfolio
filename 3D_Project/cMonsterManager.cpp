@@ -65,7 +65,8 @@ void cMonsterManager::LoadMonsters()
 
 
 	//아직은 임시로 몬스터를 세팅한다.
-	CreateMonster(SPIDER, D3DXVECTOR3(0, 0, 0));
+	CreateMonster(SPIDER, D3DXVECTOR3(10, m_pTerrain->GetHeight(10, 5), 5));
+	CreateMonster(SPIDER, D3DXVECTOR3(10, m_pTerrain->GetHeight(10, 0), 0));
 }
 
 void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
@@ -85,11 +86,14 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->SetTerrain(m_pTerrain);
 		monster->SetPlayer(m_pPlayer);
 		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_Spider.X"));
+		monster->pTransform->SetWorldPosition(pos);
 		monster->SetActive(true);
 		break;
 	case SPIDER_QUEEN:
 		break;
 	case SUCCUBUS:
+		break;
+	case DRAGON:
 		break;
 	default:
 		break;

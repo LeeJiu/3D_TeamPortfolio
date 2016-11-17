@@ -25,9 +25,6 @@
     <Filter Include="BaseObject">
       <UniqueIdentifier>{41599c7b-b182-4887-8ba8-dce59ccf7f11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Handler">
-      <UniqueIdentifier>{3829eae1-802e-4bf9-a6a0-1f7937c7218b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{8d2a1705-2813-409f-9e6c-6b5d6da36a26}</UniqueIdentifier>
     </Filter>
@@ -162,34 +159,7 @@
     <ClInclude Include="move_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="t_Scene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cInputHandler.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="camera_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommand.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene_testPlayer.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cTestCommand.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="cTestCommand2.h">
-      <Filter>Handler</Filter>
-    </ClInclude>
-    <ClInclude Include="move_Test2.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="animation_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="sector_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="cBaseskill.h">
@@ -231,15 +201,6 @@
     <ClInclude Include="cScene_testMonster.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cBerserKer_Attack.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cBerserKer_Attack2.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cBerserKer_Attack3.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="cInven.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -275,6 +236,12 @@
     </ClInclude>
     <ClInclude Include="cSpider.h">
       <Filter>GameActor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="cMonsterManager.h">
+      <Filter>GameActor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="cTrailRender.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -392,37 +359,10 @@
     <ClCompile Include="cSceneChangeEffectUpDown.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="t_Scene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="move_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cInputHandler.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="camera_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommand.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_testPlayer.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cTestCommand.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="cTestCommand2.cpp">
-      <Filter>Handler</Filter>
-    </ClCompile>
-    <ClCompile Include="move_Test2.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="animation_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="sector_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="cBaseskill.cpp">
@@ -473,15 +413,6 @@
     <ClCompile Include="cInven.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="cBerserKer_Attack3.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cBerserKer_Attack2.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cBerserKer_Attack.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="cWeapon.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -508,6 +439,15 @@
     </ClCompile>
     <ClCompile Include="cSpider.cpp">
       <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="berserker_backup.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cMonsterManager.cpp">
+      <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="cTrailRender.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
