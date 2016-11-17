@@ -8,6 +8,7 @@ class cSkinnedAnimation;
 class cPlayer;
 class cBerserker;
 class cMonster;
+class cSpider;
 
 class berserker_test : public cScene
 {

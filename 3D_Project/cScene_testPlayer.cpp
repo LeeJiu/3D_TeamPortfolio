@@ -51,19 +51,6 @@ HRESULT cScene_testPlayer::Scene_Init()
 	m_pPlayer->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection));
 	m_pPlayer->SetActive(true);
 
-
-	//
-	//몬스터 세팅
-	//
-	m_pMonster = new cMonster;
-
-	//캐릭터에게 지형 전달
-	m_pMonster->SetTerrain(m_pTerrain);
-
-	m_pMonster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Surcubus/surcubus.X", &matCorrection));
-	m_pMonster->SetActive(true);
-
-
 	return S_OK;
 }
 
@@ -73,13 +60,11 @@ void cScene_testPlayer::Scene_Release()
 	SAFE_DELETE(m_pTerrain);
 
 	SAFE_DELETE(m_pPlayer);
-	SAFE_DELETE(m_pMonster);
 }
 
 void cScene_testPlayer::Scene_Update(float timeDelta)
 {
 	m_pPlayer->Update(timeDelta);
-	m_pMonster->Update(timeDelta);
 }
 
 void cScene_testPlayer::Scene_Render1()
@@ -91,7 +76,6 @@ void cScene_testPlayer::Scene_Render1()
 
 
 	m_pPlayer->Render();
-	m_pMonster->Render();
 
 	//셰이더에 라이팅 셋팅
 	cXMesh_Static::SetCamera(this->pMainCamera);
