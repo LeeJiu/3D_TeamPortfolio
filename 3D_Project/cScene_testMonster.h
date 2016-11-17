@@ -1,7 +1,7 @@
 #pragma once
 #include "cScene.h"
 #include "cSetBoundObject.h"
-#include "cPlayer.h"
+#include "cBerserker.h"
 #include "cMonsterManager.h"
 
 

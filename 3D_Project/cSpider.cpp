@@ -43,7 +43,7 @@ void cSpider::BaseObjectUpdate(float timeDelta)
 
 	if (KEY_MGR->IsOnceDown('K'))
 	{
-		m_pPlayer->Damage();
+		m_pPlayer->Damage(10);
 	}
 }
 

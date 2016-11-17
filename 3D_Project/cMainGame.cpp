@@ -5,7 +5,6 @@
 #include "move_Test.h"
 #include "move_Test2.h"
 #include "camera_Test.h"
-#include "cScene_testPlayer.h"
 #include "sector_Test.h"
 #include "animation_Test.h"
 #include "cScene_BoundBoxTool.h"
@@ -49,7 +48,6 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->AddScene("move_Test2", new move_Test2());
 
 	SCENE_MGR->AddScene("camera_Test", new camera_Test());
-	SCENE_MGR->AddScene("cScene_testPlayer", new cScene_testPlayer());
 	SCENE_MGR->AddScene("mage_Test", new mage_Test());
 
 	SCENE_MGR->AddScene("sector_Test", new sector_Test());
@@ -63,7 +61,7 @@ HRESULT cMainGame::Init(void)
 	
 	////°ÔÀÓ ½ÃÀÛ¾À
 	//SCENE_MGR->ChangeScene( "mage_Test" );
-	//SCENE_MGR->ChangeScene("berserker_test");
+	SCENE_MGR->ChangeScene("berserker_test");
 	//SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "move_Test2" );
 	//SCENE_MGR->ChangeScene( "sector_Test" );
@@ -71,7 +69,6 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene("sector_Test");
 	//SCENE_MGR->ChangeScene("cScene_testPlayer");
 	//SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
-	//SCENE_MGR->ChangeScene("cScene_testMonster");
 
 
 	return S_OK;		

@@ -43,7 +43,7 @@ HRESULT cScene_testMonster::Scene_Init()
 	//
 	//플레이어 세팅
 	//
-	m_pPlayer = new cPlayer;
+	m_pPlayer = new cBerserker;
 	m_pPlayer->SetTerrain(m_pTerrain);
 	m_pPlayer->SetCamera(pMainCamera);
 	m_pPlayer->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection));

@@ -125,7 +125,6 @@
     <ClInclude Include="cScene_BoundBoxTool.h" />
     <ClInclude Include="cScene_Mgr.h" />
     <ClInclude Include="cScene_testMonster.h" />
-    <ClInclude Include="cScene_testPlayer.h" />
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
@@ -136,6 +135,7 @@
     <ClInclude Include="cTestCommand.h" />
     <ClInclude Include="cTestCommand2.h" />
     <ClInclude Include="cTimeMgr.h" />
+    <ClInclude Include="cTrailRender.h" />
     <ClInclude Include="cTransform.h" />
     <ClInclude Include="cSkillUi.h" />
     <ClInclude Include="cWayPoint.h" />
@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
+    <ClCompile Include="berserker_backup.cpp" />
     <ClCompile Include="berserker_test.cpp" />
     <ClCompile Include="BoneHierachy.cpp" />
     <ClCompile Include="camera_Test.cpp" />
@@ -202,7 +203,6 @@
     <ClCompile Include="cScene_BoundBoxTool.cpp" />
     <ClCompile Include="cScene_Mgr.cpp" />
     <ClCompile Include="cScene_testMonster.cpp" />
-    <ClCompile Include="cScene_testPlayer.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
@@ -213,6 +213,7 @@
     <ClCompile Include="cTestCommand.cpp" />
     <ClCompile Include="cTestCommand2.cpp" />
     <ClCompile Include="cTimeMgr.cpp" />
+    <ClCompile Include="cTrailRender.cpp" />
     <ClCompile Include="cTransform.cpp" />
     <ClCompile Include="cSkillUi.cpp" />
     <ClCompile Include="cWayPoint.cpp" />

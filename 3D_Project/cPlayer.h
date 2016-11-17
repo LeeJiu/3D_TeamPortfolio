@@ -1,32 +1,41 @@
 #pragma once
 #include "cBaseObject.h"
-#include "cTestCommand.h"
-#include "cTestCommand2.h"
-
 
 class cTerrain;
 class cCamera;
-class cInputHandler;
 class cMonsterManager;
+class cWeapon;
+class cMonster;
 
 class cPlayer : public cBaseObject 
 {
-private:
+protected:
+	vector<cMonster*>				m_vMonster;
+	vector<cMonster*>::iterator		m_viMonster;
+
 	cCamera*			m_camera;
+	cWeapon*			m_Weapon;
+	cMonster*			m_target;			//타겟몬스터 
 
 	cMonsterManager*	m_pMonMgr;
 
 public:
 	cPlayer();
-	~cPlayer();
+	virtual ~cPlayer();
 
-	void BaseObjectEnable();
-	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
-	void BaseObjectRender();
+	virtual void BaseObjectEnable();
+	virtual void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
+	virtual void BaseObjectRender();
 
-	void Damage() { LOG_MGR->AddLog("플레이어 때림"); }
+	virtual void Monster_pick();
+	virtual bool LengthCheck();
 
-	void SetCamera(cCamera* camera) { m_camera = camera; }
-	void SetMonsterManager(cMonsterManager* pMonMgr) { m_pMonMgr = pMonMgr; }
+	virtual void Attack01() = 0;
+	virtual void Attack02() = 0;
+	virtual void Attack03() = 0;
+	virtual void Damage(float damage) = 0;
+
+	virtual void SetCamera(cCamera* camera) { m_camera = camera; }
+	virtual void SetMonsterManager(cMonsterManager* pMonMgr) { m_pMonMgr = pMonMgr; }
 };
 

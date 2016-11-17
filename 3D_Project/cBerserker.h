@@ -1,35 +1,18 @@
 #pragma once
-#include "cBaseObject.h"
+#include "cPlayer.h"
 #include "moveClass.h"
 
 #define CONTROL_KEY 5
 
-class cTerrain;
-class cCamera;
-class cInputHandler;
-class cWeapon;
-class cMonster;
-
-class cBerserker : public cBaseObject
+class cBerserker : public cPlayer
 {
 private:
-	std::vector<cMonster*>			 m_Vmon;
-	std::vector<cMonster*>::iterator m_VmonIter;
-
-private:
-	cCamera*			m_camera;
-	cWeapon*			m_Weapon;
-
-	cBoundBox*          m_ATKBox;
-	cTransform*         m_ATKBoxTrans;
-
 	ACTOR_STATE			m_state;
-	std::string			m_Aniname;
+	std::string			m_strName;
 	std::map<int, bool> m_InputKeys;
 	bool				m_isMove;
 
 	//컴포넌트를 달아준다.
-	cInputHandler*		m_pInput;
 	moveClass*			m_pMove;
 	D3DXVECTOR3			m_mousePos;
 
@@ -40,10 +23,9 @@ private:
 	float				m_time;			//커맨드체크할 타이머
 	float				m_fadeOut;		//애니 끝나는시간
 
-	cMonster*			m_target;
 
 	//status
-	float				m_hp;
+	float				m_fHP;
 	float				m_sp;
 	float				m_attackLength;//공격가능범위
 	int					m_damage;
@@ -56,22 +38,16 @@ public:
 
 	void BaseObjectEnable();
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
-	void ATKBoxRender();
-	void WeaponRender();
+	void BaseObjectRender();
 
-	void SetCamera(cCamera* camera) { m_camera = camera; }
-	void SetMonsters(std::vector<cMonster*>	vmon) { m_Vmon = vmon; }
-
-	cBoundBox* GetATKBox() { return m_ATKBox; }
-	cTransform* GetATKBoxTrans() { return m_ATKBoxTrans; }
+	//void SetMonsters(std::vector<cMonster*>	vmon) { m_Vmon = vmon; }
 
 private:
-	void Monster_pick();
-	void GetDamaged();
-
+	void Damage(float damage);
 	bool LengthCheck();
-	void Attac_first();
-	void Attac_second();
-	void Attac_third();
+
+	void Attack01();
+	void Attack02();
+	void Attack03();
 };
 
