@@ -206,7 +206,7 @@ void move_Test::Scene_Update(float timeDelta)
 	}
 	if (KEY_MGR->IsOnceDown('O'))
 	{
-		ITEM_MGR->createItem(0, D3DXVECTOR3(0, MyUtil::RandomFloatRange(3,10), 0));
+		ITEM_MGR->createItem(1, D3DXVECTOR3(0, MyUtil::RandomFloatRange(3,10), 0));
 
 	}
 	//=========================
