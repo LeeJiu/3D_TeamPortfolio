@@ -10,7 +10,7 @@ class cScene_BoundBoxTool : public cScene
 private:
 	cTerrain*			m_pTerrain;
 	
-	cBaseObject*					selectObject;
+	cBaseObject*					m_pSelectObject;
 	std::vector<cBaseObject*>		objects;
 
 	cSetBoundObject*				selectBound;
@@ -35,5 +35,8 @@ public:
 	void KeyControl(float timeDelta);
 	void SetObjects();
 	void SelectObject();
+
+	void SaveObjects();
+	void LoadObjects();
 };
 

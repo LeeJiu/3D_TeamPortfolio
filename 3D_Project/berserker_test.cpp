@@ -58,28 +58,12 @@ HRESULT berserker_test::Scene_Init()
 	//m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
 	m_Land->pTransform->SetWorldPosition(0, 0, 0);
 
-	//몬스터
-	this->pGriff = new cMonster;
-	this->pBerserker = new cBerserker;
-	
-	this->pGriff->SetTerrain(m_pTerrain);
-	this->pGriff->SetMesh(pSkinned_mon);
-	this->pGriff->SetPlayerMemoryLink(pBerserker);
-	this->pGriff->SetActive(true);
-	
-	//pGriff = new cSpider(1000, 10);
-	//pGriff->SetTerrain(m_pTerrain);
-	//pGriff->SetMesh(pSkinned_mon);
-	//pGriff->SetActive(true);
 
-	this->pGriff->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 10);
-
-	vMonsters.push_back(pGriff);
 
 	this->pBerserker->SetMesh(pSkinned);
 	this->pBerserker->SetTerrain(m_pTerrain);
 	this->pBerserker->SetCamera(this->pMainCamera);
-	this->pBerserker->SetMonsters(this->vMonsters);
+	//this->pBerserker->SetMonsters(this->vMonsters);
 	this->pBerserker->SetActive(true);
 
 	//캐릭터가 그려질 위치 트랜스폼
@@ -136,7 +120,7 @@ void berserker_test::Scene_Release()
 	SAFE_DELETE(m_pTerrain);
 
 	SAFE_DELETE(this->pBerserker);
-	SAFE_DELETE(this->pGriff);
+	//SAFE_DELETE(this->pGriff);
 	SAFE_DELETE(this->pTransForCamera);
 
 	for (int i = 0; i < lights.size(); i++)
@@ -180,7 +164,7 @@ void berserker_test::Scene_Update(float timeDelta)
 	}
 
 	this->pBerserker->Update(timeDelta);
-	this->pGriff->Update(timeDelta);
+	//this->pGriff->Update(timeDelta);
 
 }
 
@@ -202,7 +186,7 @@ void berserker_test::Scene_Render1()
 	this->pBerserker->ATKBoxRender();
 	this->pBerserker->WeaponRender();
 
-	pGriff->Render();
+	//pGriff->Render();
 
 	//this->pBerserker->pSkinned->RenderBoneName(this->pMainCamera, this->pBerserker->pTransform);
 
