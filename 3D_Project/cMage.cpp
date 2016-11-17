@@ -31,6 +31,14 @@ cMage::~cMage()
 
 void cMage::BaseObjectEnable()
 {
+
+	//몬스터 관련
+	MonsterInit();
+
+
+
+	//무기 관련
+
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
 	D3DXMATRIXA16 matRotate;
@@ -39,7 +47,7 @@ void cMage::BaseObjectEnable()
 
 	cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/STF_Master.X", &matCorrection);
 
-	//무기 관련
+
 	pWeapon = new cWeapon;
 	pWeapon->SetMesh(pSTF_Basic);
 	pWeapon->SetActive(true);
@@ -283,7 +291,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_aniCount = 0;
 	}
 
-	if (m_aniCount == 500)
+	if (m_aniCount == 200)
 	{
 		m_flameRoad->StopEmission();
 		m_flameRoad2->StopEmission();
@@ -341,6 +349,8 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	
 
 
+	MonsterUpdate(timeDelta);
+
 }
 
 
@@ -359,7 +369,7 @@ void cMage::WeaponRender()
 
 	this->pWeapon->Render();
 	SkillRender();
-
+	MonsterRender();
 
 }
 
@@ -472,8 +482,8 @@ void cMage::FlameRoadInit()
 		50.0f,     //이펙트 몇장
 		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
 		3.0f,
-		D3DXVECTOR3(0, 5, 10),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 5, 20),
+		D3DXVECTOR3(0, 1, 10),     //시작위치에서 끝점까지의 거리
+		D3DXVECTOR3(0, 1, 20),
 		D3DXVECTOR3(0, 0, 0),     //회전량
 		D3DXVECTOR3(0, 0, 0),     //축회전 없이 태풍같은 이펙트는 고정
 		D3DXVECTOR3(150 * ONE_RAD, 0, 0),	//초기시작시 회전 min
@@ -506,8 +516,8 @@ void cMage::FlameRoadInit()
 		50.0f,     //이펙트 몇장
 		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
 		3.0f,
-		D3DXVECTOR3(0, 5, 10),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 5, 20),
+		D3DXVECTOR3(0, 1, 10),     //시작위치에서 끝점까지의 거리
+		D3DXVECTOR3(0, 1, 20),
 		D3DXVECTOR3(0, 0, 0),     //회전량
 		D3DXVECTOR3(0, 0, 0),     //축회전 없이 태풍같은 이펙트는 고정
 		D3DXVECTOR3(150 * ONE_RAD, 0, 0),	//초기시작시 회전 min
@@ -715,5 +725,86 @@ void cMage::SnowStormInit()
 
 
 
+
+}
+
+
+void cMage::MonsterInit()
+{
+	D3DXMATRIXA16 matScale;
+	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
+	D3DXMATRIXA16 matRotate;
+	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
+	D3DXMATRIXA16 matCorrection = matScale * matRotate;
+
+	cXMesh_Skinned* pMonster = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Minho/MOB_Minho.X", &matCorrection);
+
+	//무기 관련
+	m_pMonster = new cBaseObject;
+	m_pMonster->SetMesh(pMonster);
+	m_pMonster->SetActive(true);
+
+	m_pMonster->BoundBox.Init(D3DXVECTOR3(-0.5, -0.5, -0.5), D3DXVECTOR3(0.5, 5.5, 0.5));
+	m_pMonster->pTransform->SetWorldPosition(D3DXVECTOR3(0, 8, 0));
+
+
+	m_isTarget = false;
+	m_MobCollision = false;
+
+
+
+
+}
+
+
+void cMage::MonsterUpdate(float timeDelta)
+{
+	
+	m_pMonster->pSkinned->Update(timeDelta);
+
+
+
+	MonsterCollision();
+	
+
+
+}
+
+
+void cMage::MonsterCollision()
+{
+
+	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+	{
+		Ray ray;
+		POINT ptMousePos = GetMousePos();
+		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+		this->m_camera->ComputeRay(&ray, &screenPos);
+		
+		if (PHYSICS_MGR->IsRayHitBound(&ray, &m_pMonster->BoundBox, m_pMonster->pTransform, NULL, NULL))
+		{
+			m_isTarget = true;
+			m_pMonster->pSkinned->PlayOneShot("DMG", 0.3f);
+			pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition(), 90.0f * ONE_RAD);
+		}
+		else
+		{
+			m_isTarget = false;
+			m_pMonster->pSkinned->Play("IDLE", 0.3f);
+		}
+
+	}
+
+
+
+
+}
+
+
+void cMage::MonsterRender()
+{
+
+	m_pMonster->Render();
+	m_pMonster->BoundBox.RenderGizmo(m_pMonster->pTransform);
 
 }

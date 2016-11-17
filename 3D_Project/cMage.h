@@ -25,6 +25,12 @@ class cMage : public cBaseObject
 {
 private:
 
+	cBaseObject*          m_pMonster;
+	bool                  m_isTarget;
+	bool                  m_MobCollision;
+
+
+
 	cWeapon*             pWeapon;
 	
 
@@ -85,6 +91,15 @@ public:
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
 	void ATKBoxRender();
 	void WeaponRender();
+
+	//몬스터와의 상호교류
+	void MonsterInit();
+
+	void MonsterUpdate(float timeDelta);
+	void MonsterCollision(); //충돌 체크하고
+
+	void MonsterRender();
+
 	
 	//펫
 	void PetOnUpdate();
