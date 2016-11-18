@@ -1,11 +1,10 @@
 #pragma once
-#include "cCommand.h"
 
 class cTransform;
 class cXMesh_Skinned;
 class cBoundBox;
 
-class cBaseskill : public cCommand
+class cBaseskill
 {
 private:
 	cTransform*		m_trans;		//Æ®·£½º

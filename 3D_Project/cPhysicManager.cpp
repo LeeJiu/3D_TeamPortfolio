@@ -1434,7 +1434,7 @@ bool cPhysicManager::IsPointSphere(cTransform* pTransA, float radiusA, cTransfor
 
 	if (radiusA > length)
 	{
-		//LOG_MGR->AddLog("테스트 충돌.");
+		LOG_MGR->AddLog("테스트 충돌.");
 		return true;
 	}
 	return false;

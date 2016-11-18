@@ -17,6 +17,8 @@ protected:
 	ACTOR_STATE		m_state;
 	string			m_strName;
 
+	bool			m_inRange;
+
 public:
 	cMonster();
 	virtual ~cMonster();
@@ -29,7 +31,10 @@ public:
 	virtual void Attack01() = 0;
 	virtual void Damage(float fDamage) = 0;
 
+	virtual bool GetInRange() { return m_inRange; }
+
 	virtual void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
 	virtual void SetBoundObjects(vector<cBaseObject*> vObjects) { m_vObjects = vObjects; }
+	virtual void SetInRange(bool check) { m_inRange = check; }
 };
 

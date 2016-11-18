@@ -60,15 +60,15 @@ HRESULT berserker_test::Scene_Init()
 	this->m_pMonMgr = new cMonsterManager;
 	this->pBerserker = new cBerserker;
 	
-	this->m_pMonMgr->SetTerrain(m_pTerrain);
-	this->m_pMonMgr->SetPlayer(pBerserker);
+	this->m_pMonMgr->SetTerrain(this->m_pTerrain);
+	this->m_pMonMgr->SetPlayer(this->pBerserker);
 	this->m_pMonMgr->Init();
 
 
 	this->pBerserker->SetMesh(pSkinned);
 	this->pBerserker->SetTerrain(m_pTerrain);
 	this->pBerserker->SetCamera(this->pMainCamera);
-	//this->pBerserker->SetMonsters(this->vMonsters);
+	this->pBerserker->SetMonsterManager(this->m_pMonMgr);
 	this->pBerserker->SetActive(true);
 
 	//캐릭터가 그려질 위치 트랜스폼
