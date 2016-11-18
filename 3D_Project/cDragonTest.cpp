@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "berserker_test.h"
+#include "cDragonTest.h"
 #include "cLight_Direction.h"
 #include "cXMesh_Static.h"
 #include "cBaseObject.h"
@@ -9,15 +9,15 @@
 #include "cSkinnedAnimation.h"
 #include "cLight_Point.h"
 
-berserker_test::berserker_test(void)
+cDragonTest::cDragonTest(void)
 {
 }
 
-berserker_test::~berserker_test(void)
+cDragonTest::~cDragonTest(void)
 {
 }
 
-HRESULT berserker_test::Scene_Init()
+HRESULT cDragonTest::Scene_Init()
 {
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
@@ -36,12 +36,13 @@ HRESULT berserker_test::Scene_Init()
 	m_bMove = false;
 
 	D3DXMATRIXA16 matScale;
-	D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
+	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
 	D3DXMATRIXA16 matRotate;
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Pant/Pant_Master.X", &matCorrection);
+	cXMesh_Skinned* pSkinned_mon = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_Spider.X", &matCorrection);
 
 	//+++애니메이션 체크 관련+++++
 
@@ -58,7 +59,7 @@ HRESULT berserker_test::Scene_Init()
 	//몬스터
 	this->m_pMonMgr = new cMonsterManager;
 	this->pBerserker = new cBerserker;
-	
+
 	this->m_pMonMgr->SetTerrain(this->m_pTerrain);
 	this->m_pMonMgr->SetPlayer(this->pBerserker);
 	this->m_pMonMgr->Init();
@@ -77,7 +78,7 @@ HRESULT berserker_test::Scene_Init()
 	this->pTransForCamera = new cTransform();
 
 	this->pBerserker->pTransform->AddChild(this->pMainCamera);
-	this->pMainCamera->SetLocalPosition(0, 2, -5);
+	this->pMainCamera->SetLocalPosition(0, 5, -10);
 	isCharView = true;
 	isAltView = false;
 
@@ -118,7 +119,7 @@ HRESULT berserker_test::Scene_Init()
 	return S_OK;
 }
 
-void berserker_test::Scene_Release()
+void cDragonTest::Scene_Release()
 {
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
@@ -135,7 +136,7 @@ void berserker_test::Scene_Release()
 	lights.clear();
 }
 
-void berserker_test::Scene_Update(float timeDelta)
+void cDragonTest::Scene_Update(float timeDelta)
 {
 	this->pTransForCamera->SetWorldPosition(this->pBerserker->pTransform->GetWorldPosition());
 
@@ -153,20 +154,12 @@ void berserker_test::Scene_Update(float timeDelta)
 		this->pTransForCamera->SetWorldMatrix(this->pBerserker->pTransform->GetFinalMatrix());
 
 		this->pBerserker->pTransform->AddChild(this->pMainCamera);
-		this->pMainCamera->SetLocalPosition(0, 2, -5);
+		this->pMainCamera->SetLocalPosition(0, 5, -10);
 		isCharView = true;
 		isAltView = false;
 	}
-	if (KEY_MGR->IsOnceUp('T'))
-	{
-		ITEM_MGR->createItem(1, D3DXVECTOR3(0, 7, 0));
 
-	}
-	if (KEY_MGR->IsOnceUp('Y'))
-	{
-		ITEM_MGR->createItem(0, D3DXVECTOR3(0, 7, 0));
 
-	}
 	if (isCharView)
 	{
 		pMainCamera->DefaultControl3(timeDelta, this->pBerserker->pTransform);
@@ -180,7 +173,7 @@ void berserker_test::Scene_Update(float timeDelta)
 	m_pMonMgr->Update(timeDelta);
 }
 
-void berserker_test::Scene_Render1()
+void cDragonTest::Scene_Render1()
 {
 	m_pTerrain->Render(this->pMainCamera, dynamic_cast<cLight_Direction*>(lights[0]));
 
@@ -200,13 +193,12 @@ void berserker_test::Scene_Render1()
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	this->pBerserker->Render();
-	//this->m_pMonMgr->Render();
+	this->m_pMonMgr->Render();
 
 	m_Land->Render();
 }
 
 
-void berserker_test::Scene_RenderSprite()
+void cDragonTest::Scene_RenderSprite()
 {
-	this->pBerserker->BaseSpriteRender();
 }

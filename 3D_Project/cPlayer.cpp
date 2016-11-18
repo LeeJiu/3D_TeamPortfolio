@@ -22,6 +22,7 @@ void cPlayer::BaseObjectEnable()
 {
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
+
 }
 
 void cPlayer::BaseObjectUpdate(float timeDelta)
@@ -36,12 +37,28 @@ void cPlayer::BaseObjectRender()
 
 void cPlayer::BaseSpriteRender()
 {
-	
+
 }
 
 void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
 {
+	
+	if (m_inven->GetWeapon() == NULL &&m_botton == true)
+	{
+		m_botton = false;
+	}
+	else if (m_inven->GetWeapon() != NULL&& m_botton == false)
+	{
+		m_inven->GetWeapon()->BoundBox.SetBound(&m_inven->GetWeapon()->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
+		pSkinned->AddBoneTransform("BN_Weapon_R", m_inven->GetWeapon()->pTransform);
+		m_botton = true;
+	}
+
+	//m_Weapon = m_inven->GetWeapon();
+
 	m_inven->update(timeDelta, m_camera);
+
+
 	ITEM_MGR->update(timeDelta);
 }
 
@@ -183,4 +200,20 @@ void cPlayer::SetBassClass()
 	m_inven = new cInven;
 	m_inven->init();
 	m_invenOn = false;
+
+	//웨폰
+	m_Weapon = new cItem;
+	m_Weapon = NULL;
+	//D3DXMATRIXA16 matScale;
+	//D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
+	//D3DXMATRIXA16 matCorrection = matScale;
+	//cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/TAX_Basic.X", &matCorrection);
+	//
+	//m_Weapon->SetMesh(pSTF_Basic);
+	//m_Weapon->SetActive(true);
+	//
+	//m_Weapon->BoundBox.SetBound(&m_Weapon->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
+	//pSkinned->AddBoneTransform("BN_Weapon_R", m_Weapon->pTransform);
+
+
 }

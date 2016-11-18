@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "cPlayer.h"
 #include "cBerserker.h"
-#include "cWeapon.h"
 #include "cMonsterManager.h"
 #include "cMonster.h"
 #include "cCamera.h"
@@ -13,30 +12,20 @@ cBerserker::cBerserker()
 
 cBerserker::~cBerserker()
 {
-	//SAFE_DELETE(m_Weapon);
 }
 
 
 void cBerserker::BaseObjectEnable()
 {
-	//무기 관련
-	//D3DXMATRIXA16 matScale;
-	//D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
-	//D3DXMATRIXA16 matCorrection = matScale;
-	//cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/TAX_Basic.X", &matCorrection);
-	//
-	//m_Weapon = new cWeapon;
-	//m_Weapon->SetMesh(pSTF_Basic);
-	//m_Weapon->SetActive(true);
-	//
-	//m_Weapon->BoundBox.SetBound(&m_Weapon->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
-	//pSkinned->AddBoneTransform("BN_Weapon_R", m_Weapon->pTransform);
+	SetBassClass();
 
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
 
 	m_state = IDLE;
 	m_strName = MyUtil::SetAnimation(m_state);
+
+	m_botton = false;
 
 	m_fHP = 1000;
 	m_attackLength = 5;
@@ -47,10 +36,8 @@ void cBerserker::BaseObjectEnable()
 	m_SwingCnt = 0;
 
 	m_vMonster = m_pMonMgr->GetMonsters();
-	m_Weapon = NULL;
 	m_target = NULL;
 	
-	SetBassClass();
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
 	m_atkCnt = 1;
@@ -200,12 +187,12 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 
 void cBerserker::BaseObjectRender()
 {
-	if (m_Weapon)
+	if (m_inven->GetWeapon() != NULL)
 	{
-		m_Weapon->BoundBox.RenderGizmo(m_Weapon->pTransform);
+		m_inven->GetWeapon()->BoundBox.RenderGizmo(m_inven->GetWeapon()->pTransform);
 
-		m_Weapon->Render();
-		m_Weapon->pTransform->RenderGimozo();
+		m_inven->GetWeapon()->Render();
+		m_inven->GetWeapon()->pTransform->RenderGimozo();
 	}
 	
 	this->pSkinned->Render(this->pTransform);
@@ -292,3 +279,17 @@ void cBerserker::SKILL04()
 	m_damage += 100;
 }
 
+/*
+tickdamage
+
+temp = 0;
+if( tempT < tick )
+{
+temp += td;
+retturn
+}else
+{
+  tempT =0.f
+
+}
+*/

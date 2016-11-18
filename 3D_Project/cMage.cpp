@@ -2,7 +2,7 @@
 #include "cMage.h"
 #include "cTerrain.h"
 #include "cCamera.h"
-#include "cWeapon.h"
+#include "cItem.h"
 //ÆÄÆ¼Å¬
 #include "cPartcleEmitter.h"
 #include "cParticleQuad.h""
@@ -47,7 +47,7 @@ void cMage::BaseObjectEnable()
 	cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/STF_Master.X", &matCorrection);
 
 
-	pWeapon = new cWeapon;
+	pWeapon = new cItem;
 	pWeapon->SetMesh(pSTF_Basic);
 	pWeapon->SetActive(true);
 
