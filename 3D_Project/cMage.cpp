@@ -20,7 +20,6 @@ cMage::cMage()
 
 cMage::~cMage()
 {
-	SAFE_DELETE(m_pInput);
 	SAFE_DELETE(m_pMove);
 	SAFE_DELETE(m_ATKBox);
 
@@ -72,10 +71,7 @@ void cMage::BaseObjectEnable()
 
 
 
-	m_pInput = new cInputHandler;
-	m_pInput->AddKey('1', new cTestCommand);
-	m_pInput->AddKey('2', new cTestCommand2);
-	
+
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
 	D3DXVECTOR3	minPos(-1, 0, -1);
@@ -105,14 +101,7 @@ void cMage::BaseObjectEnable()
 
 void cMage::BaseObjectUpdate(float timeDelta)
 {
-	cCommand* command = m_pInput->HandleInput();
 
-
-
-	if (command != NULL)
-	{
-		command->Execute();
-	}
 
 	//펫에 타고 있냐
 	if (KEY_MGR->IsOnceDown('9'))
@@ -244,10 +233,6 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		}
 		else m_InputKeys.find('D')->second = false;
 
-		if (KEY_MGR->IsOnceDown('P'))
-		{
-			m_pInput->SwapKey('1', '2');
-		}
 
 		m_pMove->update(timeDelta, NULL, NULL, NULL, m_InputKeys);
 
