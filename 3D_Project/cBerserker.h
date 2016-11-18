@@ -1,84 +1,40 @@
 #pragma once
-#include "cBaseObject.h"
-#include "cBerserKer_Attack.h"
-#include "cBerserKer_Attack2.h"
-#include "cBerserKer_Attack3.h"
-#include "moveClass.h"
+#include "cPlayer.h"
 
 #define CONTROL_KEY 5
 
-class cTerrain;
-class cCamera;
-class cInputHandler;
-class cWeapon;
-class cMonster;
-
-class cBerserker : public cBaseObject
+class cBerserker : public cPlayer
 {
 private:
-	std::vector<cMonster*>			 m_Vmon;
-	std::vector<cMonster*>::iterator m_VmonIter;
+	//스킬
+	int					m_atkCnt;		//평타단계 수
+	float				m_time;			//커맨드체크할 타이머
+	float				m_fadeOut;		//애니 끝나는시간
+
+	//스킬3 
+	int					m_SwingCnt;
+
+
+	float				m_testtime;		//로그찎는용 타이머
+
+public:
+	cBerserker();
+	~cBerserker();
+
+	void BaseObjectEnable();
+	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
+	void BaseObjectRender();
 
 private:
-		cCamera*			m_camera;
-		cWeapon*			m_Weapon;
+	void Damage(float damage);
 
-		cBoundBox*          m_ATKBox;
-		cTransform*         m_ATKBoxTrans;
+	void Attack01();
+	void Attack02();
+	void Attack03();
 
-		ACTOR_STATE			m_state;
-		std::string			m_Aniname;
-		std::map<int, bool> m_InputKeys;
-		bool				m_isMove;
-		
-		//컴포넌트를 달아준다.
-		cInputHandler*		m_pInput;
-		moveClass*			m_pMove;
-		D3DXVECTOR3			m_mousePos;
-
-		//스킬
-		bool				m_isAttack;
-
-		int					m_atkCnt;		//평타단계 수
-		float				m_time;			//커맨드체크할 타이머
-		float				m_fadeOut;		//애니 끝나는시간
-
-		cBerserKer_Attack*	m_attak1;
-		cBerserKer_Attack2*	m_attak2;
-		cBerserKer_Attack3*	m_attak3;
-
-		cMonster*			m_target;
-		
-		//status
-		float				m_hp;
-		float				m_sp;
-		float				m_attackLength;//공격가능범위
-		int				m_damage;
-
-		float				m_testtime;		//로그찎는용 타이머
-
-	public:
-		cBerserker();
-		~cBerserker();
-
-		void BaseObjectEnable();
-		void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
-		void ATKBoxRender();
-		void WeaponRender();
-
-		void SetCamera(cCamera* camera) { m_camera = camera; }
-		void SetMonsters(std::vector<cMonster*>	vmon) { m_Vmon = vmon; }
-
-		cBoundBox* GetATKBox() { return m_ATKBox; }
-		cTransform* GetATKBoxTrans() { return m_ATKBoxTrans; }
-
-private:
-	void Monster_pick();
-	void GetDamaged();
-
-	bool LengthCheck();
-	void Attac_first();
-	void Attac_second();
-	void Attac_third();
-	};
+	void SKILL01();			//평타
+	void SKILL02();			//내려찍기	(타겟, 범위기)
+	void SKILL03();			//휠윈드 (원형 범위기)
+	void SKILL04();			//버프기
+};
 

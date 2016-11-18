@@ -1,10 +1,10 @@
 #include "stdafx.h"
+#include "cPlayer.h"
 #include "cBerserker.h"
-#include "cTerrain.h"
-#include "cCamera.h"
-#include "cInputHandler.h"
 #include "cWeapon.h"
+#include "cMonsterManager.h"
 #include "cMonster.h"
+#include "cCamera.h"
 
 cBerserker::cBerserker()
 {
@@ -12,72 +12,44 @@ cBerserker::cBerserker()
 
 cBerserker::~cBerserker()
 {
-	SAFE_DELETE(m_pInput);
-	SAFE_DELETE(m_pMove);
-	SAFE_DELETE(m_attak1);
-	SAFE_DELETE(m_attak2);
-	SAFE_DELETE(m_attak3);
-
-
+	//SAFE_DELETE(m_pMove);
 	SAFE_DELETE(m_Weapon);
-	SAFE_DELETE(m_ATKBox);
-	SAFE_DELETE(m_ATKBoxTrans);
 }
 
 
 void cBerserker::BaseObjectEnable()
 {
-	m_pInput = new cInputHandler;
-
+	//무기 관련
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
 	D3DXMATRIXA16 matCorrection = matScale;
-
 	cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/TAX_Basic.X", &matCorrection);
-
-	//무기 관련
+	
 	m_Weapon = new cWeapon;
 	m_Weapon->SetMesh(pSTF_Basic);
 	m_Weapon->SetActive(true);
 
+	m_Weapon->BoundBox.SetBound(&m_Weapon->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
 	pSkinned->AddBoneTransform("BN_Weapon_R", m_Weapon->pTransform);
-
-	//평타 박스
-	m_ATKBox = new cBoundBox;
-	m_ATKBox->Init(D3DXVECTOR3(-0.3f, -0.3f, -0.3f), D3DXVECTOR3(0.3f, 0.3f, 0.3f));
-
-	m_ATKBoxTrans = new cTransform;
-	m_ATKBox->SetBound(&m_ATKBoxTrans->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
-	pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBoxTrans);
-
 
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
-	D3DXVECTOR3	minPos(-1, 0, -1);
-	D3DXVECTOR3	maxPos(1, 3, 1);
 
 	m_state = IDLE;
-	m_Aniname = MyUtil::SetAnimation(m_state);
+	m_strName = MyUtil::SetAnimation(m_state);
 
-	m_pMove = new moveClass;
-	m_isMove = false;
-
-	m_target = NULL;
+	m_fHP = 1000;
 	m_attackLength = 5;
 	m_damage = 100;
 	m_isAttack = false;
 
-	//무빙용으로 사용할 키값 세팅
-	std::pair<int, bool> key_W('W', false);		//W키 안눌림	상태
-	std::pair<int, bool> key_S('S', false);		//S키 안눌림  " 
-	std::pair<int, bool> key_A('A', false);		//A키 안눌림  "
-	std::pair<int, bool> key_D('D', false);		//D키 안눌림  "
-	m_InputKeys.insert(key_W);
-	m_InputKeys.insert(key_S);
-	m_InputKeys.insert(key_A);
-	m_InputKeys.insert(key_D);
+	//sk3
+	m_SwingCnt = 0;
 
-
+	m_vMonster = m_pMonMgr->GetMonsters();
+	m_target = NULL;
+	
+	SetMoveKeys();
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
 	m_atkCnt = 1;
@@ -87,44 +59,44 @@ void cBerserker::BaseObjectEnable()
 
 void cBerserker::BaseObjectUpdate(float timeDelta)
 {
+	Move(timeDelta);
+	Monster_pick();
 
-	cCommand* command = m_pInput->HandleInput();
-	if (command != NULL)
-	{
-		command->Execute();
-	}
+	//======================테스트용 애니 확인==================================
 
-	//애니메이션셋
-	m_fadeOut = pSkinned->GetTime();
+	if (KEY_MGR->IsOnceDown(VK_NUMPAD1))
+		this->pSkinned->PlayOneShotAFTERIDLE("SK_BUFF", 0.3, 0.15);
 
-	if (!m_isAttack && m_isMove && (KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
-		|| KEY_MGR->IsOnceDown('A')))
-	{
-		m_state = WALK;
-		m_Aniname = MyUtil::SetAnimation(m_state);
-		this->pSkinned->Play(m_Aniname, 0.3);
-	}
+	if (KEY_MGR->IsOnceDown(VK_NUMPAD2))
+		this->pSkinned->PlayOneShotAFTERIDLE("SK_ATKUP", 0.3, 0.15);
 
+	if (KEY_MGR->IsOnceDown(VK_NUMPAD3))
+		this->pSkinned->PlayOneShotAFTERIDLE("SK_CRASH", 0.3, 0.15);
 
-	if (!m_isAttack && m_isMove && KEY_MGR->IsOnceDown('S'))
-	{
-		m_state = WALK_BACK;
-		m_Aniname = MyUtil::SetAnimation(m_state);
-		this->pSkinned->Play(m_Aniname, 0.3);
-	}
+	if (KEY_MGR->IsOnceDown(VK_NUMPAD4))
+		this->pSkinned->PlayOneShotAFTERIDLE("SK_SWING", 0.3, 0.15);
 
-	if ((!m_isMove && (KEY_MGR->IsOnceUp('W') || KEY_MGR->IsOnceUp('S')
-		|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
-		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D'))))
-	{
-		m_state = IDLE;
-		m_Aniname = MyUtil::SetAnimation(m_state);
-		this->pSkinned->Play(m_Aniname, 0.3);
-	}	
+	if (KEY_MGR->IsOnceDown(VK_NUMPAD5))
+		this->pSkinned->PlayOneShotAFTERIDLE("SK_HOWL", 0.3, 0.15);
 
+	if (KEY_MGR->IsOnceDown(VK_NUMPAD6))
+		this->pSkinned->PlayOneShotAFTERIDLE("SK_ACCEL", 0.3, 0.15);
+
+	if (KEY_MGR->IsOnceDown(VK_NUMPAD7))
+		this->pSkinned->PlayOneShotAFTERIDLE("SK_JUMPATK", 0.3, 0.15);
+
+	if (KEY_MGR->IsOnceDown(VK_NUMPAD8))
+		this->pSkinned->PlayOneShotAFTERIDLE("SK_ESCAPE", 0.3, 0.15);
+	
+	//==============================================================
+
+	
 	m_time += timeDelta;
 	m_testtime += timeDelta;
 
+	//
+	//=================평타=================
+	//
 	if (LengthCheck() && !m_isAttack && KEY_MGR->IsOnceDown('1'))
 	{
 		m_isAttack = true;
@@ -133,24 +105,59 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		{
 			case 1 : 
 				m_state = ATK_01;
-				Attac_first();
+				Attack01();
 				m_atkCnt++;
 				break;
 		
 			case 2: 
 				m_state = ATK_02;
-				Attac_second();
+				Attack02();
 				m_atkCnt++;
 				break;
 			case 3: 
 				pSkinned->ChangeBoneTransform("BN_Weapon_R", "BN_Weapon_L");// 막타를 칠때 BN_Weapon_L로
 				m_state = ATK_03;
-				Attac_third();
+				Attack03();
 				m_atkCnt = 1;
 				break;
 		}
-		m_Aniname = MyUtil::SetAnimation(m_state);
-		this->pSkinned->PlayOneShotAFTERIDLE(m_Aniname, 0.3, 0.15);
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
+	}
+
+	//스킬3 - 스윙
+	if (!m_isAttack && KEY_MGR->IsOnceDown('3'))
+	{
+		m_isAttack = true;
+		m_time = 0;
+		m_SwingCnt++;
+		
+		RangeCheck(10);
+
+		//카운트 수 전달
+		if (m_SwingCnt == 4)
+		{
+			m_SwingCnt = 0;
+		}
+		else
+		{
+			m_state = SK_SWING;
+			SKILL03();
+			m_strName = MyUtil::SetAnimation(m_state);
+			this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
+		}
+	}
+
+	//스킬5 - 광폭화
+	if (!m_isAttack && KEY_MGR->IsOnceDown('5'))
+	{
+		m_isAttack = true;
+		m_time = 0;
+	
+		m_state = SK_BUFF;
+		SKILL04();
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
 	}
 
 	//글쿨 막타만 1.5초
@@ -184,128 +191,97 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//test용 로그 출려꾸 
 	if (m_testtime > 1)
 	{
+		LOG_MGR->AddLog("%d", m_isMove);
 		m_testtime = 0;
 	}
-	
-	//===============무브==============================
+}
 
-	if (KEY_MGR->IsStayDown('W'))
+void cBerserker::BaseObjectRender()
+{
+	if (m_Weapon)
 	{
-		m_InputKeys.find('W')->second = true;
+		m_Weapon->BoundBox.RenderGizmo(m_Weapon->pTransform);
+
+		m_Weapon->Render();
+		m_Weapon->pTransform->RenderGimozo();
 	}
-	else m_InputKeys.find('W')->second = false;
 
+	this->pSkinned->Render(this->pTransform);
+}
 
-	if (KEY_MGR->IsStayDown('S'))
+void cBerserker::Damage(float damage)
+{
+	m_fHP -= damage;
+	if (m_fHP <= FEPSILON)
 	{
-		m_InputKeys.find('S')->second = true;
+		m_fHP = 0.0f;
+		m_state = DEAD;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->PlayOneShotAfterHold(m_strName);
+		return;
 	}
-	else m_InputKeys.find('S')->second = false;
 
-	if (KEY_MGR->IsStayDown('A'))
+	if (m_state != DMG)
 	{
-		m_InputKeys.find('A')->second = true;
-	}
-	else m_InputKeys.find('A')->second = false;
-
-	if (KEY_MGR->IsStayDown('D'))
-	{
-		m_InputKeys.find('D')->second = true;
-	}
-	else m_InputKeys.find('D')->second = false;
-
-
-	m_pMove->update(timeDelta, NULL, NULL, NULL, m_InputKeys);
-	m_isMove = m_pMove->GetIsMove();
-
-	Monster_pick();
-
-	if (m_target && m_isAttack)
-	{
-		this->pTransform->LookDirection(m_target->pTransform->GetWorldPosition(), 10 * ONE_RAD);
+		m_state = DMG;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->PlayOneShotAfterOther(m_strName, "IDLE", 0.3f);
+		m_state = IDLE;
 	}
 }
 
 
-void cBerserker::ATKBoxRender()
-{
-	m_ATKBox->RenderGizmo(m_ATKBoxTrans);
-}
 
-void cBerserker::WeaponRender()
-{
-
-	this->m_Weapon->Render();
-	this->m_Weapon->pTransform->RenderGimozo();
-
-
-}
-
-void cBerserker::Monster_pick()
-{
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	{
-		Ray ray;
-		POINT ptMousePos = GetMousePos();
-		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-		this->m_camera->ComputeRay(&ray, &screenPos);
-
-	
-		int size = m_Vmon.size();
-		for (int i = 0; i < size; i++)
-		{
-			if (PHYSICS_MGR->IsRayHitBound(&ray, &m_Vmon[i]->BoundBox, m_Vmon[i]->pTransform, NULL, NULL))
-			{
-				LOG_MGR->AddLog("타겟팅됨");
-				this->m_target = m_Vmon[i];
-			}
-			else this->m_target = NULL;
-		}
-	}
-}
-
-void cBerserker::GetDamaged()
-{
-}
-
-bool cBerserker::LengthCheck()
-{
-	if (m_target!=NULL)
-	{ 
-		D3DXVECTOR3 vDistance = this->pTransform->GetWorldPosition() - m_target->pTransform->GetWorldPosition();
-		float distance;
-		distance = D3DXVec3Length(&vDistance);
-
-		if (distance < m_attackLength)
-			return true;
-		else return false;
-	}
-	else return false;
-}
-
-void cBerserker::Attac_first()
-{
+void cBerserker::Attack01()
+{	
 	int damage = m_damage * 1;
 	damage = RandomIntRange(damage - 10, damage + 10);
 	
 	LOG_MGR->AddLog("%d데미지 줌", damage);
-	//m_target->Damage(damage);
+	m_target->Damage(damage);
 }
 
-void cBerserker::Attac_second()
+void cBerserker::Attack02()
+{
+	int damage = m_damage * 2;
+	damage = RandomIntRange(damage - 10, damage + 10);
+	
+	LOG_MGR->AddLog("%d데미지 줌", damage);
+	m_target->Damage(damage);
+}
+
+void cBerserker::Attack03()
+{
+	int damage = m_damage * 3;
+	damage = RandomIntRange(damage - 10, damage + 10);
+	
+	LOG_MGR->AddLog("%d데미지 줌", damage);
+	m_target->Damage(damage);
+}
+
+void cBerserker::SKILL01()
+{
+}
+
+void cBerserker::SKILL02()
+{
+}
+
+void cBerserker::SKILL03()
 {
 	int damage = m_damage * 2;
 	damage = RandomIntRange(damage - 10, damage + 10);
 
-	LOG_MGR->AddLog("%d데미지 줌", damage);
-	//m_target->Damage(damage);
+	//LOG_MGR->AddLog("%d데미지 줌", damage);
+	//m_target->TickDamage(damage);
+
+
+	LOG_MGR->AddLog("때리고잇음");
 }
 
-void cBerserker::Attac_third()
+void cBerserker::SKILL04()
 {
-	int damage = m_damage * 3;
-	damage = RandomIntRange(damage - 10, damage + 10);
-
-	LOG_MGR->AddLog("%d데미지 줌", damage);
-	//m_target->Damage(damage);
+	LOG_MGR->AddLog("광폭화 시전");
+	m_damage += 100;
 }
+

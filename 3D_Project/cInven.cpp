@@ -76,16 +76,24 @@ void cInven::release()
 }
 void cInven::update(float timeDelta, cCamera* camera)
 {
+   /* itemIndex 가 -1 일때는 아이템들고 있는게 없을 때
+      clickItem = NULL  
+	  인벤토리에 들어가기 전에는 아이템 매니져에서 들고 있음. 
+	  pickUp <- 아이템 들고 있을때 T,
+   */
+
+	//인벤토리 열고 닫기. 
 	if (KEY_MGR->IsOnceDown('I'))
 	{
 		invenOpen = !invenOpen;
 	}
-	//itemIndex = -1;
-	// 클릭 했을 때
+	// 물건을 들고 있을때 
+	// 화면 가운데 오브젝트를 가져 온다. 
 	if (pickUp == true)
 	{
 		if (clickItem != NULL)
 		{
+			clickItem->m_lifeTime = 60.f;
 			clickItem->pTransform->SetWorldPosition(
 				camera->GetWorldPosition().x + camera->GetForward().x * 10,
 				camera->GetWorldPosition().y + camera->GetForward().y * 10,
@@ -103,66 +111,13 @@ void cInven::update(float timeDelta, cCamera* camera)
 		POINT ptMousePos = GetMousePos();
 		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
 		camera->ComputeRay(&ray, &screenPos);
-
-		//============ 아이템 장착 안되 있으면..
-		if (itemIndex == -1 && pickUp == true && clickItem != NULL) //아이템을 버리거나 장착 해야댐.( 이조건이면)
-		{
-			if (PtInRect(&weapon.rcColl, ptMousePos) && weapon.m_Item == NULL)
-			{
-				weapon.m_Item = clickItem;
-				weapon.skillImage = findIcon(clickItem->getItemName());
-
-				//weapon.skillImage = RESOURCE_TEXTURE->GetResource("../Resources/UI/fot_lightingspear.bmp");
-				weapon.isPoint = true;
-
-				itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
-				//아이템 회전값 기본으로 바꺼줌. 
-				weapon.m_Item->pTransform->SetRotateWorld(weapon.m_Item->getBasicRotaion());
-				if (itemIndex != -1)
-				{
-					ITEM_MGR->v_item.erase(ITEM_MGR->v_item.begin() + itemIndex);
-				}
-
-				clickItem = NULL;
-				pickUp = false;
-				itemIndex = -1;
-			}//============ 아이템 장착 되 있다면.
-		
-			else  // 아이템 버리기. 
-			{
-				putItem();
-
-				//pickUp = false;
-				////케릭터 좌표 ====================================
-				//clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
-				//clickItem = NULL;
-			}
-		}
-		else if (PtInRect(&weapon.rcColl, ptMousePos) && weapon.m_Item != NULL
-			&&pickUp == false && clickItem == NULL)
-		{  //staff _ basic master ,
-
-			pickUp = true; //트루.
-			clickItem = weapon.m_Item;//아이템 넣고 .
-			clickItem->m_lifeTime = 60.f;
-
-			ITEM_MGR->v_item.push_back(clickItem);//
-
-			weapon.m_Item = NULL;
-			weapon.skillImage = NULL;
-			weapon.isPoint = false; // 진짜 포인트가지고 있는 놈
-			weapon.itemNum = 0;//아이템은 1부터 만들어짐. 
-
-			itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
-
-		}
+		weaponClick(ptMousePos);
 
 		// 인벤토리에서 아이템 꺼내오는 함수. 
 		invenItemClick(); // 이거 먼저 체크 해야됨.
 
 
-		//	this->m_pTerrain->IsIntersectRay(&m_mousePos, &ray);
-		//  바운드 충돌을 해서 아이템 인덱스를 찾아 낸다.
+		//  바운드 충돌을 해서 아이템 인덱스를 찾아 낸다. 
 		for (int i = 0; i < ITEM_MGR->v_item.size(); i++)
 		{
 			if (PHYSICS_MGR->IsRayHitBound(&ray, &(ITEM_MGR->v_item[i]->BoundBox), (ITEM_MGR->v_item[i])->pTransform, NULL, NULL))
@@ -175,7 +130,7 @@ void cInven::update(float timeDelta, cCamera* camera)
 			}
 		}
 
-
+		// 부딪친 렉트의 i , j 값 반환
 		if (selctRect(&cRow, &cCol, ptMousePos))
 		{
 			if (inputItem(cRow, cCol, clickItem))
@@ -197,6 +152,7 @@ void cInven::update(float timeDelta, cCamera* camera)
 
 void cInven::render()
 {
+	// 이벤토리 열었을 때.
 	if (invenOpen == true)
 	{
 		//------------------------------------
@@ -471,4 +427,60 @@ LPDIRECT3DTEXTURE9 cInven::findIcon(string name)
 	}
 	return RESOURCE_TEXTURE->GetResource("../Resources/UI/ele_tonadoflare.bmp");
 
+}
+
+void cInven::weaponClick(POINT mouse)
+{
+	//============ 아이템 장착 안되 있으면..
+	if (itemIndex == -1 && pickUp == true && clickItem != NULL) //아이템을 버리거나 장착 해야댐.( 이조건이면)
+	{
+		if (PtInRect(&weapon.rcColl, mouse) && weapon.m_Item == NULL)
+		{
+			weapon.m_Item = clickItem;
+			weapon.skillImage = findIcon(clickItem->getItemName());
+
+			//weapon.skillImage = RESOURCE_TEXTURE->GetResource("../Resources/UI/fot_lightingspear.bmp");
+			weapon.isPoint = true;
+
+			itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
+			//아이템 회전값 기본으로 바꺼줌. 
+			weapon.m_Item->pTransform->SetRotateWorld(weapon.m_Item->getBasicRotaion());
+			if (itemIndex != -1)
+			{
+				ITEM_MGR->v_item.erase(ITEM_MGR->v_item.begin() + itemIndex);
+			}
+
+			clickItem = NULL;
+			pickUp = false;
+			itemIndex = -1;
+		}//============ 아이템 장착 되 있다면.
+
+		else  // 아이템 버리기. 
+		{
+			putItem();
+
+			//pickUp = false;
+			////케릭터 좌표 ====================================
+			//clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
+			//clickItem = NULL;
+		}
+	}
+	else if (PtInRect(&weapon.rcColl, mouse) && weapon.m_Item != NULL
+		&&pickUp == false && clickItem == NULL)
+	{  //staff _ basic master ,
+
+		pickUp = true; //트루.
+		clickItem = weapon.m_Item;//아이템 넣고 .
+		clickItem->m_lifeTime = 60.f;
+
+		ITEM_MGR->v_item.push_back(clickItem);//
+
+		weapon.m_Item = NULL;
+		weapon.skillImage = NULL;
+		weapon.isPoint = false; // 진짜 포인트가지고 있는 놈
+		weapon.itemNum = 0;//아이템은 1부터 만들어짐. 
+
+		itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
+
+	}
 }

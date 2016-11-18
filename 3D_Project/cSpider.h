@@ -1,10 +1,22 @@
 #pragma once
-#include "cBaseObject.h"
+#include "cMonster.h"
 
-class cSpider : public cBaseObject
+class cSpider : public cMonster
 {
+private:
+
+
 public:
-	cSpider();
+	cSpider(float fHP, float fRange);
 	~cSpider();
+
+	void BaseObjectEnable();
+	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
+	void BaseObjectBoundBox();
+
+	void Attack01();
+	void Damage(float fDamage);
+
+	void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
 };
 

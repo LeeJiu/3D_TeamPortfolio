@@ -10,6 +10,7 @@
 #include "cLight_Point.h"
 #include "cPlayer.h"
 #include "cMage.h"
+#include "cBerserker.h"
 
 animation_Test::animation_Test(void)
 {
@@ -61,7 +62,7 @@ HRESULT animation_Test::Scene_Init()
 
 
 	//위에서 로딩된 SkinnedMesh 인스턴스를 만든다.
-	this->pPlayer = new cPlayer;
+	this->pPlayer = new cBerserker;
 	this->pPlayer->SetMesh(pSkinned);
 	this->pPlayer->SetTerrain(m_pTerrain);
 	this->pPlayer->SetActive(true);

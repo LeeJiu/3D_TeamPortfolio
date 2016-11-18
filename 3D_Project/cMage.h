@@ -1,7 +1,5 @@
 #pragma once
 #include "cBaseObject.h"
-#include "cTestCommand.h"
-#include "cTestCommand2.h"
 #include "moveClass.h"
 
 
@@ -9,7 +7,6 @@
 
 class cTerrain;
 class cCamera;
-class cInputHandler;
 class cStateHandler;
 class cWeapon;
 class cSkill_Surround;
@@ -55,7 +52,6 @@ private:
 	bool				m_isMove;
 
 	//컴포넌트를 달아준다.
-	cInputHandler*		m_pInput;
 	moveClass*			m_pMove;
 
 

@@ -146,14 +146,14 @@ void move_Test::Scene_Release()
 
 	this->pSkinned1->Release();
 	SAFE_DELETE(this->pSkinned1);
+
+	m_inven->release();
+	SAFE_DELETE(this->m_inven);
+
 }
 
 void move_Test::Scene_Update(float timeDelta)
 {
-
-
-
-
 	// 레이 업데이트 
 	m_currentPos = pSkinnedTrans->GetWorldPosition(); // 현재 위치. 
 	//cRay.direction = D3DXVECTOR3(0, -1, 0);

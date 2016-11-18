@@ -32,10 +32,6 @@ HRESULT cScene_testMonster::Scene_Init()
 		3,
 		100);
 
-	//
-	//플레이어 세팅
-	//
-
 	//캐릭터 보정 행렬 세팅
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
@@ -43,22 +39,24 @@ HRESULT cScene_testMonster::Scene_Init()
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
-	m_pMage = new cMage;
-	m_pMage->SetTerrain(m_pTerrain);
-	m_pMage->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Elf/Elf_Master.X", &matCorrection));
-	m_pMage->SetActive(true);
 
+	//
+	//플레이어 세팅
+	//
+	m_pPlayer = new cBerserker;
+	m_pPlayer->SetTerrain(m_pTerrain);
+	m_pPlayer->SetCamera(pMainCamera);
+	m_pPlayer->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection));
+	m_pPlayer->SetActive(true);
 
 
 	//
-	//몬스터 세팅
+	//몬스터 매니저 세팅
 	//
-	m_pMonster = new cMonster;
-	m_pMonster->SetTerrain(m_pTerrain);
-	m_pMonster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_SpiderQueen.X", &matCorrection));
-	m_pMonster->SetPlayerMemoryLink(m_pMage);
-	m_pMonster->SetActive(true);
-	
+	m_pMonMgr = new cMonsterManager;
+	m_pMonMgr->SetTerrain(m_pTerrain);
+	m_pMonMgr->SetPlayer(m_pPlayer);
+	m_pMonMgr->Init();
 
 
 	//
@@ -101,26 +99,17 @@ void cScene_testMonster::Scene_Release()
 {
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
-	SAFE_DELETE(m_pMonster);
-	SAFE_DELETE(m_pMage);
+	SAFE_DELETE(m_pPlayer);
+
+	m_pMonMgr->Release();
+	SAFE_DELETE(m_pMonMgr);
 }
 
 void cScene_testMonster::Scene_Update(float timeDelta)
 {
-	m_pMonster->Update(timeDelta);
-	//m_pMage->Update(timeDelta);
+	m_pPlayer->Update(timeDelta);
 
-	if (KEY_MGR->IsOnceDown('H'))
-	{
-		LOG_MGR->AddLog("맞았다");
-		m_pMonster->Damage(10);
-	}
-
-	if (KEY_MGR->IsOnceDown('J'))
-	{
-		LOG_MGR->AddLog("때린다");
-		m_pMonster->Attack01();
-	}
+	m_pMonMgr->Update(timeDelta);
 }
 
 void cScene_testMonster::Scene_Render1()
@@ -137,19 +126,12 @@ void cScene_testMonster::Scene_Render1()
 	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
 	cXMesh_Static::SetBaseLight(dynamic_cast<cLight_Direction*>(lights[0]));
 
-	
-	//오브젝트를 랜더할 위치
-
-
-	//
-
-
 	//셰이더에 라이팅 셋팅
 	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrixArray("matLights", matLights, 10);
 	cXMesh_Skinned::sSkinnedMeshEffect->SetInt("LightNum", this->lights.size());
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 
-	m_pMonster->Render();
-	//m_pMage->Render();
+	m_pPlayer->Render();
+	m_pMonMgr->Render();
 }

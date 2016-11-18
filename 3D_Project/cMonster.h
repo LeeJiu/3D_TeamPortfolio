@@ -2,13 +2,13 @@
 #include "cBaseObject.h"
 
 class cWayPoint;
-class cBaseObject;
+class cPlayer;
 
 class cMonster : public cBaseObject
 {
-private:
+protected:
 	cWayPoint*		m_pWayPoint;
-	cBaseObject*	m_pPlayer;
+	cPlayer*		m_pPlayer;
 
 	std::vector<cBaseObject*>		m_vObjects;
 	
@@ -17,19 +17,24 @@ private:
 	ACTOR_STATE		m_state;
 	string			m_strName;
 
+	bool			m_inRange;
+
 public:
 	cMonster();
-	~cMonster();
+	virtual ~cMonster();
 
-	void BaseObjectEnable();
-	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
-	void BaseObjectBoundBox();
+	virtual void BaseObjectEnable();
+	virtual void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
+	virtual void BaseObjectBoundBox();
 
-	void MoveToPlayer();
-	void Attack01();
-	void Damage(float fDamage);
+	virtual void MoveToPlayer();
+	virtual void Attack01() = 0;
+	virtual void Damage(float fDamage) = 0;
 
-	void SetPlayerMemoryLink(cBaseObject* pPlayer) { m_pPlayer = pPlayer; }
-	void SetBoundObjects(vector<cBaseObject*> vObjects) { m_vObjects = vObjects; }
+	virtual bool GetInRange() { return m_inRange; }
+
+	virtual void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
+	virtual void SetBoundObjects(vector<cBaseObject*> vObjects) { m_vObjects = vObjects; }
+	virtual void SetInRange(bool check) { m_inRange = check; }
 };
 

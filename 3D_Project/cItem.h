@@ -4,6 +4,7 @@
 #include "cBaseObject.h"
 #include <string>
 
+static unsigned int increaseNum; // 고유번호 계산
 
 class cItem : public cBaseObject
 {

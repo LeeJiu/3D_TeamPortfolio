@@ -22,7 +22,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -81,22 +81,16 @@
     <ClInclude Include="animation_Test.h" />
     <ClInclude Include="berserker_test.h" />
     <ClInclude Include="BoneHierachy.h" />
-    <ClInclude Include="camera_Test.h" />
     <ClInclude Include="cBaseObject.h" />
     <ClInclude Include="cBaseskill.h" />
     <ClInclude Include="cBerserker.h" />
-    <ClInclude Include="cBerserKer_Attack.h" />
-    <ClInclude Include="cBerserKer_Attack2.h" />
-    <ClInclude Include="cBerserKer_Attack3.h" />
     <ClInclude Include="cBoundBox.h" />
     <ClInclude Include="cBoundSphere.h" />
     <ClInclude Include="cCamera.h" />
-    <ClInclude Include="cCommand.h" />
     <ClInclude Include="cDXFontManager.h" />
     <ClInclude Include="cFrustum.h" />
     <ClInclude Include="cGizmoManager.h" />
     <ClInclude Include="cImage.h" />
-    <ClInclude Include="cInputHandler.h" />
     <ClInclude Include="cInven.h" />
     <ClInclude Include="cItem.h" />
     <ClInclude Include="cItemManager.h" />
@@ -108,6 +102,7 @@
     <ClInclude Include="cMage.h" />
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cMonster.h" />
+    <ClInclude Include="cMonsterManager.h" />
     <ClInclude Include="cPartcleEmitter.h" />
     <ClInclude Include="cParticle.h" />
     <ClInclude Include="cParticleQuad.h" />
@@ -127,7 +122,6 @@
     <ClInclude Include="cScene_BoundBoxTool.h" />
     <ClInclude Include="cScene_Mgr.h" />
     <ClInclude Include="cScene_testMonster.h" />
-    <ClInclude Include="cScene_testPlayer.h" />
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
     <ClInclude Include="cSkill_Surround.h" />
@@ -136,9 +130,8 @@
     <ClInclude Include="cSpider.h" />
     <ClInclude Include="cSpriteManager.h" />
     <ClInclude Include="cTerrain.h" />
-    <ClInclude Include="cTestCommand.h" />
-    <ClInclude Include="cTestCommand2.h" />
     <ClInclude Include="cTimeMgr.h" />
+    <ClInclude Include="cTrailRender.h" />
     <ClInclude Include="cTransform.h" />
     <ClInclude Include="cSkillUi.h" />
     <ClInclude Include="cWayPoint.h" />
@@ -151,32 +144,24 @@
     <ClInclude Include="moveClass.h" />
     <ClInclude Include="move_Test.h" />
     <ClInclude Include="MyUtil.h" />
-    <ClInclude Include="sector_Test.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="t_Scene.h" />
-    <ClInclude Include="move_Test2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
+    <ClCompile Include="berserker_backup.cpp" />
     <ClCompile Include="berserker_test.cpp" />
     <ClCompile Include="BoneHierachy.cpp" />
-    <ClCompile Include="camera_Test.cpp" />
     <ClCompile Include="cBaseObject.cpp" />
     <ClCompile Include="cBaseskill.cpp" />
     <ClCompile Include="cBerserker.cpp" />
-    <ClCompile Include="cBerserKer_Attack.cpp" />
-    <ClCompile Include="cBerserKer_Attack2.cpp" />
-    <ClCompile Include="cBerserKer_Attack3.cpp" />
     <ClCompile Include="cBoundBox.cpp" />
     <ClCompile Include="cBoundSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
-    <ClCompile Include="cCommand.cpp" />
     <ClCompile Include="cDXFontManager.cpp" />
     <ClCompile Include="cFrustum.cpp" />
     <ClCompile Include="cGizmoManager.cpp" />
     <ClCompile Include="cImage.cpp" />
-    <ClCompile Include="cInputHandler.cpp" />
     <ClCompile Include="cInven.cpp" />
     <ClCompile Include="cItem.cpp" />
     <ClCompile Include="cItemManager.cpp" />
@@ -188,6 +173,7 @@
     <ClCompile Include="cMage.cpp" />
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cMonster.cpp" />
+    <ClCompile Include="cMonsterManager.cpp" />
     <ClCompile Include="cPartcleEmitter.cpp" />
     <ClCompile Include="cParticle.cpp" />
     <ClCompile Include="cParticleQuad.cpp" />
@@ -207,7 +193,6 @@
     <ClCompile Include="cScene_BoundBoxTool.cpp" />
     <ClCompile Include="cScene_Mgr.cpp" />
     <ClCompile Include="cScene_testMonster.cpp" />
-    <ClCompile Include="cScene_testPlayer.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
     <ClCompile Include="cSkill_Surround.cpp" />
@@ -216,9 +201,8 @@
     <ClCompile Include="cSpider.cpp" />
     <ClCompile Include="cSpriteManager.cpp" />
     <ClCompile Include="cTerrain.cpp" />
-    <ClCompile Include="cTestCommand.cpp" />
-    <ClCompile Include="cTestCommand2.cpp" />
     <ClCompile Include="cTimeMgr.cpp" />
+    <ClCompile Include="cTrailRender.cpp" />
     <ClCompile Include="cTransform.cpp" />
     <ClCompile Include="cSkillUi.cpp" />
     <ClCompile Include="cWayPoint.cpp" />
@@ -230,10 +214,7 @@
     <ClCompile Include="monster_Test.cpp" />
     <ClCompile Include="moveClass.cpp" />
     <ClCompile Include="move_Test.cpp" />
-    <ClCompile Include="move_Test2.cpp" />
     <ClCompile Include="MyUtil.cpp" />
-    <ClCompile Include="sector_Test.cpp" />
-    <ClCompile Include="t_Scene.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

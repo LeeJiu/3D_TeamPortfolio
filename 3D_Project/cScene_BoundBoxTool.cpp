@@ -5,6 +5,7 @@
 #include "cLight_Direction.h"
 #include "cLight_Point.h"
 #include "cCamera.h"
+#include <fstream>		//FileStream
 
 
 cScene_BoundBoxTool::cScene_BoundBoxTool()
@@ -46,28 +47,12 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
-	selectObject = new cBaseObject;
-	selectObject->SetActive(true);
-	selectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection));
+	m_pSelectObject = new cBaseObject;
+	m_pSelectObject->SetActive(true);
+	m_pSelectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X", &matCorrection));
 	
 	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X", &matCorrection);
 
-
-
-	//
-	//몬스터 세팅
-	//
-	m_pMonster = new cMonster;
-
-	//캐릭터 보정 행렬 세팅
-	D3DXMATRIXA16 matScale2;
-	D3DXMatrixScaling(&matScale2, 0.1f, 0.1f, 0.1f);
-	matCorrection = matScale2 * matRotate;
-
-	//캐릭터에게 지형 전달
-	m_pMonster->SetTerrain(m_pTerrain);
-	m_pMonster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Surcubus/surcubus.X", &matCorrection));
-	m_pMonster->SetActive(true);
 
 
 	//
@@ -104,6 +89,9 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 	this->lights.push_back(pLight3);*/
 
 
+	m_bSelectObj = false;
+
+
 	return S_OK;
 }
 
@@ -111,8 +99,7 @@ void cScene_BoundBoxTool::Scene_Release()
 {
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
-	SAFE_DELETE(m_pMonster);
-	SAFE_DELETE(selectObject);
+	SAFE_DELETE(m_pSelectObject);
 
 
 	vector<cBaseObject*>::iterator obj_iter;
@@ -134,9 +121,13 @@ void cScene_BoundBoxTool::Scene_Release()
 
 void cScene_BoundBoxTool::Scene_Update(float timeDelta)
 {
-	m_pMonster->Update(timeDelta);
+	//다이렉션 라이트 조종
+	//lights[0]->pTransform->DefaultControl2(timeDelta);
 
-	KeyControl(timeDelta);	
+	//선택한 오브젝트 크기 및 이동 설정
+	m_pSelectObject->pTransform->DefaultControl4(timeDelta);
+
+	KeyControl(timeDelta);
 }
 
 void cScene_BoundBoxTool::Scene_Render1()
@@ -161,12 +152,11 @@ void cScene_BoundBoxTool::Scene_Render1()
 
 
 	//셰이더에 라이팅 셋팅
-	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrixArray("matLights", matLights, 10);
+	/*cXMesh_Skinned::sSkinnedMeshEffect->SetMatrixArray("matLights", matLights, 10);
 	cXMesh_Skinned::sSkinnedMeshEffect->SetInt("LightNum", this->lights.size());
 
-	cXMesh_Skinned::SetCamera(this->pMainCamera);
+	cXMesh_Skinned::SetCamera(this->pMainCamera);*/
 
-	m_pMonster->Render();
 
 
 
@@ -182,27 +172,40 @@ void cScene_BoundBoxTool::Scene_Render1()
 
 void cScene_BoundBoxTool::KeyControl(float timeDelta)
 {
-	//다이렉션 라이트 조종
-	//lights[0]->pTransform->DefaultControl2(timeDelta);
-
 	//설치할 오브젝트를 변경한다.
 	if (KEY_MGR->IsOnceDown('1'))
 	{
-		selectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X"));
+		m_pSelectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X"));
 	}
 	if (KEY_MGR->IsOnceDown('2'))
 	{
-		selectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X"));
+		m_pSelectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal_House/house_nobel.X"));
 	}
 
-
-	//선택한 오브젝트 크기 및 이동 설정
-	selectObject->pTransform->DefaultControl4(timeDelta);
-
+	if (KEY_MGR->IsOnceDown(VK_RETURN))
+	{
+		m_bSelectObj = !m_bSelectObj;
+		if(m_bSelectObj)
+			LOG_MGR->AddLog("오브젝트 선택");
+		else
+			LOG_MGR->AddLog("오브젝트 세팅");
+	}
 
 	//피킹해서 그 위치에 오브젝트를 놓고,
 	//위치 시킨 오브젝트를 벡터에 추가한다.
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+	{
+		if (m_bSelectObj == true)
+		{
+			SelectObject();
+		}
+		else
+		{
+			SetObjects();
+		}
+	}
+
+	if (m_bSelectObj && KEY_MGR->IsStayDown(VK_LBUTTON))
 	{
 		Ray ray;
 		POINT ptMouse = GetMousePos();
@@ -213,59 +216,196 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 		D3DXVECTOR3 pos;
 		m_pTerrain->IsIntersectRay(&pos, &ray);
 
-		//오브젝트를 벡터에 추가한다.
-		cBaseObject* obj = new cBaseObject;
-		obj->SetMesh(selectObject->pMesh);
-		obj->pTransform->SetWorldPosition(pos);
-		obj->SetActive(true);
-		objects.push_back(obj);
+		m_pSelectObject->pTransform->SetWorldPosition(pos);
+	}
 
-		selectObject = objects.back();
+	if (KEY_MGR->IsStayDown(VK_LCONTROL) && KEY_MGR->IsOnceDown('S'))
+	{
+		SaveObjects();
+	}
 
-		//vector<cSetBoundObject*> hitBounds;
-		//vector<float>	hitdistances;
+	if (KEY_MGR->IsStayDown(VK_LCONTROL) && KEY_MGR->IsOnceDown('L'))
+	{
+		LoadObjects();
+	}
+}
 
-		////현제 있는 놈들 레이체크
-		//for (int i = 0; i < this->boundObjects.size(); i++)
-		//{
-		//	D3DXVECTOR3 hitPos;
-		//	if (PHYSICS_MGR->IsRayHitBound(
-		//		&ray,
-		//		&this->boundObjects[i]->BoundBox,
-		//		this->boundObjects[i]->pTransform,
-		//		&hitPos,
-		//		NULL)) {
+void cScene_BoundBoxTool::SetObjects()
+{
+	Ray ray;
+	POINT ptMouse = GetMousePos();
+	D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
+	this->pMainCamera->ComputeRay(&ray, &screenPos);
 
-		//		//충돌된 놈이라면...
-		//		hitBounds.push_back(this->boundObjects[i]);
+	//레이의 터레인 히트 포인트를 얻는다.
+	D3DXVECTOR3 pos;
+	m_pTerrain->IsIntersectRay(&pos, &ray);
 
-		//		//카메라로부터의 거리 제곱도 푸쉬
-		//		hitdistances.push_back(D3DXVec3LengthSq(
-		//			&(hitPos - this->pMainCamera->GetWorldPosition())));
+	//오브젝트를 벡터에 추가한다.
+	cBaseObject* obj = new cBaseObject;
+	obj->SetMesh(m_pSelectObject->pMesh);
+	obj->pTransform->SetWorldPosition(pos);
+	obj->SetActive(true);
+	objects.push_back(obj);
 
-		//	}
-		//}
+	//마지막에 넣은 오브젝트를 선택된 오브젝트로
+	m_pSelectObject = objects.back();
+}
+
+void cScene_BoundBoxTool::SelectObject()
+{
+	Ray ray;
+	POINT ptMouse = GetMousePos();
+	D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
+	this->pMainCamera->ComputeRay(&ray, &screenPos);
+
+	vector<cBaseObject*> hitObjects;
+	vector<float>	hitDistances;
+
+	//현재 있는 놈들 레이체크
+	int size = objects.size();
+	for (int i = 0; i < size; ++i)
+	{
+		D3DXVECTOR3 hitPos;
+		if (PHYSICS_MGR->IsRayHitBound(
+			&ray,
+			&this->objects[i]->BoundBox,
+			this->objects[i]->pTransform,
+			&hitPos,
+			NULL)) 
+		{
+			//충돌된 놈이라면...
+			hitObjects.push_back(this->objects[i]);
+
+			//카메라로부터의 거리 제곱도 푸쉬
+			hitDistances.push_back(D3DXVec3LengthSq(
+				&(hitPos - this->pMainCamera->GetWorldPosition())));
+		}
+	}
 
 
-		////히트 된 놈이 있다면...
-		//if (hitBounds.size() > 0)
-		//{
-		//	//일단 첫번째 
-		//	cSetBoundObject* pTarget = hitBounds[0];
-		//	float nearest = hitdistances[0];
+	//히트 된 놈이 있다면...
+	if (hitObjects.size() > 0)
+	{
+		//일단 첫번째 
+		cBaseObject* pTarget = hitObjects[0];
+		float nearest = hitDistances[0];
 
-		//	for (int i = 1; i < hitBounds.size(); i++)
-		//	{
-		//		//갱신
-		//		if (nearest > hitdistances[i])
-		//		{
-		//			nearest = hitdistances[i];
-		//			pTarget = hitBounds[i];
-		//		}
+		for (int i = 1; i < hitObjects.size(); i++)
+		{
+			//갱신
+			if (nearest > hitDistances[i])
+			{
+				nearest = hitDistances[i];
+				pTarget = hitObjects[i];
+			}
+		}
 
-		//	}
+		//선택된 오브젝트
+		m_pSelectObject = pTarget;
+	}
+}
 
-		//	this->selectBound = pTarget;
-		//}
+void cScene_BoundBoxTool::SaveObjects()
+{
+	fstream file;
+	file.open("ObjectData.txt", fstream::out); //fstream::out 파일 쓰기 모드
+
+	int size = objects.size();
+	for (int i = 0; i < objects.size(); i++)
+	{
+		cBaseObject* pObj = objects[i];
+
+		//위치 값 얻는다.
+		D3DXVECTOR3 pos = pObj->pTransform->GetWorldPosition();
+
+		//사원수 얻는다.
+		D3DXQUATERNION quat = pObj->pTransform->GetWorldRotateQuaternion();
+
+		//스케일 얻는다.
+		D3DXVECTOR3 scale = pObj->pTransform->GetScale();
+
+		file <<
+			"[" << pos.x << "," << pos.y << "," << pos.z << "]" <<  //Pos 쓴다.
+			"[" << quat.x << "," << quat.y << "," << quat.z << "," << quat.w << "]" <<		//사원수 쓴다
+			"[" << scale.x << "," << scale.y << "," << scale.z << "]" <<	//스케일쓴다.
+			endl;
+	}
+	file.close(); //다쓴파일 스트림을 클로즈
+
+
+	LOG_MGR->AddLog("Saved Objects !!!");
+}
+
+void cScene_BoundBoxTool::LoadObjects()
+{
+	fstream file;
+	file.open("ObjectData.txt", fstream::in);  //fstream::in 읽기모드
+
+	std::vector<std::string> strLine;		//string 을 저장하는 벡터
+
+	//파일끝까지 읽는다.
+	while (file.eof() == false)  // file.eof() 파일을 읽어재끼다 끝을만나면 true
+	{
+		std::string line;
+		file >> line;			//file 한줄 문자열을 읽어 line 에 대입
+		strLine.push_back(line);
+	}
+	file.close();		//다쓴 파일스트림은 닫는다.
+
+	//읽어온 파일 대로 셋팅
+	for (int i = 0; i < strLine.size(); i++)
+	{
+		if (strLine[i].size() == 0)
+			continue;
+
+		//한줄라인이 여기에 대입된다.
+		char cStr[2048];
+		strcpy(cStr, strLine[i].c_str());
+
+		char* pc;
+
+		//위치
+		D3DXVECTOR3 pos;
+		pc = strtok(cStr, "][,");			
+
+		pos.x = atof(pc);
+		pc = strtok(NULL, "][,");			
+											
+		pos.y = atof(pc);
+		pc = strtok(NULL, "][,");
+
+		pos.z = atof(pc);
+
+		//사원수
+		D3DXQUATERNION quat;
+		pc = strtok(NULL, "][,");
+		quat.x = atof(pc);
+		pc = strtok(NULL, "][,");
+		quat.y = atof(pc);
+		pc = strtok(NULL, "][,");
+		quat.z = atof(pc);
+		pc = strtok(NULL, "][,");
+		quat.w = atof(pc);
+
+		//스케일
+		D3DXVECTOR3 scale;
+		pc = strtok(NULL, "][,");
+		scale.x = atof(pc);
+		pc = strtok(NULL, "][,");
+		scale.y = atof(pc);
+		pc = strtok(NULL, "][,");
+		scale.z = atof(pc);
+
+		//위의 정보로 오브젝트 생성
+		cBaseObject* pObject = new cBaseObject();
+		pObject->SetActive(true);
+		pObject->pTransform->SetWorldPosition(pos);
+		pObject->pTransform->SetRotateWorld(quat);
+		pObject->pTransform->SetScale(scale);
+
+		//푸쉬 
+		objects.push_back(pObject);
+
 	}
 }
