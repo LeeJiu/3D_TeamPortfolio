@@ -130,8 +130,10 @@
     <ClInclude Include="cScene_testPlayer.h" />
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
+    <ClInclude Include="cSkill_Surround.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSoundManager.h" />
+    <ClInclude Include="cSpider.h" />
     <ClInclude Include="cSpriteManager.h" />
     <ClInclude Include="cTerrain.h" />
     <ClInclude Include="cTestCommand.h" />
@@ -208,8 +210,10 @@
     <ClCompile Include="cScene_testPlayer.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
+    <ClCompile Include="cSkill_Surround.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSoundManager.cpp" />
+    <ClCompile Include="cSpider.cpp" />
     <ClCompile Include="cSpriteManager.cpp" />
     <ClCompile Include="cTerrain.cpp" />
     <ClCompile Include="cTestCommand.cpp" />

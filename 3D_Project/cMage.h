@@ -12,6 +12,8 @@ class cCamera;
 class cInputHandler;
 class cStateHandler;
 class cWeapon;
+class cSkill_Surround;
+
 
 //스킬이펙트에 관한것
 class cQuadParticleEmitter;
@@ -24,10 +26,16 @@ class cParticle;
 class cMage : public cBaseObject
 {
 private:
+	//범위기에 관한것
+	cSkill_Surround*     m_SkillSurround;
 
+	//몬스터에 관한것
 	cBaseObject*          m_pMonster;
+	int                   m_StateCount;
 	bool                  m_isTarget;
 	bool                  m_MobCollision;
+	bool                  m_MobHit;
+	int                   m_MobHitCount;
 
 
 
@@ -36,8 +44,7 @@ private:
 
 	cCamera*			m_camera;
 	
-	cBoundBox*           m_ATKBox;
-	cTransform*          m_ATKBoxTrans;
+	cBaseObject*           m_ATKBox;
 
 	ACTOR_STATE			m_state;
 	std::string			m_current_Ani;
@@ -96,7 +103,7 @@ public:
 	void MonsterInit();
 
 	void MonsterUpdate(float timeDelta);
-	void MonsterCollision(); //충돌 체크하고
+	void MonsterCollision(float timeDelta); //충돌 체크하고
 
 	void MonsterRender();
 
@@ -123,8 +130,8 @@ public:
 
 	void SetCamera(cCamera* camera) { m_camera = camera; }
 
-	cBoundBox* GetATKBox() { return m_ATKBox; }
-	cTransform* GetATKBoxTrans() { return m_ATKBoxTrans; }
+	cBaseObject* GetATKBox() { return m_ATKBox; }
+	cTransform* GetATKBoxTrans() { return m_ATKBox->pTransform; }
 	bool        GetIsPetOn() { return m_isPetOn; }
 };
 

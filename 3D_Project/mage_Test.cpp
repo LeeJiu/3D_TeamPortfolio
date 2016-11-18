@@ -217,13 +217,15 @@ void mage_Test::Scene_Render1()
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 	this->pMage->Render();
 	this->pMage->ATKBoxRender();
-	this->pMage->WeaponRender();
 	
+	this->pMage->WeaponRender();
+
 	if (pMage->GetIsPetOn())
 	{
 		this->pPet->Render();
 	}
 	
+
 
 	//Hit 위치에 구
 	GIZMO_MGR->WireSphere(this->m_mousePos, 0.5f, 0xffff0000);

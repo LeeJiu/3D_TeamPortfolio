@@ -7,11 +7,17 @@ class cTerrain;
 class cSkinnedAnimation;
 class cPlayer;
 class cBerserker;
+class cMonster;
 
 class berserker_test : public cScene
 {
+	std::vector<cMonster*>				vMonsters;
+	std::vector<cMonster*>::iterator	viMonsters;
 private:
 	cBerserker*				pBerserker;
+	cMonster*				pGriff;
+
+
 	cTransform*				pTransForCamera;		//카메라용
 
 													// 도형 피킹에 쓸것.

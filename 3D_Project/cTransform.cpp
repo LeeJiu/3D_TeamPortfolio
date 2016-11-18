@@ -1340,8 +1340,8 @@ void cTransform::DefaultControl( float timeDelta )
 	static D3DXVECTOR3 nowVelocity( 0, 0, 0);			//현제 방향과 속도를 가진 벡터
 
 	static float accelate = 30.0f;						//초당 이동 증가값
-	static float nowSpeed = 3.0f;						//현재 속도
-	static float maxSpeed = 40.0f;						//최고 속도 
+	static float nowSpeed = 1.0f;						//현재 속도
+	static float maxSpeed = 20.0f;						//최고 속도 
 
 
 	//최초 누를때는 마우스 위치를 가운데로 놓고 시작

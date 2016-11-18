@@ -28,11 +28,14 @@
     <Filter Include="Handler">
       <UniqueIdentifier>{3829eae1-802e-4bf9-a6a0-1f7937c7218b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameActor">
+      <UniqueIdentifier>{485420e6-2a98-48de-afd1-6d5503dc3252}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{8d2a1705-2813-409f-9e6c-6b5d6da36a26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameActor">
-      <UniqueIdentifier>{485420e6-2a98-48de-afd1-6d5503dc3252}</UniqueIdentifier>
+    <Filter Include="ObjClass">
+      <UniqueIdentifier>{d3a61c23-fd41-4ccc-8701-141554358b36}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +46,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="cMainGame.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cImage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="cTimeMgr.h">
@@ -108,6 +114,12 @@
     <ClInclude Include="cBaseObject.h">
       <Filter>BaseObject</Filter>
     </ClInclude>
+    <ClInclude Include="cBoundSphere.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cBoundBox.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="cPhysicManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -140,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="cQuadParticleEmitter.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cFrustum.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="cScene_Mgr.h">
       <Filter>Managers</Filter>
@@ -189,11 +204,26 @@
     <ClInclude Include="sector_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="moveClass.h">
+      <Filter>GameActor</Filter>
+    </ClInclude>
     <ClInclude Include="cMage.h">
       <Filter>GameActor</Filter>
     </ClInclude>
-    <ClInclude Include="cBaseskill.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="cWayPoint.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cBerserker.h">
+      <Filter>GameActor</Filter>
+    </ClInclude>
+    <ClInclude Include="berserker_test.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_testMonster.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_BoundBoxTool.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="cSpriteManager.h">
       <Filter>Managers</Filter>
@@ -201,68 +231,47 @@
     <ClInclude Include="cSoundManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="mage_Test.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene_BoundBoxTool.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cBoundBox.h">
-      <Filter>BaseObject</Filter>
-    </ClInclude>
-    <ClInclude Include="cBoundSphere.h">
-      <Filter>BaseObject</Filter>
-    </ClInclude>
-    <ClInclude Include="cFrustum.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cWayPoint.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="moveClass.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="monster_Test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cImage.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cScene_testMonster.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cPet.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
-    <ClInclude Include="cBerserker.h">
-      <Filter>GameActor</Filter>
-    </ClInclude>
     <ClInclude Include="cBerserKer_Attack.h">
-      <Filter>Component</Filter>
+      <Filter>Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="cBaseskill.h">
+      <Filter>Handler</Filter>
     </ClInclude>
     <ClInclude Include="cBerserKer_Attack2.h">
-      <Filter>Component</Filter>
+      <Filter>Handler</Filter>
     </ClInclude>
     <ClInclude Include="cBerserKer_Attack3.h">
-      <Filter>Component</Filter>
+      <Filter>Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="cPet.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cWeapon.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="mage_Test.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cSpider.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="cInven.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cItem.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="cItemManager.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="cItem.h">
+      <Filter>Component</Filter>
+    </ClInclude>
     <ClInclude Include="cSkillUi.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="cWeapon.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="berserker_test.h">
-      <Filter>Scenes</Filter>
+    <ClInclude Include="cSkill_Surround.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +282,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cMainGame.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cImage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cTimeMgr.cpp">
@@ -338,6 +350,12 @@
     <ClCompile Include="cBaseObject.cpp">
       <Filter>BaseObject</Filter>
     </ClCompile>
+    <ClCompile Include="cBoundSphere.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cBoundBox.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="cPhysicManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -370,6 +388,9 @@
     </ClCompile>
     <ClCompile Include="cQuadParticleEmitter.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrustum.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cScene_Mgr.cpp">
       <Filter>Managers</Filter>
@@ -419,11 +440,26 @@
     <ClCompile Include="sector_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="moveClass.cpp">
+      <Filter>GameActor</Filter>
+    </ClCompile>
     <ClCompile Include="cMage.cpp">
       <Filter>GameActor</Filter>
     </ClCompile>
-    <ClCompile Include="cBaseskill.cpp">
-      <Filter>Component</Filter>
+    <ClCompile Include="cWayPoint.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cBerserker.cpp">
+      <Filter>GameActor</Filter>
+    </ClCompile>
+    <ClCompile Include="berserker_test.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_testMonster.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_BoundBoxTool.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="cSpriteManager.cpp">
       <Filter>Managers</Filter>
@@ -431,41 +467,35 @@
     <ClCompile Include="cSoundManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="mage_Test.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_BoundBoxTool.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cBoundBox.cpp">
-      <Filter>BaseObject</Filter>
-    </ClCompile>
-    <ClCompile Include="cBoundSphere.cpp">
-      <Filter>BaseObject</Filter>
-    </ClCompile>
-    <ClCompile Include="cFrustum.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cWayPoint.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="moveClass.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="monster_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cImage.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cScene_testMonster.cpp">
+    <ClCompile Include="mage_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cPet.cpp">
-      <Filter>GameActor</Filter>
+    <ClCompile Include="cBerserKer_Attack.cpp">
+      <Filter>Handler</Filter>
     </ClCompile>
-    <ClCompile Include="cBerserker.cpp">
-      <Filter>GameActor</Filter>
+    <ClCompile Include="cBaseskill.cpp">
+      <Filter>Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="cBerserKer_Attack2.cpp">
+      <Filter>Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="cBerserKer_Attack3.cpp">
+      <Filter>Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="cPet.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cWeapon.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cSpider.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cInven.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cItem.cpp">
       <Filter>Component</Filter>
@@ -473,26 +503,11 @@
     <ClCompile Include="cItemManager.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="cInven.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cBerserKer_Attack3.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cBerserKer_Attack2.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cBerserKer_Attack.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cWeapon.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="cSkillUi.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="berserker_test.cpp">
-      <Filter>Scenes</Filter>
+    <ClCompile Include="cSkill_Surround.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

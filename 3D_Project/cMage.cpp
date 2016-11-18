@@ -10,6 +10,7 @@
 #include "cParticle.h"
 #include "cQuadParticleEmitter.h"
 
+//스킬
 
 cMage::cMage()
 {
@@ -35,7 +36,7 @@ void cMage::BaseObjectEnable()
 	//몬스터 관련
 	MonsterInit();
 
-
+	
 
 	//무기 관련
 
@@ -62,12 +63,12 @@ void cMage::BaseObjectEnable()
 
 
 	//평타 박스
-	m_ATKBox = new cBoundBox;
-	m_ATKBox->Init(D3DXVECTOR3(-0.3f, -0.3f, -0.3f), D3DXVECTOR3(0.3f, 0.3f, 0.3f));
+	m_ATKBox = new cBaseObject;
+	m_ATKBox->BoundBox.Init(D3DXVECTOR3(-0.3f, -0.3f, -0.3f), D3DXVECTOR3(0.3f, 0.3f, 0.3f));
 
-	m_ATKBoxTrans = new cTransform;
-	m_ATKBox->SetBound(&m_ATKBoxTrans->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
-	pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBoxTrans);
+	
+	m_ATKBox->BoundBox.SetBound(&m_ATKBox->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
+	pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
 
 
 
@@ -87,6 +88,8 @@ void cMage::BaseObjectEnable()
 	m_pMove = new moveClass;
 	m_isMove = false;
 
+
+
 	//무빙용으로 사용할 키값 세팅
 	std::pair<int, bool> key_W('W', false);
 	std::pair<int, bool> key_S('S', false);
@@ -103,6 +106,9 @@ void cMage::BaseObjectEnable()
 void cMage::BaseObjectUpdate(float timeDelta)
 {
 	cCommand* command = m_pInput->HandleInput();
+
+
+
 	if (command != NULL)
 	{
 		command->Execute();
@@ -162,6 +168,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 			m_state = ATK_01;
 			m_Aniname = SetAnimation(m_state);
 			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
+			MagicATKInit();
 			m_magicATK->StartEmission();
 			m_isMagicATK = true;
 			m_aniCount = 0;
@@ -183,6 +190,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 			m_state = STF_FROZEN;
 			m_Aniname = SetAnimation(m_state);
 			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
+			FlameRoadInit();
 			m_flameRoad_cast = true;
 			m_flameRoad_cast_count = 0;
 			m_aniCount = 0;
@@ -267,7 +275,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	if (m_aniCount == 120)
 	{
 		m_magicATK->StopEmission();
-		//m_isMagicATK = false;
+		m_isMagicATK = false;
 	}
 
 	if (m_aniCount == 600)
@@ -297,6 +305,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_flameRoad2->StopEmission();
 		m_flameRoad3->StopEmission();
 		m_flameRoad_cast_count = 0;
+		m_isFlameRoad = false;
 		m_flameRoad_cast = false;
 	}
 
@@ -306,7 +315,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	{
 		m_aniCount++;
 		m_magicATK->Update(timeDelta);
-		m_magicATK->pTransform->SetWorldPosition(this->m_ATKBoxTrans->GetWorldPosition());
+		m_magicATK->pTransform->SetWorldPosition(this->m_ATKBox->pTransform->GetWorldPosition());
 	}
 
 
@@ -316,11 +325,11 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_aniCount++;
 		m_flameRoad->Update(timeDelta);
 		m_flameRoad2->Update(timeDelta);
+		m_flameRoad3->Update(timeDelta);
 		m_flameRoad->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
 		m_flameRoad->pTransform->LookDirection(pTransform->GetForward(), 90.0f * ONE_RAD);
 		m_flameRoad2->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
 		m_flameRoad2->pTransform->LookDirection(pTransform->GetForward(), 90.0f * ONE_RAD);
-		m_flameRoad3->Update(timeDelta);
 		m_flameRoad3->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
 		m_flameRoad3->pTransform->LookDirection(pTransform->GetForward(), 90.0f * ONE_RAD);
 	}
@@ -359,7 +368,7 @@ void cMage::ATKBoxRender()
 
 
 
-	m_ATKBox->RenderGizmo(m_ATKBoxTrans);
+	//m_ATKBox->BoundBox.RenderGizmo(m_ATKBox->pTransform);
 
 
 }
@@ -368,8 +377,12 @@ void cMage::WeaponRender()
 {
 
 	this->pWeapon->Render();
-	SkillRender();
+	
 	MonsterRender();
+
+	SkillRender();
+
+
 
 }
 
@@ -377,9 +390,8 @@ void  cMage::SkillInit()
 {
 	m_aniCount = 0;
 	SnowStormInit();
-	MagicATKInit();
 	MagicShildInit();
-	FlameRoadInit();
+	
 	m_isSnowStorm = false;
 	m_isMagicATK = false;
 	m_isMagicShild = false;
@@ -432,16 +444,16 @@ void cMage::MagicATKInit()
 
 	VEC_SCALE scales;
 	scales.push_back(1.5f);  //초반 크기
-	scales.push_back(0.5f);
+	scales.push_back(2.5f);
 
 	m_magicATK->Init(
 		100,
 		50.0f,     //이펙트 몇장
 		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
-		5.0f,
+		1.0f,
 		D3DXVECTOR3(0, 0, 0),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 1, 0),
-		D3DXVECTOR3(0, 1, 0),     //회전량
+		D3DXVECTOR3(0, 1, -1),
+		D3DXVECTOR3(0, 1, -1),     //회전량
 		D3DXVECTOR3(1, 1, 1),     //축회전 없이 태풍같은 이펙트는 고정
 		D3DXVECTOR3(90 * ONE_RAD, 90 * ONE_RAD, 0),	//초기시작시 회전 min
 		D3DXVECTOR3(180 * ONE_RAD, 180 * ONE_RAD, 0),     //초기시작시 회전Max
@@ -450,7 +462,7 @@ void cMage::MagicATKInit()
 		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors, scales,
-		1.0f, 0.5f,
+		1.0f, 2.5f,
 		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/magicalATK.tga"),
 		true);
 
@@ -478,7 +490,7 @@ void cMage::FlameRoadInit()
 	scales.push_back(6.0f);
 
 	m_flameRoad->Init(
-		100,
+		101,
 		50.0f,     //이펙트 몇장
 		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
 		3.0f,
@@ -512,7 +524,7 @@ void cMage::FlameRoadInit()
 	scales2.push_back(4.0f);
 
 	m_flameRoad2->Init(
-		100,
+		102,
 		50.0f,     //이펙트 몇장
 		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
 		3.0f,
@@ -566,7 +578,6 @@ void cMage::FlameRoadInit()
 
 	m_flameRoad3->EmissionType = PATICLE_EMISSION_TYPE::SPHERE_OUTLINE;
 	m_flameRoad3->SphereEmissionRange = 3.0f;
-	m_flameRoad3->StartEmission();
 
 }
 
@@ -764,15 +775,17 @@ void cMage::MonsterUpdate(float timeDelta)
 
 
 
-	MonsterCollision();
+	MonsterCollision(timeDelta);
 	
-
+	
 
 }
 
 
-void cMage::MonsterCollision()
+void cMage::MonsterCollision(float timeDelta)
 {
+
+	D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_pMonster->pTransform->GetWorldPosition();
 
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	{
@@ -780,12 +793,12 @@ void cMage::MonsterCollision()
 		POINT ptMousePos = GetMousePos();
 		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
 		this->m_camera->ComputeRay(&ray, &screenPos);
-		
+
 		if (PHYSICS_MGR->IsRayHitBound(&ray, &m_pMonster->BoundBox, m_pMonster->pTransform, NULL, NULL))
 		{
 			m_isTarget = true;
-			m_pMonster->pSkinned->PlayOneShot("DMG", 0.3f);
-			pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition(), 90.0f * ONE_RAD);
+			m_pMonster->pSkinned->PlayOneShot("WAIT", 0.3f);
+
 		}
 		else
 		{
@@ -793,7 +806,64 @@ void cMage::MonsterCollision()
 			m_pMonster->pSkinned->Play("IDLE", 0.3f);
 		}
 
+
+		if (m_isTarget &&D3DXVec3Length(&magicATKLegth) > 20)
+		{
+			m_state = RUN;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->Play(m_Aniname, 0.3);
+		}
+
+	
 	}
+
+
+
+	if (m_isTarget && D3DXVec3Length(&magicATKLegth) > 20)
+	{
+		pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition(), 90.0f * ONE_RAD);
+		pTransform->MovePositionSelf(D3DXVECTOR3(0, 0, 10.0f * timeDelta));
+		m_StateCount = 0;
+		//사거리 밖이면 이동해라
+	}
+	else
+	{
+
+		m_StateCount++;
+		if (m_StateCount == 1)
+		{
+			m_state = WAIT;
+			m_Aniname = SetAnimation(m_state);
+			this->pSkinned->Play(m_Aniname, 0.3);
+		}
+	
+	}
+
+
+
+
+	if (m_isTarget && D3DXVec3Length(&magicATKLegth) < 20);
+	{
+	
+
+		if (m_isMagicATK)
+		{
+			pSkinned->RemoveBoneTransform("Bip01-L-Hand");
+			m_ATKBox->pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
+			m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
+		}
+		else
+		{
+			pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
+		}
+	
+	}
+	
+	if (PHYSICS_MGR->IsOverlap(m_ATKBox, m_pMonster))
+	{
+		
+	}
+
 
 
 
