@@ -1,6 +1,7 @@
 #pragma once
 #include "cBaseObject.h"
 #include "moveClass.h"
+#include "cInven.h"
 
 class cTerrain;
 class cCamera;
@@ -20,6 +21,7 @@ protected:
 
 	moveClass*			m_pMove;
 	cCamera*			m_camera;
+	cInven*				m_inven;
 	cWeapon*			m_Weapon;
 	
 	cMonster*			m_target;			//타겟몬스터 
@@ -33,6 +35,8 @@ protected:
 
 	bool				m_isMove;
 	bool				m_isAttack;
+	bool				m_invenOn;
+
 public:
 	cPlayer();
 	virtual ~cPlayer();
@@ -40,6 +44,10 @@ public:
 	virtual void BaseObjectEnable();
 	virtual void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
 	virtual void BaseObjectRender();
+	virtual void BaseSpriteRender();
+
+	virtual void UiUpdate(float timeDelta, cCamera* camera);
+	virtual void UiURender();
 
 	virtual void Move(float timeDelta);
 	virtual void Monster_pick();
@@ -57,7 +65,7 @@ public:
 	virtual bool LengthCheck();
 	virtual void RangeCheck(float range);		//범위체크
 
-	virtual void SetMoveKeys();
+	virtual void SetBassClass();
 	
 	virtual void SetCamera(cCamera* camera) { m_camera = camera; }
 	virtual void SetMonsterManager(cMonsterManager* pMonMgr) { m_pMonMgr = pMonMgr; }

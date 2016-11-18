@@ -44,6 +44,8 @@ public:
 	void putItem();
 	void weaponClick(POINT mouse);
 
+	bool GetInvenOn() { return invenOpen; }
+
 	D3DXVECTOR3 screenPos(int x,int y);
 
 	bool inputItem(int row, int coll,cItem* item);

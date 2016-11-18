@@ -3,6 +3,7 @@
 #include "cScene.h"
 #include "cSkillUi.h"
 #include "cInven.h"
+
 class cBaseObject;
 class cCamera;
 class cTerrain;

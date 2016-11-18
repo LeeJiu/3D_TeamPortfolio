@@ -479,8 +479,9 @@ void cInven::weaponClick(POINT mouse)
 		weapon.skillImage = NULL;
 		weapon.isPoint = false; // 진짜 포인트가지고 있는 놈
 		weapon.itemNum = 0;//아이템은 1부터 만들어짐. 
+		weapon.m_Item->pTransform->SetRotateWorld(weapon.m_Item->getBasicRotaion());
 
 		itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
-
+		//혹시 이상하게 나오면 트랜스폼 초기화
 	}
 }

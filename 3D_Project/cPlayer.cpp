@@ -14,6 +14,8 @@ cPlayer::cPlayer()
 cPlayer::~cPlayer()
 {
 	SAFE_DELETE(m_pMove);
+	m_inven->release();
+	SAFE_DELETE(m_inven);
 }
 
 void cPlayer::BaseObjectEnable()
@@ -30,6 +32,23 @@ void cPlayer::BaseObjectUpdate(float timeDelta)
 void cPlayer::BaseObjectRender()
 {
 	this->pSkinned->Render(this->pTransform);
+}
+
+void cPlayer::BaseSpriteRender()
+{
+	
+}
+
+void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
+{
+	m_inven->update(timeDelta, m_camera);
+	ITEM_MGR->update(timeDelta);
+}
+
+void cPlayer::UiURender()
+{
+	m_inven->render();
+	ITEM_MGR->render();
 }
 
 void cPlayer::Move(float timeDelta)
@@ -145,23 +164,7 @@ void cPlayer::RangeCheck(float range)
 	}
 }
 
-void cPlayer::Attack01()
-{
-}
-
-void cPlayer::Attack02()
-{
-}
-
-void cPlayer::Attack03()
-{
-}
-
-void cPlayer::Damage(float damage)
-{
-}
-
-void cPlayer::SetMoveKeys()
+void cPlayer::SetBassClass()
 {
 	m_pMove = new moveClass;
 	m_isMove = false;
@@ -176,4 +179,8 @@ void cPlayer::SetMoveKeys()
 	m_InputKeys.insert(key_A);
 	m_InputKeys.insert(key_D);
 
+	//인벤토리
+	m_inven = new cInven;
+	m_inven->init();
+	m_invenOn = false;
 }

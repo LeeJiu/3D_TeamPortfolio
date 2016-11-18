@@ -5,6 +5,7 @@
 #include "cMonsterManager.h"
 #include "cMonster.h"
 #include "cCamera.h"
+#include "cInven.h"
 
 cBerserker::cBerserker()
 {
@@ -12,25 +13,24 @@ cBerserker::cBerserker()
 
 cBerserker::~cBerserker()
 {
-	//SAFE_DELETE(m_pMove);
-	SAFE_DELETE(m_Weapon);
+	//SAFE_DELETE(m_Weapon);
 }
 
 
 void cBerserker::BaseObjectEnable()
 {
 	//무기 관련
-	D3DXMATRIXA16 matScale;
-	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
-	D3DXMATRIXA16 matCorrection = matScale;
-	cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/TAX_Basic.X", &matCorrection);
-	
-	m_Weapon = new cWeapon;
-	m_Weapon->SetMesh(pSTF_Basic);
-	m_Weapon->SetActive(true);
-
-	m_Weapon->BoundBox.SetBound(&m_Weapon->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
-	pSkinned->AddBoneTransform("BN_Weapon_R", m_Weapon->pTransform);
+	//D3DXMATRIXA16 matScale;
+	//D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
+	//D3DXMATRIXA16 matCorrection = matScale;
+	//cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/TAX_Basic.X", &matCorrection);
+	//
+	//m_Weapon = new cWeapon;
+	//m_Weapon->SetMesh(pSTF_Basic);
+	//m_Weapon->SetActive(true);
+	//
+	//m_Weapon->BoundBox.SetBound(&m_Weapon->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
+	//pSkinned->AddBoneTransform("BN_Weapon_R", m_Weapon->pTransform);
 
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
@@ -42,14 +42,15 @@ void cBerserker::BaseObjectEnable()
 	m_attackLength = 5;
 	m_damage = 100;
 	m_isAttack = false;
-
+	 
 	//sk3
 	m_SwingCnt = 0;
 
 	m_vMonster = m_pMonMgr->GetMonsters();
+	m_Weapon = NULL;
 	m_target = NULL;
 	
-	SetMoveKeys();
+	SetBassClass();
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
 	m_atkCnt = 1;
@@ -60,8 +61,9 @@ void cBerserker::BaseObjectEnable()
 void cBerserker::BaseObjectUpdate(float timeDelta)
 {
 	Move(timeDelta);
-	Monster_pick();
-
+	//Monster_pick();
+	//if(m_invenOn)
+	UiUpdate(timeDelta, m_camera);
 	//======================테스트용 애니 확인==================================
 
 	if (KEY_MGR->IsOnceDown(VK_NUMPAD1))
@@ -191,7 +193,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//test용 로그 출려꾸 
 	if (m_testtime > 1)
 	{
-		LOG_MGR->AddLog("%d", m_isMove);
+		LOG_MGR->AddLog("%d", m_inven->GetInvenOn());
 		m_testtime = 0;
 	}
 }
@@ -205,8 +207,13 @@ void cBerserker::BaseObjectRender()
 		m_Weapon->Render();
 		m_Weapon->pTransform->RenderGimozo();
 	}
-
+	
 	this->pSkinned->Render(this->pTransform);
+}
+
+void cBerserker::BaseSpriteRender()
+{
+	UiURender();
 }
 
 void cBerserker::Damage(float damage)

@@ -158,8 +158,16 @@ void berserker_test::Scene_Update(float timeDelta)
 		isCharView = true;
 		isAltView = false;
 	}
+	if (KEY_MGR->IsOnceUp('T'))
+	{
+		ITEM_MGR->createItem(1, D3DXVECTOR3(0, 7, 0));
 
+	}
+	if (KEY_MGR->IsOnceUp('Y'))
+	{
+		ITEM_MGR->createItem(0, D3DXVECTOR3(0, 7, 0));
 
+	}
 	if (isCharView)
 	{
 		pMainCamera->DefaultControl3(timeDelta, this->pBerserker->pTransform);
@@ -201,4 +209,5 @@ void berserker_test::Scene_Render1()
 
 void berserker_test::Scene_RenderSprite()
 {
+	this->pBerserker->BaseSpriteRender();
 }
