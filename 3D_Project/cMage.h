@@ -8,7 +8,7 @@
 class cTerrain;
 class cCamera;
 class cStateHandler;
-class cWeapon;
+class cItem;
 class cSkill_Surround;
 
 
@@ -36,7 +36,7 @@ private:
 
 
 
-	cWeapon*             pWeapon;
+	cItem*             pWeapon;
 	
 
 	cCamera*			m_camera;

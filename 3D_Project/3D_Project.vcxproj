@@ -135,7 +135,6 @@
     <ClInclude Include="cTransform.h" />
     <ClInclude Include="cSkillUi.h" />
     <ClInclude Include="cWayPoint.h" />
-    <ClInclude Include="cWeapon.h" />
     <ClInclude Include="cXMesh.h" />
     <ClInclude Include="cXMesh_Skinned.h" />
     <ClInclude Include="cXMesh_Static.h" />
@@ -206,7 +205,6 @@
     <ClCompile Include="cTransform.cpp" />
     <ClCompile Include="cSkillUi.cpp" />
     <ClCompile Include="cWayPoint.cpp" />
-    <ClCompile Include="cWeapon.cpp" />
     <ClCompile Include="cXMesh.cpp" />
     <ClCompile Include="cXMesh_Skinned.cpp" />
     <ClCompile Include="cXMesh_Static.cpp" />

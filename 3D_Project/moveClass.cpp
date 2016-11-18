@@ -82,13 +82,13 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 	if (m_InputKey.find('W')->second)		//m_InputKey.find(키값)->second이 true이면.
 	{
 		this->isMove = true;
-		moveRay.origin += pCharTrans->GetForward()*0.2f;
+		moveRay.origin += pCharTrans->GetForward()*0.1f;
 	}
 
 	if (m_InputKey.find('S')->second)
 	{
 		this->isMove = true;
-		moveRay.origin -= pCharTrans->GetForward()*0.2f;
+		moveRay.origin -= pCharTrans->GetForward()*0.1f;
 	}
 
 	if (m_InputKey.find('A')->second)

@@ -36,13 +36,12 @@ HRESULT berserker_test::Scene_Init()
 	m_bMove = false;
 
 	D3DXMATRIXA16 matScale;
-	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
+	D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
 	D3DXMATRIXA16 matRotate;
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Pant/Pant_Master.X", &matCorrection);
-	cXMesh_Skinned* pSkinned_mon = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_Spider.X", &matCorrection);
 
 	//+++애니메이션 체크 관련+++++
 
@@ -78,7 +77,7 @@ HRESULT berserker_test::Scene_Init()
 	this->pTransForCamera = new cTransform();
 
 	this->pBerserker->pTransform->AddChild(this->pMainCamera);
-	this->pMainCamera->SetLocalPosition(0, 5, -10);
+	this->pMainCamera->SetLocalPosition(0, 2, -5);
 	isCharView = true;
 	isAltView = false;
 
@@ -154,7 +153,7 @@ void berserker_test::Scene_Update(float timeDelta)
 		this->pTransForCamera->SetWorldMatrix(this->pBerserker->pTransform->GetFinalMatrix());
 
 		this->pBerserker->pTransform->AddChild(this->pMainCamera);
-		this->pMainCamera->SetLocalPosition(0, 5, -10);
+		this->pMainCamera->SetLocalPosition(0, 2, -5);
 		isCharView = true;
 		isAltView = false;
 	}
@@ -201,7 +200,7 @@ void berserker_test::Scene_Render1()
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	this->pBerserker->Render();
-	this->m_pMonMgr->Render();
+	//this->m_pMonMgr->Render();
 
 	m_Land->Render();
 }

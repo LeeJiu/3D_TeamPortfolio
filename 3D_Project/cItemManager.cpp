@@ -72,7 +72,7 @@ void cItemManager::createItemList()
 
 	//std::map<int, cItem>::iterator pFind;
 	D3DXMATRIXA16 matScale;
-	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
+	D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
 	D3DXMATRIXA16 matCorrection = matScale;
 
 	//원본 메쉬 로딩

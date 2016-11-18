@@ -213,9 +213,6 @@
     <ClInclude Include="cSkillUi.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="cWeapon.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="berserker_test.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -414,9 +411,6 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cInven.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cWeapon.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cSkillUi.cpp">
