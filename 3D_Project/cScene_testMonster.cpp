@@ -34,7 +34,7 @@ HRESULT cScene_testMonster::Scene_Init()
 
 	//캐릭터 보정 행렬 세팅
 	D3DXMATRIXA16 matScale;
-	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
+	D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
 	D3DXMATRIXA16 matRotate;
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
@@ -46,8 +46,7 @@ HRESULT cScene_testMonster::Scene_Init()
 	m_pPlayer = new cBerserker;
 	m_pPlayer->SetTerrain(m_pTerrain);
 	m_pPlayer->SetCamera(pMainCamera);
-	m_pPlayer->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Queen/Queen.X", &matCorrection));
-	m_pPlayer->SetActive(true);
+	m_pPlayer->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Pant/Pant_Master.X", &matCorrection));
 
 
 	//
@@ -58,6 +57,9 @@ HRESULT cScene_testMonster::Scene_Init()
 	m_pMonMgr->SetPlayer(m_pPlayer);
 	m_pMonMgr->Init();
 
+
+	m_pPlayer->SetMonsterManager(m_pMonMgr);
+	m_pPlayer->SetActive(true);
 
 	//
 	//라이트 세팅

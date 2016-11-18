@@ -28,7 +28,7 @@ public:
 	virtual void BaseObjectBoundBox();
 
 	virtual void MoveToPlayer();
-	virtual void Attack01() = 0;
+	virtual void Attack01() {};
 	virtual void Damage(float fDamage) = 0;
 
 	virtual bool GetInRange() { return m_inRange; }

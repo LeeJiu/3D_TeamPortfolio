@@ -18,13 +18,18 @@ HRESULT cMonsterManager::Init()
 	//
 	//캐릭터 보정 행렬 세팅
 	D3DXMATRIXA16 matScale;
-	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
+	D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
 	D3DXMATRIXA16 matRotate;
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
+	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Bashil/MOB_Bashil.X", &matCorrection);
+	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Griff/MOB_HipGriff.X", &matCorrection);
+	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Minho/MOB_Minho.X", &matCorrection);
 	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_Spider.X", &matCorrection);
-
+	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_SpiderQueen.X", &matCorrection);
+	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Surcubus/surcubus.X", &matCorrection);
+	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Boss/SkulDragon/skulDragon_1.X", &matCorrection);
 
 
 	//파일로부터 몬스터 정보를 로드해온다.
@@ -63,13 +68,57 @@ void cMonsterManager::Render()
 void cMonsterManager::LoadMonsters()
 {
 	//파일로부터 읽어들인 몬스터 정보로 몬스터를 세팅한다.
+	fstream file;
+	file.open("MonsterData.txt", fstream::in);  //fstream::in 읽기모드
+
+	std::vector<std::string> strLine;		//string 을 저장하는 벡터
+
+	//파일끝까지 읽는다.
+	while (file.eof() == false)  // file.eof() 파일을 읽어재끼다 끝을만나면 true
+	{
+		std::string line;
+		file >> line;			//file 한줄 문자열을 읽어 line 에 대입
+		strLine.push_back(line);
+	}
+	file.close();		//다쓴 파일스트림은 닫는다.
+
+	//읽어온 파일 대로 셋팅
+	for (int i = 0; i < strLine.size(); i++)
+	{
+		if (strLine[i].size() == 0)
+			continue;
+
+		//한줄라인이 여기에 대입된다.
+		char cStr[2048];
+		strcpy(cStr, strLine[i].c_str());
+
+		char* pc;
+
+		//몬스터 타입
+		MONSTER_TYPE type;
+		pc = strtok(cStr, "][,");
+		type = (MONSTER_TYPE)atoi(pc);
+
+		//위치
+		D3DXVECTOR3 pos;
+		pc = strtok(NULL, "][,");
+
+		pos.x = atof(pc);
+		pc = strtok(NULL, "][,");
+
+		pos.y = atof(pc);
+		pc = strtok(NULL, "][,");
+
+		pos.z = atof(pc);
 
 
+		//푸쉬 
+		CreateMonster(type, pos);
+	}
 
-
-	//아직은 임시로 몬스터를 세팅한다.
-	CreateMonster(SPIDER, D3DXVECTOR3(10, m_pTerrain->GetHeight(10, 5), 5));
-	CreateMonster(SPIDER, D3DXVECTOR3(10, m_pTerrain->GetHeight(10, 0), 0));
+	//임시로 몬스터를 세팅하려면 CreateMonster()에 추가하고,
+	//다음과 같이 코드를 작성한다. type, pos
+	CreateMonster(DRAGON, D3DXVECTOR3(10, m_pTerrain->GetHeight(10, 10), 10));
 }
 
 void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
@@ -79,10 +128,28 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 	switch (type)
 	{
 	case BASILISK:
+		monster = new cBasilisk;
+		monster->SetTerrain(m_pTerrain);
+		monster->SetPlayer(m_pPlayer);
+		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Bashil/MOB_Bashil.X"));
+		monster->pTransform->SetWorldPosition(pos);
+		monster->SetActive(true);
 		break;
 	case GRIFF:
+		monster = new cGriff;
+		monster->SetTerrain(m_pTerrain);
+		monster->SetPlayer(m_pPlayer);
+		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Griff/MOB_HipGriff.X"));
+		monster->pTransform->SetWorldPosition(pos);
+		monster->SetActive(true);
 		break;
 	case MINO:
+		monster = new cMinotauros;
+		monster->SetTerrain(m_pTerrain);
+		monster->SetPlayer(m_pPlayer);
+		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Minho/MOB_Minho.X"));
+		monster->pTransform->SetWorldPosition(pos);
+		monster->SetActive(true);
 		break;
 	case SPIDER:
 		monster = new cSpider(1000, 10);
@@ -93,10 +160,28 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->SetActive(true);
 		break;
 	case SPIDER_QUEEN:
+		monster = new cSpiderQueen;
+		monster->SetTerrain(m_pTerrain);
+		monster->SetPlayer(m_pPlayer);
+		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_SpiderQueen.X"));
+		monster->pTransform->SetWorldPosition(pos);
+		monster->SetActive(true);
 		break;
 	case SUCCUBUS:
+		monster = new cSuccubus;
+		monster->SetTerrain(m_pTerrain);
+		monster->SetPlayer(m_pPlayer);
+		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Surcubus/surcubus.X"));
+		monster->pTransform->SetWorldPosition(pos);
+		monster->SetActive(true);
 		break;
 	case DRAGON:
+		monster = new cDragon;
+		monster->SetTerrain(m_pTerrain);
+		monster->SetPlayer(m_pPlayer);
+		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Boss/SkulDragon/skulDragon_1.X"));
+		monster->pTransform->SetWorldPosition(pos);
+		monster->SetActive(true);
 		break;
 	default:
 		break;

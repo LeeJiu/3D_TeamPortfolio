@@ -1,5 +1,12 @@
 #pragma once
+#include "cBasilisk.h"
+#include "cGriff.h"
+#include "cMinotauros.h"
 #include "cSpider.h"
+#include "cSpiderQueen.h"
+#include "cSuccubus.h"
+#include "cDragon.h"
+
 
 class cPlayer;
 class cTerrain;
@@ -25,7 +32,6 @@ public:
 	void Render();
 
 	void LoadMonsters();
-
 	void CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos);
 
 	void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }

@@ -244,7 +244,25 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Surround.h">
-      <Filter>소스 파일</Filter>
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cDragon.h">
+      <Filter>GameActor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="cBasilisk.h">
+      <Filter>GameActor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="cGriff.h">
+      <Filter>GameActor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="cMinotauros.h">
+      <Filter>GameActor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="cSpiderQueen.h">
+      <Filter>GameActor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="cSuccubus.h">
+      <Filter>GameActor\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -453,7 +471,25 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Surround.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cDragon.cpp">
+      <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="cSuccubus.cpp">
+      <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="cSpiderQueen.cpp">
+      <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="cMinotauros.cpp">
+      <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="cGriff.cpp">
+      <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="cBasilisk.cpp">
+      <Filter>GameActor\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

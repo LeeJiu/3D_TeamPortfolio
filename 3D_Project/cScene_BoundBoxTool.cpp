@@ -6,7 +6,6 @@
 #include "cLight_Direction.h"
 #include "cLight_Point.h"
 #include "cCamera.h"
-#include <fstream>		//FileStream
 
 
 cScene_BoundBoxTool::cScene_BoundBoxTool()
@@ -43,7 +42,7 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 
 	//건물 보정 행렬 세팅
 	D3DXMATRIXA16 matScale;
-	D3DXMatrixScaling(&matScale, 0.01f, 0.01f, 0.01f);
+	D3DXMatrixScaling(&matScale, 0.02f, 0.02f, 0.02f);
 	D3DXMATRIXA16 matRotate;
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
@@ -70,10 +69,13 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 	//몬스터 세팅
 	//
 	//캐릭터 보정 행렬 세팅
+	D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
+	matCorrection = matScale * matRotate;
+
 	m_pSelectMonster = new cBaseObject;
 	m_pSelectMonster->SetActive(true);
 	m_pSelectMonster->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Monster/Bashil/MOB_Bashil.X", &matCorrection));
-	m_pSelectMonster->monType = BASILISK;
+	m_pSelectMonster->monType = BASILISK;	
 
 	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Monster/Griff/MOB_HipGriff.X", &matCorrection);
 	RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Monster/Minho/MOB_Minho.X", &matCorrection);
@@ -171,11 +173,6 @@ void cScene_BoundBoxTool::Scene_Update(float timeDelta)
 		m_pSelectMonster->SetActive(true);
 		m_pSelectMonster->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Monster/Bashil/MOB_Bashil.X"));
 		m_pSelectMonster->monType = BASILISK;
-	}
-	else
-	{
-		//선택한 몬스터 크기 및 이동 설정
-		m_pSelectMonster->pTransform->DefaultControl4(timeDelta);
 	}
 
 	KeyControl(timeDelta);
