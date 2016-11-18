@@ -15,6 +15,10 @@ public:
 
 	cSkinnedAnimation*	pSkinned;	//스킨드 Animtion
 
+	//타입 정보
+	OBJECT_TYPE			objType;
+	MONSTER_TYPE		monType;
+
 protected:
 	bool				bActive;	//활성화 여부
 	cTerrain*			pTerrain;	//터레인 정보

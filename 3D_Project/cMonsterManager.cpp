@@ -13,8 +13,9 @@ cMonsterManager::~cMonsterManager()
 
 HRESULT cMonsterManager::Init()
 {
+	//
 	//몬스터 리소스 파일 로딩
-	
+	//
 	//캐릭터 보정 행렬 세팅
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
@@ -23,6 +24,8 @@ HRESULT cMonsterManager::Init()
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_Spider.X", &matCorrection);
+
+
 
 	//파일로부터 몬스터 정보를 로드해온다.
 	LoadMonsters();
