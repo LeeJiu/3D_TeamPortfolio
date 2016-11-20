@@ -2,23 +2,13 @@
 
 #include "cItem.h"
 #include "cCamera.h"
+#include "cInven.h"
 #define INVEN_COUNT 6
 #define RECT_SIZE 64
 // 6 x 6 
- struct stInven
- {
- 	cItem* m_Item;                  // 아이템 포인터.
- 	unsigned int itemNum;           // 아이템 번호 ( 아이템 번호는 모두 양수)
- 	RECT rcSize;					// 스킬 렉트 사각형
- 	RECT rcColl;                    // 충돌 할 렉트
- 	LPDIRECT3DTEXTURE9 skillImage;	// 이미지
- 	float x, y;						// 화면에 그려질 좌표. 
- 	bool isPoint;                   // 포인트가 있는지 없는지  
- 	//LPDIRECT3DTEXTURE9 emtyImage;
- 	int i, j;                        // 인덱스 
- };
 
-class cInven
+
+class cInven2 
 {
 	bool invenOpen; // 인벤이 열렸을때
 	bool pickUp;   // 아이템을 들었을 때
@@ -28,7 +18,7 @@ class cInven
 	int row;//행 
 	int col;//열
 	stInven inven[INVEN_COUNT][INVEN_COUNT];
-	
+
 	stInven weapon;
 
 	stInven emptyInven;
@@ -48,17 +38,19 @@ public:
 
 	bool GetInvenOn() { return invenOpen; }
 
-	D3DXVECTOR3 screenPos(int x,int y);
+	D3DXVECTOR3 screenPos(int x, int y);
 
-	bool inputItem(int row, int coll,cItem* item);
 
 	int findItemNum();    // 아이템 번호 찾는거 .
 	stInven* findInven(cItem* item);
 	LPDIRECT3DTEXTURE9 findIcon(string name);
 
+	bool inputItem(int* row, int* coll, cItem* item,POINT mouse);
 	bool selctRect(int* row, int* coll, POINT mouse);
-	cInven();
-	~cInven();
+	
+	
+	cInven2();
+	~cInven2();
 };
 
 /*

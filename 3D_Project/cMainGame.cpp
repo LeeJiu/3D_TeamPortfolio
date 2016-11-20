@@ -8,7 +8,7 @@
 #include "monster_Test.h"
 #include "cScene_testMonster.h"
 #include "berserker_test.h"
-#include "cDragonTest.h"
+#include "DragonTest.h"
 
 cMainGame::cMainGame(void)
 {
@@ -47,20 +47,20 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->AddScene("monster_Test", new monster_Test());
 	SCENE_MGR->AddScene("cScene_testMonster", new cScene_testMonster());
 	SCENE_MGR->AddScene("berserker_test", new berserker_test());
-
-	SCENE_MGR->AddScene("cDragonTest", new cDragonTest());
-
+	
+	SCENE_MGR->AddScene("DragonTest", new DragonTest());
 
 	SOUND_MGR->addSound("bgm1", "../Answers.mp3", true, true);
 	
 	////°ÔÀÓ ½ÃÀÛ¾À
 	//SCENE_MGR->ChangeScene( "mage_Test" );
-	//SCENE_MGR->ChangeScene("cDragonTest");
 	//SCENE_MGR->ChangeScene("berserker_test");
-	//SCENE_MGR->ChangeScene( "move_Test" );
+	//SCENE_MGR->ChangeScene("DragonTest");
+
+	SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
 	//SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
-	SCENE_MGR->ChangeScene("cScene_testMonster");
+	//SCENE_MGR->ChangeScene("cScene_testMonster");
 
 
 	return S_OK;		

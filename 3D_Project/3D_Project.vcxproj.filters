@@ -261,6 +261,12 @@
     <ClInclude Include="cSuccubus.h">
       <Filter>GameActor\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="DragonTest.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cInven2.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -484,6 +490,12 @@
     </ClCompile>
     <ClCompile Include="cBasilisk.cpp">
       <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="DragonTest.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cInven2.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

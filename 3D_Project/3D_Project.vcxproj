@@ -22,7 +22,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -141,10 +141,10 @@
     <ClInclude Include="cTransform.h" />
     <ClInclude Include="cSkillUi.h" />
     <ClInclude Include="cWayPoint.h" />
-    <ClInclude Include="cWeapon.h" />
     <ClInclude Include="cXMesh.h" />
     <ClInclude Include="cXMesh_Skinned.h" />
     <ClInclude Include="cXMesh_Static.h" />
+    <ClInclude Include="DragonTest.h" />
     <ClInclude Include="mage_Test.h" />
     <ClInclude Include="monster_Test.h" />
     <ClInclude Include="moveClass.h" />
@@ -152,6 +152,7 @@
     <ClInclude Include="MyUtil.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="cInven2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
@@ -218,10 +219,10 @@
     <ClCompile Include="cTransform.cpp" />
     <ClCompile Include="cSkillUi.cpp" />
     <ClCompile Include="cWayPoint.cpp" />
-    <ClCompile Include="cWeapon.cpp" />
     <ClCompile Include="cXMesh.cpp" />
     <ClCompile Include="cXMesh_Skinned.cpp" />
     <ClCompile Include="cXMesh_Static.cpp" />
+    <ClCompile Include="DragonTest.cpp" />
     <ClCompile Include="mage_Test.cpp" />
     <ClCompile Include="monster_Test.cpp" />
     <ClCompile Include="moveClass.cpp" />
@@ -232,6 +233,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="cInven2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

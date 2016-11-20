@@ -3,6 +3,7 @@
 #include "cScene.h"
 #include "cSkillUi.h"
 #include "cInven.h"
+#include "cInven2.h"
 
 class cBaseObject;
 class cCamera;
@@ -54,7 +55,7 @@ private:
 	D3DXMATRIXA16 temp;
 
 	bool boundHit;
-	cInven*        m_inven;
+	cInven2*        m_inven;
 public:
 	move_Test(void);
 	~move_Test(void);

@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "cInven.h"
+#include "cInven2.h"
 
 
-cInven::cInven()
+cInven2::cInven2()
 {
 	row = INVEN_COUNT;
 	col = INVEN_COUNT;
@@ -10,11 +10,11 @@ cInven::cInven()
 }
 
 
-cInven::~cInven()
+cInven2::~cInven2()
 {
 }
 
-void cInven::init()
+void cInven2::init()
 {
 	emptyInven.skillImage = RESOURCE_TEXTURE->GetResource("../Resources/UI/skill_deck.bmp");
 	emptyInven.rcSize = RectMake(0, 0, RECT_SIZE, RECT_SIZE);
@@ -55,7 +55,7 @@ void cInven::init()
 	clickItem = NULL;
 	pickUp = false;
 }
-void cInven::release()
+void cInven2::release()
 {
 	for (int i = 0; i < INVEN_COUNT; i++)
 	{
@@ -74,13 +74,13 @@ void cInven::release()
 		SAFE_DELETE(weapon.m_Item);
 	}
 }
-void cInven::update(float timeDelta, cCamera* camera)
+void cInven2::update(float timeDelta, cCamera* camera)
 {
 	/* itemIndex 가 -1 일때는 아이템들고 있는게 없을 때
-	   clickItem = NULL
-	   인벤토리에 들어가기 전에는 아이템 매니져에서 들고 있음.
-	   pickUp <- 아이템 들고 있을때 T,
-	   */
+	clickItem = NULL
+	인벤토리에 들어가기 전에는 아이템 매니져에서 들고 있음.
+	pickUp <- 아이템 들고 있을때 T,
+	*/
 
 	//인벤토리 열고 닫기. 
 	if (KEY_MGR->IsOnceDown('I'))
@@ -111,10 +111,6 @@ void cInven::update(float timeDelta, cCamera* camera)
 		POINT ptMousePos = GetMousePos();
 		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
 		camera->ComputeRay(&ray, &screenPos);
-		weaponClick(ptMousePos);
-
-		// 인벤토리에서 아이템 꺼내오는 함수. 
-		invenItemClick(); // 이거 먼저 체크 해야됨.
 
 
 		//  바운드 충돌을 해서 아이템 인덱스를 찾아 낸다. 
@@ -131,17 +127,10 @@ void cInven::update(float timeDelta, cCamera* camera)
 		}
 
 		// 부딪친 렉트의 i , j 값 반환
-		if (selctRect(&cRow, &cCol, ptMousePos))
-		{
-			if (inputItem(cRow, cCol, clickItem))
-			{
-				// 아이템 집어 넣음. 
-				ITEM_MGR->v_item.erase(ITEM_MGR->v_item.begin() + itemIndex);
-				clickItem = NULL;
-				pickUp = false;
-				itemIndex = -1;
-			}
-		}
+	
+		inputItem(&cRow, &cCol, clickItem, ptMousePos);
+		invenItemClick();
+		
 
 
 	}
@@ -149,7 +138,7 @@ void cInven::update(float timeDelta, cCamera* camera)
 
 }
 
-void cInven::render()
+void cInven2::render()
 {
 	// 이벤토리 열었을 때.
 	if (invenOpen == true)
@@ -205,13 +194,19 @@ void cInven::render()
 
 }
 
-bool cInven::inputItem(int row, int coll, cItem* item)
+bool cInven2::inputItem(int* row, int* coll, cItem* item, POINT mouse)
 {
 	if (invenOpen == false)return false;
 	if (clickItem == NULL)return false;
 	if (itemIndex == -1)return false;
-	int tempRow = row + item->getRow();
-	int tempColl = coll + item->getColl();
+
+	// 인벤토리에 클릭 됐는지 안됐는지
+	if (selctRect(row, coll, mouse) == false)return false;
+
+
+
+	int tempRow = *row + item->getRow();
+	int tempColl = *coll + item->getColl();
 
 	// 인벤토리 넘어갔을 때 
 	if (tempRow > INVEN_COUNT || tempColl > INVEN_COUNT)
@@ -220,9 +215,9 @@ bool cInven::inputItem(int row, int coll, cItem* item)
 	}
 
 	// 넣을 수 있는지 확인
-	for (int i = row; i < tempRow; i++)
+	for (int i = *row; i < tempRow; i++)
 	{
-		for (int j = coll; j < tempColl; j++)
+		for (int j = *coll; j < tempColl; j++)
 		{
 			if (inven[i][j].itemNum != 0) // 0이 아니라면 아이템이 들어 있는것.
 			{
@@ -232,11 +227,11 @@ bool cInven::inputItem(int row, int coll, cItem* item)
 	}
 
 
-	for (int i = row; i < tempRow; i++)
+	for (int i = *row; i < tempRow; i++)
 	{
-		for (int j = coll; j < tempColl; j++)
+		for (int j = *coll; j < tempColl; j++)
 		{
-			if (i == row&& j == coll)
+			if (i == *row&& j == *coll)
 			{
 				inven[i][j].m_Item = clickItem;
 				inven[i][j].isPoint = true;
@@ -260,12 +255,20 @@ bool cInven::inputItem(int row, int coll, cItem* item)
 		}
 	}
 
+	//아이템 인덱스 = 아이템 매니져의 vector에 비긴+index값
+	itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
+	// 매니져에서 아이템 지울때 
+	ITEM_MGR->v_item.erase(ITEM_MGR->v_item.begin() + itemIndex);
+	clickItem = NULL;
+	itemIndex = -1;
+	pickUp = false;
+
 	return true;
 }
-void cInven::invenItemClick()
+void cInven2::invenItemClick()
 {
 	if (invenOpen == false)return;//인벤이 열리지 않았다면. 
-	if (pickUp == true)return;    //무엇인가 글고 있다면.
+	if (pickUp == true)return;    //무엇인가 들고 있다면.
 	if (clickItem != NULL)return; //들고 있는것에 주소가 들어 있다면.
 
 	int itemNum = 0;
@@ -304,9 +307,14 @@ void cInven::invenItemClick()
 		}
 	}
 
+	//아이템 인덱스 = 아이템 매니져의 vector에 비긴+index값
+	itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
+	pickUp = true;
+	// 매니져에서 아이템 지울때 
+
 }
 
-int cInven::findItemNum()
+int cInven2::findItemNum()
 {
 	if (invenOpen == false)return 0;//인벤이 열리지 않았다면. 
 	if (pickUp == true)return 0;
@@ -332,8 +340,10 @@ int cInven::findItemNum()
 	return 0;
 
 }
-bool cInven::selctRect(int* row, int* coll, POINT mouse)
+bool cInven2::selctRect(int* row, int* coll, POINT mouse)
 {
+	
+
 	for (int i = 0; i < INVEN_COUNT; i++)
 	{
 		for (int j = 0; j < INVEN_COUNT; j++)
@@ -349,7 +359,7 @@ bool cInven::selctRect(int* row, int* coll, POINT mouse)
 
 	return false;
 }
-D3DXVECTOR3 cInven::screenPos(int x, int y)
+D3DXVECTOR3 cInven2::screenPos(int x, int y)
 {
 
 
@@ -388,30 +398,28 @@ D3DXVECTOR3 cInven::screenPos(int x, int y)
 
 	return screenPos;
 }
-void cInven::putItem()
+void cInven2::putItem() //들고 있는걸 버리자.
 {
-	if (clickItem == NULL) 
-   {
-	   //케릭터 좌표 =================================== 받아야댐 =
-	//   pickUp = false;
-	//   clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
-	//   clickItem = NULL;
-	//   itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
-
-		return;
+	if (clickItem != NULL)
+	{
+		//케릭터 좌표 =================================== 받아야댐 =
+		   clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
+		  
+		   itemIndex = -1;
+		   clickItem = NULL;
+		   pickUp = false;
 	}
 	else
 	{
 		//케릭터 좌표 =================================== 받아야댐 =
 		pickUp = false;
-		clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
 		clickItem = NULL;
 		itemIndex = -1;
 
 	}
 
 }
-stInven* cInven::findInven(cItem* item)
+stInven* cInven2::findInven(cItem* item)
 {
 	if (item == NULL)return NULL;
 	for (int i = 0; i < INVEN_COUNT; i++)
@@ -426,7 +434,7 @@ stInven* cInven::findInven(cItem* item)
 	}
 
 }
-LPDIRECT3DTEXTURE9 cInven::findIcon(string name)
+LPDIRECT3DTEXTURE9 cInven2::findIcon(string name)
 {
 	//m_staff ,m_axe
 	if (strcmp(name.c_str(), "m_staff") == 0)
@@ -441,7 +449,7 @@ LPDIRECT3DTEXTURE9 cInven::findIcon(string name)
 
 }
 
-void cInven::weaponClick(POINT mouse)
+void cInven2::weaponClick(POINT mouse)
 {
 	//============ 아이템 장착 안되 있으면..
 	if (itemIndex == -1 && pickUp == true && clickItem != NULL) //아이템을 버리거나 장착 해야댐.( 이조건이면)
