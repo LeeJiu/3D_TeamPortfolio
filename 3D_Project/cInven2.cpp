@@ -89,6 +89,8 @@ void cInven2::update(float timeDelta, cCamera* camera)
 	}
 	// 물건을 들고 있을때 
 	// 화면 가운데 오브젝트를 가져 온다. 
+
+
 	if (pickUp == true)
 	{
 		if (clickItem != NULL)
@@ -106,12 +108,15 @@ void cInven2::update(float timeDelta, cCamera* camera)
 	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 	{
 
-		int cRow, cCol;
+		int cRow = 0;
+		int cCol = 0;
 		Ray ray;
 		POINT ptMousePos = GetMousePos();
 		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
 		camera->ComputeRay(&ray, &screenPos);
 
+
+		discard(&cRow, &cCol, ptMousePos);
 
 		//  바운드 충돌을 해서 아이템 인덱스를 찾아 낸다. 
 		for (int i = 0; i < ITEM_MGR->v_item.size(); i++)
@@ -126,12 +131,37 @@ void cInven2::update(float timeDelta, cCamera* camera)
 			}
 		}
 
-		// 부딪친 렉트의 i , j 값 반환
-	
-		inputItem(&cRow, &cCol, clickItem, ptMousePos);
-		invenItemClick();
-		
 
+		if (clickItem == NULL) // 클릭된 아이템이 없을 때
+		{
+			//인벤 클릭해서 아이템이 있으면 매니져로
+			if (invenToManager(&cRow, &cCol, ptMousePos))
+			{
+
+			}
+			// 웨폰 클릭해서 아이템이 있으면 매니져로
+			else if (weaponToManager(ptMousePos))
+			{
+
+			}
+
+		}
+		else if (clickItem != NULL) //클릭된 아이템이 있을 떄
+		{
+			//인벤에 넣는다.
+			if (invenInputItem(&cRow, &cCol, clickItem, ptMousePos))
+			{
+
+			}//웨폰에 넣는다. 
+			else if (weaponInputItem(clickItem, ptMousePos))
+			{
+
+			}
+			else
+			{
+			}
+
+		}
 
 	}
 
@@ -194,14 +224,14 @@ void cInven2::render()
 
 }
 
-bool cInven2::inputItem(int* row, int* coll, cItem* item, POINT mouse)
+bool cInven2::invenInputItem(int* row, int* coll, cItem* item, POINT mouse)
 {
 	if (invenOpen == false)return false;
 	if (clickItem == NULL)return false;
 	if (itemIndex == -1)return false;
 
 	// 인벤토리에 클릭 됐는지 안됐는지
-	if (selctRect(row, coll, mouse) == false)return false;
+	if (invenSelectRect(row, coll, mouse) == false)return false;
 
 
 
@@ -245,7 +275,7 @@ bool cInven2::inputItem(int* row, int* coll, cItem* item, POINT mouse)
 			else
 			{
 				//	inven[i][j].m_Item = clickItem;
-				inven[i][j].m_Item = NULL;
+				inven[i][j].m_Item = clickItem;
 				inven[i][j].isPoint = false;
 				inven[i][j].itemNum = clickItem->getItemNum();
 
@@ -265,85 +295,9 @@ bool cInven2::inputItem(int* row, int* coll, cItem* item, POINT mouse)
 
 	return true;
 }
-void cInven2::invenItemClick()
+
+bool cInven2::invenSelectRect(int* row, int* coll, POINT mouse)
 {
-	if (invenOpen == false)return;//인벤이 열리지 않았다면. 
-	if (pickUp == true)return;    //무엇인가 들고 있다면.
-	if (clickItem != NULL)return; //들고 있는것에 주소가 들어 있다면.
-
-	int itemNum = 0;
-	itemNum = findItemNum();
-	if (itemNum == 0)return;
-
-	for (int i = 0; i < INVEN_COUNT; i++)
-	{
-		for (int j = 0; j < INVEN_COUNT; j++)
-		{
-			if (inven[i][j].itemNum == itemNum&&inven[i][j].isPoint == true)
-			{
-				pickUp = true; //트루.
-				clickItem = inven[i][j].m_Item;//아이템 넣고 .
-				clickItem->m_lifeTime = 60.f;
-
-				//itemIndex = -1;
-
-
-				ITEM_MGR->v_item.push_back(clickItem);//
-			}
-		}
-	}
-	// 인벤토리 초기화.
-	for (int i = 0; i < INVEN_COUNT; i++)
-	{
-		for (int j = 0; j < INVEN_COUNT; j++)
-		{
-			if (inven[i][j].itemNum == itemNum)
-			{
-				inven[i][j].m_Item = NULL;
-				inven[i][j].skillImage = NULL;
-				inven[i][j].isPoint = false; // 진짜 포인트가지고 있는 놈
-				inven[i][j].itemNum = 0;//아이템은 1부터 만들어짐. 
-			}
-		}
-	}
-
-	//아이템 인덱스 = 아이템 매니져의 vector에 비긴+index값
-	itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
-	pickUp = true;
-	// 매니져에서 아이템 지울때 
-
-}
-
-int cInven2::findItemNum()
-{
-	if (invenOpen == false)return 0;//인벤이 열리지 않았다면. 
-	if (pickUp == true)return 0;
-
-	POINT ptMousePos = GetMousePos();
-
-	int itemNum = 0;
-	// 아이템 번호를 찾는다. 
-	for (int i = 0; i < INVEN_COUNT; i++)
-	{
-		for (int j = 0; j < INVEN_COUNT; j++)
-		{
-			if (PtInRect(&inven[i][j].rcColl, ptMousePos))
-			{
-				if (inven[i][j].itemNum != 0) // 0이 아니라면 아이템이 들어 있는것.
-				{
-					itemNum = inven[i][j].itemNum;
-					return itemNum;
-				}
-			}
-		}
-	}
-	return 0;
-
-}
-bool cInven2::selctRect(int* row, int* coll, POINT mouse)
-{
-	
-
 	for (int i = 0; i < INVEN_COUNT; i++)
 	{
 		for (int j = 0; j < INVEN_COUNT; j++)
@@ -398,42 +352,8 @@ D3DXVECTOR3 cInven2::screenPos(int x, int y)
 
 	return screenPos;
 }
-void cInven2::putItem() //들고 있는걸 버리자.
-{
-	if (clickItem != NULL)
-	{
-		//케릭터 좌표 =================================== 받아야댐 =
-		   clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
-		  
-		   itemIndex = -1;
-		   clickItem = NULL;
-		   pickUp = false;
-	}
-	else
-	{
-		//케릭터 좌표 =================================== 받아야댐 =
-		pickUp = false;
-		clickItem = NULL;
-		itemIndex = -1;
 
-	}
 
-}
-stInven* cInven2::findInven(cItem* item)
-{
-	if (item == NULL)return NULL;
-	for (int i = 0; i < INVEN_COUNT; i++)
-	{
-		for (int j = 0; j < INVEN_COUNT; j++)
-		{
-			if (inven[i][j].itemNum == item->getItemNum() && inven[i][j].isPoint == true) // 0이 아니라면 아이템이 들어 있는것.
-			{
-				return &inven[i][j];
-			}
-		}
-	}
-
-}
 LPDIRECT3DTEXTURE9 cInven2::findIcon(string name)
 {
 	//m_staff ,m_axe
@@ -449,58 +369,117 @@ LPDIRECT3DTEXTURE9 cInven2::findIcon(string name)
 
 }
 
-void cInven2::weaponClick(POINT mouse)
+
+bool cInven2::weaponSelectRect(POINT mouse)
 {
-	//============ 아이템 장착 안되 있으면..
-	if (itemIndex == -1 && pickUp == true && clickItem != NULL) //아이템을 버리거나 장착 해야댐.( 이조건이면)
+	if (PtInRect(&weapon.rcColl, mouse))
 	{
-		if (PtInRect(&weapon.rcColl, mouse) && weapon.m_Item == NULL)
+		return true;
+	}
+	return false;
+}
+
+bool cInven2::weaponInputItem(cItem* item, POINT mouse)
+{
+	if (invenOpen == false)return false;
+	if (clickItem == NULL)return false;
+	if (itemIndex == -1)return false;
+
+	if (weaponSelectRect(mouse) == false)return false;
+
+	weapon.m_Item = clickItem;
+	weapon.skillImage = findIcon(clickItem->getItemName());
+	weapon.itemNum = clickItem->getItemNum();
+	itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
+	//아이템 회전값 기본으로 바꺼줌. 
+	weapon.m_Item->pTransform->SetRotateWorld(weapon.m_Item->getBasicRotaion());
+	if (itemIndex != -1)
+	{
+		ITEM_MGR->v_item.erase(ITEM_MGR->v_item.begin() + itemIndex);
+	}
+
+	//
+	clickItem = NULL;
+	pickUp = false;
+	itemIndex = -1;
+
+}
+
+bool cInven2::invenToManager(int* row, int* coll, POINT mouse)
+{
+	if (invenOpen == false)return false;//인벤이 열리지 않았다면. 
+	if (clickItem != NULL)return false; // 손에 들고 있는게 없어야된다.
+
+	//인벤토리클릭
+	if (invenSelectRect(row, coll, mouse) == false)return false;
+	//빈 인벤토리가 아니라면
+	if (inven[*row][*coll].itemNum == 0)return false;
+
+	int tempItemNum = inven[*row][*coll].itemNum;
+	pickUp = true; //트루.
+	clickItem = inven[*row][*coll].m_Item;//아이템 넣고 .
+	clickItem->m_lifeTime = 60.f;
+	ITEM_MGR->v_item.push_back(clickItem);//
+
+	// 인벤토리 초기화.
+	for (int i = 0; i < INVEN_COUNT; i++)
+	{
+		for (int j = 0; j < INVEN_COUNT; j++)
 		{
-			weapon.m_Item = clickItem;
-			weapon.skillImage = findIcon(clickItem->getItemName());
-
-			//weapon.skillImage = RESOURCE_TEXTURE->GetResource("../Resources/UI/fot_lightingspear.bmp");
-			weapon.isPoint = true;
-
-			itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
-			//아이템 회전값 기본으로 바꺼줌. 
-			weapon.m_Item->pTransform->SetRotateWorld(weapon.m_Item->getBasicRotaion());
-			if (itemIndex != -1)
+			if (inven[i][j].itemNum == tempItemNum)
 			{
-				ITEM_MGR->v_item.erase(ITEM_MGR->v_item.begin() + itemIndex);
+				inven[i][j].m_Item = NULL;
+				inven[i][j].skillImage = NULL;
+				inven[i][j].isPoint = false; // 진짜 포인트가지고 있는 놈
+				inven[i][j].itemNum = 0;//아이템은 1부터 만들어짐. 
 			}
-
-			clickItem = NULL;
-			pickUp = false;
-			itemIndex = -1;
-		}//============ 아이템 장착 되 있다면.
-		else  // 아이템 버리기. 
-		{
-			putItem();
-
-			//pickUp = false;
-			////케릭터 좌표 ====================================
-			//clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
-			//clickItem = NULL;
 		}
 	}
-	else if (PtInRect(&weapon.rcColl, mouse) && weapon.m_Item != NULL
-		&&pickUp == false && clickItem == NULL)
-	{  //staff _ basic master ,
 
-		pickUp = true; //트루.
-		clickItem = weapon.m_Item;//아이템 넣고 .
-		clickItem->m_lifeTime = 60.f;
+	itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
 
-		ITEM_MGR->v_item.push_back(clickItem);//
 
-		weapon.m_Item = NULL;
-		weapon.skillImage = NULL;
-		weapon.isPoint = false; // 진짜 포인트가지고 있는 놈
-		weapon.itemNum = 0;//아이템은 1부터 만들어짐. 
-		//weapon.m_Item->pTransform->SetRotateWorld(weapon.m_Item->getBasicRotaion());
+}
 
-		itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
-		//혹시 이상하게 나오면 트랜스폼 초기화
+bool cInven2::weaponToManager(POINT mouse)
+{
+	if (invenOpen == false)return false;//인벤이 열리지 않았다면. 
+	if (clickItem != NULL)return false; // 손에 들고 있는게 없어야된다.
+
+	//인벤토리클릭
+	if (weaponSelectRect(mouse) == false)return false;
+	//빈 인벤토리가 아니라면
+	if (weapon.itemNum == 0)return false;
+
+	int tempItemNum = weapon.itemNum;
+	pickUp = true; //트루.
+	clickItem = weapon.m_Item;//아이템 넣고 .
+	clickItem->m_lifeTime = 60.f;
+
+	ITEM_MGR->v_item.push_back(clickItem);//
+
+	weapon.m_Item = NULL;
+	weapon.skillImage = NULL;
+	weapon.isPoint = false; // 진짜 포인트가지고 있는 놈
+	weapon.itemNum = 0;//아이템은 1부터 만들어짐. 
+
+
+	itemIndex = ITEM_MGR->findItem(clickItem->getItemNum());
+
+}
+
+void cInven2::discard(int* row, int* coll, POINT mouse)
+{
+	//케릭터 좌표 =================================== 받아야댐 =
+	if (clickItem != NULL)
+	{
+		if (invenSelectRect(row, coll, mouse) == true) return;
+		if (weaponSelectRect(mouse) == true) return;
+
+		clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
+		itemIndex = -1;
+		clickItem = NULL;
+		pickUp = false;
 	}
+
 }

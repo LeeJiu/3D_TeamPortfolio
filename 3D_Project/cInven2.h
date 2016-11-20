@@ -30,9 +30,6 @@ public:
 	void update(float timeDelta, cCamera* camera);
 	void render();
 	void release();
-	void invenItemClick();
-	void putItem();
-	void weaponClick(POINT mouse);
 
 	cItem*	GetWeapon() { return weapon.m_Item; }
 
@@ -41,14 +38,18 @@ public:
 	D3DXVECTOR3 screenPos(int x, int y);
 
 
-	int findItemNum();    // 아이템 번호 찾는거 .
-	stInven* findInven(cItem* item);
 	LPDIRECT3DTEXTURE9 findIcon(string name);
 
-	bool inputItem(int* row, int* coll, cItem* item,POINT mouse);
-	bool selctRect(int* row, int* coll, POINT mouse);
+	bool invenInputItem(int* row, int* coll, cItem* item,POINT mouse);
+	bool invenSelectRect(int* row, int* coll, POINT mouse);
 	
+	bool weaponSelectRect(POINT mouse);
+	bool weaponInputItem(cItem* item, POINT mouse);
 	
+	bool invenToManager(int* row, int* coll, POINT mouse);
+	bool weaponToManager(POINT mouse);
+
+	void discard(int* row, int* coll, POINT mouse);
 	cInven2();
 	~cInven2();
 };
