@@ -1,8 +1,11 @@
 #include "stdafx.h"
+#include "cPlayer.h"
 #include "cMage.h"
-#include "cTerrain.h"
+#include "cMonsterManager.h"
+#include "cMonster.h"
 #include "cCamera.h"
-#include "cItem.h"
+#include "cInven.h"
+
 //파티클
 #include "cPartcleEmitter.h"
 #include "cParticleQuad.h""
@@ -19,11 +22,8 @@ cMage::cMage()
 
 cMage::~cMage()
 {
-	SAFE_DELETE(m_pMove);
 	SAFE_DELETE(m_ATKBox);
-
-	SAFE_DELETE(pWeapon);
-	
+	SAFE_DELETE(m_Weapon);
 }
 
 
@@ -34,7 +34,8 @@ void cMage::BaseObjectEnable()
 	//몬스터 관련
 	MonsterInit();
 
-	
+	SetBassClass();
+
 
 	//무기 관련
 
@@ -47,11 +48,16 @@ void cMage::BaseObjectEnable()
 	cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/STF_Master.X", &matCorrection);
 
 
-	pWeapon = new cItem;
-	pWeapon->SetMesh(pSTF_Basic);
-	pWeapon->SetActive(true);
+	//m_Weapon = new cWeapon;
+	//m_Weapon->SetMesh(pSTF_Basic);
+	//m_Weapon->SetActive(true);
 
-	pSkinned->AddBoneTransform("Bip01-R-Hand", pWeapon->pTransform);
+	//pSkinned->AddBoneTransform("Bip01-R-Hand", m_Weapon->pTransform);
+
+
+	//캐릭터의 그려진 위치를 세팅
+	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
+
 
 	m_isPetOn = false;
 
@@ -64,184 +70,119 @@ void cMage::BaseObjectEnable()
 	m_ATKBox = new cBaseObject;
 	m_ATKBox->BoundBox.Init(D3DXVECTOR3(-0.3f, -0.3f, -0.3f), D3DXVECTOR3(0.3f, 0.3f, 0.3f));
 
-	
+
 	m_ATKBox->BoundBox.SetBound(&m_ATKBox->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
 	pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
 
 
 	//캐릭터의 그려진 위치를 세팅
-	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
-	D3DXVECTOR3	minPos(-1, 0, -1);
-	D3DXVECTOR3	maxPos(1, 3, 1);
-	BoundBox.Init(minPos, maxPos);
+	//D3DXVECTOR3	minPos(-1, 0, -1);
+	//D3DXVECTOR3	maxPos(1, 3, 1);
+	//BoundBox.Init(minPos, maxPos);
 
 	m_state = IDLE;
-	m_Aniname = SetAnimation(m_state);
+	m_strName = MyUtil::SetAnimation(m_state);
 
-	m_pMove = new moveClass;
-	m_isMove = false;
+	m_fHP = 1000;
+	m_attackLength = 5;
+	m_damage = 100;
+	m_isAttack = false;
 
-
-
-	//무빙용으로 사용할 키값 세팅
-	std::pair<int, bool> key_W('W', false);
-	std::pair<int, bool> key_S('S', false);
-	std::pair<int, bool> key_A('A', false);
-	std::pair<int, bool> key_D('D', false);
-	m_InputKeys.insert(key_W);
-	m_InputKeys.insert(key_S);
-	m_InputKeys.insert(key_A);
-	m_InputKeys.insert(key_D);
-	
+	//SetMoveKeys();
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
+
+
 }
 
 void cMage::BaseObjectUpdate(float timeDelta)
 {
+
+	Move(timeDelta);
+	Monster_pick();
+	UiUpdate(timeDelta, m_camera);
+
 	//펫에 타고 있냐
-	if (KEY_MGR->IsOnceDown('9'))
+	//if (KEY_MGR->IsOnceDown('9'))
+	//{
+	//	if (m_isPetOn) m_isPetOn = false;
+	//	else
+	//	{
+	//		m_state = PET_RUN;
+	//		m_strName = SetAnimation(m_state);
+	//		this->pSkinned->Play(m_strName, 0.3);
+	//		m_isPetOn = true;
+	//	}
+	//}
+	//
+	//
+	//if (m_isPetOn)
+	//{
+	//
+	//}
+	//else
+	//{
+
+
+
+
+	if (KEY_MGR->IsOnceDown('1'))
 	{
-		if (m_isPetOn) m_isPetOn = false;
-		else
-		{
-			m_state = PET_RUN;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->Play(m_Aniname, 0.3);
-			m_isPetOn = true;
-		}
+		m_isAttack = true;
+		m_state = ATK_01;
+		MagicATKInit();
+		m_magicATK->StartEmission();
+		m_aniCount = 0;
+
+
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+	}
+
+	if (KEY_MGR->IsOnceDown('2'))
+	{
+		m_state = STF_FROZEN;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+		FlameRoadInit();
+		m_flameRoad_cast = true;
+		m_flameRoad_cast_count = 0;
+		m_aniCount = 0;
+	}
+
+	if (KEY_MGR->IsOnceDown('3'))
+	{
+		m_state = STF_STORM;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+	}
+
+	if (KEY_MGR->IsOnceDown('4'))
+	{
+		m_state = STF_TYFUNG;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+		m_snowStrom->StartEmission();
+		m_snowStrom_under->StartEmission();
+		m_snow->StartEmission();
+		m_isSnowStorm = true;
+		m_aniCount = 0;
 	}
 
 
-	if (m_isPetOn)
+	if (KEY_MGR->IsOnceDown('5'))
 	{
-		
-	}
-	else
-	{
-
-
-		//애니메이션셋
-		if ((KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
-			|| KEY_MGR->IsOnceDown('A')))
-		{
-			m_state = RUN;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->Play(m_Aniname, 0.3);
-		}
-
-
-		if (m_isMove && KEY_MGR->IsOnceDown('S'))
-		{
-			m_state = WALK_BACK;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->Play(m_Aniname, 0.3);
-		}
-
-		if (!m_isMove && (KEY_MGR->IsOnceUp('W') || KEY_MGR->IsOnceUp('S')
-			|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
-			|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
-		{
-			m_state = WAIT;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->Play(m_Aniname, 0.3);
-		}
-
-
-		if (KEY_MGR->IsOnceDown('4'))
-		{
-			m_state = ATK_01;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
-			MagicATKInit();
-			m_magicATK->StartEmission();
-			m_isMagicATK = true;
-			m_aniCount = 0;
-			
-		}
-
-		if (KEY_MGR->IsOnceDown('5'))
-		{
-			m_state = STF_BUFF;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
-			m_magicShild->StartEmission();
-			m_isMagicShild = true;
-			m_aniCount = 0;
-		}
-
-		if (KEY_MGR->IsOnceDown('6'))
-		{
-			m_state = STF_FROZEN;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
-			FlameRoadInit();
-			m_flameRoad_cast = true;
-			m_flameRoad_cast_count = 0;
-			m_aniCount = 0;
-		}
-
-		if (KEY_MGR->IsOnceDown('7'))
-		{
-			m_state = STF_STORM;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
-		}
-
-		if (KEY_MGR->IsOnceDown('8'))
-		{
-			m_state = STF_TYFUNG;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->PlayOneShot(m_Aniname, 0.3);
-			m_snowStrom->StartEmission();
-			m_snowStrom_under->StartEmission();
-			m_snow->StartEmission();
-			m_isSnowStorm = true;
-			m_aniCount = 0;
-		}
-
-
-		//===============무브==============================
-
-		if (KEY_MGR->IsStayDown('W'))
-		{
-			m_InputKeys.find('W')->second = true;
-		}
-		else m_InputKeys.find('W')->second = false;
-
-
-		if (KEY_MGR->IsStayDown('S'))
-		{
-			m_InputKeys.find('S')->second = true;
-		}
-		else m_InputKeys.find('S')->second = false;
-
-		if (KEY_MGR->IsStayDown('A'))
-		{
-			m_InputKeys.find('A')->second = true;
-		}
-		else m_InputKeys.find('A')->second = false;
-
-		if (KEY_MGR->IsStayDown('D'))
-		{
-			m_InputKeys.find('D')->second = true;
-
-		}
-		else m_InputKeys.find('D')->second = false;
-
-
-		m_pMove->update(timeDelta, NULL, NULL, NULL, m_InputKeys);
-
-		m_isMove = m_pMove->GetIsMove();
-
-		LOG_MGR->AddLog("%s", m_Aniname.c_str());
-
+		m_state = STF_BUFF;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+		m_magicShild->StartEmission();
+		m_isMagicShild = true;
+		m_aniCount = 0;
 	}
 
-	this->pWeapon->Update(timeDelta);
 
 
 	//스킬 사용 관련
-	
+
 
 
 	if (m_aniCount == 480)
@@ -255,13 +196,13 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	if (m_aniCount == 120)
 	{
 		m_magicATK->StopEmission();
-		m_isMagicATK = false;
+		m_isAttack = false;
 	}
 
 	if (m_aniCount == 600)
 	{
 		m_magicShild->StopEmission();
-		
+
 	}
 
 
@@ -291,7 +232,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 
 
-	if (m_isMagicATK)
+	if (m_isAttack)
 	{
 		m_aniCount++;
 		m_magicATK->Update(timeDelta);
@@ -323,7 +264,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_snowStrom->Update(timeDelta);
 		m_snowStrom_under->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
 		m_snowStrom_under->Update(timeDelta);
-		m_snow->pTransform->SetWorldPosition(pTransform->GetWorldPosition() + D3DXVECTOR3(0,7,0));
+		m_snow->pTransform->SetWorldPosition(pTransform->GetWorldPosition() + D3DXVECTOR3(0, 7, 0));
 		m_snow->Update(timeDelta);
 	}
 
@@ -335,34 +276,26 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_magicShild->pTransform->SetWorldPosition(this->pTransform->GetWorldPosition());
 
 	}
-	
+
 
 
 	MonsterUpdate(timeDelta);
 
-}
-
-
-void cMage::ATKBoxRender()
-{
-
-
-
-	//m_ATKBox->BoundBox.RenderGizmo(m_ATKBox->pTransform);
-
 
 }
 
-void cMage::WeaponRender()
-{
 
-	this->pWeapon->Render();
-	
+void cMage::BaseObjectRender()
+{
+	this->pSkinned->Render(this->pTransform);
+
+	m_ATKBox->BoundBox.RenderGizmo(m_ATKBox->pTransform);
+
+	//this->m_Weapon->Render();
+
 	MonsterRender();
 
 	SkillRender();
-
-
 
 }
 
@@ -371,9 +304,9 @@ void  cMage::SkillInit()
 	m_aniCount = 0;
 	SnowStormInit();
 	MagicShildInit();
-	
+
 	m_isSnowStorm = false;
-	m_isMagicATK = false;
+	m_isAttack = false;
 	m_isMagicShild = false;
 	m_isFlameRoad = false;
 	m_flameRoad_cast = false;
@@ -387,10 +320,10 @@ void  cMage::SkillRender()
 		m_snowStrom_under->Render();
 		m_snowStrom->Render();
 		m_snow->Render();
-		
+
 	}
 
-	if (m_isMagicATK)
+	if (m_isAttack)
 	{
 		m_magicATK->Render();
 	}
@@ -406,7 +339,7 @@ void  cMage::SkillRender()
 		m_flameRoad2->Render();
 		m_flameRoad3->Render();
 	}
-	
+
 }
 
 
@@ -664,7 +597,7 @@ void cMage::SnowStormInit()
 		D3DXVECTOR3(0, 0.5, 0),     //한쪽으로 발사하는 양 시작
 		D3DXVECTOR3(0, 0.8, 0),     //한쪽으로 발사하는 양 끝
 		D3DXVECTOR3(-90 * ONE_RAD, 0, 0),	//초기시작시 회전 min
-		D3DXVECTOR3 (- 90 * ONE_RAD, 0, 720 * ONE_RAD),     //초기시작시 회전Max
+		D3DXVECTOR3(-90 * ONE_RAD, 0, 720 * ONE_RAD),     //초기시작시 회전Max
 		D3DXVECTOR3(0, 0, 0),				//초당 회전할 회전 량 Min
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
@@ -750,14 +683,14 @@ void cMage::MonsterInit()
 
 void cMage::MonsterUpdate(float timeDelta)
 {
-	
+
 	m_pMonster->pSkinned->Update(timeDelta);
 
 
 
 	MonsterCollision(timeDelta);
-	
-	
+
+
 
 }
 
@@ -790,11 +723,11 @@ void cMage::MonsterCollision(float timeDelta)
 		if (m_isTarget &&D3DXVec3Length(&magicATKLegth) > 20)
 		{
 			m_state = RUN;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->Play(m_Aniname, 0.3);
+			m_strName = MyUtil::SetAnimation(m_state);
+			this->pSkinned->Play(m_strName, 0.3);
 		}
 
-	
+
 	}
 
 
@@ -813,10 +746,10 @@ void cMage::MonsterCollision(float timeDelta)
 		if (m_StateCount == 1)
 		{
 			m_state = WAIT;
-			m_Aniname = SetAnimation(m_state);
-			this->pSkinned->Play(m_Aniname, 0.3);
+			m_strName = MyUtil::SetAnimation(m_state);
+			this->pSkinned->Play(m_strName, 0.3);
 		}
-	
+
 	}
 
 
@@ -824,9 +757,9 @@ void cMage::MonsterCollision(float timeDelta)
 
 	if (m_isTarget && D3DXVec3Length(&magicATKLegth) < 20);
 	{
-	
 
-		if (m_isMagicATK)
+
+		if (m_isAttack)
 		{
 			pSkinned->RemoveBoneTransform("Bip01-L-Hand");
 			m_ATKBox->pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
@@ -836,12 +769,12 @@ void cMage::MonsterCollision(float timeDelta)
 		{
 			pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
 		}
-	
+
 	}
-	
+
 	if (PHYSICS_MGR->IsOverlap(m_ATKBox, m_pMonster))
 	{
-		
+
 	}
 
 
@@ -856,5 +789,42 @@ void cMage::MonsterRender()
 
 	m_pMonster->Render();
 	m_pMonster->BoundBox.RenderGizmo(m_pMonster->pTransform);
+
+}
+
+
+
+void  cMage::Damage(float damage)
+{
+
+}
+
+void cMage::Attack01()
+{
+
+}
+void cMage::Attack02()
+{
+
+}
+void cMage::Attack03()
+{
+
+}
+
+void cMage::SKILL01()
+{
+
+}
+void cMage::SKILL02()
+{
+
+}
+void cMage::SKILL03()
+{
+
+}
+void cMage::SKILL04()
+{
 
 }

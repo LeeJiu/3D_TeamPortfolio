@@ -1,15 +1,7 @@
 #pragma once
-#include "cBaseObject.h"
-#include "moveClass.h"
-
+#include "cPlayer.h"
 
 #define CONTROL_KEY 5
-
-class cTerrain;
-class cCamera;
-class cStateHandler;
-class cItem;
-class cSkill_Surround;
 
 
 //스킬이펙트에 관한것
@@ -20,11 +12,9 @@ class cParticle;
 
 
 
-class cMage : public cBaseObject
+class cMage : public cPlayer
 {
 private:
-	//범위기에 관한것
-	cSkill_Surround*     m_SkillSurround;
 
 	//몬스터에 관한것
 	cBaseObject*          m_pMonster;
@@ -34,25 +24,17 @@ private:
 	bool                  m_MobHit;
 	int                   m_MobHitCount;
 
-
-
-	cItem*             pWeapon;
-	
-
-	cCamera*			m_camera;
-	
 	cBaseObject*           m_ATKBox;
 
-	ACTOR_STATE			m_state;
-	std::string			m_current_Ani;
-	std::string			m_Aniname;
-	std::map<int, bool> m_InputKeys;
-
 	bool                m_isPetOn;
-	bool				m_isMove;
 
-	//컴포넌트를 달아준다.
-	moveClass*			m_pMove;
+	// 스킬
+	int m_atkCnt;
+	float m_time;
+	float m_fadeOut;
+
+
+
 
 
 	//스킬에 관한 것
@@ -81,7 +63,7 @@ private:
 	//평타
 	cQuadParticleEmitter*  m_magicATK;
 	cQuadParticleEmitter*  m_magicATK2;
-	bool                   m_isMagicATK;
+
 
 
 
@@ -92,9 +74,11 @@ public:
 
 	void BaseObjectEnable();
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
-	void ATKBoxRender();
+	void BaseObjectRender();
 	void WeaponRender();
 
+
+private:
 	//몬스터와의 상호교류
 	void MonsterInit();
 
@@ -103,7 +87,7 @@ public:
 
 	void MonsterRender();
 
-	
+
 	//펫
 	void PetOnUpdate();
 
@@ -122,6 +106,18 @@ public:
 	void SnowStormInit();
 	void SnowStormUpdate();
 	void SnowStormRender();
+
+	void Damage(float damage);
+
+	void Attack01();
+	void Attack02();
+	void Attack03();
+
+	void SKILL01();
+	void SKILL02();
+	void SKILL03();
+	void SKILL04();
+
 
 
 	void SetCamera(cCamera* camera) { m_camera = camera; }
