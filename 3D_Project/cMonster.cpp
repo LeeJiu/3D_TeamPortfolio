@@ -8,7 +8,7 @@
 
 cMonster::cMonster()
 {
-	
+
 }
 
 
@@ -39,7 +39,7 @@ void cMonster::BaseObjectUpdate(float timeDelta)
 		//조건 추가해주자.
 		/*if (m_vObjects.empty() == false)
 		{
-			m_pWayPoint->SetBoundObjects(m_vObjects);
+		m_pWayPoint->SetBoundObjects(m_vObjects);
 		}*/
 		m_pWayPoint->Update(pTransform);
 	}
@@ -47,7 +47,7 @@ void cMonster::BaseObjectUpdate(float timeDelta)
 
 void cMonster::BaseObjectBoundBox()
 {
-	
+
 }
 
 void cMonster::MoveToPlayer()
@@ -116,4 +116,11 @@ void cMonster::MoveToPlayer()
 		ray.origin = currentPos;
 		ray.origin.y += 3;
 	}
+}
+void cMonster::BaseObjectRender()
+{
+	this->pSkinned->Render(this->pTransform);
+	this->pTransform->RenderGimozo();
+	this->BoundBox.RenderGizmo(this->pTransform);
+
 }

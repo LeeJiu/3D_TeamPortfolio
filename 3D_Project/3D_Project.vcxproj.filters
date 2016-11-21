@@ -270,9 +270,6 @@
     <ClInclude Include="cSkill_Round.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="cDragonTest.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -505,9 +502,6 @@
     </ClCompile>
     <ClCompile Include="cSkill_Round.cpp">
       <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cDragonTest.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

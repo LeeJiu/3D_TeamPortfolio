@@ -59,7 +59,7 @@ void cBerserker::BaseObjectEnable()
 
 void cBerserker::BaseObjectUpdate(float timeDelta)
 {
-	CamControl(timeDelta);
+	//CamControl(timeDelta);
 
 	Move(timeDelta);
 	//Monster_pick();

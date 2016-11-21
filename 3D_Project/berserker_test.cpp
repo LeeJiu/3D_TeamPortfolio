@@ -110,7 +110,7 @@ void berserker_test::Scene_Release()
 	SAFE_DELETE(this->pBerserker);
 	m_pMonMgr->Release();
 	SAFE_DELETE(m_pMonMgr);
-	SAFE_DELETE(this->pTransForCamera);
+	
 
 	for (int i = 0; i < lights.size(); i++)
 	{

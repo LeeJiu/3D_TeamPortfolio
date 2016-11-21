@@ -76,8 +76,6 @@ HRESULT DragonTest::Scene_Init()
 
 	this->pTransForCamera = new cTransform();
 
-	this->pBerserker->pTransform->AddChild(this->pMainCamera);
-	this->pMainCamera->SetLocalPosition(0, 2, -5);
 	isCharView = true;
 	isAltView = false;
 
@@ -126,7 +124,6 @@ void DragonTest::Scene_Release()
 	SAFE_DELETE(this->pBerserker);
 	m_pMonMgr->Release();
 	SAFE_DELETE(m_pMonMgr);
-	SAFE_DELETE(this->pTransForCamera);
 
 	for (int i = 0; i < lights.size(); i++)
 	{
@@ -139,24 +136,6 @@ void DragonTest::Scene_Update(float timeDelta)
 {
 	this->pTransForCamera->SetWorldPosition(this->pBerserker->pTransform->GetWorldPosition());
 
-	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
-	{
-		isAltView = true;
-		isCharView = false;
-		this->pMainCamera->ReleaseParent();
-		this->pTransForCamera->AddChild(this->pMainCamera);
-	}
-	if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
-	{
-		this->pMainCamera->Reset();
-		this->pTransForCamera->Reset();
-		this->pTransForCamera->SetWorldMatrix(this->pBerserker->pTransform->GetFinalMatrix());
-
-		this->pBerserker->pTransform->AddChild(this->pMainCamera);
-		this->pMainCamera->SetLocalPosition(0, 2, -5);
-		isCharView = true;
-		isAltView = false;
-	}
 	if (KEY_MGR->IsOnceUp('T'))
 	{
 		ITEM_MGR->createItem(1, D3DXVECTOR3(0, 7, 0));
@@ -167,14 +146,7 @@ void DragonTest::Scene_Update(float timeDelta)
 		ITEM_MGR->createItem(0, D3DXVECTOR3(0, 7, 0));
 
 	}
-	if (isCharView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pBerserker->pTransform,NULL , NULL);
-	}
-	else if (isAltView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera, NULL, NULL);
-	}
+	
 
 	this->pBerserker->Update(timeDelta);
 	m_pMonMgr->Update(timeDelta);
@@ -192,9 +164,8 @@ void DragonTest::Scene_Render1()
 	//셰이더에 라이팅 셋팅
 	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrixArray("matLights", matLights, 10);
 	cXMesh_Skinned::sSkinnedMeshEffect->SetInt("LightNum", this->lights.size());
-
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
-
+	
 	cXMesh_Static::SetCamera(this->pMainCamera);
 	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
@@ -202,7 +173,7 @@ void DragonTest::Scene_Render1()
 	this->pBerserker->Render();
 	this->m_pMonMgr->Render();
 
-	m_Land->Render();
+	//m_Land->Render();
 }
 
 

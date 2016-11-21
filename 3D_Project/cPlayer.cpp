@@ -56,7 +56,7 @@ void cPlayer::CamControl(float timeDelta)
 	else if (KEY_MGR->IsStayDown(VK_RBUTTON))
 	{
 		SetMousePos(screenCenterX, screenCenterY);
-		this->m_camera->SetLocalPosition(0, m_Distance * cos(m_Angle), -m_Distance * sin(m_Angle));
+		//this->m_camera->SetLocalPosition(0, m_Distance * cos(m_Angle), -m_Distance * sin(m_Angle));
 
 		if (mousePos.x > 2 + screenCenterX)
 			this->pTransform->RotateSelf(0, 2 * ONE_RAD, 0);
