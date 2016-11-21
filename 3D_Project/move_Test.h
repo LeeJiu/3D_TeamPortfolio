@@ -55,7 +55,7 @@ private:
 	D3DXMATRIXA16 temp;
 
 	bool boundHit;
-	cInven2*        m_inven;
+	cInven*        m_inven;
 public:
 	move_Test(void);
 	~move_Test(void);

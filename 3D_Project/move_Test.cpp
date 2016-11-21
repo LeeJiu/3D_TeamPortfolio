@@ -132,7 +132,7 @@ HRESULT move_Test::Scene_Init()
 	D3DXVECTOR3 itmePos = D3DXVECTOR3(0, m_pTerrain->GetHeight(0, 0),0);
 	ITEM_MGR->createItem(0, itmePos);
 	//======================
-	m_inven = new cInven2;
+	m_inven = new cInven;
 	m_inven->init();
 	return S_OK;
 }
