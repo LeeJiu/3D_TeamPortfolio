@@ -128,6 +128,7 @@
     <ClInclude Include="cScene_testMonster.h" />
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
+    <ClInclude Include="cSkill_Round.h" />
     <ClInclude Include="cSkill_Surround.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSoundManager.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="cScene_testMonster.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
+    <ClCompile Include="cSkill_Round.cpp" />
     <ClCompile Include="cSkill_Surround.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSoundManager.cpp" />

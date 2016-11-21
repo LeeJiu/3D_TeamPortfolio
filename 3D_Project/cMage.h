@@ -1,5 +1,7 @@
 #pragma once
 #include "cPlayer.h"
+#include "cSkill_Surround.h"
+#include "cSkill_Round.h"
 
 #define CONTROL_KEY 5
 
@@ -33,7 +35,8 @@ private:
 	float m_time;
 	float m_fadeOut;
 
-
+	cSkill_Surround*     m_pSurroundSkill;
+	cSkill_Round*        m_pRoundSkill;
 
 
 

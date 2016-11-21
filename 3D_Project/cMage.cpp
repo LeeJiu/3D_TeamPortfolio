@@ -88,6 +88,13 @@ void cMage::BaseObjectEnable()
 	m_damage = 100;
 	m_isAttack = false;
 
+	m_pSurroundSkill = new cSkill_Surround;
+	m_pSurroundSkill->BaseObjectEnable(pTransform->GetWorldPosition(), 6.0f, 10);
+
+	m_pRoundSkill = new cSkill_Round;
+	m_pRoundSkill->BaseObjectEnable( 6.0f, 10, 20);
+
+
 	//SetMoveKeys();
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
@@ -161,6 +168,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_state = STF_TYFUNG;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+		
 		m_snowStrom->StartEmission();
 		m_snowStrom_under->StartEmission();
 		m_snow->StartEmission();
@@ -179,6 +187,24 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_aniCount = 0;
 	}
 
+	if (KEY_MGR->IsOnceDown('7'))
+	{
+		m_pSurroundSkill->SelectSkill();
+
+
+	}
+
+	if (KEY_MGR->IsOnceDown('8'))
+	{
+		m_pSurroundSkill->StartCasting();
+		LOG_MGR->AddLog("캐스팅중");
+	}
+
+	if (KEY_MGR->IsOnceDown('9'))
+	{
+		m_pRoundSkill->SelectSkill();
+		LOG_MGR->AddLog("선택중");
+	}
 
 
 	//스킬 사용 관련
@@ -281,6 +307,18 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	MonsterUpdate(timeDelta);
 
+	m_pSurroundSkill->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
+
+	Ray ray;
+	POINT ptMousePos = GetMousePos();
+	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+	m_camera->ComputeRay(&ray, &screenPos);
+	D3DXVECTOR3		mousePos;
+	pTerrain->IsIntersectRay(&mousePos, &ray);
+	//mousePos = PHYSICS_MGR->getLastHeight(enemy, &ray, m_pTerrain, &m_mousePos);
+
+
+	m_pRoundSkill->BaseObjectUpdate(pTransform->GetWorldPosition(), timeDelta, mousePos);
 
 }
 
@@ -296,6 +334,9 @@ void cMage::BaseObjectRender()
 	MonsterRender();
 
 	SkillRender();
+
+	m_pSurroundSkill->BaseObjectRender();
+	m_pRoundSkill->BaseObjectRender();
 
 }
 
@@ -698,87 +739,87 @@ void cMage::MonsterUpdate(float timeDelta)
 void cMage::MonsterCollision(float timeDelta)
 {
 
-	D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_pMonster->pTransform->GetWorldPosition();
-
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	{
-		Ray ray;
-		POINT ptMousePos = GetMousePos();
-		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-		this->m_camera->ComputeRay(&ray, &screenPos);
-
-		if (PHYSICS_MGR->IsRayHitBound(&ray, &m_pMonster->BoundBox, m_pMonster->pTransform, NULL, NULL))
-		{
-			m_isTarget = true;
-			m_pMonster->pSkinned->PlayOneShot("WAIT", 0.3f);
-
-		}
-		else
-		{
-			m_isTarget = false;
-			m_pMonster->pSkinned->Play("IDLE", 0.3f);
-		}
-
-
-		if (m_isTarget &&D3DXVec3Length(&magicATKLegth) > 20)
-		{
-			m_state = RUN;
-			m_strName = MyUtil::SetAnimation(m_state);
-			this->pSkinned->Play(m_strName, 0.3);
-		}
-
-
-	}
-
-
-
-	if (m_isTarget && D3DXVec3Length(&magicATKLegth) > 20)
-	{
-		pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition(), 90.0f * ONE_RAD);
-		pTransform->MovePositionSelf(D3DXVECTOR3(0, 0, 10.0f * timeDelta));
-		m_StateCount = 0;
-		//사거리 밖이면 이동해라
-	}
-	else
-	{
-
-		m_StateCount++;
-		if (m_StateCount == 1)
-		{
-			m_state = WAIT;
-			m_strName = MyUtil::SetAnimation(m_state);
-			this->pSkinned->Play(m_strName, 0.3);
-		}
-
-	}
-
-
-
-
-	if (m_isTarget && D3DXVec3Length(&magicATKLegth) < 20);
-	{
-
-
-		if (m_isAttack)
-		{
-			pSkinned->RemoveBoneTransform("Bip01-L-Hand");
-			m_ATKBox->pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
-			m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
-		}
-		else
-		{
-			pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
-		}
-
-	}
-
-	if (PHYSICS_MGR->IsOverlap(m_ATKBox, m_pMonster))
-	{
-
-	}
-
-
-
+//	D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_pMonster->pTransform->GetWorldPosition();
+//
+//	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+//	{
+//		Ray ray;
+//		POINT ptMousePos = GetMousePos();
+//		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+//		this->m_camera->ComputeRay(&ray, &screenPos);
+//
+//		if (PHYSICS_MGR->IsRayHitBound(&ray, &m_pMonster->BoundBox, m_pMonster->pTransform, NULL, NULL))
+//		{
+//			m_isTarget = true;
+//			m_pMonster->pSkinned->PlayOneShot("WAIT", 0.3f);
+//
+//		}
+//		else
+//		{
+//			m_isTarget = false;
+//			m_pMonster->pSkinned->Play("IDLE", 0.3f);
+//		}
+//
+//
+//		if (m_isTarget &&D3DXVec3Length(&magicATKLegth) > 20)
+//		{
+//			m_state = RUN;
+//			m_strName = MyUtil::SetAnimation(m_state);
+//			this->pSkinned->Play(m_strName, 0.3);
+//		}
+//
+//
+//	}
+//
+//
+//
+//	if (m_isTarget && D3DXVec3Length(&magicATKLegth) > 20)
+//	{
+//		pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition(), 90.0f * ONE_RAD);
+//		pTransform->MovePositionSelf(D3DXVECTOR3(0, 0, 10.0f * timeDelta));
+//		m_StateCount = 0;
+//		//사거리 밖이면 이동해라
+//	}
+//	else
+//	{
+//
+//		m_StateCount++;
+//		if (m_StateCount == 1)
+//		{
+//			m_state = WAIT;
+//			m_strName = MyUtil::SetAnimation(m_state);
+//			this->pSkinned->Play(m_strName, 0.3);
+//		}
+//
+//	}
+//
+//
+//
+//
+//	if (m_isTarget && D3DXVec3Length(&magicATKLegth) < 20);
+//	{
+//
+//
+//		if (m_isAttack)
+//		{
+//			pSkinned->RemoveBoneTransform("Bip01-L-Hand");
+//			m_ATKBox->pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
+//			m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
+//		}
+//		else
+//		{
+//			pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
+//		}
+//
+//	}
+//
+//	if (PHYSICS_MGR->IsOverlap(m_ATKBox, m_pMonster))
+//	{
+//
+//	}
+//
+//
+//
 
 
 }
