@@ -24,6 +24,7 @@ cTransform::cTransform(void)
 	ShakePosFlag = SHAKE_X | SHAKE_Y | SHAKE_Z;
 	ShakeRotFlag = SHAKE_X | SHAKE_Y | SHAKE_Z;
 
+	m_distance = 0;
 	MaxZoomIn = 5;
 	MaxZoomOut = -5;
 	Zoom = 0;
@@ -684,6 +685,7 @@ void cTransform::LookDirection( const D3DXVECTOR3& dir, const D3DXVECTOR3& up )
 		this->UpdateTransform();
 }
 
+
 //특정 방향을 바라보는데 angle 각만큼만 회전 해라
 void cTransform::LookDirection( const D3DXVECTOR3& dir, float angle )
 {
@@ -1327,6 +1329,7 @@ void cTransform::SetDeviceView( LPDIRECT3DDEVICE9 pDevice )
 }
 
 
+
 //디폴트 컨트롤 을해준다.
 void cTransform::DefaultControl( float timeDelta )
 {
@@ -1484,8 +1487,10 @@ void cTransform::DefaultControl( float timeDelta )
 
 
 
-void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
+void cTransform::DefaultControl3(float timeDelta, cTransform* charactor, float angle, float distance)
 {
+	m_distance = distance;
+
 	//디폴트 컨트롤을 위한 카메라 Angle 값
 	static float nowAngleH = 0.0f;			//수평앵글
 	static float nowAngleV = 0.0f;			//수직앵글
@@ -1498,19 +1503,47 @@ void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 	static float accelate = 30.0f;						//초당 이동 증가값
 	static float nowSpeed = 3.0f;						//현재 속도
 	static float maxSpeed = 40.0f;						//최고 속도 
-	
+
+	m_vLookAt = D3DXVECTOR3(charactor->GetWorldPosition().x, charactor->GetWorldPosition().y + 2, charactor->GetWorldPosition().z);
+
 	//입력 방향벡터
 	D3DXVECTOR3 inputVector(0, 0, 0);
+
+	/*
+	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
+	{
+	isAltView = true;
+	isCharView = false;
+	//this->ReleaseParent();
+	//this->pTransForCamera->AddChild(this->pMainCamera);
+	}
+
+	if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
+	{
+	//this->pMainCamera->Reset();
+	//this->pTransForCamera->Reset();
+	//this->pTransForCamera->SetWorldMatrix(this->pBerserker->pTransform->GetFinalMatrix());
+	//
+	//this->AttachTo(charactor);
+	//this->SetLocalPosition(0, 2, -5);
+	isCharView = true;
+	isAltView = false;
+	}
+	*/
+
+	this->LookPosition(m_vLookAt, D3DXVECTOR3(0, 1, 0));
 
 	//줌인 줌아웃
 	if (Zoom <= MaxZoomIn && ex_wheelUp) {
 		inputVector.z = 1.0f;
 		Zoom += 1.0f;
+		m_distance += 1.f;
 	}
 
 	else if (Zoom >= MaxZoomOut && ex_wheelDown) {
 		inputVector.z = -1.0f;
 		Zoom -= 1.0f;
+		m_distance -= 1.f;
 	}
 
 	//제로 벡터가 아닐때
@@ -1525,8 +1558,8 @@ void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 	this->MovePositionSelf(target * timeDelta);
 
 	//최초 누를때는 마우스 위치를 가운데로 놓고 시작
-	if (KEY_MGR->IsOnceDown(VK_RBUTTON)) {
-
+	if (KEY_MGR->IsOnceDown(VK_RBUTTON))
+	{
 		//화면의 중심위치
 		int screenCenterX = WINSIZE_X / 2;
 		int screenCenterY = WINSIZE_Y / 2;
@@ -1534,15 +1567,14 @@ void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 		SetMousePos(screenCenterX, screenCenterY);
 		//다시 마우스 위치를 센터로...
 	}
-	else if (KEY_MGR->IsStayDown(VK_RBUTTON)) {
-
+	else if (KEY_MGR->IsStayDown(VK_RBUTTON))
+	{
 		//
 		// 회전 처리
 		// 
 		//화면의 중심위치
 		int screenCenterX = WINSIZE_X / 2;
 		int screenCenterY = WINSIZE_Y / 2;
-
 
 		//현재 마우스 위치
 		POINT mousePos = GetMousePos();
@@ -1559,40 +1591,132 @@ void cTransform::DefaultControl3(float timeDelta, cTransform* charactor)
 		nowAngleV = Clamp(nowAngleV, minAngleV, maxAngleV);
 		SetMousePos(screenCenterX, screenCenterY);
 
-		if(mousePos.x < screenCenterX )
-		{
-			charactor->RotateSelf(0, -2.5 * ONE_RAD , 0);
-		}
-		
-		if (mousePos.x > screenCenterX )
-		{
-			charactor->RotateSelf(0, 2.5 * ONE_RAD, 0);
-		}
+		this->SetLocalPosition(0, m_distance * cos(angle), -m_distance * sin(angle));
 
-		//실패한y축읳 흔적
-		//if (mousePos.y > screenCenterY )
-		////if(KEY_MGR->IsStayDown(VK_UP))
-		//{
-		//	if (this->NowView < this->MaxUpView)
-		//	{
-		//		this->NowView += 1 * ONE_RAD;
-		//		chara->RotateSelf(1 * ONE_RAD, 0, 0);
-		//	}
-		//}
-		//
-		//if (mousePos.y < screenCenterY )
-		////if (KEY_MGR->IsStayDown(VK_DOWN))
-		//{
-		//	if (this->NowView > this->MinDownView)
-		//	{
-		//		this->NowView -= 1 * ONE_RAD;
-		//		chara->RotateSelf(-1 * ONE_RAD, 0, 0);
-		//
-		//	}
-		//}
-		//LOG_MGR->AddLog("now Angle %f", NowView);
+		if (mousePos.x > screenCenterX)
+			charactor->RotateSelf(0, 2.5*ONE_RAD, 0);
+
+		if (mousePos.x < screenCenterX)
+			charactor->RotateSelf(0, -2.5*ONE_RAD, 0);
 	}
 }
+
+/*
+void cTransform::DefaultControl3(float timeDelta, cTransform* charactor, float angle, float distance)
+{
+	m_distance = distance;
+
+	//디폴트 컨트롤을 위한 카메라 Angle 값
+	static float nowAngleH = 0.0f;			//수평앵글
+	static float nowAngleV = 0.0f;			//수직앵글
+	static float maxAngleV = 85.0f;			//수직 최대 앵글
+	static float minAngleV = -85.0f;			//수직 최저 앵글
+	static float sensitivityH = 0.5f;					//가로 민감도
+	static float sensitivityV = 0.5f;					//세로 민감도 ( 이값이 음수면 Invert Mouse )
+	static D3DXVECTOR3 nowVelocity(0, 0, 0);			//현제 방향과 속도를 가진 벡터
+
+	static float accelate = 30.0f;						//초당 이동 증가값
+	static float nowSpeed = 3.0f;						//현재 속도
+	static float maxSpeed = 40.0f;						//최고 속도 
+	
+	m_vEye = D3DXVECTOR3(charactor->GetWorldPosition().x, charactor->GetWorldPosition().y + 2, charactor->GetWorldPosition().z - 5);
+	m_vLookAt = D3DXVECTOR3(charactor->GetWorldPosition().x, charactor->GetWorldPosition().y + 2, charactor->GetWorldPosition().z);
+
+	//입력 방향벡터
+	D3DXVECTOR3 inputVector(0, 0, 0);
+
+	
+	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
+	{
+		isAltView = true;
+		isCharView = false;
+		//this->ReleaseParent();
+		//this->pTransForCamera->AddChild(this->pMainCamera);
+	}
+
+	if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
+	{
+		//this->pMainCamera->Reset();
+		//this->pTransForCamera->Reset();
+		//this->pTransForCamera->SetWorldMatrix(this->pBerserker->pTransform->GetFinalMatrix());
+		//
+		//this->AttachTo(charactor);
+		//this->SetLocalPosition(0, 2, -5);
+		isCharView = true;
+		isAltView = false;
+	}
+	
+
+	this->LookPosition(m_vLookAt, (0, 0, 1));
+
+	//줌인 줌아웃
+	if (Zoom <= MaxZoomIn && ex_wheelUp) {
+		inputVector.z = 1.0f;
+		Zoom += 1.0f;
+		m_distance += 1.f;
+	}
+
+	else if (Zoom >= MaxZoomOut && ex_wheelDown) {
+		inputVector.z = -1.0f;
+		Zoom -= 1.0f;
+		m_distance -= 1.f;
+	}
+
+	//제로 벡터가 아닐때
+	if (VECTORZERO(inputVector) == false)
+	{
+		//정규화
+		D3DXVec3Normalize(&inputVector, &inputVector);
+	}
+
+	//타겟벡터 
+	D3DXVECTOR3 target = inputVector * maxSpeed;
+	this->MovePositionSelf(target * timeDelta);
+
+	//최초 누를때는 마우스 위치를 가운데로 놓고 시작
+	if (KEY_MGR->IsOnceDown(VK_RBUTTON))
+	{
+		//화면의 중심위치
+		int screenCenterX = WINSIZE_X / 2;
+		int screenCenterY = WINSIZE_Y / 2;
+
+		SetMousePos(screenCenterX, screenCenterY);
+		//다시 마우스 위치를 센터로...
+	}
+	else if (KEY_MGR->IsStayDown(VK_RBUTTON))
+	{
+		//
+		// 회전 처리
+		// 
+		//화면의 중심위치
+		int screenCenterX = WINSIZE_X / 2;
+		int screenCenterY = WINSIZE_Y / 2;
+
+		//현재 마우스 위치
+		POINT mousePos = GetMousePos();
+
+		//이동량 ( 중앙에서 멀어진 량 )
+		float deltaX = mousePos.x - screenCenterX;
+		float deltaY = mousePos.y - screenCenterY;
+
+		//앵글 추가
+		nowAngleH += deltaX * sensitivityH;
+		nowAngleV += deltaY * sensitivityV;
+
+		//앵글값을 min max 범위 안으로
+		nowAngleV = Clamp(nowAngleV, minAngleV, maxAngleV);
+		SetMousePos(screenCenterX, screenCenterY);
+
+		this->SetLocalPosition(0, m_distance * cos(angle), -m_distance * sin(angle));
+		
+		if (mousePos.x > screenCenterX)
+			charactor->RotateSelf(0,2.5*ONE_RAD,0);
+
+		if (mousePos.x < screenCenterX)
+			charactor->RotateSelf(0, -2.5*ONE_RAD, 0);
+	}
+}
+*/
 
 void cTransform::DefaultControl2( float timeDelta )
 {

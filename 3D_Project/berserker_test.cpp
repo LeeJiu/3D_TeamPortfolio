@@ -51,8 +51,6 @@ HRESULT berserker_test::Scene_Init()
 	m_Land->SetMesh(RESOURCE_STATICXMESH->GetResource(
 		"../Resources/Meshes/TestMesh/boundMesh.X", &matCorrection));
 	m_Land->SetActive(true);
-
-	//m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
 	m_Land->pTransform->SetWorldPosition(0, 0, 0);
 
 	//몬스터
@@ -72,16 +70,6 @@ HRESULT berserker_test::Scene_Init()
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pBerserker->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
-
-
-	this->pTransForCamera = new cTransform();
-
-	this->pBerserker->pTransform->AddChild(this->pMainCamera);
-	this->pMainCamera->SetLocalPosition(0, 2, -5);
-	isCharView = true;
-	isAltView = false;
-
-
 
 
 	//라이트 푸쉬
@@ -109,11 +97,7 @@ HRESULT berserker_test::Scene_Init()
 	this->lights.push_back(pLight3);
 
 	isMove = false;
-
-	pMainCamera->SetWorldPosition(2, 5, 2);
 	isClick = false;
-
-
 
 	return S_OK;
 }
@@ -137,26 +121,26 @@ void berserker_test::Scene_Release()
 
 void berserker_test::Scene_Update(float timeDelta)
 {
-	this->pTransForCamera->SetWorldPosition(this->pBerserker->pTransform->GetWorldPosition());
-
-	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
-	{
-		isAltView = true;
-		isCharView = false;
-		this->pMainCamera->ReleaseParent();
-		this->pTransForCamera->AddChild(this->pMainCamera);
-	}
-	if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
-	{
-		this->pMainCamera->Reset();
-		this->pTransForCamera->Reset();
-		this->pTransForCamera->SetWorldMatrix(this->pBerserker->pTransform->GetFinalMatrix());
-
-		this->pBerserker->pTransform->AddChild(this->pMainCamera);
-		this->pMainCamera->SetLocalPosition(0, 2, -5);
-		isCharView = true;
-		isAltView = false;
-	}
+	//this->pTransForCamera->SetWorldPosition(this->pBerserker->pTransform->GetWorldPosition());
+	//
+	//if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
+	//{
+	//	isAltView = true;
+	//	isCharView = false;
+	//	this->pMainCamera->ReleaseParent();
+	//	this->pTransForCamera->AddChild(this->pMainCamera);
+	//}
+	//if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
+	//{
+	//	this->pMainCamera->Reset();
+	//	this->pTransForCamera->Reset();
+	//	this->pTransForCamera->SetWorldMatrix(this->pBerserker->pTransform->GetFinalMatrix());
+	//
+	//	this->pBerserker->pTransform->AddChild(this->pMainCamera);
+	//	this->pMainCamera->SetLocalPosition(0, 2, -5);
+	//	isCharView = true;
+	//	isAltView = false;
+	//}
 	if (KEY_MGR->IsOnceUp('T'))
 	{
 		ITEM_MGR->createItem(1, D3DXVECTOR3(0, 7, 0));
@@ -166,14 +150,6 @@ void berserker_test::Scene_Update(float timeDelta)
 	{
 		ITEM_MGR->createItem(0, D3DXVECTOR3(0, 7, 0));
 
-	}
-	if (isCharView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pBerserker->pTransform);
-	}
-	else if (isAltView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
 	}
 
 	this->pBerserker->Update(timeDelta);
@@ -200,7 +176,7 @@ void berserker_test::Scene_Render1()
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	this->pBerserker->Render();
-	//this->m_pMonMgr->Render();
+	this->m_pMonMgr->Render();
 
 	m_Land->Render();
 }

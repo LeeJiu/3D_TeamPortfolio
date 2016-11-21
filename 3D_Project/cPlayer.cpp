@@ -40,9 +40,51 @@ void cPlayer::BaseSpriteRender()
 
 }
 
+void cPlayer::CamControl(float timeDelta)
+{
+	D3DXVECTOR3 m_LookAt(this->pTransform->GetWorldPosition().x, this->pTransform->GetWorldPosition().y + 2, this->pTransform->GetWorldPosition().z);
+	this->m_camera->LookPosition(m_LookAt, D3DXVECTOR3(0,1,0));
+
+	int screenCenterX = WINSIZE_X / 2;
+	int screenCenterY = WINSIZE_Y / 2;
+	POINT mousePos = GetMousePos();
+	
+	if (KEY_MGR->IsOnceDown(VK_RBUTTON))
+	{
+		SetMousePos(screenCenterX, screenCenterY);
+	}
+	else if (KEY_MGR->IsStayDown(VK_RBUTTON))
+	{
+		SetMousePos(screenCenterX, screenCenterY);
+		this->m_camera->SetLocalPosition(0, m_Distance * cos(m_Angle), -m_Distance * sin(m_Angle));
+
+		if (mousePos.x > 2 + screenCenterX)
+			this->pTransform->RotateSelf(0, 2 * ONE_RAD, 0);
+
+		if (mousePos.x < -2 + screenCenterX)
+			this->pTransform->RotateSelf(0, -2 * ONE_RAD, 0);
+
+		if (mousePos.y <= 2 + screenCenterY&& m_Angle < 90 * ONE_RAD)
+			m_Angle += 2 * ONE_RAD;
+
+		if (mousePos.y >= -2 + screenCenterY && m_Angle > 10 * ONE_RAD)
+			m_Angle -= 2 * ONE_RAD;
+	}
+
+	//¡‹¿Œ ¡‹æ∆øÙ
+	if (Zoom <= MaxZoomIn && ex_wheelUp && D3DXVec3Length(&(m_camera->GetWorldPosition() - this->pTransform->GetWorldPosition())) > 3 ) {
+		Zoom -= 1.0f;
+		m_Distance -= 1.f;
+	}
+
+	else if (Zoom >= MaxZoomOut && ex_wheelDown && D3DXVec3Length(&(m_camera->GetWorldPosition() - this->pTransform->GetWorldPosition())) < 7) {
+		Zoom += 1.0f;
+		m_Distance += 1.f;
+	}
+}
+
 void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
 {
-	
 	if (m_inven->GetWeapon() == NULL &&m_botton == true)
 	{
 		m_botton = false;
@@ -54,7 +96,10 @@ void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
 		m_botton = true;
 	}
 
-	//m_Weapon = m_inven->GetWeapon();
+	if (m_inven->GetWeapon() == NULL)
+	{
+		pSkinned->RemoveBoneTransform("BN_Weapon_R");
+	}
 
 	m_inven->update(timeDelta, m_camera);
 

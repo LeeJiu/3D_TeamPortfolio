@@ -27,6 +27,11 @@ protected:
 	cMonster*			m_target;				//타겟몬스터 
 	cMonsterManager*	m_pMonMgr;				//몬스터매니저
 
+	float				m_Angle;				//카메라랑 앵글
+	float				m_Distance;				//카메라와의 거리
+	float				MaxZoomIn;
+	float				MaxZoomOut;
+	float				Zoom;
 	//status
 	float				m_fHP;					//hp
 	float				m_sp;					//skill point
@@ -39,6 +44,7 @@ protected:
 
 	bool                m_WeaponCheck;          // 아이템 장착 됬는지.
 	bool                m_botton;
+
 public:
 	cPlayer();
 	virtual ~cPlayer();
@@ -48,6 +54,8 @@ public:
 	virtual void BaseObjectRender();							//기존 오브젝트랜더
 	virtual void BaseSpriteRender();							//스프라이트 랜더
 
+	virtual void CamControl(float timeDelta);
+	
 	virtual void UiUpdate(float timeDelta, cCamera* camera);	//ui업데이트 전반
 	virtual void UiURender();									//ui랜더전반
 

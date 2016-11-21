@@ -81,6 +81,13 @@ protected:
 	float MaxZoomOut;
 	float Zoom;
 
+	D3DXVECTOR3 m_vEye;
+	D3DXVECTOR3 m_vLookAt;
+	float m_distance;
+
+	float isCharView;
+	float isAltView;
+
 public:
 	cTransform(void);
 	~cTransform(void);
@@ -226,7 +233,7 @@ public:
 	//디폴트 컨트롤 을해준다.
 	void DefaultControl( float timeDelta );
 	void DefaultControl2( float timeDelta );
-	void DefaultControl3(float timeDelta, cTransform* charactor);
+	void DefaultControl3(float timeDelta, cTransform* charactor, float angle, float distance);
 	void DefaultControl4(float timeDelta);	//오브젝트 움직이는 용 컨트롤4
 
 

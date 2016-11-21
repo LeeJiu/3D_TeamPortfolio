@@ -40,6 +40,18 @@ void cBerserker::BaseObjectEnable()
 	
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
+	m_camera->AttachTo(pTransform);
+	m_camera->SetLocalPosition(0, 2, -5);
+
+	D3DXVECTOR3 VecPlayer(0, this->pTransform->GetWorldPosition().y, this->pTransform->GetWorldPosition().z);
+	D3DXVECTOR3 VecCam(0, this->m_camera->GetWorldPosition().y, this->m_camera->GetWorldPosition().z);
+	float CamAngle = D3DXVec3Dot(D3DXVec3Normalize(&VecPlayer, &VecPlayer), D3DXVec3Normalize(&VecCam, &VecCam));
+	m_Angle = acos(CamAngle);
+	m_Distance = D3DXVec3Length(&(this->pTransform->GetWorldPosition() - this->m_camera->GetWorldPosition()));
+	MaxZoomIn = 2;
+	MaxZoomOut = -5;
+	Zoom = 0;
+
 	m_atkCnt = 1;
 	m_time = 0;
 	m_testtime = 0;
@@ -47,6 +59,8 @@ void cBerserker::BaseObjectEnable()
 
 void cBerserker::BaseObjectUpdate(float timeDelta)
 {
+	CamControl(timeDelta);
+
 	Move(timeDelta);
 	//Monster_pick();
 	//if(m_invenOn)
@@ -180,7 +194,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//test용 로그 출려꾸 
 	if (m_testtime > 1)
 	{
-		LOG_MGR->AddLog("%d", m_inven->GetInvenOn());
+		LOG_MGR->AddLog("%.4f, %.1f", m_Angle, m_Distance);
 		m_testtime = 0;
 	}
 }

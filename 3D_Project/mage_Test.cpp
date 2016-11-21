@@ -174,11 +174,11 @@ void mage_Test::Scene_Update(float timeDelta)
 
 	if (isCharView)
 	{
-		pMainCamera->DefaultControl3(timeDelta, this->pMage->pTransform);
+		pMainCamera->DefaultControl3(timeDelta, this->pMage->pTransform,NULL,NULL);
 	}
 	else if (isAltView)
 	{
-		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
+		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera, NULL, NULL);
 	}
 
 
