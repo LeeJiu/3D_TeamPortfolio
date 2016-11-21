@@ -148,7 +148,7 @@ void move_Test::Scene_Release()
 	SAFE_DELETE(this->pSkinned1);
 
 	m_inven->release();
-	SAFE_DELETE(this->m_inven);
+	//SAFE_DELETE(this->m_inven);
 
 }
 

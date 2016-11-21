@@ -61,11 +61,10 @@ void cInven::release()
 	{
 		for (int j = 0; j < INVEN_COUNT; j++)
 		{
-			if (inven[i][j].m_Item != NULL)
-			{
+				if (inven[i][j].m_Item != NULL && inven[i][j].isPoint == true)
+				{
 				SAFE_DELETE(inven[i][j].m_Item);
-			}
-
+				}
 		}
 	}
 
