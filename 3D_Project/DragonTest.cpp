@@ -169,11 +169,11 @@ void DragonTest::Scene_Update(float timeDelta)
 	}
 	if (isCharView)
 	{
-		pMainCamera->DefaultControl3(timeDelta, this->pBerserker->pTransform);
+		pMainCamera->DefaultControl3(timeDelta, this->pBerserker->pTransform,NULL , NULL);
 	}
 	else if (isAltView)
 	{
-		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
+		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera, NULL, NULL);
 	}
 
 	this->pBerserker->Update(timeDelta);
