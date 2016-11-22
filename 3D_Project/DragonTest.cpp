@@ -140,7 +140,7 @@ void DragonTest::Scene_Update(float timeDelta)
 	}
 
 
-	//this->pBerserker->Update(timeDelta);
+	this->pBerserker->Update(timeDelta);
 	m_pMonMgr->Update(timeDelta);
 }
 
