@@ -187,4 +187,5 @@ void DragonTest::Scene_Render1()
 void DragonTest::Scene_RenderSprite()
 {
 	this->pBerserker->BaseSpriteRender();
+
 }
