@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "cSkill_Round.h"
-#include "cQuadParticleEmitter.h"
+
 
 cSkill_Round::cSkill_Round()
 {
@@ -12,7 +12,7 @@ cSkill_Round::~cSkill_Round()
 }
 
 
-void cSkill_Round::BaseObjectEnable(float surroundLength, int castTime, int maxDistance)
+void cSkill_Round::BaseObjectEnable(D3DXVECTOR3  casterWorldPos, float surroundLength, int maxDistance, int castTime, int attackingTime, int coolTime)
 {
 	m_IsSelect = false;   //범위 선택하는중
 	m_IsCasting = false;  //캐스팅 시작하는 중
@@ -21,15 +21,25 @@ void cSkill_Round::BaseObjectEnable(float surroundLength, int castTime, int maxD
 
 	m_MaxDistance = maxDistance;  //최대 사거리 대입
 
+	m_CasterWorldPos = casterWorldPos;
+
+	m_SurroundLength = surroundLength;
+
+	m_CastTimeCount = 0;
+	m_CastTime = castTime;
+
+	m_CoolTimeCount = 0;
+	m_CoolTime = coolTime;
+
+	m_AttackingCount = 0;
+	m_AttackingTime = attackingTime;
+
+	pTransform->SetWorldPosition(m_CasterWorldPos);
 
 
 	// 범위 이펙트 
 	m_CircleEfc = new cQuadParticleEmitter();  
 	m_CircleEfc->SetActive(true);
-
-	pTransform->SetWorldPosition(D3DXVECTOR3(0,0,0));  // 트렌스폼 좌표 
-
-	m_SurroundLength = surroundLength;
 
 	m_BoundSphere.SetBound(&pTransform->GetWorldPosition(), &D3DXVECTOR3(m_SurroundLength, 0, m_SurroundLength));
 
@@ -96,7 +106,7 @@ void cSkill_Round::BaseObjectEnable(float surroundLength, int castTime, int maxD
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors3, scales3,
 		m_SurroundLength, m_SurroundLength,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/surround_cast_effect.tga"),
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/surround_effect_false.tga"),
 		true);
 
 	m_CastEfc->StartEmission();
@@ -142,51 +152,95 @@ void cSkill_Round::BaseObjectEnable(float surroundLength, int castTime, int maxD
 
 }
 
-void cSkill_Round::BaseObjectUpdate(D3DXVECTOR3 CasterWorldPos, float timeDelta, D3DXVECTOR3 mousePos)
+void cSkill_Round::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos, D3DXVECTOR3 mousePos)
 {
-
-
-	m_CasterWorldPos = CasterWorldPos;
-
+	m_CasterWorldPos = casterWorldPos;
 	m_MousePos = mousePos;
-
-	pTransform->SetWorldPosition(m_MousePos);
-
-	D3DXVECTOR3 selectMax = pTransform->GetWorldPosition() - m_CasterWorldPos;
-
-	if (m_IsSelect)
-	{
-
-		m_SurroundEfc->Update(timeDelta);
-		m_SurroundEfc->pTransform->SetWorldPosition(m_CasterWorldPos);
-
-		if (D3DXVec3Length(&selectMax) < m_MaxDistance)
-		{
-			m_CircleEfc->Update(timeDelta);
-			m_CircleEfc->pTransform->SetWorldPosition(m_MousePos);
-
-			//클릭할 시 캐스팅이 시작되도록
-
-			if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-			{
-				m_IsCasting = true;
-
-			}
-		}
-		else
-		{
-			m_CastEfc->Update(timeDelta);
-			m_CastEfc->pTransform->SetWorldPosition(m_MousePos);
-		}
-	}
-
-		
 
 
 	if (m_IsCasting)  //캐스팅이 시작되면
 	{
+		LOG_MGR->AddLog("캐스팅시작");
+		m_IsSelect = false;
+		m_CastTimeCount++;
+
+		if (m_CastTimeCount == m_CastTime) //캐스팅이 끝나면 
+		{
+			m_IsCasting = false;
+			m_IsAttacking = true;
+			m_IsCoolTime = true; //쿨타임돌기를 시작합시다
+			m_AttackPos = m_MousePos;
+
+		}
 
 	}
+
+	if (m_IsAttacking)
+	{
+		m_IsCasting = false;
+		m_AttackingCount++;
+
+		if (m_AttackingCount == m_AttackingTime) //시전시간이 끝나면
+		{
+
+			m_IsAttacking = false;
+			LOG_MGR->AddLog("스킬끝");
+		}
+
+	}
+
+	
+
+	if (m_IsCoolTime) //쿨타임 중이면 
+	{
+		LOG_MGR->AddLog("쿨타임 중입니다");
+
+		m_CoolTimeCount++; //쿨타임을 계산해주자
+
+		if (m_CoolTimeCount == m_CoolTime)
+		{
+			m_IsCoolTime = false;
+		}
+
+	}
+	else //쿨타임 중이 아니면
+	{
+		if (m_IsSelect)
+		{
+			m_SurroundEfc->Update(timeDelta);
+			m_SurroundEfc->pTransform->SetWorldPosition(m_CasterWorldPos);
+			pTransform->SetWorldPosition(m_MousePos);
+			D3DXVECTOR3 selectMax = pTransform->GetWorldPosition() - m_CasterWorldPos;
+
+			if (D3DXVec3Length(&selectMax) < m_MaxDistance)
+			{
+				LOG_MGR->AddLog("범위 가능");
+				m_CircleEfc->Update(timeDelta);
+				m_CircleEfc->pTransform->SetWorldPosition(m_MousePos);
+
+				//클릭할 시 캐스팅이 시작되도록
+
+				if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+				{
+					LOG_MGR->AddLog("시전시작");
+					m_IsCasting = true;
+					m_IsSelect = false;
+					
+				}
+			}
+			else
+			{
+				LOG_MGR->AddLog("범위 불가능");
+				m_CastEfc->Update(timeDelta);
+				m_CastEfc->pTransform->SetWorldPosition(m_MousePos);
+			}
+
+		}
+	}
+
+
+	
+	
 
 
 
@@ -214,32 +268,27 @@ void cSkill_Round::BaseObjectRender()
 			m_BoundSphere.RenderGizmo(pTransform);
 		}
 
-	
 	}
 
-
-	if (m_IsCasting)
-	{
-
-	}
 
 }
 
 
 void cSkill_Round::SelectSkill()
 {
+
 	m_IsSelect = true;
+	m_CastTimeCount = 0;
+	m_CoolTimeCount = 0;
+	m_AttackingCount = 0;
 
 }
 
 void cSkill_Round::StartCasting()
 {
-
 	m_IsCasting = true;
+	m_CastTimeCount = 0;
+	m_CoolTimeCount = 0;
+	m_AttackingCount = 0;
 }
 
-void cSkill_Round::UseSkill()
-{
-
-
-}

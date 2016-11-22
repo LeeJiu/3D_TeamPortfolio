@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "cSkill_Surround.h"
-#include "cQuadParticleEmitter.h"
+
 
 
 
@@ -13,16 +13,14 @@ cSkill_Surround::~cSkill_Surround()
 {
 }
 
-void cSkill_Surround::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float surroundLength, int castTime)
+void cSkill_Surround::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float surroundLength, int castTime, int attackingTime, int coolTime)
 {
+
 	m_IsSelect = false;
 	m_IsCasting = false;
 	m_IsAttacking = false;
 	m_IsCoolTime = false;
 
-
-		m_CircleEfc = new cQuadParticleEmitter();
-		m_CircleEfc->SetActive(true);
 
 		m_CasterWorldPos = casterWorldPos;
 
@@ -30,8 +28,20 @@ void cSkill_Surround::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float surroun
 
 		m_SurroundLength = surroundLength;
 
-		m_BoundSphere.SetBound(&D3DXVECTOR3(m_CasterWorldPos.x, 0, m_CasterWorldPos.z), &D3DXVECTOR3(m_SurroundLength, 0, m_SurroundLength));
 
+		m_CastTimeCount = 0;
+		m_CastTime = castTime;
+
+		m_CoolTimeCount = 0;
+		m_CoolTime = coolTime;
+
+		m_AttackingCount = 0;
+		m_AttackingTime = attackingTime;
+
+		m_CircleEfc = new cQuadParticleEmitter();
+		m_CircleEfc->SetActive(true);
+
+		m_BoundSphere.SetBound(&D3DXVECTOR3(m_CasterWorldPos.x, 0, m_CasterWorldPos.z), &D3DXVECTOR3(m_SurroundLength, 0, m_SurroundLength));
 
 
 		VEC_COLOR colors2;
@@ -82,7 +92,7 @@ void cSkill_Surround::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float surroun
 
 		m_CastEfc->Init(
 			30,
-			2.0f,     //이펙트 몇장
+			10.0f,     //이펙트 몇장
 			1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
 			1.0f,
 			D3DXVECTOR3(0, 1, 0),     //시작위치에서 끝점까지의 거리
@@ -96,38 +106,79 @@ void cSkill_Surround::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float surroun
 			D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
 			D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 			colors3, scales3,
-			m_SurroundLength / 5, m_SurroundLength,
+			m_SurroundLength / 10, m_SurroundLength,
 			RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/surround_cast_effect.tga"),
 			true);
 
 		m_CastEfc->StartEmission();
 
-
 	
+
 	
 }
 
 void cSkill_Surround::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 CasterWorldPos)
 {
 
-	if (m_IsSelect)
+	m_CasterWorldPos = CasterWorldPos;
+	pTransform->SetWorldPosition(m_CasterWorldPos);
+
+	if (m_IsCoolTime) //쿨타임 중이면 
 	{
-		m_CircleEfc->Update(timeDelta);
-		m_CircleEfc->pTransform->SetWorldPosition(m_CasterWorldPos);
+		LOG_MGR->AddLog("쿨타임 중입니다");
 
-		m_CasterWorldPos = CasterWorldPos;
-		pTransform->SetWorldPosition(m_CasterWorldPos);
+		m_CoolTimeCount++; //쿨타임을 계산해주자
 
-		if (m_IsCasting)
+		if (m_CoolTimeCount == m_CoolTime)
 		{
-			
-			m_CastEfc->Update(timeDelta);
-			m_CastEfc->pTransform->SetWorldPosition(m_CasterWorldPos);
+			m_IsCoolTime = false;
+		}
+		
+	}
+	else //쿨타임 중이 아니면
+	{
+		if (m_IsSelect)
+		{
+			m_CircleEfc->Update(timeDelta);
+			m_CircleEfc->pTransform->SetWorldPosition(m_CasterWorldPos);
+			m_CircleEfc->pTransform->RotateSelf(D3DXVECTOR3(0, 0.3f * timeDelta, 0));
+
+		}
+	}
+
+
+
+
+	if (m_IsCasting)
+	{
+		m_IsSelect = false;
+		m_CastEfc->Update(timeDelta);
+		m_CastEfc->pTransform->SetWorldPosition(m_CasterWorldPos);
+		m_CastTimeCount++;
+		
+		if (m_CastTimeCount == m_CastTime) //캐스팅이 끝나면 
+		{
+			m_IsCasting = false;
+			m_IsAttacking = true;
+			m_IsCoolTime = true; //쿨타임돌기를 시작합시다
 
 		}
 
 	}
-	
+
+	if (m_IsAttacking)
+	{
+		m_IsCasting = false;
+		m_AttackingCount++;
+
+		if (m_AttackingCount == m_AttackingTime) //시전시간이 끝나면
+		{
+		
+			m_IsAttacking = false;
+			LOG_MGR->AddLog("스킬끝");
+		}
+
+	}
 
 
 	
@@ -137,20 +188,23 @@ void cSkill_Surround::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 CasterWorldP
 void cSkill_Surround::BaseObjectRender()
 {
 
+	if (m_IsSelect)
+	{
+		m_CircleEfc->Render();
+		m_BoundSphere.RenderGizmo(pTransform);
+
+	}
+
+
 	if (m_IsCasting)
 	{
 		m_CastEfc->Render();
 	}
 
 
-	if (m_IsSelect)
-	{
-		m_CircleEfc->Render();
-		m_BoundSphere.RenderGizmo(pTransform);
+	
 
-		
 
-	}
 	
 
 
@@ -159,18 +213,22 @@ void cSkill_Surround::BaseObjectRender()
 
 void cSkill_Surround::SelectSkill()
 {
-	m_IsSelect = true;
+	
+		m_IsSelect = true;
+		m_CastTimeCount = 0;
+		m_CoolTimeCount = 0;
+		m_AttackingCount = 0;
+
+
 
 }
 
 void cSkill_Surround::StartCasting()
 {
-
-	m_IsCasting = true;
-}
-
-void cSkill_Surround::UseSkill()
-{
-
+	
+		m_IsCasting = true;
+		m_CastTimeCount = 0;
+		m_CoolTimeCount = 0;
+		m_AttackingCount = 0;
 
 }
