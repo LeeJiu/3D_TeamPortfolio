@@ -36,6 +36,8 @@ void cMage::BaseObjectEnable()
 
 	SetBassClass();
 
+	m_pMonsterMgr = new cMonsterManager;
+	
 
 	//무기 관련
 
@@ -88,13 +90,7 @@ void cMage::BaseObjectEnable()
 	m_damage = 100;
 	m_isAttack = false;
 
-	m_pSurroundSkill = new cSkill_Surround;
-	m_pSurroundSkill->BaseObjectEnable(pTransform->GetWorldPosition(), 6.0f, 10);
-
-	m_pRoundSkill = new cSkill_Round;
-	m_pRoundSkill->BaseObjectEnable( 6.0f, 10, 20);
-
-
+	
 	//SetMoveKeys();
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
@@ -168,12 +164,8 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_state = STF_TYFUNG;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
-		
-		m_snowStrom->StartEmission();
-		m_snowStrom_under->StartEmission();
-		m_snow->StartEmission();
-		m_isSnowStorm = true;
-		m_aniCount = 0;
+		m_pSkill_SnowStorm->Effect_Init();
+		m_pSkill_SnowStorm->StartCasting();
 	}
 
 
@@ -202,22 +194,32 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	if (KEY_MGR->IsOnceDown('9'))
 	{
-		m_pRoundSkill->SelectSkill();
-		LOG_MGR->AddLog("선택중");
+		m_pSkill_DarkRain->Effect_Init();
+		m_pSkill_DarkRain->SelectSkill();
+	
 	}
+
+
+	Ray ray;
+	POINT ptMousePos = GetMousePos();
+	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+	m_camera->ComputeRay(&ray, &screenPos);
+	D3DXVECTOR3		mousePos;
+	pTerrain->IsIntersectRay(&mousePos, &ray);
+	//mousePos = PHYSICS_MGR->getLastHeight(enemy, &ray, m_pTerrain, &m_mousePos);
+
+
+	m_pRoundSkill->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), mousePos);
+
+	m_pSkill_SnowStorm->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
+	m_pSkill_SnowStorm->Effect_Update(timeDelta);
+	m_pSkill_DarkRain->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), mousePos);
+	m_pSkill_DarkRain->Effect_Update(timeDelta);
 
 
 	//스킬 사용 관련
 
 
-
-	if (m_aniCount == 480)
-	{
-		m_snowStrom->StopEmission();
-		m_snowStrom_under->StopEmission();
-		m_snow->StopEmission();
-		//m_isSnowStorm = false;
-	}
 
 	if (m_aniCount == 120)
 	{
@@ -283,16 +285,6 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 
 
-	if (m_isSnowStorm)
-	{
-		m_aniCount++;
-		m_snowStrom->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
-		m_snowStrom->Update(timeDelta);
-		m_snowStrom_under->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
-		m_snowStrom_under->Update(timeDelta);
-		m_snow->pTransform->SetWorldPosition(pTransform->GetWorldPosition() + D3DXVECTOR3(0, 7, 0));
-		m_snow->Update(timeDelta);
-	}
 
 
 	if (m_isMagicShild)
@@ -309,16 +301,6 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	m_pSurroundSkill->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
 
-	Ray ray;
-	POINT ptMousePos = GetMousePos();
-	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-	m_camera->ComputeRay(&ray, &screenPos);
-	D3DXVECTOR3		mousePos;
-	pTerrain->IsIntersectRay(&mousePos, &ray);
-	//mousePos = PHYSICS_MGR->getLastHeight(enemy, &ray, m_pTerrain, &m_mousePos);
-
-
-	m_pRoundSkill->BaseObjectUpdate(pTransform->GetWorldPosition(), timeDelta, mousePos);
 
 }
 
@@ -337,16 +319,39 @@ void cMage::BaseObjectRender()
 
 	m_pSurroundSkill->BaseObjectRender();
 	m_pRoundSkill->BaseObjectRender();
+	m_pSkill_SnowStorm->BaseObjectRender();
+	m_pSkill_SnowStorm->Effect_Render();
+	m_pSkill_DarkRain->BaseObjectRender();
+	m_pSkill_DarkRain->Effect_Render();
+	
 
 }
 
 void  cMage::SkillInit()
 {
+
+	m_pSkill_SnowStorm = new cSkill_SnowStorm;
+	m_pSkill_SnowStorm->SetActive(true);
+	m_pSkill_SnowStorm->BaseObjectEnable(pTransform->GetWorldPosition(), 5.0f, 1, 400, 300);
+
+	m_pSurroundSkill = new cSkill_Surround;
+	m_pSurroundSkill->BaseObjectEnable(pTransform->GetWorldPosition(), 6.0f, 100, 20, 20);
+
+	m_pRoundSkill = new cSkill_Round;
+	m_pRoundSkill->BaseObjectEnable(pTransform->GetWorldPosition(), 6.0f, 20, 20, 100, 30);
+
+	m_pSkill_DarkRain = new cSkill_DarkRain;
+	m_pSkill_DarkRain->SetActive(true);
+	m_pSkill_DarkRain->BaseObjectEnable(pTransform->GetWorldPosition(), 6.0f, 20, 1, 400, 300);
+
+
 	m_aniCount = 0;
-	SnowStormInit();
+	
+
+
 	MagicShildInit();
 
-	m_isSnowStorm = false;
+	
 	m_isAttack = false;
 	m_isMagicShild = false;
 	m_isFlameRoad = false;
@@ -356,13 +361,7 @@ void  cMage::SkillInit()
 
 void  cMage::SkillRender()
 {
-	if (m_isSnowStorm)
-	{
-		m_snowStrom_under->Render();
-		m_snowStrom->Render();
-		m_snow->Render();
-
-	}
+	
 
 	if (m_isAttack)
 	{
@@ -580,118 +579,6 @@ void cMage::MagicShildInit()
 
 //스노우 스톰 
 
-void cMage::SnowStormInit()
-{
-	m_snowStrom = new cQuadParticleEmitter();
-	m_snowStrom->SetActive(true);
-
-	VEC_COLOR colors;
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-
-	VEC_SCALE scales;
-	scales.push_back(1.0f);  //초반 크기
-	scales.push_back(5.0f);
-
-	m_snowStrom->Init(
-		100,
-		100.0f,     //이펙트 몇장
-		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
-		5.0f,
-		D3DXVECTOR3(0, 2, 0),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 10, 0),
-		D3DXVECTOR3(0, 0, 0),     //회전량
-		D3DXVECTOR3(0, 0, 0),     //축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(90 * ONE_RAD, 0, 0),	//초기시작시 회전 min
-		D3DXVECTOR3(90 * ONE_RAD, 0, 0),     //초기시작시 회전Max
-		D3DXVECTOR3(0, 0, 0),				//초당 회전할 회전 량 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		colors, scales,
-		3.0f, 3.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/snowStrom.tga"),
-		true);
-
-
-	m_snowStrom_under = new cQuadParticleEmitter();
-	m_snowStrom_under->SetActive(true);
-
-
-	VEC_COLOR colors2;
-	colors2.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	colors2.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	colors2.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-
-	VEC_SCALE scales2;
-	scales2.push_back(2.0f);  //초반 크기
-	scales2.push_back(2.0f);
-
-	m_snowStrom_under->Init(
-		100,
-		40.0f,     //이펙트 몇장
-		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
-		1.0f,
-		D3DXVECTOR3(0, 1, 0),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 7, 0),
-		D3DXVECTOR3(0, 0.5, 0),     //한쪽으로 발사하는 양 시작
-		D3DXVECTOR3(0, 0.8, 0),     //한쪽으로 발사하는 양 끝
-		D3DXVECTOR3(-90 * ONE_RAD, 0, 0),	//초기시작시 회전 min
-		D3DXVECTOR3(-90 * ONE_RAD, 0, 720 * ONE_RAD),     //초기시작시 회전Max
-		D3DXVECTOR3(0, 0, 0),				//초당 회전할 회전 량 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		colors2, scales2,
-		3.0f, 9.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/snowStorm2.tga"),
-		true);
-
-	m_snow = new cPartcleEmitter();
-	m_snow->SetActive(true);
-
-	//배열을 2 개이상 
-	VEC_COLOR colors_snow;
-	colors_snow.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	colors_snow.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-	VEC_SCALE scales_snow;
-	scales_snow.push_back(0.1f);
-	scales_snow.push_back(0.1f);
-
-	LPDIRECT3DTEXTURE9 pTex = RESOURCE_TEXTURE->GetResource(
-		"../Resources/Textures/Effects/snow.tga");
-
-	//파티클 랜더러 셋팅
-	m_snow->Init(
-		50,				//최대 파티클 수
-		30.0f,				//초당 파티클 발생 량
-		7,					//하나의 파티클 입자 라이프 최소값
-		10,					//하나의 파티클 입자 라이프 최대값
-		D3DXVECTOR3(0, 0, 0),	//파티클 입자 속도 최소값 ( 로컬기준 )
-		D3DXVECTOR3(-10, 10, -10),	//파티클 입자 속도 최대값 ( 로컬기준 )
-		D3DXVECTOR3(0, 0, 0),	//파티클 입자 가속 최소값 ( 로컬기준 )
-		D3DXVECTOR3(0, 0, 0), //파티클 입자 가속 최대값 ( 로컬기준 )
-		colors_snow,				//컬러 배열
-		scales_snow,				//스케일 배열
-		1.1f,				//입자크기 최소값
-		50.2f,				//최대값
-		pTex,				//텍스쳐
-		false);
-
-
-	m_snow->EmissionType = PATICLE_EMISSION_TYPE::SPHERE_OUTLINE;
-	m_snow->SphereEmissionRange = 3.0f;
-	m_snow->StartEmission();
-
-	m_snowStrom->StartEmission();
-	m_snowStrom_under->StartEmission();
-
-
-
-
-}
 
 
 void cMage::MonsterInit()
@@ -739,87 +626,87 @@ void cMage::MonsterUpdate(float timeDelta)
 void cMage::MonsterCollision(float timeDelta)
 {
 
-//	D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_pMonster->pTransform->GetWorldPosition();
-//
-//	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-//	{
-//		Ray ray;
-//		POINT ptMousePos = GetMousePos();
-//		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-//		this->m_camera->ComputeRay(&ray, &screenPos);
-//
-//		if (PHYSICS_MGR->IsRayHitBound(&ray, &m_pMonster->BoundBox, m_pMonster->pTransform, NULL, NULL))
-//		{
-//			m_isTarget = true;
-//			m_pMonster->pSkinned->PlayOneShot("WAIT", 0.3f);
-//
-//		}
-//		else
-//		{
-//			m_isTarget = false;
-//			m_pMonster->pSkinned->Play("IDLE", 0.3f);
-//		}
-//
-//
-//		if (m_isTarget &&D3DXVec3Length(&magicATKLegth) > 20)
-//		{
-//			m_state = RUN;
-//			m_strName = MyUtil::SetAnimation(m_state);
-//			this->pSkinned->Play(m_strName, 0.3);
-//		}
-//
-//
-//	}
-//
-//
-//
-//	if (m_isTarget && D3DXVec3Length(&magicATKLegth) > 20)
-//	{
-//		pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition(), 90.0f * ONE_RAD);
-//		pTransform->MovePositionSelf(D3DXVECTOR3(0, 0, 10.0f * timeDelta));
-//		m_StateCount = 0;
-//		//사거리 밖이면 이동해라
-//	}
-//	else
-//	{
-//
-//		m_StateCount++;
-//		if (m_StateCount == 1)
-//		{
-//			m_state = WAIT;
-//			m_strName = MyUtil::SetAnimation(m_state);
-//			this->pSkinned->Play(m_strName, 0.3);
-//		}
-//
-//	}
-//
-//
-//
-//
-//	if (m_isTarget && D3DXVec3Length(&magicATKLegth) < 20);
-//	{
-//
-//
-//		if (m_isAttack)
-//		{
-//			pSkinned->RemoveBoneTransform("Bip01-L-Hand");
-//			m_ATKBox->pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
-//			m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
-//		}
-//		else
-//		{
-//			pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
-//		}
-//
-//	}
-//
-//	if (PHYSICS_MGR->IsOverlap(m_ATKBox, m_pMonster))
-//	{
-//
-//	}
-//
-//
-//
+  //D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_pMonster->pTransform->GetWorldPosition();
+  //
+  //if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+  //{
+  //	Ray ray;
+  //	POINT ptMousePos = GetMousePos();
+  //	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+  //	this->m_camera->ComputeRay(&ray, &screenPos);
+  //
+  //	if (PHYSICS_MGR->IsRayHitBound(&ray, &m_pMonMgr->GetMonsters().size, m_pMonster->pTransform, NULL, NULL))
+  //	{
+  //		m_isTarget = true;
+  //		//m_pMonster->pSkinned->PlayOneShot("WAIT", 0.3f);
+  //
+  //	}
+  //	else
+  //	{
+  //		m_isTarget = false;
+  //		m_pMonster->pSkinned->Play("IDLE", 0.3f);
+  //	}
+  //
+  //
+  //	if (m_isTarget &&D3DXVec3Length(&magicATKLegth) > 20)
+  //	{
+  //		m_state = RUN;
+  //		m_strName = MyUtil::SetAnimation(m_state);
+  //		this->pSkinned->Play(m_strName, 0.3);
+  //	}
+  //
+  //
+  //}
+  //
+  //
+  //
+  //if (m_isTarget && D3DXVec3Length(&magicATKLegth) > 20)
+  //{
+  //	pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition(), 90.0f * ONE_RAD);
+  //	pTransform->MovePositionSelf(D3DXVECTOR3(0, 0, 10.0f * timeDelta));
+  //	m_StateCount = 0;
+  //	//사거리 밖이면 이동해라
+  //}
+  //else
+  //{
+  //
+  //	m_StateCount++;
+  //	if (m_StateCount == 1)
+  //	{
+  //		m_state = WAIT;
+  //		m_strName = MyUtil::SetAnimation(m_state);
+  //		this->pSkinned->Play(m_strName, 0.3);
+  //	}
+  //
+  //}
+  //
+  //
+  //
+  //
+  //if (m_isTarget && D3DXVec3Length(&magicATKLegth) < 20);
+  //{
+  //
+  //
+  //	if (m_isAttack)
+  //	{
+  //		pSkinned->RemoveBoneTransform("Bip01-L-Hand");
+  //		m_ATKBox->pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
+  //		m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
+  //	}
+  //	else
+  //	{
+  //		pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
+  //	}
+  //
+  //}
+  //
+  //if (PHYSICS_MGR->IsOverlap(m_ATKBox, m_pMonster))
+  //{
+  //
+  //}
+  //
+  //
+  
 
 
 }

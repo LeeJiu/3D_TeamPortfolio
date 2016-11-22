@@ -1,13 +1,13 @@
 #pragma once
 #include "cBaseObject.h"
+#include "cPartcleEmitter.h"
+#include "cQuadParticleEmitter.h"
 
-class cQuadParticleEmitter;
 
 
 class cSkill_Round : public cBaseObject
 {
-private:
-
+protected:
 
 	bool               m_IsSelect;         // 스킬 마우스 오버중이니
 	bool               m_IsCasting;        // 스킬 캐스팅 중이니
@@ -15,59 +15,63 @@ private:
 	bool               m_IsCoolTime;       // 스킬 쿨타임 중이니
 
 
+	int                   m_CastTimeCount; //캐스팅 재는 타임
+	int                   m_CastTime;      //캐스팅 풀 타임
+
+	int                   m_CoolTimeCount; //쿨타임 잰다
+	int                   m_CoolTime;      //쿨타임
+
+	int                   m_AttackingCount; //공격 시전시간을 잰다
+	int                   m_AttackingTime;
+
+	float                 m_CastEfcScale;
+
+
 
 	cQuadParticleEmitter*   m_CircleEfc;     //파란 범위 
 	cQuadParticleEmitter*   m_CastEfc;       //빨간 범위
 	cQuadParticleEmitter*   m_SurroundEfc;   //사거리 범위
+	int                     m_MaxDistance; //최대 사거리
 
-
-	int                   m_CastTime;
-	int                   m_CastTimeMax;
-	float                 m_CastEfcScale;
-	int                   m_MaxDistance; //최대 사거리
-	D3DXVECTOR3           m_MousePos;
-
-
-	D3DXVECTOR3      m_CasterWorldPos; //시전자의 위치
-	float            m_SurroundLength; //범위
-
+	D3DXVECTOR3             m_MousePos;
+	D3DXVECTOR3             m_CasterWorldPos; //시전자의 위치
+	D3DXVECTOR3             m_AttackPos;       //공격하는 범위의 포지션
+	float                   m_SurroundLength; //범위
 
 
 	cBoundSphere     m_BoundSphere;
-	cTransform*      m_CasterPos;       //시전자의 위치
-	float            m_SurroundRadius;  //시전 범위
-
-
-	// int              m_HitMax;          //타격인원
-	float            m_tickTime;
-	float            m_timeTemp;
-
-	int              m_Damage;
-	int              m_UseSP;
 
 
 
 
 
-
-	bool             m_IsHit;              //적이 맞았니?
 
 
 public:
 	cSkill_Round();
 	~cSkill_Round();
 
-	void BaseObjectEnable(float surroundLength, int castTime, int maxDistance);
+	void BaseObjectEnable(D3DXVECTOR3  casterWorldPos, float surroundLength, int maxDistance, int castTime, int attackingTime, int coolTime);
 
-	void BaseObjectUpdate(D3DXVECTOR3 CasterWorldPos, float timeDelta, D3DXVECTOR3 mousePos);
+	void BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos, D3DXVECTOR3 mousePos);
 
 	void BaseObjectRender();
 
-	void SelectSkill(); //스킬을 선택하자
+	void SelectSkill(); //UI에 스킬을 마우스 오버 했을때 불러주자
 
-	void StartCasting();
+	void StartCasting(); //스킬을 사용한다 즉시시전 스킬도 이 함수를 불러주자
 
-	void UseSkill();  //스킬을 사용하자
+
+	bool GetIsSelecting() { return m_IsSelect; } //선택중이니?
+	bool GetIsAttacking() { return m_IsAttacking; } //공격하고있니?
+
+
+protected:
+	//이펙트 함수가 필요하면..
+
+	virtual void Effect_Init() {};
+	virtual void Effect_Update(float timeDelta) {};
+	virtual void Effect_Render() {};
 
 };
 
