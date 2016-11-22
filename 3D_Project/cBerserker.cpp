@@ -14,7 +14,6 @@ cBerserker::~cBerserker()
 {
 }
 
-
 void cBerserker::BaseObjectEnable()
 {
 	SetBassClass();

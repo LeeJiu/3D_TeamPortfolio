@@ -239,9 +239,6 @@ void mage_Test::Scene_Render1()
 	//}
 
 
-
-
-
 	m_Land->Render();
 
 }
