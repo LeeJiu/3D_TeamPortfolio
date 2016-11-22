@@ -42,45 +42,78 @@ void cPlayer::BaseSpriteRender()
 
 void cPlayer::CamControl(float timeDelta)
 {
-	D3DXVECTOR3 m_LookAt(this->pTransform->GetWorldPosition().x, this->pTransform->GetWorldPosition().y + 2, this->pTransform->GetWorldPosition().z);
-	this->m_camera->LookPosition(m_LookAt, D3DXVECTOR3(0,1,0));
-
-	int screenCenterX = WINSIZE_X / 2;
-	int screenCenterY = WINSIZE_Y / 2;
-	POINT mousePos = GetMousePos();
-	
-	if (KEY_MGR->IsOnceDown(VK_RBUTTON))
-	{
-		SetMousePos(screenCenterX, screenCenterY);
-	}
-	else if (KEY_MGR->IsStayDown(VK_RBUTTON))
-	{
-		SetMousePos(screenCenterX, screenCenterY);
-		this->m_camera->SetLocalPosition(0, m_Distance * cos(m_Angle), -m_Distance * sin(m_Angle));
-
-		if (mousePos.x > 2 + screenCenterX)
-			this->pTransform->RotateSelf(0, 2 * ONE_RAD, 0);
-
-		if (mousePos.x < -2 + screenCenterX)
-			this->pTransform->RotateSelf(0, -2 * ONE_RAD, 0);
-
-		if (mousePos.y <= 2 + screenCenterY&& m_Angle < 90 * ONE_RAD)
-			m_Angle += 2 * ONE_RAD;
-
-		if (mousePos.y >= -2 + screenCenterY && m_Angle > 10 * ONE_RAD)
-			m_Angle -= 2 * ONE_RAD;
-	}
-
-	//줌인 줌아웃
-	if (Zoom <= MaxZoomIn && ex_wheelUp && D3DXVec3Length(&(m_camera->GetWorldPosition() - this->pTransform->GetWorldPosition())) > 3 ) {
-		Zoom -= 1.0f;
-		m_Distance -= 1.f;
-	}
-
-	else if (Zoom >= MaxZoomOut && ex_wheelDown && D3DXVec3Length(&(m_camera->GetWorldPosition() - this->pTransform->GetWorldPosition())) < 7) {
-		Zoom += 1.0f;
-		m_Distance += 1.f;
-	}
+	//D3DXVECTOR3 m_LookAt(this->pTransform->GetWorldPosition().x, this->pTransform->GetWorldPosition().y + 2, this->pTransform->GetWorldPosition().z);
+	//this->m_camera->LookPosition(m_LookAt, D3DXVECTOR3(0, 1, 0));
+	//
+	//int screenCenterX = WINSIZE_X / 2;
+	//int screenCenterY = WINSIZE_Y / 2;
+	//POINT mousePos = GetMousePos();
+	//
+	////이동량 ( 중앙에서 멀어진 량 )
+	//float deltaX = mousePos.x - screenCenterX;
+	//float deltaY = mousePos.y - screenCenterY;
+	//float delta = 5;
+	//
+	//D3DXVECTOR3 VecChar(this->pTransform->GetWorldPosition());
+	//D3DXVECTOR3 VecCam(this->m_camera->GetWorldPosition());
+	//
+	//m_Angle = acos(D3DXVec3Dot(D3DXVec3Normalize(&VecChar, &VecChar), D3DXVec3Normalize(&VecCam, &VecCam)));
+	//
+	//D3DXVECTOR3 inputVector(0, 0, 0);
+	//
+	//if (KEY_MGR->IsStayDown(VK_RBUTTON))
+	//{
+	//	SetMousePos(screenCenterX, screenCenterY);
+	//}
+	//
+	//if (KEY_MGR->IsStayDown(VK_RBUTTON))
+	//{
+	//	//this->m_camera->SetLocalPosition(0, m_Distance * cos(nowAngleV), -m_Distance * sin(nowAngleV));
+	//	if (mousePos.x > screenCenterX)
+	//	{ 
+	//		inputVector.x = 1;
+	//	}
+	//	
+	//	if (mousePos.x < screenCenterX)
+	//	{
+	//		inputVector.x = -1;
+	//	}
+	//
+	//	if (mousePos.y < screenCenterY&& m_Angle / ONE_RAD < 60)
+	//	{
+	//		inputVector.y = 1;
+	//	}
+	//
+	//	if (mousePos.y > screenCenterY && m_Angle / ONE_RAD > 20)
+	//	{
+	//		inputVector.y = -1;
+	//	}
+	//}
+	//
+	//if (KEY_MGR->IsOnceUp(VK_RBUTTON))
+	//{
+	//	SetMousePos(screenCenterX, screenCenterY);
+	//}
+	//
+	////줌인 줌아웃
+	//if (Zoom <= MaxZoomIn && ex_wheelUp) {
+	//	inputVector.z = 1;
+	//	Zoom += 1.0f;
+	//	//this->m_camera->MovePositionSelf(0, 0, 1);
+	//}
+	//
+	//if (Zoom >= MaxZoomOut && ex_wheelDown) {
+	//	inputVector.z = -1;
+	//	Zoom -= 1.0f;
+	//	//this->m_camera->MovePositionSelf(0, 0, -1);
+	//}
+	//
+	//if (VECTORZERO(inputVector) == false)
+	//	D3DXVec3Normalize(&inputVector, &inputVector);
+	//
+	//D3DXVECTOR3 target = inputVector * delta;
+	//this->m_camera->MovePositionSelf(target * timeDelta);
+	this->m_camera->DefaultControl3(timeDelta, this->pTransform);
 }
 
 void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
@@ -101,7 +134,7 @@ void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
 		pSkinned->RemoveBoneTransform("BN_Weapon_R");
 	}
 
-	m_inven->update(timeDelta, m_camera);
+	m_inven->update(timeDelta, m_camera, this->pTransform->GetWorldPosition());
 
 
 	ITEM_MGR->update(timeDelta);
@@ -131,13 +164,20 @@ void cPlayer::Move(float timeDelta)
 		this->pSkinned->Play(m_strName, 0.3);
 	}
 
-	if ((!m_isMove && (KEY_MGR->IsOnceUp('W') || KEY_MGR->IsOnceUp('S')
+	if (!m_isAttack && !m_isMove && (KEY_MGR->IsOnceUp('W') || KEY_MGR->IsOnceUp('S')
 		|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
-		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D'))))
+		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
 	{
 		m_state = IDLE;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->Play(m_strName, 0.3);
+	}
+
+	if (KEY_MGR->IsOnceDown(VK_SPACE))
+	{
+		m_state = JUMP;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3,0.3);
 	}
 
 	//
@@ -168,6 +208,12 @@ void cPlayer::Move(float timeDelta)
 		m_InputKeys.find('D')->second = true;
 	}
 	else m_InputKeys.find('D')->second = false;
+
+	if (KEY_MGR->IsStayDown(VK_SPACE))
+	{
+		m_InputKeys.find(VK_SPACE)->second = true;
+	}
+	else m_InputKeys.find(VK_SPACE)->second = false;
 
 
 	m_pMove->update(timeDelta, NULL, NULL, NULL, m_InputKeys);
@@ -236,10 +282,12 @@ void cPlayer::SetBassClass()
 	std::pair<int, bool> key_S('S', false);		//S키 안눌림  " 
 	std::pair<int, bool> key_A('A', false);		//A키 안눌림  "
 	std::pair<int, bool> key_D('D', false);		//D키 안눌림  "
+	std::pair<int, bool> key_Space(VK_SPACE, false);		//space키 안눌림  "
 	m_InputKeys.insert(key_W);
 	m_InputKeys.insert(key_S);
 	m_InputKeys.insert(key_A);
 	m_InputKeys.insert(key_D);
+	m_InputKeys.insert(key_Space);
 
 	//인벤토리
 	m_inven = new cInven;
@@ -249,16 +297,4 @@ void cPlayer::SetBassClass()
 	//웨폰
 	m_Weapon = new cItem;
 	m_Weapon = NULL;
-	//D3DXMATRIXA16 matScale;
-	//D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
-	//D3DXMATRIXA16 matCorrection = matScale;
-	//cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/TAX_Basic.X", &matCorrection);
-	//
-	//m_Weapon->SetMesh(pSTF_Basic);
-	//m_Weapon->SetActive(true);
-	//
-	//m_Weapon->BoundBox.SetBound(&m_Weapon->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
-	//pSkinned->AddBoneTransform("BN_Weapon_R", m_Weapon->pTransform);
-
-
 }

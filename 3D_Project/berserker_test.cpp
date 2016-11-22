@@ -44,15 +44,6 @@ HRESULT berserker_test::Scene_Init()
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Pant/Pant_Master.X", &matCorrection);
 
 	//+++애니메이션 체크 관련+++++
-
-	D3DXMatrixScaling(&matScale, 1, 1, 1);
-	matCorrection = matScale * matRotate;
-	m_Land = new cBaseObject;
-	m_Land->SetMesh(RESOURCE_STATICXMESH->GetResource(
-		"../Resources/Meshes/TestMesh/boundMesh.X", &matCorrection));
-	m_Land->SetActive(true);
-	m_Land->pTransform->SetWorldPosition(0, 0, 0);
-
 	//몬스터
 	this->m_pMonMgr = new cMonsterManager;
 	this->pBerserker = new cBerserker;
@@ -110,7 +101,6 @@ void berserker_test::Scene_Release()
 	SAFE_DELETE(this->pBerserker);
 	m_pMonMgr->Release();
 	SAFE_DELETE(m_pMonMgr);
-	SAFE_DELETE(this->pTransForCamera);
 
 	for (int i = 0; i < lights.size(); i++)
 	{
@@ -177,8 +167,6 @@ void berserker_test::Scene_Render1()
 
 	this->pBerserker->Render();
 	this->m_pMonMgr->Render();
-
-	m_Land->Render();
 }
 
 

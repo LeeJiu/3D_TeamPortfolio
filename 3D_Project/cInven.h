@@ -41,7 +41,7 @@
  public:
 
 	 void init();
-	 void update(float timeDelta, cCamera* camera);
+	 void update(float timeDelta, cCamera* camera, D3DXVECTOR3& pos);
 	 void render();
 	 void release();
 
@@ -63,7 +63,7 @@
 	 bool invenToManager(int* row, int* coll, POINT mouse);
 	 bool weaponToManager(POINT mouse);
 
-	 void discard(int* row, int* coll, POINT mouse);
+	 void discard(int* row, int* coll, POINT mouse, D3DXVECTOR3& pos);
 	 cInven();
 	 ~cInven();
  };

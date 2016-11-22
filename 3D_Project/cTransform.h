@@ -233,7 +233,7 @@ public:
 	//디폴트 컨트롤 을해준다.
 	void DefaultControl( float timeDelta );
 	void DefaultControl2( float timeDelta );
-	void DefaultControl3(float timeDelta, cTransform* charactor, float angle, float distance);
+	void DefaultControl3(float timeDelta, cTransform* charactor);
 	void DefaultControl4(float timeDelta);	//오브젝트 움직이는 용 컨트롤4
 
 

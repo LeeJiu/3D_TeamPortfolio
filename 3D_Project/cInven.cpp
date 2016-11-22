@@ -73,7 +73,7 @@ void cInven::release()
 		SAFE_DELETE(weapon.m_Item);
 	}
 }
-void cInven::update(float timeDelta, cCamera* camera)
+void cInven::update(float timeDelta, cCamera* camera, D3DXVECTOR3& pos)
 {
 	/* itemIndex 가 -1 일때는 아이템들고 있는게 없을 때
 	clickItem = NULL
@@ -115,7 +115,7 @@ void cInven::update(float timeDelta, cCamera* camera)
 		camera->ComputeRay(&ray, &screenPos);
 
 
-		discard(&cRow, &cCol, ptMousePos);
+		discard(&cRow, &cCol, ptMousePos, pos);
 
 		//  바운드 충돌을 해서 아이템 인덱스를 찾아 낸다. 
 		for (int i = 0; i < ITEM_MGR->v_item.size(); i++)
@@ -464,7 +464,7 @@ bool cInven::weaponToManager(POINT mouse)
 
 }
 
-void cInven::discard(int* row, int* coll, POINT mouse)
+void cInven::discard(int* row, int* coll, POINT mouse, D3DXVECTOR3& pos)
 {
 	//케릭터 좌표 =================================== 받아야댐 =
 	if (clickItem != NULL)
@@ -472,7 +472,7 @@ void cInven::discard(int* row, int* coll, POINT mouse)
 		if (invenSelectRect(row, coll, mouse) == true) return;
 		if (weaponSelectRect(mouse) == true) return;
 
-		clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(0, 9, 0));
+		clickItem->pTransform->SetWorldPosition(D3DXVECTOR3(pos.x, pos.y, pos.z));
 		itemIndex = -1;
 		clickItem = NULL;
 		pickUp = false;

@@ -9,6 +9,7 @@ class cMonsterManager;
 class cItem;
 class cMonster;
 
+
 class cPlayer : public cBaseObject 
 {
 protected:
@@ -27,11 +28,11 @@ protected:
 	cMonster*			m_target;				//타겟몬스터 
 	cMonsterManager*	m_pMonMgr;				//몬스터매니저
 
-	float				m_Angle;				//카메라랑 앵글
-	float				m_Distance;				//카메라와의 거리
-	float				MaxZoomIn;
-	float				MaxZoomOut;
-	float				Zoom;
+	//float				m_Angle;				//카메라랑 앵글
+	//float				MaxZoomIn;
+	//float				MaxZoomOut;
+	//float				Zoom;
+
 	//status
 	float				m_fHP;					//hp
 	float				m_sp;					//skill point
