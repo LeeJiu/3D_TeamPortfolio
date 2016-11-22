@@ -4,6 +4,7 @@
 #include "cSkill_Round.h"
 #include "cSkill_SnowStorm.h"
 #include "cSkill_DarkRain.h"
+#include "cSkill_Front.h"
 
 #define CONTROL_KEY 5
 
@@ -40,14 +41,16 @@ private:
 	float m_time;
 	float m_fadeOut;
 
-	cSkill_Surround*     m_pSurroundSkill;
-	cSkill_Round*        m_pRoundSkill;
+
 
 	int                    m_aniCount;
 
 	//스킬에 관한 것
+	cSkill_Surround*     m_pSurroundSkill;
+	cSkill_Round*        m_pRoundSkill;
 	cSkill_SnowStorm*    m_pSkill_SnowStorm;
 	cSkill_DarkRain*     m_pSkill_DarkRain;
+	cSkill_Front*        m_pSkill_Front;
 
 
 	//매직 실드

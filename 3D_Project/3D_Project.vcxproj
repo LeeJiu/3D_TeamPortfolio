@@ -129,6 +129,7 @@
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
     <ClInclude Include="cSkill_DarkRain.h" />
+    <ClInclude Include="cSkill_Front.h" />
     <ClInclude Include="cSkill_Round.h" />
     <ClInclude Include="cSkill_SnowStorm.h" />
     <ClInclude Include="cSkill_Surround.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
     <ClCompile Include="cSkill_DarkRain.cpp" />
+    <ClCompile Include="cSkill_Front.cpp" />
     <ClCompile Include="cSkill_Round.cpp" />
     <ClCompile Include="cSkill_SnowStorm.cpp" />
     <ClCompile Include="cSkill_Surround.cpp" />

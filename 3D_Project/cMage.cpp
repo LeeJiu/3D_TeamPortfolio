@@ -181,7 +181,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	if (KEY_MGR->IsOnceDown('7'))
 	{
-		m_pSurroundSkill->SelectSkill();
+		m_pSkill_Front->SelectSkill();
 
 
 	}
@@ -215,7 +215,8 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	m_pSkill_SnowStorm->Effect_Update(timeDelta);
 	m_pSkill_DarkRain->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), mousePos);
 	m_pSkill_DarkRain->Effect_Update(timeDelta);
-
+	m_pSkill_Front->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), mousePos);
+	m_pSurroundSkill->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
 
 	//스킬 사용 관련
 
@@ -299,7 +300,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	MonsterUpdate(timeDelta);
 
-	m_pSurroundSkill->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
+	
 
 
 }
@@ -323,7 +324,7 @@ void cMage::BaseObjectRender()
 	m_pSkill_SnowStorm->Effect_Render();
 	m_pSkill_DarkRain->BaseObjectRender();
 	m_pSkill_DarkRain->Effect_Render();
-	
+	m_pSkill_Front->BaseObjectRender();
 
 }
 
@@ -343,6 +344,10 @@ void  cMage::SkillInit()
 	m_pSkill_DarkRain = new cSkill_DarkRain;
 	m_pSkill_DarkRain->SetActive(true);
 	m_pSkill_DarkRain->BaseObjectEnable(pTransform->GetWorldPosition(), 6.0f, 20, 1, 400, 300);
+
+	m_pSkill_Front = new cSkill_Front;
+	m_pSkill_Front->SetActive(true);
+	m_pSkill_Front->BaseObjectEnable(pTransform->GetWorldPosition(), 10.0f, 3.0f, 1, 400, 300);
 
 
 	m_aniCount = 0;
