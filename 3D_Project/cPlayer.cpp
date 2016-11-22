@@ -222,27 +222,27 @@ void cPlayer::Move(float timeDelta)
 
 void cPlayer::Monster_pick()
 {
-	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	{
-		LOG_MGR->AddLog("Å¸°ÙÆÃ¾ÈµÊ");
-		Ray ray;
-		POINT ptMousePos = GetMousePos();
-		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-		m_camera->ComputeRay(&ray, &screenPos);
-
-
-		int size = m_vMonster.size();
-		for (int i = 0; i < size; i++)
-		{
-			if (PHYSICS_MGR->IsRayHitBound(&ray, &m_vMonster[i]->BoundBox, m_vMonster[i]->pTransform, NULL, NULL))
-			{
-				LOG_MGR->AddLog("Å¸°ÙÆÃµÊ");
-				this->m_target = m_vMonster[i];
-				break;
-			}
-			else this->m_target = NULL;
-		}
-	}
+	//if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+	//{
+	//	LOG_MGR->AddLog("Å¸°ÙÆÃ¾ÈµÊ");
+	//	Ray ray;
+	//	POINT ptMousePos = GetMousePos();
+	//	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+	//	m_camera->ComputeRay(&ray, &screenPos);
+	//
+	//
+	//	int size = m_vMonster.size();
+	//	for (int i = 0; i < size; i++)
+	//	{
+	//		if (PHYSICS_MGR->IsRayHitBound(&ray, &m_vMonster[i]->BoundBox, m_vMonster[i]->pTransform, NULL, NULL))
+	//		{
+	//			LOG_MGR->AddLog("Å¸°ÙÆÃµÊ");
+	//			this->m_target = m_vMonster[i];
+	//			break;
+	//		}
+	//		else this->m_target = NULL;
+	//	}
+	//}
 }
 
 bool cPlayer::LengthCheck()

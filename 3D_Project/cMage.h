@@ -2,6 +2,9 @@
 #include "cPlayer.h"
 #include "cSkill_Surround.h"
 #include "cSkill_Round.h"
+#include "cSkill_SnowStorm.h"
+#include "cSkill_DarkRain.h"
+#include "cSkill_Front.h"
 
 #define CONTROL_KEY 5
 
@@ -12,13 +15,16 @@ class cPartcleEmitter;
 class cParticleQuad;
 class cParticle;
 
-
+class cMonsterManager;
 
 class cMage : public cPlayer
 {
 private:
 
 	//몬스터에 관한것
+
+	cMonsterManager*      m_pMonsterMgr;
+
 	cBaseObject*          m_pMonster;
 	int                   m_StateCount;
 	bool                  m_isTarget;
@@ -35,23 +41,21 @@ private:
 	float m_time;
 	float m_fadeOut;
 
-	cSkill_Surround*     m_pSurroundSkill;
-	cSkill_Round*        m_pRoundSkill;
 
 
+	int                    m_aniCount;
 
 	//스킬에 관한 것
+	cSkill_Surround*     m_pSurroundSkill;
+	cSkill_Round*        m_pRoundSkill;
+	cSkill_SnowStorm*    m_pSkill_SnowStorm;
+	cSkill_DarkRain*     m_pSkill_DarkRain;
+	cSkill_Front*        m_pSkill_Front;
+
+
 	//매직 실드
 	cQuadParticleEmitter*  m_magicShild;
 	bool                   m_isMagicShild;
-
-
-	// 스노우 스톰
-	cQuadParticleEmitter*  m_snowStrom;
-	cQuadParticleEmitter*  m_snowStrom_under;
-	cPartcleEmitter*       m_snow;
-	bool                   m_isSnowStorm;
-	int                    m_aniCount;
 
 
 	// 플레임 로드
@@ -103,12 +107,6 @@ private:
 	void MagicShildInit();
 
 	void FlameRoadInit();
-
-
-
-	void SnowStormInit();
-	void SnowStormUpdate();
-	void SnowStormRender();
 
 	void Damage(float damage);
 

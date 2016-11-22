@@ -40,6 +40,9 @@
     <Filter Include="GameActor\Pet">
       <UniqueIdentifier>{a7ba2d61-c162-4653-ad89-2d7b1b05d421}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameActor\Skill">
+      <UniqueIdentifier>{01084c57-4e81-44d1-80cd-23a3996a12dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -240,9 +243,6 @@
     <ClInclude Include="cTrailRender.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="cSkill_Surround.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="cDragon.h">
       <Filter>GameActor\Monster</Filter>
     </ClInclude>
@@ -267,8 +267,20 @@
     <ClInclude Include="cInven2.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="cSkill_Surround.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
     <ClInclude Include="cSkill_Round.h">
-      <Filter>Component</Filter>
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_SnowStorm.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_DarkRain.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Front.h">
+      <Filter>GameActor\Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -473,9 +485,6 @@
     <ClCompile Include="cTrailRender.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="cSkill_Surround.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="cDragon.cpp">
       <Filter>GameActor\Monster</Filter>
     </ClCompile>
@@ -501,7 +510,19 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Round.cpp">
-      <Filter>Component</Filter>
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Surround.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_SnowStorm.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_DarkRain.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Front.cpp">
+      <Filter>GameActor\Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

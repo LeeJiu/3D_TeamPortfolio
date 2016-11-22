@@ -22,7 +22,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -128,7 +128,10 @@
     <ClInclude Include="cScene_testMonster.h" />
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
+    <ClInclude Include="cSkill_DarkRain.h" />
+    <ClInclude Include="cSkill_Front.h" />
     <ClInclude Include="cSkill_Round.h" />
+    <ClInclude Include="cSkill_SnowStorm.h" />
     <ClInclude Include="cSkill_Surround.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSoundManager.h" />
@@ -207,7 +210,10 @@
     <ClCompile Include="cScene_testMonster.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
+    <ClCompile Include="cSkill_DarkRain.cpp" />
+    <ClCompile Include="cSkill_Front.cpp" />
     <ClCompile Include="cSkill_Round.cpp" />
+    <ClCompile Include="cSkill_SnowStorm.cpp" />
     <ClCompile Include="cSkill_Surround.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSoundManager.cpp" />
