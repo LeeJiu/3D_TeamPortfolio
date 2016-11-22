@@ -74,13 +74,6 @@ HRESULT DragonTest::Scene_Init()
 	this->pBerserker->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
 
 
-	this->pTransForCamera = new cTransform();
-
-	isCharView = true;
-	isAltView = false;
-
-
-
 
 	//¶óÀÌÆ® Çª½¬
 	cLight_Direction* pLight1 = new cLight_Direction();
@@ -108,7 +101,6 @@ HRESULT DragonTest::Scene_Init()
 
 	isMove = false;
 
-	pMainCamera->SetWorldPosition(2, 5, 2);
 	isClick = false;
 
 
@@ -134,7 +126,7 @@ void DragonTest::Scene_Release()
 
 void DragonTest::Scene_Update(float timeDelta)
 {
-	this->pTransForCamera->SetWorldPosition(this->pBerserker->pTransform->GetWorldPosition());
+	//this->pTransForCamera->SetWorldPosition(this->pBerserker->pTransform->GetWorldPosition());
 
 	if (KEY_MGR->IsOnceUp('T'))
 	{
@@ -146,16 +138,9 @@ void DragonTest::Scene_Update(float timeDelta)
 		ITEM_MGR->createItem(0, D3DXVECTOR3(0, 7, 0));
 
 	}
-	if (isCharView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pBerserker->pTransform);
-	}
-	else if (isAltView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
-	}
 
-	this->pBerserker->Update(timeDelta);
+
+	//this->pBerserker->Update(timeDelta);
 	m_pMonMgr->Update(timeDelta);
 }
 
