@@ -279,6 +279,9 @@
     <ClInclude Include="cSkill_DarkRain.h">
       <Filter>GameActor\Skill</Filter>
     </ClInclude>
+    <ClInclude Include="cSkill_Burserk.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -516,6 +519,9 @@
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_DarkRain.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Burserk.cpp">
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
   </ItemGroup>

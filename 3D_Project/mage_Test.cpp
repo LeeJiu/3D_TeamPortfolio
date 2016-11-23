@@ -87,14 +87,6 @@ HRESULT mage_Test::Scene_Init()
 
 	//캐릭터가 그려질 위치 트랜스폼
 	this->pMage->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
-	this->pTransForCamera = new cTransform();
-
-
-	this->pMage->pTransform->AddChild(this->pMainCamera);
-	this->pMainCamera->SetLocalPosition(0, 5, -10);
-	isCharView = true;
-	isAltView = false;
-
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
@@ -122,7 +114,6 @@ HRESULT mage_Test::Scene_Init()
 
 	isMove = false;
 
-	pMainCamera->SetWorldPosition(2, 5, 2);
 	isClick = false;
 
 
@@ -138,8 +129,6 @@ void mage_Test::Scene_Release()
 	SAFE_DELETE(this->pMage);
 	m_pMonMgr->Release();
 	SAFE_DELETE(m_pMonMgr);
-	SAFE_DELETE(this->pTransForCamera);
-
 
 	for (int i = 0; i < lights.size(); i++)
 	{
@@ -150,39 +139,6 @@ void mage_Test::Scene_Release()
 
 void mage_Test::Scene_Update(float timeDelta)
 {
-	this->pTransForCamera->SetWorldPosition(this->pMage->pTransform->GetWorldPosition());
-
-	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
-	{
-		isAltView = true;
-		isCharView = false;
-		this->pMainCamera->ReleaseParent();
-		this->pTransForCamera->AddChild(this->pMainCamera);
-	}
-	if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
-	{
-		this->pMainCamera->Reset();
-		this->pTransForCamera->Reset();
-		this->pTransForCamera->SetWorldMatrix(this->pMage->pTransform->GetFinalMatrix());
-
-		this->pMage->pTransform->AddChild(this->pMainCamera);
-		this->pMainCamera->SetLocalPosition(0, 5, -10);
-		isCharView = true;
-		isAltView = false;
-	}
-
-
-	if (isCharView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pMage->pTransform);
-	}
-	else if (isAltView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
-	}
-
-
-
 	//if (pMage->GetIsPetOn())
 	//{
 	//	this->pPet->Update(timeDelta);
@@ -199,9 +155,7 @@ void mage_Test::Scene_Update(float timeDelta)
 	//}
 	//
 
-
 	this->pMage->Update(timeDelta);
-
 	m_pMonMgr->Update(timeDelta);
 
 

@@ -111,26 +111,6 @@ void berserker_test::Scene_Release()
 
 void berserker_test::Scene_Update(float timeDelta)
 {
-	//this->pTransForCamera->SetWorldPosition(this->pBerserker->pTransform->GetWorldPosition());
-	//
-	//if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
-	//{
-	//	isAltView = true;
-	//	isCharView = false;
-	//	this->pMainCamera->ReleaseParent();
-	//	this->pTransForCamera->AddChild(this->pMainCamera);
-	//}
-	//if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
-	//{
-	//	this->pMainCamera->Reset();
-	//	this->pTransForCamera->Reset();
-	//	this->pTransForCamera->SetWorldMatrix(this->pBerserker->pTransform->GetFinalMatrix());
-	//
-	//	this->pBerserker->pTransform->AddChild(this->pMainCamera);
-	//	this->pMainCamera->SetLocalPosition(0, 2, -5);
-	//	isCharView = true;
-	//	isAltView = false;
-	//}
 	if (KEY_MGR->IsOnceUp('T'))
 	{
 		ITEM_MGR->createItem(1, D3DXVECTOR3(0, 7, 0));

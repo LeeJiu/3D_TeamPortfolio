@@ -74,6 +74,8 @@ enum ACTOR_STATE
 	RUN_STOP,            //달리다 멈추기
 	STF_PASSOUT,         //기력소모
 	JUMP,            //점프
+	JUMP_UP,		//점프중
+	JUMP_LAND,		//착지
 
 
 	WEAPON,          //무기 착용
@@ -187,6 +189,7 @@ namespace MyUtil{
 
 	//플룻의 비트값을 손실하지 않은체 DWORD 형으로 변환
 	DWORD FloatToDWORD( float f );
+	void GetDeviceGrabTexture(LPDIRECT3DDEVICE9 pDevice, LPDIRECT3DTEXTURE9 grabTex);
 
 	std::string SetAnimation(ACTOR_STATE state);
 	void createQuad(D3DXVECTOR3* quad, float row, float col, cTransform* myTrans, D3DXVECTOR3* createPos);

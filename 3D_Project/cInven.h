@@ -48,6 +48,7 @@
 	 cItem*	GetWeapon() { return weapon.m_Item; }
 
 	 bool GetInvenOn() { return invenOpen; }
+	 void SetInvenOn(bool invenOn) { invenOpen = invenOn; }
 
 	 D3DXVECTOR3 screenPos(int x, int y);
 

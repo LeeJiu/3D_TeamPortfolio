@@ -82,9 +82,9 @@ void cInven::update(float timeDelta, cCamera* camera, D3DXVECTOR3& pos)
 	*/
 
 	//인벤토리 열고 닫기. 
-	if (KEY_MGR->IsOnceDown('I'))
+	//if (KEY_MGR->IsOnceDown('I'))
 	{
-		invenOpen = !invenOpen;
+		//invenOpen = !invenOpen;
 	}
 	// 물건을 들고 있을때 
 	// 화면 가운데 오브젝트를 가져 온다. 

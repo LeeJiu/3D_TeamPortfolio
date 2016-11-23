@@ -4,6 +4,7 @@
 #include "cCamera.h"
 #include "cMonster.h"
 #include "cMonsterManager.h"
+#include "cTrailRender.h"
 
 cPlayer::cPlayer()
 {
@@ -16,6 +17,11 @@ cPlayer::~cPlayer()
 	SAFE_DELETE(m_pMove);
 	m_inven->release();
 	SAFE_DELETE(m_inven);
+	if (this->pTrailRender != NULL)
+	{
+		this->pTrailRender->Release();
+		SAFE_DELETE(this->pTrailRender);
+	}
 }
 
 void cPlayer::BaseObjectEnable()
@@ -38,6 +44,11 @@ void cPlayer::BaseObjectRender()
 void cPlayer::BaseSpriteRender()
 {
 
+}
+
+void cPlayer::BaseObjectBoundBox()
+{
+	this->BoundBox.SetBound(&D3DXVECTOR3(0, 2, 0), &D3DXVECTOR3(2.0f, 2.0f, 2.0f));
 }
 
 void cPlayer::CamControl(float timeDelta)
@@ -124,9 +135,14 @@ void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
 	}
 	else if (m_inven->GetWeapon() != NULL&& m_botton == false)
 	{
-		m_inven->GetWeapon()->BoundBox.SetBound(&m_inven->GetWeapon()->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
+		m_inven->GetWeapon()->BoundBox.SetBound(&D3DXVECTOR3(0.f, 1.f, 0.f), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
 		pSkinned->AddBoneTransform("BN_Weapon_R", m_inven->GetWeapon()->pTransform);
 		m_botton = true;
+		
+	
+		this->pTrailRender->Transform.AttachTo(m_inven->GetWeapon()->pTransform);
+		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
+		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
 	}
 
 	if (m_inven->GetWeapon() == NULL)
@@ -134,10 +150,19 @@ void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
 		pSkinned->RemoveBoneTransform("BN_Weapon_R");
 	}
 
-	m_inven->update(timeDelta, m_camera, this->pTransform->GetWorldPosition());
 
+	if (KEY_MGR->IsOnceDown('I'))
+	{
+		m_invenOn = !m_invenOn;
+		m_inven->SetInvenOn(m_invenOn);
+	}
 
-	ITEM_MGR->update(timeDelta);
+	if (m_invenOn)
+	{
+		m_inven->update(timeDelta, m_camera, this->pTransform->GetWorldPosition());
+		ITEM_MGR->update(timeDelta);
+	}
+
 }
 
 void cPlayer::UiURender()
@@ -152,13 +177,15 @@ void cPlayer::Move(float timeDelta)
 	if (!m_isAttack && m_isMove && (KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
 		|| KEY_MGR->IsOnceDown('A')))
 	{
-		m_state = WALK;
+		m_isIdle = false;
+		m_state = RUN;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->Play(m_strName, 0.3);
 	}
 
 	if (!m_isAttack && m_isMove && KEY_MGR->IsOnceDown('S'))
 	{
+		m_isIdle = false;
 		m_state = WALK_BACK;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->Play(m_strName, 0.3);
@@ -168,17 +195,20 @@ void cPlayer::Move(float timeDelta)
 		|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
 		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
 	{
+		m_isIdle = true;
 		m_state = IDLE;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->Play(m_strName, 0.3);
 	}
+	
 
 	if (KEY_MGR->IsOnceDown(VK_SPACE))
 	{
 		m_state = JUMP;
 		m_strName = MyUtil::SetAnimation(m_state);
-		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3,0.3);
+		this->pSkinned->Play(m_strName, 0.3);
 	}
+	
 
 	//
 	//===============무브==============================
@@ -222,27 +252,27 @@ void cPlayer::Move(float timeDelta)
 
 void cPlayer::Monster_pick()
 {
-	//if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-	//{
-	//	LOG_MGR->AddLog("타겟팅안됨");
-	//	Ray ray;
-	//	POINT ptMousePos = GetMousePos();
-	//	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-	//	m_camera->ComputeRay(&ray, &screenPos);
-	//
-	//
-	//	int size = m_vMonster.size();
-	//	for (int i = 0; i < size; i++)
-	//	{
-	//		if (PHYSICS_MGR->IsRayHitBound(&ray, &m_vMonster[i]->BoundBox, m_vMonster[i]->pTransform, NULL, NULL))
-	//		{
-	//			LOG_MGR->AddLog("타겟팅됨");
-	//			this->m_target = m_vMonster[i];
-	//			break;
-	//		}
-	//		else this->m_target = NULL;
-	//	}
-	//}
+	if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+	{
+		LOG_MGR->AddLog("타겟팅안됨");
+		Ray ray;
+		POINT ptMousePos = GetMousePos();
+		D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+		m_camera->ComputeRay(&ray, &screenPos);
+	
+	
+		int size = m_vMonster.size();
+		for (int i = 0; i < size; i++)
+		{
+			if (PHYSICS_MGR->IsRayHitBound(&ray, &m_vMonster[i]->BoundBox, m_vMonster[i]->pTransform, NULL, NULL))
+			{
+				LOG_MGR->AddLog("타겟팅됨");
+				this->m_target = m_vMonster[i];
+				break;
+			}
+			else this->m_target = NULL;
+		}
+	}
 }
 
 bool cPlayer::LengthCheck()
@@ -266,7 +296,20 @@ void cPlayer::RangeCheck(float range)
 
 	for (int i = 0; i < size; i++)
 	{
+		//if(m_vMonster[i]->) 몬스터가 죽어잇으면 컨티뉴.
 		m_vMonster[i]->SetInRange(PHYSICS_MGR->IsPointSphere(this->pTransform, range, m_vMonster[i]->pTransform));
+
+		LOG_MGR->AddLog("vMon[%d] : %d", i, m_vMonster[i]->GetInRange());
+	}
+}
+
+void cPlayer::RangeCircleCheck(D3DXVECTOR3 & pos, float range)
+{
+	int size = m_vMonster.size();
+
+	for (int i = 0; i < size; i++)
+	{
+		m_vMonster[i]->SetInRange(PHYSICS_MGR->IsPointSphere(m_vMonster[i]->pTransform, range, pos));
 
 		LOG_MGR->AddLog("vMon[%d] : %d", i, m_vMonster[i]->GetInRange());
 	}
@@ -297,4 +340,17 @@ void cPlayer::SetBassClass()
 	//웨폰
 	m_Weapon = new cItem;
 	m_Weapon = NULL;
+
+	//TrailRenderSet
+	this->pTrailRender = new cTrailRender();
+	this->pTrailRender->Init(
+		1.0f,					//꼬리 라이브 타임 ( 이게 크면 환영큐 사이즈가 커지고 꼬리가 오랬동안 남아있다 )
+		1.0f,					//폭
+		RESOURCE_TEXTURE->GetResource("../Resources/Testures/TrailTest.png"),	//메인 Texture
+		D3DXCOLOR(1, 0, 0, 1),												//메인 Texture 로 그릴때 컬러
+		NULL
+	);
+
+	m_Angle = 0;
 }
+

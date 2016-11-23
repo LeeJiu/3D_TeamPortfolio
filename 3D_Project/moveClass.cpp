@@ -107,7 +107,6 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 	{
 		m_jumpPower = 30;
 		this->isJump = true;
-		//isOnAir
 	}
 
 	
@@ -165,7 +164,7 @@ void moveClass::update(float timeDelta, cBaseObject * collObj, cBoundBox * collB
 	if (m_InputKey.find('S')->second)
 	{
 		this->isMove = true;
-		moveRay.origin -= pCharTrans->GetForward()*0.2f;
+		moveRay.origin -= pCharTrans->GetForward()*0.1f;
 	}
 
 	if (m_InputKey.find('A')->second)
@@ -180,9 +179,9 @@ void moveClass::update(float timeDelta, cBaseObject * collObj, cBoundBox * collB
 		pCharTrans->RotateSelf(0, 2 * ONE_RAD, 0);
 	}
 
-	if (KEY_MGR->IsStayDown(VK_SPACE))
+	if (m_InputKey.find(VK_SPACE)->second)
 	{
-		m_jumpPower = 6;
+		m_jumpPower = 13.5;
 		this->isJump = true;
 	}
 

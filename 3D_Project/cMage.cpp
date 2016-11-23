@@ -33,12 +33,10 @@ void cMage::BaseObjectEnable()
 
 	//몬스터 관련
 	MonsterInit();
-
 	SetBassClass();
 
 	m_pMonsterMgr = new cMonsterManager;
 	
-
 	//무기 관련
 
 	D3DXMATRIXA16 matScale;
@@ -60,18 +58,14 @@ void cMage::BaseObjectEnable()
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
 
-
 	m_isPetOn = false;
 
 	//스킬 관련
 	SkillInit();
 
-
-
 	//평타 박스
 	m_ATKBox = new cBaseObject;
 	m_ATKBox->BoundBox.Init(D3DXVECTOR3(-0.3f, -0.3f, -0.3f), D3DXVECTOR3(0.3f, 0.3f, 0.3f));
-
 
 	m_ATKBox->BoundBox.SetBound(&m_ATKBox->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
 	pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
@@ -90,7 +84,9 @@ void cMage::BaseObjectEnable()
 	m_damage = 100;
 	m_isAttack = false;
 
-	
+	m_camera->AttachTo(pTransform);
+	m_camera->SetLocalPosition(0, 3, -5);
+
 	//SetMoveKeys();
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
@@ -99,6 +95,7 @@ void cMage::BaseObjectEnable()
 
 void cMage::BaseObjectUpdate(float timeDelta)
 {
+	CamControl(timeDelta);
 
 	Move(timeDelta);
 	Monster_pick();
