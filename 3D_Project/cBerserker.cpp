@@ -138,22 +138,14 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	{
 		m_isAttack = true;
 		m_time = 0;
-		m_SwingCnt++;
 		
 		RangeCheck(10);
-
-		//Ä«¿îÆ® ¼ö Àü´Þ
-		if (m_SwingCnt == 4)
-		{
-			m_SwingCnt = 0;
-		}
-		else
-		{
-			m_state = SK_SWING;
-			SKILL03();
-			m_strName = MyUtil::SetAnimation(m_state);
-			this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
-		}
+	
+		m_state = SK_SWING;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
+		m_Swing->Effect_Init();
+		m_Swing->StartCasting();
 	}
 
 	//½ºÅ³5 - ±¤ÆøÈ­
@@ -282,6 +274,20 @@ void cBerserker::Attack03()
 	LOG_MGR->AddLog("%dµ¥¹ÌÁö ÁÜ", damage);
 	m_target->Damage(damage);
 }
+
+
+void  cBerserker::SkillInit()
+{
+	m_Swing = new cSkill_Swing;
+	m_Swing->SetActive(true);
+	m_Swing->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 1, 400, 300);
+
+	m_pSurroundSkill = new cSkill_Surround;
+	m_pSurroundSkill->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 100, 20, 20);
+	
+	m_aniCount = 0;
+}
+
 
 void cBerserker::SKILL01()
 {

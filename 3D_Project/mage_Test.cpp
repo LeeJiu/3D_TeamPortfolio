@@ -49,17 +49,6 @@ HRESULT mage_Test::Scene_Init()
 
 
 	//+++애니메이션 체크 관련+++++
-
-	D3DXMatrixScaling(&matScale, 1, 1, 1);
-	matCorrection = matScale * matRotate;
-	m_Land = new cBaseObject;
-	m_Land->SetMesh(RESOURCE_STATICXMESH->GetResource(
-		"../Resources/Meshes/TestMesh/boundMesh.X", &matCorrection));
-	m_Land->SetActive(true);
-
-	//m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
-	m_Land->pTransform->SetWorldPosition(0, 0, 0);
-
 	//몬스터 & 플레이어
 	this->m_pMonMgr = new cMonsterManager;
 	this->pMage = new cMage;
@@ -191,10 +180,6 @@ void mage_Test::Scene_Render1()
 	//{
 	//	this->pPet->Render();
 	//}
-
-
-	m_Land->Render();
-
 }
 
 
