@@ -113,12 +113,12 @@ void cMonsterManager::LoadMonsters()
 
 
 		//푸쉬 
-		//CreateMonster(type, pos);
+		CreateMonster(type, pos);
 	}
 
 	//임시로 몬스터를 세팅하려면 CreateMonster()에 추가하고,
 	//다음과 같이 코드를 작성한다. type, pos
-	CreateMonster(SPIDER, D3DXVECTOR3(10, m_pTerrain->GetHeight(10, 10), 10));
+	CreateMonster(DRAGON, D3DXVECTOR3(0, m_pTerrain->GetHeight(0, 0), 0));
 }
 
 void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
@@ -181,6 +181,7 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->SetPlayer(m_pPlayer);
 		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Boss/SkulDragon/skulDragon_1.X"));
 		monster->pTransform->SetWorldPosition(pos);
+		monster->monType = DRAGON;
 		monster->SetActive(true);
 		break;
 	default:

@@ -103,9 +103,9 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 		pCharTrans->RotateSelf(0, 2 * ONE_RAD, 0);
 	}
 
-	if (KEY_MGR->IsStayDown(VK_SPACE))
+	if (m_InputKey.find(VK_SPACE)->second)
 	{
-		m_jumpPower = 6;
+		m_jumpPower = 30;
 		this->isJump = true;
 	}
 
@@ -164,7 +164,7 @@ void moveClass::update(float timeDelta, cBaseObject * collObj, cBoundBox * collB
 	if (m_InputKey.find('S')->second)
 	{
 		this->isMove = true;
-		moveRay.origin -= pCharTrans->GetForward()*0.2f;
+		moveRay.origin -= pCharTrans->GetForward()*0.1f;
 	}
 
 	if (m_InputKey.find('A')->second)
@@ -179,9 +179,9 @@ void moveClass::update(float timeDelta, cBaseObject * collObj, cBoundBox * collB
 		pCharTrans->RotateSelf(0, 2 * ONE_RAD, 0);
 	}
 
-	if (KEY_MGR->IsStayDown(VK_SPACE))
+	if (m_InputKey.find(VK_SPACE)->second)
 	{
-		m_jumpPower = 6;
+		m_jumpPower = 13.5;
 		this->isJump = true;
 	}
 
@@ -328,8 +328,8 @@ void moveClass::moveJumpCheck(float timeDelta)
 
 	if (isJump == true)
 	{
-		this->pCharTrans->MovePositionSelf(0, m_jumpPower*timeDelta, 0);
-		m_jumpPower -= m_gravity*timeDelta;
+		this->pCharTrans->MovePositionSelf(0, m_jumpPower * timeDelta, 0);
+		m_jumpPower -= m_gravity * timeDelta;
 
 		// 레이 업데이트 및 m_currentPos 갱신/
 		m_currentPos = pCharTrans->GetWorldPosition(); // 현재 위치. 

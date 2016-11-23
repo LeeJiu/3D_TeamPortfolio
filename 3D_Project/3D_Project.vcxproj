@@ -22,7 +22,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -128,6 +128,16 @@
     <ClInclude Include="cScene_testMonster.h" />
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cSingletonBase.h" />
+    <ClInclude Include="cSkill_Burserk.h" />
+    <ClInclude Include="cSkill_DarkRain.h" />
+    <ClInclude Include="cSkill_Escape.h" />
+    <ClInclude Include="cSkill_FlameRoad.h" />
+    <ClInclude Include="cSkill_Front.h" />
+    <ClInclude Include="cSkill_MagicShild.h" />
+    <ClInclude Include="cSkill_Meteo.h" />
+    <ClInclude Include="cSkill_Round.h" />
+    <ClInclude Include="cSkill_SelfBuff.h" />
+    <ClInclude Include="cSkill_SnowStorm.h" />
     <ClInclude Include="cSkill_Surround.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSoundManager.h" />
@@ -144,6 +154,7 @@
     <ClInclude Include="cXMesh.h" />
     <ClInclude Include="cXMesh_Skinned.h" />
     <ClInclude Include="cXMesh_Static.h" />
+    <ClInclude Include="DragonTest.h" />
     <ClInclude Include="mage_Test.h" />
     <ClInclude Include="monster_Test.h" />
     <ClInclude Include="moveClass.h" />
@@ -151,6 +162,7 @@
     <ClInclude Include="MyUtil.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="cInven2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
@@ -204,6 +216,16 @@
     <ClCompile Include="cScene_testMonster.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
+    <ClCompile Include="cSkill_Burserk.cpp" />
+    <ClCompile Include="cSkill_DarkRain.cpp" />
+    <ClCompile Include="cSkill_Escape.cpp" />
+    <ClCompile Include="cSkill_FlameRoad.cpp" />
+    <ClCompile Include="cSkill_Front.cpp" />
+    <ClCompile Include="cSkill_MagicShild.cpp" />
+    <ClCompile Include="cSkill_Meteo.cpp" />
+    <ClCompile Include="cSkill_Round.cpp" />
+    <ClCompile Include="cSkill_SelfBuff.cpp" />
+    <ClCompile Include="cSkill_SnowStorm.cpp" />
     <ClCompile Include="cSkill_Surround.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSoundManager.cpp" />
@@ -220,6 +242,7 @@
     <ClCompile Include="cXMesh.cpp" />
     <ClCompile Include="cXMesh_Skinned.cpp" />
     <ClCompile Include="cXMesh_Static.cpp" />
+    <ClCompile Include="DragonTest.cpp" />
     <ClCompile Include="mage_Test.cpp" />
     <ClCompile Include="monster_Test.cpp" />
     <ClCompile Include="moveClass.cpp" />
@@ -230,6 +253,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="cInven2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

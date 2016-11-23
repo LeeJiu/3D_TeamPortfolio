@@ -8,7 +8,8 @@
 #include "cTerrain.h"
 #include "cSkinnedAnimation.h"
 #include "cLight_Point.h"
-#include "cMage.h"
+
+
 #include "cPet.h"
 
 
@@ -35,8 +36,6 @@ HRESULT mage_Test::Scene_Init()
 		3,
 		100);
 
-	m_hitPos = D3DXVECTOR3(0, 0, 0);
-
 	m_bMove = false;
 
 	D3DXMATRIXA16 matScale;
@@ -47,7 +46,6 @@ HRESULT mage_Test::Scene_Init()
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Elf/Elf_Master.X", &matCorrection);
 	cXMesh_Skinned* pPet_Elephant = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Elephant/pet_Elephant.X", &matCorrection);
-	
 
 
 	//+++애니메이션 체크 관련+++++
@@ -62,32 +60,33 @@ HRESULT mage_Test::Scene_Init()
 	//m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
 	m_Land->pTransform->SetWorldPosition(0, 0, 0);
 
+	//몬스터 & 플레이어
+	this->m_pMonMgr = new cMonsterManager;
 	this->pMage = new cMage;
+
+	this->m_pMonMgr->SetTerrain(this->m_pTerrain);
+	this->m_pMonMgr->SetPlayer(this->pMage);
+	this->m_pMonMgr->Init();
+
+
 	this->pMage->SetMesh(pSkinned);
 	this->pMage->SetTerrain(m_pTerrain);
 	this->pMage->SetCamera(this->pMainCamera);
+	this->pMage->SetMonsterManager(this->m_pMonMgr);
 	this->pMage->SetActive(true);
 
+
 	//펫 관련
-	this->pPet = new cPet;
-	this->pPet->SetMesh(pPet_Elephant);
-	this->pPet->SetTerrain(m_pTerrain);
-	this->pPet->SetActive(true);
-	this->pPet->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
+	//this->pPet = new cPet;
+	//this->pPet->SetMesh(pPet_Elephant);
+	//this->pPet->SetTerrain(m_pTerrain);
+	//this->pPet->SetActive(true);
+	//this->pPet->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
 	//this->pPet->pTransform->LookDirection(this->pMage->pTransform->GetForward(), 90.0f*ONE_RAD);
 
-	
+
 	//캐릭터가 그려질 위치 트랜스폼
-	//this->pMage->pTransform = new cTransform();
 	this->pMage->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
-
-	this->pTransForCamera = new cTransform();
-
-	this->pMage->pTransform->AddChild(this->pMainCamera);
-	this->pMainCamera->SetLocalPosition(0, 5, -10);
-	isCharView = true;
-	isAltView = false;
-
 
 	//라이트 푸쉬
 	cLight_Direction* pLight1 = new cLight_Direction();
@@ -114,11 +113,7 @@ HRESULT mage_Test::Scene_Init()
 	this->lights.push_back(pLight3);
 
 	isMove = false;
-	//================레이 추가. 아래 방향 바뀌지 않음 .
-	cRay.direction = D3DXVECTOR3(0, -1, 0);
-	cRay.origin = pMage->pTransform->GetWorldPosition();
-	//=============== 레이 초기화 끝.
-	pMainCamera->SetWorldPosition(2, 5, 2);
+
 	isClick = false;
 
 
@@ -132,8 +127,8 @@ void mage_Test::Scene_Release()
 	SAFE_DELETE(m_pTerrain);
 
 	SAFE_DELETE(this->pMage);
-	SAFE_DELETE(this->pTransForCamera);
-	SAFE_DELETE(this->pPet);
+	m_pMonMgr->Release();
+	SAFE_DELETE(m_pMonMgr);
 
 	for (int i = 0; i < lights.size(); i++)
 	{
@@ -144,60 +139,26 @@ void mage_Test::Scene_Release()
 
 void mage_Test::Scene_Update(float timeDelta)
 {
-	this->pTransForCamera->SetWorldPosition(this->pMage->pTransform->GetWorldPosition());
-
-	if (isCharView && KEY_MGR->IsStayDown(VK_MENU))
-	{
-		isAltView = true;
-		isCharView = false;
-		this->pMainCamera->ReleaseParent();
-		this->pTransForCamera->AddChild(this->pMainCamera);
-	}
-	if (isAltView && KEY_MGR->IsOnceUp(VK_MENU))
-	{
-		this->pMainCamera->Reset();
-		this->pTransForCamera->Reset();
-		this->pTransForCamera->SetWorldMatrix(this->pMage->pTransform->GetFinalMatrix());
-
-		this->pMage->pTransform->AddChild(this->pMainCamera);
-		this->pMainCamera->SetLocalPosition(0, 5, -10);
-		isCharView = true;
-		isAltView = false;
-	}
-
-
-	if (isCharView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pMage->pTransform);
-	}
-	else if (isAltView)
-	{
-		pMainCamera->DefaultControl3(timeDelta, this->pTransForCamera);
-	}
-
-
-
-	if (pMage->GetIsPetOn())
-	{
-		this->pPet->Update(timeDelta);
-		D3DXVECTOR3 petSpace(0, 6, 0);
-		this->pPet->pTransform->AddChild(this->pMage->pTransform);
-		this->pMage->pTransform->SetLocalPosition(petSpace);
-		
-	}
-	else
-	{
-		this->pMage->pTransform->ReleaseParent();
-		this->pPet->pTransform->LookDirection(this->pMage->pTransform->GetForward(), 90.0f*ONE_RAD);
-		this->pPet->pTransform->SetWorldPosition(this->pMage->pTransform->GetWorldPosition().x, m_pTerrain->GetHeight(0, 0), this->pMage->pTransform->GetWorldPosition().z);
-	}
-	
-
+	//if (pMage->GetIsPetOn())
+	//{
+	//	this->pPet->Update(timeDelta);
+	//	D3DXVECTOR3 petSpace(0, 6, 0);
+	//	this->pPet->pTransform->AddChild(this->pMage->pTransform);
+	//	this->pMage->pTransform->SetLocalPosition(petSpace);
+	//	
+	//}
+	//else
+	//{
+	//	this->pMage->pTransform->ReleaseParent();
+	//	this->pPet->pTransform->LookDirection(this->pMage->pTransform->GetForward(), 90.0f*ONE_RAD);
+	//	this->pPet->pTransform->SetWorldPosition(this->pMage->pTransform->GetWorldPosition().x, m_pTerrain->GetHeight(0, 0), this->pMage->pTransform->GetWorldPosition().z);
+	//}
+	//
 
 	this->pMage->Update(timeDelta);
+	m_pMonMgr->Update(timeDelta);
 
-	
-	
+
 
 }
 
@@ -215,25 +176,22 @@ void mage_Test::Scene_Render1()
 	cXMesh_Skinned::sSkinnedMeshEffect->SetInt("LightNum", this->lights.size());
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
-	this->pMage->Render();
-	this->pMage->ATKBoxRender();
-	
-	this->pMage->WeaponRender();
 
-	if (pMage->GetIsPetOn())
-	{
-		this->pPet->Render();
-	}
-	
-
-
-	//Hit 위치에 구
-	GIZMO_MGR->WireSphere(this->m_mousePos, 0.5f, 0xffff0000);
-
-	//셰이더에 라이팅 셋팅
 	cXMesh_Static::SetCamera(this->pMainCamera);
 	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
+
+
+	this->pMage->Render();
+
+	this->m_pMonMgr->Render();
+
+
+	//if (pMage->GetIsPetOn())
+	//{
+	//	this->pPet->Render();
+	//}
+
 
 	m_Land->Render();
 

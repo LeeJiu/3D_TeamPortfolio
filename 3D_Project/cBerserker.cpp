@@ -5,6 +5,7 @@
 #include "cMonster.h"
 #include "cCamera.h"
 #include "cInven.h"
+#include "cTrailRender.h"
 
 cBerserker::cBerserker()
 {
@@ -14,13 +15,13 @@ cBerserker::~cBerserker()
 {
 }
 
-
 void cBerserker::BaseObjectEnable()
 {
 	SetBassClass();
 
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
+	BaseObjectBoundBox();
 
 	m_state = IDLE;
 	m_strName = MyUtil::SetAnimation(m_state);
@@ -40,17 +41,35 @@ void cBerserker::BaseObjectEnable()
 	
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
+	m_camera->AttachTo(pTransform);
+	m_camera->SetLocalPosition(0, 2, -5);
+
+	//D3DXVECTOR3 VecPlayer(0, this->pTransform->GetWorldPosition().y, this->pTransform->GetWorldPosition().z);
+	//D3DXVECTOR3 VecCam(0, this->m_camera->GetWorldPosition().y, this->m_camera->GetWorldPosition().z);
+	//float CamAngle = D3DXVec3Dot(D3DXVec3Normalize(&VecPlayer, &VecPlayer), D3DXVec3Normalize(&VecCam, &VecCam));
+	//m_Angle = acos(CamAngle);
+	//MaxZoomIn = 2;
+	//MaxZoomOut = -10;
+	//Zoom = 0;
+
 	m_atkCnt = 1;
 	m_time = 0;
 	m_testtime = 0;
+
+	m_invenOn = false;
 }
 
 void cBerserker::BaseObjectUpdate(float timeDelta)
 {
+	CamControl(timeDelta);
 	Move(timeDelta);
-	//Monster_pick();
-	//if(m_invenOn)
+	if (!m_invenOn)
+	{
+		Monster_pick();
+	}
 	UiUpdate(timeDelta, m_camera);
+	if (this->pTrailRender != NULL)
+		this->pTrailRender->Update(timeDelta);
 	//======================테스트용 애니 확인==================================
 
 	if (KEY_MGR->IsOnceDown(VK_NUMPAD1))
@@ -180,23 +199,28 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//test용 로그 출려꾸 
 	if (m_testtime > 1)
 	{
-		LOG_MGR->AddLog("%d", m_inven->GetInvenOn());
+		LOG_MGR->AddLog("%d", m_invenOn);
 		m_testtime = 0;
 	}
 }
 
 void cBerserker::BaseObjectRender()
 {
-	if (m_inven->GetWeapon() != NULL)
-	{
-		m_inven->GetWeapon()->BoundBox.RenderGizmo(m_inven->GetWeapon()->pTransform);
-
-		m_inven->GetWeapon()->Render();
-		m_inven->GetWeapon()->pTransform->RenderGimozo();
-	}
-	
 	this->pSkinned->Render(this->pTransform);
 	this->BoundBox.RenderGizmo(this->pTransform);
+
+	if (m_inven->GetWeapon() != NULL)
+	{
+		m_inven->GetWeapon()->Render();
+		m_inven->GetWeapon()->pTransform->RenderGimozo();
+		
+		m_inven->GetWeapon()->BoundBox.RenderGizmo(m_inven->GetWeapon()->pTransform);
+		if (this->pTrailRender != NULL)
+		{
+			//this->pTrailRender->Render();
+			this->pTrailRender->RenderDistort(this->m_camera);
+		}
+	}
 }
 
 void cBerserker::BaseSpriteRender()
@@ -271,10 +295,6 @@ void cBerserker::SKILL03()
 {
 	int damage = m_damage * 2;
 	damage = RandomIntRange(damage - 10, damage + 10);
-
-	//LOG_MGR->AddLog("%d데미지 줌", damage);
-	//m_target->TickDamage(damage);
-
 
 	LOG_MGR->AddLog("때리고잇음");
 }

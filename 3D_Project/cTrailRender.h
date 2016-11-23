@@ -99,7 +99,6 @@ public:
 	void		Render();
 	void		RenderDistort(cCamera* pCam);
 
-
 	void		TrailGenStart();
 	void		TrailGenStop();
 };

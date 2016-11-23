@@ -1,15 +1,15 @@
 #pragma once
-#include "cBaseObject.h"
-#include "moveClass.h"
-
+#include "cPlayer.h"
+#include "cSkill_Surround.h"
+#include "cSkill_Round.h"
+#include "cSkill_SnowStorm.h"
+#include "cSkill_DarkRain.h"
+#include "cSkill_Front.h"
+#include "cSkill_MagicShild.h"
+#include "cSKill_Escape.h"
+#include "cSkill_FlameRoad.h"
 
 #define CONTROL_KEY 5
-
-class cTerrain;
-class cCamera;
-class cStateHandler;
-class cItem;
-class cSkill_Surround;
 
 
 //스킬이펙트에 관한것
@@ -18,15 +18,16 @@ class cPartcleEmitter;
 class cParticleQuad;
 class cParticle;
 
+class cMonsterManager;
 
-
-class cMage : public cBaseObject
+class cMage : public cPlayer
 {
 private:
-	//범위기에 관한것
-	cSkill_Surround*     m_SkillSurround;
 
 	//몬스터에 관한것
+
+	cMonsterManager*      m_pMonsterMgr;
+
 	cBaseObject*          m_pMonster;
 	int                   m_StateCount;
 	bool                  m_isTarget;
@@ -34,54 +35,35 @@ private:
 	bool                  m_MobHit;
 	int                   m_MobHitCount;
 
-
-
-	cItem*             pWeapon;
-	
-
-	cCamera*			m_camera;
-	
 	cBaseObject*           m_ATKBox;
 
-	ACTOR_STATE			m_state;
-	std::string			m_current_Ani;
-	std::string			m_Aniname;
-	std::map<int, bool> m_InputKeys;
-
 	bool                m_isPetOn;
-	bool				m_isMove;
 
-	//컴포넌트를 달아준다.
-	moveClass*			m_pMove;
-
-
-	//스킬에 관한 것
-	//매직 실드
-	cQuadParticleEmitter*  m_magicShild;
-	bool                   m_isMagicShild;
+	// 스킬
+	int m_atkCnt;
+	float m_time;
+	float m_fadeOut;
 
 
-	// 스노우 스톰
-	cQuadParticleEmitter*  m_snowStrom;
-	cQuadParticleEmitter*  m_snowStrom_under;
-	cPartcleEmitter*       m_snow;
-	bool                   m_isSnowStorm;
+
 	int                    m_aniCount;
 
+	//스킬에 관한 것
+	cSkill_Surround*     m_pSurroundSkill;
+	cSkill_Round*        m_pRoundSkill;
+	cSkill_SnowStorm*    m_pSkill_SnowStorm;
+	cSkill_DarkRain*     m_pSkill_DarkRain;
+	cSkill_Front*        m_pSkill_Front;
+	cSkill_MagicShild*   m_pSkill_magicShild;
+	cSkill_FlameRoad*    m_pSkill_FlameRoad;
 
-	// 플레임 로드
-	cQuadParticleEmitter*  m_flameRoad;
-	cQuadParticleEmitter*  m_flameRoad2;
-	cPartcleEmitter*       m_flameRoad3;
-	bool                   m_isFlameRoad;
-	bool                   m_flameRoad_cast;
-	int                    m_flameRoad_cast_count;
+	cSkill_Escape*       m_pSkill_Escape;
 
 
 	//평타
 	cQuadParticleEmitter*  m_magicATK;
 	cQuadParticleEmitter*  m_magicATK2;
-	bool                   m_isMagicATK;
+
 
 
 
@@ -92,9 +74,11 @@ public:
 
 	void BaseObjectEnable();
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
-	void ATKBoxRender();
+	void BaseObjectRender();
 	void WeaponRender();
 
+
+private:
 	//몬스터와의 상호교류
 	void MonsterInit();
 
@@ -103,25 +87,30 @@ public:
 
 	void MonsterRender();
 
-	
+
 	//펫
 	void PetOnUpdate();
 
 	void SkillInit();
 	void SkillUpdate();
-	void SkillRender();
+
 
 	//스킬
 	void MagicATKInit();
-	void MagicShildInit();
-
-	void FlameRoadInit();
+	
 
 
+	void Damage(float damage);
 
-	void SnowStormInit();
-	void SnowStormUpdate();
-	void SnowStormRender();
+	void Attack01();
+	void Attack02();
+	void Attack03();
+
+	void SKILL01();
+	void SKILL02();
+	void SKILL03();
+	void SKILL04();
+
 
 
 	void SetCamera(cCamera* camera) { m_camera = camera; }

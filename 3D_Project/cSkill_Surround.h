@@ -1,58 +1,68 @@
 #pragma once
 #include "cBaseObject.h"
+#include "cPartcleEmitter.h"
+#include "cQuadParticleEmitter.h"
 
-class cSkill_Surround : cBaseObject
+
+class cSkill_Surround : public cBaseObject
 {
-private:
 
-	cTransform*      m_CasterPos;       //시전자의 위치
-	float        m_SurroundRadius;  //시전 범위
-	D3DXVECTOR3      m_CasterWorldPos;
-
-	// int              m_HitMax;          //타격인원
-	float            m_tickTime;
-	float            m_timeTemp;
-
-	int              m_Damage;
-	int              m_UseSP;
+protected:
+	
+	bool               m_IsSelect;       // 스킬 마우스 오버중이니
+	bool               m_IsCasting;      // 스킬 캐스팅 중이니
+	bool               m_IsAttacking;    // 스킬 공격 중이니
+	bool               m_IsCoolTime;     // 스킬 쿨타임 중이니
 
 
-	int              m_CoolTime;
-	int              m_CastTime;
-	int              m_ActionTime;
+	// 기본 마법진에 대한 초기화 
 
+	cQuadParticleEmitter*   m_CircleEfc;
+	cQuadParticleEmitter*   m_CastEfc;
 
-	bool             m_UseSkill;           //스킬을 사용한다
-	bool             m_IsCasting;          //스킬이 캐스팅 중이냐
-	bool             m_IsAction;           //스킬이 시전중이니
+	int                   m_CastTimeCount; //캐스팅 재는 타임
+	int                   m_CastTime;      //캐스팅 풀 타임
 
-	bool             m_IsHit;              //적이 맞았니?
+	int                   m_CoolTimeCount; //쿨타임 잰다
+	int                   m_CoolTime;      //쿨타임
+
+	int                   m_AttackingCount; //공격 시전시간을 잰다
+	int                   m_AttackingTime;
+
+	float                 m_CastEfcScale;
+
+	cBoundSphere     m_BoundSphere;
+
+	D3DXVECTOR3      m_CasterWorldPos; //시전자의 위치
+	float            m_SurroundLength; //범위
+
 
 
 public:
 	cSkill_Surround();
 	~cSkill_Surround();
 
-	void BaseObjectEnable();
+	void BaseObjectEnable(D3DXVECTOR3  casterWorldPos, float surroundLength, int castTime, int attackingTime, int coolTime);
 
-	void SkillInit(
-		D3DXVECTOR3      casterWorldPos,
-		float            surroundRadius,
-		int              hitMax,
-		int              damage,
-		int              useSP,
-		int              coolTime,
-		int              castTime,
-		int              actionTime
-		);
+	void BaseObjectUpdate(float timeDelta, D3DXVECTOR3 CasterWorldPos);
 
-	void SkillUpdate(float timeDelta);
+	void BaseObjectRender();
 
-	//cBoundSphere* GetBoundSphere() { return m_BoundSphere; }
-	bool GetUseSkill() { return m_UseSkill; }
-	bool GetIsCasting() { return m_IsCasting; }
-	bool GetIsAction() { return m_IsAction; }
-	bool GetIsHit() { return m_IsHit; }
+	void SelectSkill(); //UI에 스킬을 마우스 오버 했을때 불러주자
+
+	void StartCasting(); //스킬을 사용한다 즉시시전 스킬도 이 함수를 불러주자
+
+
+
+	bool GetIsAttacking() { return m_IsAttacking; } //공격하고있니?
+
+
+protected:
+	//이펙트 함수가 필요하면..
+
+	virtual void Effect_Init() {};
+	virtual void Effect_Update(float timeDelta) {};
+	virtual void Effect_Render() {};
 
 
 

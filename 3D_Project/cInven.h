@@ -5,61 +5,69 @@
 #define INVEN_COUNT 6
 #define RECT_SIZE 64
 // 6 x 6 
-struct stInven
-{
-	cItem* m_Item;                  // 아이템 포인터.
-	unsigned int itemNum;           // 아이템 번호 ( 아이템 번호는 모두 양수)
-	RECT rcSize;					// 스킬 렉트 사각형
-	RECT rcColl;                    // 충돌 할 렉트
-	LPDIRECT3DTEXTURE9 skillImage;	// 이미지
-	float x, y;						// 화면에 그려질 좌표. 
-	bool isPoint;                   // 포인트가 있는지 없는지  
-	//LPDIRECT3DTEXTURE9 emtyImage;
-	int i, j;                        // 인덱스 
-};
+ struct stInven
+ {
+ 	cItem* m_Item;                  // 아이템 포인터.
+ 	unsigned int itemNum;           // 아이템 번호 ( 아이템 번호는 모두 양수)
+ 	RECT rcSize;					// 스킬 렉트 사각형
+ 	RECT rcColl;                    // 충돌 할 렉트
+ 	LPDIRECT3DTEXTURE9 skillImage;	// 이미지
+ 	float x, y;						// 화면에 그려질 좌표. 
+ 	bool isPoint;                   // 포인트가 있는지 없는지  
+ 	//LPDIRECT3DTEXTURE9 emtyImage;
+ 	int i, j;                        // 인덱스 
+ };
 
-class cInven
-{
-	bool invenOpen; // 인벤이 열렸을때
-	bool pickUp;   // 아이템을 들었을 때
 
-	std::vector<cItem*>::iterator item_iter; //아이템 인덱스
-	int itemIndex;
-	int row;//행 
-	int col;//열
-	stInven inven[INVEN_COUNT][INVEN_COUNT];
-	
-	stInven weapon;
+ // 6 x 6 
 
-	stInven emptyInven;
 
-	cItem* clickItem;
-public:
+ class cInven
+ {
+	 bool invenOpen; // 인벤이 열렸을때
+	 bool pickUp;   // 아이템을 들었을 때
 
-	void init();
-	void update(float timeDelta, cCamera* camera);
-	void render();
-	void release();
-	void invenItemClick();
-	void putItem();
-	void weaponClick(POINT mouse);
+	 std::vector<cItem*>::iterator item_iter; //아이템 인덱스
+	 int itemIndex;
+	 int row;//행 
+	 int col;//열
+	 stInven inven[INVEN_COUNT][INVEN_COUNT];
 
-	cItem*	GetWeapon() { return weapon.m_Item; }
+	 stInven weapon;
 
-	bool GetInvenOn() { return invenOpen; }
+	 stInven emptyInven;
 
-	D3DXVECTOR3 screenPos(int x,int y);
+	 cItem* clickItem;
+ public:
 
-	bool inputItem(int row, int coll,cItem* item);
+	 void init();
+	 void update(float timeDelta, cCamera* camera, D3DXVECTOR3& pos);
+	 void render();
+	 void release();
 
-	int findItemNum();    // 아이템 번호 찾는거 .
-	stInven* findInven(cItem* item);
-	LPDIRECT3DTEXTURE9 findIcon(string name);
+	 cItem*	GetWeapon() { return weapon.m_Item; }
 
-	bool selctRect(int* row, int* coll, POINT mouse);
-	cInven();
-	~cInven();
-};
+	 bool GetInvenOn() { return invenOpen; }
+	 void SetInvenOn(bool invenOn) { invenOpen = invenOn; }
+
+	 D3DXVECTOR3 screenPos(int x, int y);
+
+
+	 LPDIRECT3DTEXTURE9 findIcon(string name);
+
+	 bool invenInputItem(int* row, int* coll, cItem* item, POINT mouse);
+	 bool invenSelectRect(int* row, int* coll, POINT mouse);
+
+	 bool weaponSelectRect(POINT mouse);
+	 bool weaponInputItem(cItem* item, POINT mouse);
+
+	 bool invenToManager(int* row, int* coll, POINT mouse);
+	 bool weaponToManager(POINT mouse);
+
+	 void discard(int* row, int* coll, POINT mouse, D3DXVECTOR3& pos);
+	 cInven();
+	 ~cInven();
+ };
 
 /*
 cItem* temp;

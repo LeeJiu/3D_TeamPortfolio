@@ -81,6 +81,13 @@ protected:
 	float MaxZoomOut;
 	float Zoom;
 
+	D3DXVECTOR3 m_vEye;
+	D3DXVECTOR3 m_vLookAt;
+	float m_distance;
+
+	float isCharView;
+	float isAltView;
+
 public:
 	cTransform(void);
 	~cTransform(void);

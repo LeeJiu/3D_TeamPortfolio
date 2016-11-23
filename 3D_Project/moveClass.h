@@ -28,6 +28,7 @@ class moveClass
 
 	//==================== jump 
 	bool isJump;
+	bool isOnAir;
 	float m_jumpPower;
 	float m_gravity;
 
@@ -53,7 +54,8 @@ public:
 	void moveJumpCheck(float timeDelta);
 
 	bool GetIsMove() { return isMove; }
-	
+	bool GetIsJump() { return isJump; }
+
 	moveClass();
 	~moveClass();
 };

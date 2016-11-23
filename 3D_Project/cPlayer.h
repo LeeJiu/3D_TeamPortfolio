@@ -8,6 +8,8 @@ class cCamera;
 class cMonsterManager;
 class cItem;
 class cMonster;
+class cTrailRender;
+
 
 class cPlayer : public cBaseObject 
 {
@@ -27,18 +29,29 @@ protected:
 	cMonster*			m_target;				//타겟몬스터 
 	cMonsterManager*	m_pMonMgr;				//몬스터매니저
 
+	cTrailRender*		pTrailRender;			//트레일랜더
+
+	//float				m_Angle;				//카메라랑 앵글
+	//float				MaxZoomIn;
+	//float				MaxZoomOut;
+	//float				Zoom;
+
 	//status
 	float				m_fHP;					//hp
 	float				m_sp;					//skill point
 	float				m_attackLength;			//공격가능범위
 	int					m_damage;				//데미지
 
+	float				m_Angle;
+
+	bool				m_isIdle;
 	bool				m_isMove;				//움직이는중?
 	bool				m_isAttack;				//공격하는중?
 	bool				m_invenOn;				//인벤켜진?
-
+	
 	bool                m_WeaponCheck;          // 아이템 장착 됬는지.
 	bool                m_botton;
+
 public:
 	cPlayer();
 	virtual ~cPlayer();
@@ -49,6 +62,8 @@ public:
 	virtual void BaseSpriteRender();							//스프라이트 랜더
 	virtual void BaseObjectBoundBox();
 
+	virtual void CamControl(float timeDelta);
+	
 	virtual void UiUpdate(float timeDelta, cCamera* camera);	//ui업데이트 전반
 	virtual void UiURender();									//ui랜더전반
 
@@ -69,10 +84,13 @@ public:
 	//=====================
 	
 	virtual bool LengthCheck();									//타겟된 몬스터랑 거리
-	virtual void RangeCheck(float range);						//범위체크
+	virtual void RangeCheck(float range);						//나를 중심으로 범위체크
+	virtual void RangeCircleCheck(D3DXVECTOR3& pos, float range);		//pos값 중심으로 범위체크
+	//virtual void RangeQuardCheck(D3DXVECTOR3& pos, float width, float height);		//pos값 중심으로 범위체크
 
 	virtual void SetBassClass();								//기본 클래스
-	
+	virtual void BaseObjectBoundBox();
+
 	virtual void SetCamera(cCamera* camera) { m_camera = camera; }
 	virtual void SetMonsterManager(cMonsterManager* pMonMgr) { m_pMonMgr = pMonMgr; }
 };

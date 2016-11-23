@@ -37,9 +37,6 @@ void cItem::init(cItem* copyItem)
 	pTerrain = copyItem->pTerrain;
 
 
-
-
-
 	m_itemNum = ++increaseNum;
 
 }
