@@ -199,7 +199,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//test용 로그 출려꾸 
 	if (m_testtime > 1)
 	{
-		LOG_MGR->AddLog("%d", m_invenOn);
+		//LOG_MGR->AddLog("%d", m_invenOn);
 		m_testtime = 0;
 	}
 }
