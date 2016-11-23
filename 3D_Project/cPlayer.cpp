@@ -40,6 +40,10 @@ void cPlayer::BaseSpriteRender()
 
 }
 
+void cPlayer::BaseObjectBoundBox()
+{
+}
+
 void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
 {
 	

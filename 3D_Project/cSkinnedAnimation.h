@@ -70,6 +70,7 @@ public:
 	bool GetIsPlay() { return m_bPlay; }
 	float GetTime() { return m_AnimationPlayFactor; }
 	string GetNowPlayingAni() { return m_NowPlay; }
+	float GetPlayingAniTime() { return m_pNowPlayAnimationSet->GetPeriod(); }
 
 public:
 	cSkinnedAnimation(void);

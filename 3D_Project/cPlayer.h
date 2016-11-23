@@ -47,6 +47,7 @@ public:
 	virtual void BaseObjectUpdate(float timeDelta);				//BaseObject 가 Update 때 실행....
 	virtual void BaseObjectRender();							//기존 오브젝트랜더
 	virtual void BaseSpriteRender();							//스프라이트 랜더
+	virtual void BaseObjectBoundBox();
 
 	virtual void UiUpdate(float timeDelta, cCamera* camera);	//ui업데이트 전반
 	virtual void UiURender();									//ui랜더전반

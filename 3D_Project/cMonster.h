@@ -17,6 +17,7 @@ protected:
 	ACTOR_STATE		m_state;
 	string			m_strName;
 
+	bool			m_bIsOverlap;
 	bool			m_inRange;
 
 public:
@@ -26,6 +27,7 @@ public:
 	virtual void BaseObjectEnable();
 	virtual void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
 	virtual void BaseObjectBoundBox();
+	virtual void BaseObjectRender();
 
 	virtual void MoveToPlayer();
 	virtual void Attack01() {};

@@ -196,11 +196,17 @@ void cBerserker::BaseObjectRender()
 	}
 	
 	this->pSkinned->Render(this->pTransform);
+	this->BoundBox.RenderGizmo(this->pTransform);
 }
 
 void cBerserker::BaseSpriteRender()
 {
 	UiURender();
+}
+
+void cBerserker::BaseObjectBoundBox()
+{
+	BoundBox.SetBound(&D3DXVECTOR3(0, 1.5f, 0), &D3DXVECTOR3(0.5f, 1.5f, 0.5f));
 }
 
 void cBerserker::Damage(float damage)
