@@ -49,7 +49,7 @@ public:
 
 	void BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float maxDistance, float maxWidth, int castTime, int attackingTime, int coolTime);
 
-	void BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos, D3DXVECTOR3 mousePos);
+	void BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos, D3DXVECTOR3 lookDir);
 
 	void BaseObjectRender();
 

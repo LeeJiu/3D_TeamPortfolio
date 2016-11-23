@@ -164,12 +164,14 @@ void cSkill_Round::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos,
 		m_IsSelect = false;
 		m_CastTimeCount++;
 
+		if (m_CastTimeCount == 1) m_AttackPos = m_MousePos; //캐스팅 시작시 마우스 클릭 위치가 들어갈 수 있도록
+
 		if (m_CastTimeCount == m_CastTime) //캐스팅이 끝나면 
 		{
 			m_IsCasting = false;
 			m_IsAttacking = true;
 			m_IsCoolTime = true; //쿨타임돌기를 시작합시다
-			m_AttackPos = m_MousePos;
+			
 
 		}
 

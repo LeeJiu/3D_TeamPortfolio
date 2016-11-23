@@ -61,7 +61,7 @@ public:
 
 	void StartCasting(); //스킬을 사용한다 즉시시전 스킬도 이 함수를 불러주자
 
-
+	int  GetCastCount()   { return m_CastTimeCount; } //시전시작시 모션을 지정해줘야할 경우 가져가주자
 	bool GetIsSelecting() { return m_IsSelect; } //선택중이니?
 	bool GetIsAttacking() { return m_IsAttacking; } //공격하고있니?
 

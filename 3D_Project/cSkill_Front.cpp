@@ -33,7 +33,7 @@ void cSkill_Front::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float maxDistanc
 
 
 	pTransform->SetWorldPosition(m_CasterWorldPos);
-	m_BoundBox.SetBound(&pTransform->GetWorldPosition(), &D3DXVECTOR3(m_MaxWidth, 10, m_MaxDistance));
+	m_BoundBox.SetBound(&pTransform->GetWorldPosition(), &D3DXVECTOR3(m_MaxWidth, 5, m_MaxDistance));
 
 
 	// 범위 이펙트 - 빨간색
@@ -55,8 +55,8 @@ void cSkill_Front::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float maxDistanc
 		2.0f,     //이펙트 몇장
 		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
 		1.0f,
-		D3DXVECTOR3(0, 1, 0),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 1, 0),
+		D3DXVECTOR3(0, 0, 0),     //시작위치에서 끝점까지의 거리
+		D3DXVECTOR3(0, 0, 0),
 		D3DXVECTOR3(0, 0, 0),     //한쪽으로 발사하는 양 시작
 		D3DXVECTOR3(0, 0, 0),     //한쪽으로 발사하는 양 끝
 		D3DXVECTOR3(-90 * ONE_RAD, 0, 0),	//초기시작시 회전 min
@@ -71,7 +71,7 @@ void cSkill_Front::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float maxDistanc
 		true);
 
 
-	m_CastEfc->pTransform->Scaling(D3DXVECTOR3( m_MaxWidth, 1, m_MaxDistance));
+	m_CastEfc->pTransform->Scaling(D3DXVECTOR3( m_MaxWidth, 1, m_MaxDistance * 1.3f));
 
 	m_CastEfc->StartEmission();
 
@@ -79,15 +79,31 @@ void cSkill_Front::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float maxDistanc
 }
 
 
-void cSkill_Front::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos, D3DXVECTOR3 mousePos)
+void cSkill_Front::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos, D3DXVECTOR3 lookDir)
 {
 
 	m_CasterWorldPos = casterWorldPos;
-	m_LookDir = mousePos;
+	m_LookDir = lookDir;
 
 
 	if (m_IsCasting)  //캐스팅이 시작되면
 	{
+		m_CastEfc->Update(timeDelta);
+
+		pTransform->SetWorldPosition(m_CasterWorldPos);
+		pTransform->MovePositionSelf(D3DXVECTOR3(0, 0, m_MaxDistance));
+		pTransform->LookDirection(m_LookDir, D3DXVECTOR3(0, 1, 0));
+		pTransform->SetWorldPosition(pTransform->GetWorldPosition());
+
+		m_CastEfc->pTransform->SetWorldPosition(m_CasterWorldPos);
+		m_CastEfc->pTransform->MovePositionSelf(D3DXVECTOR3(0, 0, m_MaxDistance));
+		m_CastEfc->pTransform->LookDirection(m_LookDir, D3DXVECTOR3(0, 1, 0));
+		D3DXVECTOR3 hight(0, 0.3f, 0);
+		m_CastEfc->pTransform->SetWorldPosition(pTransform->GetWorldPosition() + hight);
+
+
+		D3DXVECTOR3 selectMax = pTransform->GetWorldPosition() - m_CasterWorldPos;
+
 		LOG_MGR->AddLog("캐스팅시작");
 		m_IsSelect = false;
 		m_CastTimeCount++;
@@ -135,19 +151,8 @@ void cSkill_Front::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos,
 	{
 		if (m_IsSelect)
 		{
-			m_CastEfc->Update(timeDelta);
-			pTransform->SetWorldPosition(D3DXVECTOR3(0,0,0));
-			pTransform->SetWorldPosition(D3DXVECTOR3(m_CasterWorldPos.x, 0, m_CasterWorldPos.z));
-			pTransform->LookPosition(D3DXVECTOR3(m_LookDir.x, 0, m_LookDir.z), 90 * ONE_RAD);
-			//m_BoundBox.SetBound(&pTransform->GetWorldPosition(), &D3DXVECTOR3(m_MaxWidth, 10, m_MaxDistance));
-			m_CastEfc->pTransform->SetWorldPosition(D3DXVECTOR3(m_CasterWorldPos.x, 0, m_CasterWorldPos.z));
-			m_CastEfc->pTransform->LookPosition(D3DXVECTOR3(m_LookDir.x, 0, m_LookDir.z), 90 * ONE_RAD);
-	
-			//m_CastEfc->pTransform->LookPosition(m_LookDir, 180 * ONE_RAD);
-			D3DXVECTOR3 selectMax = pTransform->GetWorldPosition() - m_CasterWorldPos;
-
-	
-			if (KEY_MGR->IsOnceDown(VK_LBUTTON))
+			
+			if (KEY_MGR->IsOnceDown(VK_SPACE))
 			{
 				LOG_MGR->AddLog("시전시작");
 				m_IsCasting = true;
@@ -167,15 +172,15 @@ void cSkill_Front::BaseObjectRender()
 	D3DXVECTOR3 selectMax = pTransform->GetWorldPosition() - m_CasterWorldPos;
 
 
-	if (m_IsSelect)
+	if (m_IsCasting)
 	{
 		m_CastEfc->Render();
 		m_BoundBox.RenderGizmo(pTransform);
 
-	
-
 	}
+
 }
+
 
 void cSkill_Front::SelectSkill()
 {

@@ -5,6 +5,9 @@
 #include "cSkill_SnowStorm.h"
 #include "cSkill_DarkRain.h"
 #include "cSkill_Front.h"
+#include "cSkill_MagicShild.h"
+#include "cSKill_Escape.h"
+#include "cSkill_FlameRoad.h"
 
 #define CONTROL_KEY 5
 
@@ -51,20 +54,10 @@ private:
 	cSkill_SnowStorm*    m_pSkill_SnowStorm;
 	cSkill_DarkRain*     m_pSkill_DarkRain;
 	cSkill_Front*        m_pSkill_Front;
+	cSkill_MagicShild*   m_pSkill_magicShild;
+	cSkill_FlameRoad*    m_pSkill_FlameRoad;
 
-
-	//매직 실드
-	cQuadParticleEmitter*  m_magicShild;
-	bool                   m_isMagicShild;
-
-
-	// 플레임 로드
-	cQuadParticleEmitter*  m_flameRoad;
-	cQuadParticleEmitter*  m_flameRoad2;
-	cPartcleEmitter*       m_flameRoad3;
-	bool                   m_isFlameRoad;
-	bool                   m_flameRoad_cast;
-	int                    m_flameRoad_cast_count;
+	cSkill_Escape*       m_pSkill_Escape;
 
 
 	//평타
@@ -100,13 +93,12 @@ private:
 
 	void SkillInit();
 	void SkillUpdate();
-	void SkillRender();
+
 
 	//스킬
 	void MagicATKInit();
-	void MagicShildInit();
+	
 
-	void FlameRoadInit();
 
 	void Damage(float damage);
 

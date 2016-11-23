@@ -282,6 +282,21 @@
     <ClInclude Include="cSkill_Front.h">
       <Filter>GameActor\Skill</Filter>
     </ClInclude>
+    <ClInclude Include="cSkill_SelfBuff.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_MagicShild.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Escape.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_FlameRoad.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Meteo.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -522,6 +537,21 @@
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Front.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_SelfBuff.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_MagicShild.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Escape.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_FlameRoad.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Meteo.cpp">
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
   </ItemGroup>
