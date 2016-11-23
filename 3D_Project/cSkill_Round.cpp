@@ -9,6 +9,9 @@ cSkill_Round::cSkill_Round()
 
 cSkill_Round::~cSkill_Round()
 {
+	SAFE_DELETE(m_CircleEfc);
+	SAFE_DELETE(m_CastEfc);
+	SAFE_DELETE(m_SurroundEfc);
 }
 
 

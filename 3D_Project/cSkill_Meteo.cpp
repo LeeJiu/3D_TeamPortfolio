@@ -9,6 +9,10 @@ cSkill_Meteo::cSkill_Meteo()
 
 cSkill_Meteo::~cSkill_Meteo()
 {
+	SAFE_DELETE(m_lavaStone);
+	SAFE_DELETE(m_snowStrom);
+	SAFE_DELETE(m_snowStrom_under);
+	SAFE_DELETE(m_snow);
 }
 
 

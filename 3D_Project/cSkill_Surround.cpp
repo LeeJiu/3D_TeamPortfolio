@@ -11,6 +11,9 @@ cSkill_Surround::cSkill_Surround()
 
 cSkill_Surround::~cSkill_Surround()
 {
+	SAFE_DELETE(m_CircleEfc);
+	SAFE_DELETE(m_CastEfc);
+
 }
 
 void cSkill_Surround::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float surroundLength, int castTime, int attackingTime, int coolTime)

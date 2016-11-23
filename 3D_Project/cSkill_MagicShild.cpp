@@ -9,6 +9,9 @@ cSkill_MagicShild::cSkill_MagicShild()
 
 cSkill_MagicShild::~cSkill_MagicShild()
 {
+	SAFE_DELETE(m_magicShild);
+	SAFE_DELETE(m_snowStrom_under);
+
 }
 
 

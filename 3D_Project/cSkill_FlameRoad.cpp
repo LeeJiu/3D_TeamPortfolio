@@ -9,6 +9,11 @@ cSkill_FlameRoad::cSkill_FlameRoad()
 
 cSkill_FlameRoad::~cSkill_FlameRoad()
 {
+	SAFE_DELETE(m_flameRoad);
+	SAFE_DELETE(m_flameRoad2);
+	SAFE_DELETE(m_flameRoad3);
+
+
 }
 
 

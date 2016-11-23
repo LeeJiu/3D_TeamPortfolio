@@ -23,6 +23,20 @@ cMage::cMage()
 cMage::~cMage()
 {
 	SAFE_DELETE(m_ATKBox);
+
+	SAFE_DELETE(m_ATKBox);
+	SAFE_DELETE(m_pSkill_SnowStorm);
+	SAFE_DELETE(m_pSurroundSkill);
+	SAFE_DELETE(m_pSkill_DarkRain);
+	SAFE_DELETE(m_pSkill_Front);
+	SAFE_DELETE(m_pSkill_magicShild);
+	SAFE_DELETE(m_pSurroundSkill);
+	SAFE_DELETE(m_pSkill_Escape);
+	SAFE_DELETE(m_pSkill_FlameRoad);
+
+
+
+
 }
 
 
