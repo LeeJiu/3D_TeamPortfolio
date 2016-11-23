@@ -3,18 +3,17 @@
 #include "cPlayer.h"
 
 
-cSpider::cSpider(float fHP, float fRange)
+cSpider::cSpider()
 {
-	m_fHP = fHP;
-	m_fRange = fRange;
+	m_fHP = 1000;
+	m_fRange = 15;
 	m_fRange2 = 10;
 	m_state = IDLE;
 	m_strName = MyUtil::SetAnimation(m_state);
 	m_bIsOverlap = false;
 	m_bHit = false;
 	m_fAtkTime = 0;
-
-	time = 0;
+	m_fDeadTime = 0;
 }
 
 
@@ -29,7 +28,15 @@ void cSpider::BaseObjectEnable()
 
 void cSpider::BaseObjectUpdate(float timeDelta)
 {
-	//SetAniState();
+	if (m_state == DEAD)
+	{
+		m_fDeadTime += timeDelta;
+		if (m_fDeadTime > 5.0f)
+		{
+			m_fDeadTime = 0;
+			SetActive(false);
+		}
+	}
 
 	float distance = D3DXVec3Length(&(m_pPlayer->pTransform->GetWorldPosition() - pTransform->GetWorldPosition()));
 
@@ -128,6 +135,7 @@ void cSpider::Damage(float fDamage)
 		m_state = DEAD;
 		m_strName = MyUtil::SetAnimation(m_state);
 		pSkinned->PlayOneShotAfterHold(m_strName);
+		m_fDeadTime = 0;
 		return;
 	}
 

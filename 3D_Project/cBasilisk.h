@@ -18,7 +18,8 @@ public:
 
 	//==========이곳에 함수 추가==========
 	void Damage(float fDamage);		//cMonster로 부를 수 있는 순수 가상 함수 / 반드시 override
-
+	void Attack01(float timeDelta);
+	void SetAniState();
 
 
 	//플레이어 링크

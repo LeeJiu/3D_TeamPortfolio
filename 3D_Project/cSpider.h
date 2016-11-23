@@ -8,11 +8,10 @@ private:
 	bool		m_bHit;
 
 	float		m_fAtkTime;
-
-	float time;
+	float		m_fDeadTime;
 
 public:
-	cSpider(float fHP, float fRange);
+	cSpider();
 	~cSpider();
 
 	void BaseObjectEnable();

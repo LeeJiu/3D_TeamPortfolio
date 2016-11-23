@@ -36,11 +36,6 @@ void cMonster::BaseObjectUpdate(float timeDelta)
 	}
 	else
 	{
-		//조건 추가해주자.
-		/*if (m_vObjects.empty() == false)
-		{
-		m_pWayPoint->SetBoundObjects(m_vObjects);
-		}*/
 		m_pWayPoint->Update(pTransform);
 	}
 }
