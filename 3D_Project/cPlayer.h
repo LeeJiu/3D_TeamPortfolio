@@ -89,7 +89,6 @@ public:
 	//virtual void RangeQuardCheck(D3DXVECTOR3& pos, float width, float height);		//pos값 중심으로 범위체크
 
 	virtual void SetBassClass();								//기본 클래스
-	virtual void BaseObjectBoundBox();
 
 	virtual void SetCamera(cCamera* camera) { m_camera = camera; }
 	virtual void SetMonsterManager(cMonsterManager* pMonMgr) { m_pMonMgr = pMonMgr; }

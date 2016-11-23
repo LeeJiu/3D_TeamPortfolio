@@ -129,10 +129,3 @@ void cMonster::MoveToPlayer()
 		ray.origin.y += 3;
 	}
 }
-void cMonster::BaseObjectRender()
-{
-	this->pSkinned->Render(this->pTransform);
-	this->pTransform->RenderGimozo();
-	this->BoundBox.RenderGizmo(this->pTransform);
-
-}
