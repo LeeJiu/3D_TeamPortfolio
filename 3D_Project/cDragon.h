@@ -7,6 +7,10 @@
    전투를 걸어야 전투가 시작됨.
    도망 치려면 전투 범위에서 벗어나야됨.
 */
+enum BONE_NAME_INDEX
+{
+	BODY,HEAD,LHANAD,RHAND
+};
 struct stSphere
 {
 	D3DXVECTOR3 worldCenter;
@@ -28,7 +32,10 @@ private:
 
 	string m_nowAni;                      // 애니메이션
 	
+	int skillChance;                      // 스킬 발동확률
 	
+	int basicAttCoolTime;                 // 기본 공격 쿨타임. 
+
 	bool isMove;                          // 움직이는중?
 	bool isBattle;                        // 전투중?
 	bool isBasicAttack;                   // 평타중?
@@ -38,7 +45,6 @@ private:
 	bool isHeadAtt;                       // 머리 치기
 	
 	bool isNoneBasicAttack;               // 평타이외의 스킬.( 쓸지 안쓸지 모르겠음 )
-	int skillChance;                      // 스킬 발동확률
 
 	float skillCoolTime;                 // 스킬 쿨타임
 	float tempCoolTime;                  // 스킬 쿨타이밍에 계산 할 거
@@ -54,7 +60,8 @@ public:
 	//==========이곳에 함수 추가==========
 	void Damage(float fDamage);		//cMonster로 부를 수 있는 순수 가상 함수 / 반드시 override
 	void MoveToPlayer();
-	
+	void MoveToSpone(D3DXVECTOR3 target);
+
 	//========= collTrans 값 갱신 =======
 	void collPosUpdate();
 	//========= update 로직에 들어갈 함수 =====
