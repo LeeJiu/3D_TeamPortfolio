@@ -1,12 +1,12 @@
 #pragma once
 #include "cSkill_Round.h"
 
-class cSkill_DarkRain : public cSkill_Round
+class cSkill_Meteo : public cSkill_Round
 {
 
-	//cXMesh_Static*         m_lavaStone;
-	//cTransform*            m_lavaStoneTrans;
-	//float                  m_speed; //용성락 가속도
+	cXMesh_Static*         m_lavaStone;
+	cTransform*            m_lavaStoneTrans;
+	float                  m_speed; //용성락 가속도
 
 	// 스노우 스톰
 	cQuadParticleEmitter*  m_snowStrom;
@@ -18,12 +18,11 @@ class cSkill_DarkRain : public cSkill_Round
 
 
 public:
-	cSkill_DarkRain();
-	~cSkill_DarkRain();
+	cSkill_Meteo();
+	~cSkill_Meteo();
 
 	void Effect_Init();
 	void Effect_Update(float timeDelta);
 	void Effect_Render();
 
 };
-

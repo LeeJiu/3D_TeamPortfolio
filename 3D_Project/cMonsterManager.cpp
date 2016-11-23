@@ -181,6 +181,7 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->SetPlayer(m_pPlayer);
 		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Boss/SkulDragon/skulDragon_1.X"));
 		monster->pTransform->SetWorldPosition(pos);
+		monster->monType = DRAGON;
 		monster->SetActive(true);
 		break;
 	default:

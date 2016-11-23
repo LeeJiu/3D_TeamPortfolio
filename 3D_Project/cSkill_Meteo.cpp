@@ -1,33 +1,33 @@
 #include "stdafx.h"
-#include "cSkill_DarkRain.h"
+#include "cSkill_Meteo.h"
 
 
-cSkill_DarkRain::cSkill_DarkRain()
+cSkill_Meteo::cSkill_Meteo()
 {
 }
 
 
-cSkill_DarkRain::~cSkill_DarkRain()
+cSkill_Meteo::~cSkill_Meteo()
 {
 }
 
 
-void cSkill_DarkRain::Effect_Init()
+void cSkill_Meteo::Effect_Init()
 {
-	//D3DXMATRIXA16 matScale;
-	//D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
-	//D3DXMATRIXA16 matCorrection = matScale;
-	//
-	//
-	//
-	//m_lavaStone = new cXMesh_Static;
-	//m_lavaStone->Init("../Resources/Textures/Effects/lavaStone.x", &matCorrection);
-	//
-	//m_lavaStoneTrans = new cTransform;
-	//D3DXVECTOR3 lavaStoneHight(0, 20, 0);
-	//m_lavaStoneTrans->SetWorldPosition(lavaStoneHight);
-	//
-	//m_speed = 0.5f;
+	D3DXMATRIXA16 matScale;
+	D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
+	D3DXMATRIXA16 matCorrection = matScale;
+
+
+
+	m_lavaStone = new cXMesh_Static;
+	m_lavaStone->Init("../Resources/Textures/Effects/lavaStone.x", &matCorrection);
+
+	m_lavaStoneTrans = new cTransform;
+	D3DXVECTOR3 lavaStoneHight(0, 20, 0);
+	m_lavaStoneTrans->SetWorldPosition(lavaStoneHight);
+
+	m_speed = 0.5f;
 
 
 	m_snowStrom = new cQuadParticleEmitter();
@@ -59,7 +59,7 @@ void cSkill_DarkRain::Effect_Init()
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors, scales,
 		2.0f, 9.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/lighting.tga"),
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/flame.tga"),
 		true);
 
 
@@ -93,7 +93,7 @@ void cSkill_DarkRain::Effect_Init()
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors2, scales2,
 		9.0f, 9.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/wave.tga"),
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/lavaStorm.tga"),
 		true);
 
 	m_snow = new cPartcleEmitter();
@@ -142,7 +142,7 @@ void cSkill_DarkRain::Effect_Init()
 }
 
 
-void cSkill_DarkRain::Effect_Update(float timeDelta)
+void cSkill_Meteo::Effect_Update(float timeDelta)
 {
 	if (m_CastTime / 1.2 == m_CastTimeCount)
 	{
@@ -153,7 +153,7 @@ void cSkill_DarkRain::Effect_Update(float timeDelta)
 	if (m_AttackingTime - 50 == m_AttackingCount)
 	{
 		m_snowStrom->StopEmission();
-	
+
 	}
 
 
@@ -163,9 +163,9 @@ void cSkill_DarkRain::Effect_Update(float timeDelta)
 		m_snowStrom_under->pTransform->RotateSelf(D3DXVECTOR3(0, -5.0*timeDelta, 0));
 		m_snowStrom_under->Update(timeDelta);
 
-		//m_speed += 0.3f;
-		//m_lavaStoneTrans->SetWorldPosition(D3DXVECTOR3(m_AttackPos.x, m_lavaStoneTrans->GetWorldPosition().y - m_speed * timeDelta, m_AttackPos.z));
-		m_snow->pTransform->SetWorldPosition(m_AttackPos);//m_lavaStoneTrans->GetWorldPosition() + D3DXVECTOR3(0, 7, 0));
+		m_speed += 0.3f;
+		m_lavaStoneTrans->SetWorldPosition(D3DXVECTOR3(m_AttackPos.x, m_lavaStoneTrans->GetWorldPosition().y - m_speed * timeDelta, m_AttackPos.z));
+		m_snow->pTransform->SetWorldPosition(m_lavaStoneTrans->GetWorldPosition() + D3DXVECTOR3(0, 7, 0));
 		m_snow->Update(timeDelta);
 
 
@@ -174,32 +174,32 @@ void cSkill_DarkRain::Effect_Update(float timeDelta)
 
 	if (m_IsAttacking)
 	{
-		
+
 		m_snowStrom->pTransform->SetWorldPosition(m_AttackPos);
 		//m_snowStrom->pTransform->RotateSelf(D3DXVECTOR3(0, -10.0*timeDelta, 0));
 		m_snowStrom->Update(timeDelta);
-		
+
 	}
 
 }
 
-void cSkill_DarkRain::Effect_Render()
+void cSkill_Meteo::Effect_Render()
 {
 	if (m_IsCasting || m_IsAttacking)
 	{
 		m_snowStrom_under->Render();
 
-		//m_lavaStone->Render(m_lavaStoneTrans);
+		m_lavaStone->Render(m_lavaStoneTrans);
 
 		m_snow->Render();
 	}
 
 	if (m_IsAttacking)
 	{
-		
-	
+
+
 		m_snowStrom->Render();
-		
-	
+
+
 	}
 }

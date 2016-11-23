@@ -23,7 +23,6 @@ cMage::cMage()
 cMage::~cMage()
 {
 	SAFE_DELETE(m_ATKBox);
-	SAFE_DELETE(m_Weapon);
 }
 
 
@@ -143,20 +142,15 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_state = STF_FROZEN;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
-		FlameRoadInit();
-		m_flameRoad_cast = true;
-		m_flameRoad_cast_count = 0;
-		m_aniCount = 0;
+	
+		//캐스팅 120초
+		//시전시간 200초
+		m_pSkill_FlameRoad->Effect_Init();
+		m_pSkill_FlameRoad->StartCasting();
 	}
+
 
 	if (KEY_MGR->IsOnceDown('3'))
-	{
-		m_state = STF_STORM;
-		m_strName = MyUtil::SetAnimation(m_state);
-		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
-	}
-
-	if (KEY_MGR->IsOnceDown('4'))
 	{
 		m_state = STF_TYFUNG;
 		m_strName = MyUtil::SetAnimation(m_state);
@@ -165,22 +159,36 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_pSkill_SnowStorm->StartCasting();
 	}
 
+	if (KEY_MGR->IsOnceDown('4'))
+	{
+		m_pSkill_DarkRain->Effect_Init();
+		m_pSkill_DarkRain->SelectSkill();
+	}
+
+	if (m_pSkill_DarkRain->GetCastCount() == 1) //캐스팅 시작시에 모션을 바꿔주기 위해서
+	{
+		m_state = STF_BUMB;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+	}
+
 
 	if (KEY_MGR->IsOnceDown('5'))
 	{
 		m_state = STF_BUFF;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
-		m_magicShild->StartEmission();
-		m_isMagicShild = true;
-		m_aniCount = 0;
+		m_pSkill_magicShild->Effect_Init();
+		m_pSkill_magicShild->StartCasting();
+
 	}
 
 	if (KEY_MGR->IsOnceDown('7'))
 	{
-		m_pSurroundSkill->SelectSkill();
-
-
+		m_state = STF_BLINK;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+		m_pSkill_Escape->StartCasting();
 	}
 
 	if (KEY_MGR->IsOnceDown('8'))
@@ -191,11 +199,11 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	if (KEY_MGR->IsOnceDown('9'))
 	{
-		m_pSkill_DarkRain->Effect_Init();
-		m_pSkill_DarkRain->SelectSkill();
-	
+		m_pSkill_Front->SelectSkill();
+
 	}
 
+	
 
 	Ray ray;
 	POINT ptMousePos = GetMousePos();
@@ -210,13 +218,35 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	m_pSkill_SnowStorm->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
 	m_pSkill_SnowStorm->Effect_Update(timeDelta);
+
 	m_pSkill_DarkRain->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), mousePos);
 	m_pSkill_DarkRain->Effect_Update(timeDelta);
 
+	m_pSkill_Front->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), pTransform->GetForward());
 
+	m_pSurroundSkill->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
+
+	m_pSkill_magicShild->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
+	m_pSkill_magicShild->Effect_Update(timeDelta);
+
+	m_pSkill_Escape->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), pTransform->GetForward(0));
+	
+	m_pSkill_FlameRoad->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), pTransform->GetForward());
+	m_pSkill_FlameRoad->Effect_Update(timeDelta);
+
+
+	if (m_pSkill_Escape->GetBuffCount() == 100)
+	{
+		pTransform->SetWorldPosition(D3DXVECTOR3(m_pSkill_Escape->GetEscapePos().x, pTransform->GetWorldPosition().y, m_pSkill_Escape->GetEscapePos().z));
+	}
+
+	if (m_pSkill_DarkRain->GetIsAttacking())
+	{
+		//m_camera->ShakePos(0.3f, 0.4f);
+		//m_camera->SetShakePosFlag(SHAKE_);
+		//m_camera->ShakeUpdate(timeDelta);
+	}
 	//스킬 사용 관련
-
-
 
 	if (m_aniCount == 120)
 	{
@@ -224,39 +254,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_isAttack = false;
 	}
 
-	if (m_aniCount == 600)
-	{
-		m_magicShild->StopEmission();
-
-	}
-
-
-	if (m_flameRoad_cast)
-	{
-		m_flameRoad_cast_count++;
-	}
-
-	if (m_flameRoad_cast_count == 120)
-	{
-		m_flameRoad->StartEmission();
-		m_flameRoad2->StartEmission();
-		m_flameRoad3->StartEmission();
-		m_isFlameRoad = true;
-		m_aniCount = 0;
-	}
-
-	if (m_aniCount == 200)
-	{
-		m_flameRoad->StopEmission();
-		m_flameRoad2->StopEmission();
-		m_flameRoad3->StopEmission();
-		m_flameRoad_cast_count = 0;
-		m_isFlameRoad = false;
-		m_flameRoad_cast = false;
-	}
-
-
-
+	
 	if (m_isAttack)
 	{
 		m_aniCount++;
@@ -264,40 +262,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_magicATK->pTransform->SetWorldPosition(this->m_ATKBox->pTransform->GetWorldPosition());
 	}
 
-
-
-	if (m_isFlameRoad)
-	{
-		m_aniCount++;
-		m_flameRoad->Update(timeDelta);
-		m_flameRoad2->Update(timeDelta);
-		m_flameRoad3->Update(timeDelta);
-		m_flameRoad->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
-		m_flameRoad->pTransform->LookDirection(pTransform->GetForward(), 90.0f * ONE_RAD);
-		m_flameRoad2->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
-		m_flameRoad2->pTransform->LookDirection(pTransform->GetForward(), 90.0f * ONE_RAD);
-		m_flameRoad3->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
-		m_flameRoad3->pTransform->LookDirection(pTransform->GetForward(), 90.0f * ONE_RAD);
-	}
-
-
-
-
-
-	if (m_isMagicShild)
-	{
-		m_aniCount++;
-		m_magicShild->Update(timeDelta);
-		m_magicShild->pTransform->SetWorldPosition(this->pTransform->GetWorldPosition());
-
-	}
-
-
-
 	MonsterUpdate(timeDelta);
-
-	m_pSurroundSkill->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
-
 
 }
 
@@ -312,7 +277,6 @@ void cMage::BaseObjectRender()
 
 	MonsterRender();
 
-	SkillRender();
 
 	m_pSurroundSkill->BaseObjectRender();
 	m_pRoundSkill->BaseObjectRender();
@@ -320,7 +284,17 @@ void cMage::BaseObjectRender()
 	m_pSkill_SnowStorm->Effect_Render();
 	m_pSkill_DarkRain->BaseObjectRender();
 	m_pSkill_DarkRain->Effect_Render();
-	
+	m_pSkill_Front->BaseObjectRender();
+	m_pSkill_magicShild->Effect_Render();
+	m_pSkill_Escape->BaseObjectRender();
+	m_pSkill_FlameRoad->BaseObjectRender();
+	m_pSkill_FlameRoad->Effect_Render();
+
+	if (m_isAttack)
+	{
+		m_magicATK->Render();
+	}
+
 
 }
 
@@ -339,43 +313,27 @@ void  cMage::SkillInit()
 
 	m_pSkill_DarkRain = new cSkill_DarkRain;
 	m_pSkill_DarkRain->SetActive(true);
-	m_pSkill_DarkRain->BaseObjectEnable(pTransform->GetWorldPosition(), 6.0f, 20, 1, 400, 300);
+	m_pSkill_DarkRain->BaseObjectEnable(pTransform->GetWorldPosition(), 6.0f, 40, 100, 200, 300);
 
+	m_pSkill_Front = new cSkill_Front;
+	m_pSkill_Front->SetActive(true);
+	m_pSkill_Front->BaseObjectEnable(pTransform->GetWorldPosition(), 20.0f, 3.0f, 1, 400, 300);
+
+	m_pSkill_magicShild = new cSkill_MagicShild;
+	m_pSkill_magicShild->SetActive(true);
+	m_pSkill_magicShild->BaseObjectEnable(pTransform->GetWorldPosition(), 1, 600, 300);
+
+	m_pSkill_Escape = new cSkill_Escape;
+	m_pSkill_Escape->SetActive(true);
+	m_pSkill_Escape->BaseObjectEnable(pTransform->GetWorldPosition(), 25.0f, 1, 200, 100);
+
+
+	m_pSkill_FlameRoad = new cSkill_FlameRoad;
+	m_pSkill_FlameRoad->SetActive(true);
+	m_pSkill_FlameRoad->BaseObjectEnable(pTransform->GetWorldPosition(), 20.0f, 3.0f, 130, 250, 100);
 
 	m_aniCount = 0;
 	
-
-
-	MagicShildInit();
-
-	
-	m_isAttack = false;
-	m_isMagicShild = false;
-	m_isFlameRoad = false;
-	m_flameRoad_cast = false;
-}
-
-
-void  cMage::SkillRender()
-{
-	
-
-	if (m_isAttack)
-	{
-		m_magicATK->Render();
-	}
-
-	if (m_isMagicShild)
-	{
-		m_magicShild->Render();
-	}
-
-	if (m_isFlameRoad)
-	{
-		m_flameRoad->Render();
-		m_flameRoad2->Render();
-		m_flameRoad3->Render();
-	}
 
 }
 
@@ -424,157 +382,6 @@ void cMage::MagicATKInit()
 }
 
 
-void cMage::FlameRoadInit()
-{
-	m_flameRoad = new cQuadParticleEmitter();
-	m_flameRoad->SetActive(true);
-
-
-	VEC_COLOR colors;
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-
-	VEC_SCALE scales;
-	scales.push_back(1.0f);  //초반 크기
-	scales.push_back(6.0f);
-
-	m_flameRoad->Init(
-		101,
-		50.0f,     //이펙트 몇장
-		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
-		3.0f,
-		D3DXVECTOR3(0, 1, 10),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 1, 20),
-		D3DXVECTOR3(0, 0, 0),     //회전량
-		D3DXVECTOR3(0, 0, 0),     //축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(150 * ONE_RAD, 0, 0),	//초기시작시 회전 min
-		D3DXVECTOR3(150 * ONE_RAD, 90 * ONE_RAD, 0),     //초기시작시 회전Max
-		D3DXVECTOR3(0, 0, 0),				//초당 회전할 회전 량 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		colors, scales,
-		1.0f, 3.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/flame.tga"),
-		true);
-
-
-	m_flameRoad2 = new cQuadParticleEmitter();
-	m_flameRoad2->SetActive(true);
-
-
-	VEC_COLOR colors2;
-	colors2.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	colors2.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	colors2.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-
-	VEC_SCALE scales2;
-	scales2.push_back(1.0f);  //초반 크기
-	scales2.push_back(4.0f);
-
-	m_flameRoad2->Init(
-		102,
-		50.0f,     //이펙트 몇장
-		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
-		3.0f,
-		D3DXVECTOR3(0, 1, 10),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 1, 20),
-		D3DXVECTOR3(0, 0, 0),     //회전량
-		D3DXVECTOR3(0, 0, 0),     //축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(150 * ONE_RAD, 0, 0),	//초기시작시 회전 min
-		D3DXVECTOR3(150 * ONE_RAD, 90 * ONE_RAD, 0),     //초기시작시 회전Max
-		D3DXVECTOR3(0, 0, 0),				//초당 회전할 회전 량 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		colors2, scales2,
-		1.0f, 3.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/flame2.tga"),
-		true);
-
-	m_flameRoad3 = new cPartcleEmitter();
-	m_flameRoad3->SetActive(true);
-
-	//배열을 2 개이상 
-	VEC_COLOR colors3;
-	colors3.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	colors3.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-	VEC_SCALE scales3;
-	scales3.push_back(0.1f);
-	scales3.push_back(0.1f);
-
-	LPDIRECT3DTEXTURE9 pTex = RESOURCE_TEXTURE->GetResource(
-		"../Resources/Textures/Effects/flame3.tga");
-
-	//파티클 랜더러 셋팅
-	m_flameRoad3->Init(
-		50,				//최대 파티클 수
-		5.0f,				//초당 파티클 발생 량
-		7,					//하나의 파티클 입자 라이프 최소값
-		10,					//하나의 파티클 입자 라이프 최대값
-		D3DXVECTOR3(0, 5, 10),	//파티클 입자 속도 최소값 ( 로컬기준 )
-		D3DXVECTOR3(0, 10, 20),	//파티클 입자 속도 최대값 ( 로컬기준 )
-		D3DXVECTOR3(0, 0, 0),	//파티클 입자 가속 최소값 ( 로컬기준 )
-		D3DXVECTOR3(0, 0, 0), //파티클 입자 가속 최대값 ( 로컬기준 )
-		colors3,				//컬러 배열
-		scales3,				//스케일 배열
-		1.1f,				//입자크기 최소값
-		5.2f,				//최대값
-		pTex,				//텍스쳐
-		false);
-
-
-	m_flameRoad3->EmissionType = PATICLE_EMISSION_TYPE::SPHERE_OUTLINE;
-	m_flameRoad3->SphereEmissionRange = 3.0f;
-
-}
-
-
-
-
-
-//매직 실드
-
-void cMage::MagicShildInit()
-{
-	m_magicShild = new cQuadParticleEmitter();
-	m_magicShild->SetActive(true);
-
-	VEC_COLOR colors;
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-
-	VEC_SCALE scales;
-	scales.push_back(5.0f);  //초반 크기
-	scales.push_back(5.0f);
-
-	m_magicShild->Init(
-		10,
-		30.0f,     //이펙트 몇장
-		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
-		5.0f,
-		D3DXVECTOR3(0, 0, 0),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 0, 0),
-		D3DXVECTOR3(0, 0, 0),     //회전량
-		D3DXVECTOR3(0, 0, 0),     //축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(0, 0, 0),	//초기시작시 회전 min
-		D3DXVECTOR3(0, 180 * ONE_RAD, 0),     //초기시작시 회전Max
-		D3DXVECTOR3(0, 0, 0),				//초당 회전할 회전 량 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		colors, scales,
-		2.0f, 2.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/magicShild.tga"),
-		true);
-
-}
-
-
-//스노우 스톰 
 
 
 
