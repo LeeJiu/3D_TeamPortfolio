@@ -36,11 +36,6 @@ void cMonster::BaseObjectUpdate(float timeDelta)
 	}
 	else
 	{
-		//조건 추가해주자.
-		/*if (m_vObjects.empty() == false)
-		{
-		m_pWayPoint->SetBoundObjects(m_vObjects);
-		}*/
 		m_pWayPoint->Update(pTransform);
 	}
 }
@@ -48,6 +43,14 @@ void cMonster::BaseObjectUpdate(float timeDelta)
 void cMonster::BaseObjectBoundBox()
 {
 
+}
+
+void cMonster::BaseObjectRender()
+{
+	this->pSkinned->Render(this->pTransform);
+
+	this->pTransform->RenderGimozo();
+	this->BoundBox.RenderGizmo(this->pTransform);
 }
 
 void cMonster::MoveToPlayer()
@@ -59,11 +62,15 @@ void cMonster::MoveToPlayer()
 	ray.origin = currentPos;
 	ray.origin.y += 3;
 
-
-	if (PHYSICS_MGR->IsOverlap(this, m_pPlayer))
-	{
-		return;
-	}
+	////플레이어와 충돌했다면 더이상 따라가지 않는다.
+	//if (PHYSICS_MGR->IsOverlap(this, m_pPlayer))
+	//{
+	//	m_bIsOverlap = true;
+	//	return;
+	//}
+	//
+	////플레이어와 충돌하지 않았다.
+	//m_bIsOverlap = false;
 
 
 	//거리를 구한다. / 플레이어와 몬스터의 거리
@@ -116,11 +123,4 @@ void cMonster::MoveToPlayer()
 		ray.origin = currentPos;
 		ray.origin.y += 3;
 	}
-}
-void cMonster::BaseObjectRender()
-{
-	this->pSkinned->Render(this->pTransform);
-	this->pTransform->RenderGimozo();
-	this->BoundBox.RenderGizmo(this->pTransform);
-
 }

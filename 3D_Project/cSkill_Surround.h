@@ -8,7 +8,6 @@ class cSkill_Surround : public cBaseObject
 {
 
 protected:
-	
 	bool               m_IsSelect;       // 스킬 마우스 오버중이니
 	bool               m_IsCasting;      // 스킬 캐스팅 중이니
 	bool               m_IsAttacking;    // 스킬 공격 중이니
@@ -63,9 +62,5 @@ protected:
 	virtual void Effect_Init() {};
 	virtual void Effect_Update(float timeDelta) {};
 	virtual void Effect_Render() {};
-
-
-
-
 };
 

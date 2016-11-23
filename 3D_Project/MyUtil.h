@@ -63,6 +63,7 @@ enum ACTOR_STATE
 	DOWN,          //넉백
 	STUN,          //넉백상태_루프
 	STF_WAKEUP,        //넉백 일어나기
+	GET_UP,			//거미 특수 모션
 
 	IDLE,				 //평화상태
 	WAIT,				 //대기상태

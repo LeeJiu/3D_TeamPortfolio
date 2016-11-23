@@ -60,6 +60,7 @@ public:
 	virtual void BaseObjectUpdate(float timeDelta);				//BaseObject 가 Update 때 실행....
 	virtual void BaseObjectRender();							//기존 오브젝트랜더
 	virtual void BaseSpriteRender();							//스프라이트 랜더
+	virtual void BaseObjectBoundBox();
 
 	virtual void CamControl(float timeDelta);
 	
@@ -86,9 +87,10 @@ public:
 	virtual void RangeCheck(float range);						//나를 중심으로 범위체크
 	virtual void RangeCircleCheck(D3DXVECTOR3& pos, float range);		//pos값 중심으로 범위체크
 	//virtual void RangeQuardCheck(D3DXVECTOR3& pos, float width, float height);		//pos값 중심으로 범위체크
+	
+	virtual void SkillInit();
 
 	virtual void SetBassClass();								//기본 클래스
-	virtual void BaseObjectBoundBox();
 
 	virtual void SetCamera(cCamera* camera) { m_camera = camera; }
 	virtual void SetMonsterManager(cMonsterManager* pMonMgr) { m_pMonMgr = pMonMgr; }

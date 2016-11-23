@@ -27,3 +27,11 @@ void cBasilisk::BaseObjectBoundBox()
 void cBasilisk::Damage(float fDamage)
 {
 }
+
+void cBasilisk::Attack01(float timeDelta)
+{
+}
+
+void cBasilisk::SetAniState()
+{
+}

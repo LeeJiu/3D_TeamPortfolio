@@ -48,7 +48,6 @@ void cPlayer::BaseSpriteRender()
 
 void cPlayer::BaseObjectBoundBox()
 {
-	this->BoundBox.SetBound(&D3DXVECTOR3(0, 2, 0), &D3DXVECTOR3(2.0f, 2.0f, 2.0f));
 }
 
 void cPlayer::CamControl(float timeDelta)
@@ -206,7 +205,7 @@ void cPlayer::Move(float timeDelta)
 	{
 		m_state = JUMP;
 		m_strName = MyUtil::SetAnimation(m_state);
-		this->pSkinned->Play(m_strName, 0.3);
+		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3,0.3);
 	}
 	
 
@@ -313,6 +312,10 @@ void cPlayer::RangeCircleCheck(D3DXVECTOR3 & pos, float range)
 
 		LOG_MGR->AddLog("vMon[%d] : %d", i, m_vMonster[i]->GetInRange());
 	}
+}
+
+void cPlayer::SkillInit()
+{
 }
 
 void cPlayer::SetBassClass()

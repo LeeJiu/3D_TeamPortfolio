@@ -3,12 +3,17 @@
 #include "cPlayer.h"
 
 
-cSpider::cSpider(float fHP, float fRange)
+cSpider::cSpider()
 {
-	m_fHP = fHP;
-	m_fRange = fRange;
+	m_fHP = 1000;
+	m_fRange = 15;
+	m_fRange2 = 10;
 	m_state = IDLE;
 	m_strName = MyUtil::SetAnimation(m_state);
+	m_bIsOverlap = false;
+	m_bHit = false;
+	m_fAtkTime = 0;
+	m_fDeadTime = 0;
 }
 
 
@@ -23,47 +28,102 @@ void cSpider::BaseObjectEnable()
 
 void cSpider::BaseObjectUpdate(float timeDelta)
 {
+	if (m_state == DEAD)
+	{
+		m_fDeadTime += timeDelta;
+		if (m_fDeadTime > 5.0f)
+		{
+			m_fDeadTime = 0;
+			SetActive(false);
+		}
+	}
+
 	float distance = D3DXVec3Length(&(m_pPlayer->pTransform->GetWorldPosition() - pTransform->GetWorldPosition()));
 
-	if (distance < m_fRange)
+	//인식 범위에 들어왔을 때
+	if (distance > m_fRange2 && distance < m_fRange)
 	{
-		MoveToPlayer();
+		if (m_state == IDLE)
+		{
+			m_state = GET_UP;
+			m_strName = MyUtil::SetAnimation(m_state);
+			pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3f);
+		}
+		else if (m_state == RUN)
+		{
+			m_state = WAIT;
+			m_strName = MyUtil::SetAnimation(m_state);
+			pSkinned->Play(m_strName, 0.3f);
+		}
+	}
+	//공격 범위에 들어왔을 때
+	else if (distance < m_fRange2)
+	{
+		m_bIsOverlap = PHYSICS_MGR->IsOverlap(this, m_pPlayer);
+
+		if (m_bIsOverlap == true)
+		{
+			Attack01(timeDelta);
+		}
+		else
+		{
+			if (m_state == WAIT)
+			{
+				m_state = RUN;
+				m_strName = MyUtil::SetAnimation(m_state);
+				pSkinned->Stop();
+				pSkinned->Play(m_strName);
+			}
+			else if (m_state == RUN)
+			{
+				LOG_MGR->AddLog("RUN : %s", m_strName.c_str());
+				MoveToPlayer();
+			}
+		}
+	}
+	//범위 밖
+	else
+	{
+		if (m_state == RUN)
+		{
+			m_state = WAIT;
+			m_strName = MyUtil::SetAnimation(m_state);
+			pSkinned->Play(m_strName, 0.3f);
+		}
 	}
 
-	if (KEY_MGR->IsOnceDown('H'))
-	{
-		Attack01();
-	}
-
-	if (KEY_MGR->IsOnceDown('J'))
-	{
-		Damage(10);
-	}
-
-	if (KEY_MGR->IsOnceDown('K'))
-	{
-		m_pPlayer->Damage(10);
-	}
+	SetAniState();
 }
 
 void cSpider::BaseObjectBoundBox()
 {
-	this->BoundBox.SetBound(&D3DXVECTOR3(0, 2, 0), &D3DXVECTOR3(2.0f, 2.0f, 2.0f));
+	this->BoundBox.SetBound(&D3DXVECTOR3(0, 1, 2), &D3DXVECTOR3(1.2f, 1.0f, 1.5f));
 }
 
-void cSpider::Attack01()
+void cSpider::Attack01(float timeDelta)
 {
 	if (m_state != ATK_01)
 	{
 		m_state = ATK_01;
 		m_strName = MyUtil::SetAnimation(m_state);
-		pSkinned->PlayOneShotAfterOther(m_strName, "IDLE", 0.5f);
-		m_state = IDLE;
+		pSkinned->PlayOneShotAfterOther(m_strName, "WAIT");
+
+		m_bHit = true;
+		m_fAtkTime = 0;
 	}
 
-
-	//피격 판정 + 플레이어에게 데미지 전달
-	//m_pPlayer->Damage(damagePower);
+	m_fAtkTime += timeDelta;
+	if (m_fAtkTime > 1.8f && m_bHit == true)
+	{
+		//피격 판정 + 플레이어에게 데미지 전달
+		if (PHYSICS_MGR->IsBlocking(this, m_pPlayer))
+		{
+			LOG_MGR->AddLog("때린다");
+			m_pPlayer->Damage(100);
+		}
+		m_fAtkTime = 0;
+		m_bHit = false;
+	}
 }
 
 void cSpider::Damage(float fDamage)
@@ -75,6 +135,7 @@ void cSpider::Damage(float fDamage)
 		m_state = DEAD;
 		m_strName = MyUtil::SetAnimation(m_state);
 		pSkinned->PlayOneShotAfterHold(m_strName);
+		m_fDeadTime = 0;
 		return;
 	}
 
@@ -82,7 +143,33 @@ void cSpider::Damage(float fDamage)
 	{
 		m_state = DMG;
 		m_strName = MyUtil::SetAnimation(m_state);
-		pSkinned->PlayOneShotAfterOther(m_strName, "IDLE", 0.3f);
+		pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3f);
+	}
+}
+
+void cSpider::SetAniState()
+{
+	string aniName = pSkinned->GetNowPlayingAni();
+	if (strcmp(aniName.c_str(), "IDLE") == 0)
+	{
 		m_state = IDLE;
+		m_strName = MyUtil::SetAnimation(m_state);
+	}
+	else if (strcmp(aniName.c_str(), "GET_UP") == 0)
+	{
+		m_state = GET_UP;
+		m_strName = MyUtil::SetAnimation(m_state);
+	}
+	else if (strcmp(aniName.c_str(), "WAIT") == 0)
+	{
+		m_state = WAIT;
+		m_strName = MyUtil::SetAnimation(m_state);
+		m_fAtkTime = 0;
+		m_bHit = false;
+	}
+	else if (strcmp(aniName.c_str(), "RUN") == 0)
+	{
+		m_state = RUN;
+		m_strName = MyUtil::SetAnimation(m_state);
 	}
 }

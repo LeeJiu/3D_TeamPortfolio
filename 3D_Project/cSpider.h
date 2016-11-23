@@ -4,18 +4,23 @@
 class cSpider : public cMonster
 {
 private:
+	float		m_fRange2;
+	bool		m_bHit;
 
+	float		m_fAtkTime;
+	float		m_fDeadTime;
 
 public:
-	cSpider(float fHP, float fRange);
+	cSpider();
 	~cSpider();
 
 	void BaseObjectEnable();
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
 	void BaseObjectBoundBox();
 
-	void Attack01();
+	void Attack01(float timeDelta);
 	void Damage(float fDamage);
+	void SetAniState();
 
 	void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
 };
