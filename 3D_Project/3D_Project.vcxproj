@@ -22,7 +22,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -151,6 +151,7 @@
     <ClInclude Include="cTrailRender.h" />
     <ClInclude Include="cTransform.h" />
     <ClInclude Include="cSkillUi.h" />
+    <ClInclude Include="cViewDamage.h" />
     <ClInclude Include="cWayPoint.h" />
     <ClInclude Include="cXMesh.h" />
     <ClInclude Include="cXMesh_Skinned.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="cTrailRender.cpp" />
     <ClCompile Include="cTransform.cpp" />
     <ClCompile Include="cSkillUi.cpp" />
+    <ClCompile Include="cViewDamage.cpp" />
     <ClCompile Include="cWayPoint.cpp" />
     <ClCompile Include="cXMesh.cpp" />
     <ClCompile Include="cXMesh_Skinned.cpp" />

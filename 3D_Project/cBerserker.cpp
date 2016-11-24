@@ -57,6 +57,8 @@ void cBerserker::BaseObjectEnable()
 	m_testtime = 0;
 
 	m_invenOn = false;
+
+	SkillInit();
 }
 
 void cBerserker::BaseObjectUpdate(float timeDelta)
@@ -148,6 +150,11 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		m_Swing->StartCasting();
 	}
 
+	SKILL03();
+
+	m_Swing->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition());
+	m_Swing->Effect_Update(timeDelta);
+
 	//스킬5 - 광폭화
 	if (!m_isAttack && KEY_MGR->IsOnceDown('5'))
 	{
@@ -191,7 +198,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//test용 로그 출려꾸 
 	if (m_testtime > 1)
 	{
-		LOG_MGR->AddLog("%d", m_invenOn);
+		//LOG_MGR->AddLog("%d", m_invenOn);
 		m_testtime = 0;
 	}
 }
@@ -213,6 +220,9 @@ void cBerserker::BaseObjectRender()
 			this->pTrailRender->RenderDistort(this->m_camera);
 		}
 	}
+
+	m_Swing->BaseObjectRender();
+	m_Swing->Effect_Render();
 }
 
 void cBerserker::BaseSpriteRender()
@@ -280,10 +290,8 @@ void  cBerserker::SkillInit()
 {
 	m_Swing = new cSkill_Swing;
 	m_Swing->SetActive(true);
-	m_Swing->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 1, 400, 300);
+	m_Swing->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 1, 200, 300);	//즉시시전은 캐스터 카운트 1
 
-	m_pSurroundSkill = new cSkill_Surround;
-	m_pSurroundSkill->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 100, 20, 20);
 	
 	m_aniCount = 0;
 }
@@ -300,9 +308,20 @@ void cBerserker::SKILL02()
 void cBerserker::SKILL03()
 {
 	int damage = m_damage * 2;
-	damage = RandomIntRange(damage - 10, damage + 10);
 
-	LOG_MGR->AddLog("때리고잇음");
+	if(m_Swing->GetIsAttacking())
+	{
+		RangeCheck(10);
+		int size = m_vMonster.size();
+
+		for (int i = 0; i < size; i++)
+		{
+			LOG_MGR->AddLog("vector[%d] = %d", i, m_vMonster[i]->GetInRange());
+			if (!m_vMonster[i]->GetInRange()) continue;
+			damage = RandomIntRange(damage - 10, damage + 10);
+			m_vMonster[i]->Damage(damage);
+		}
+	}
 }
 
 void cBerserker::SKILL04()
