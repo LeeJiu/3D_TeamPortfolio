@@ -301,7 +301,7 @@
       <Filter>GameActor\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Swing.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -564,7 +564,7 @@
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Swing.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

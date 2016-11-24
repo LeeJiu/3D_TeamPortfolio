@@ -4,8 +4,10 @@
 class cBasilisk : public cMonster
 {
 private:
+	bool			m_bHit;
 
-
+	float			m_fAtkTime;
+	float			m_fDeadTime;
 
 public:
 	cBasilisk();

@@ -2,6 +2,7 @@
 #include "cMonster.h"
 #include "cWayPoint.h"
 #include "cTransform.h"
+#include "cBoundBox.h"
 #include "cTerrain.h"
 #include "cPlayer.h"
 
