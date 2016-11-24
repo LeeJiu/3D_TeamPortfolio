@@ -349,8 +349,8 @@ void cPlayer::SetBassClass()
 	this->pTrailRender->Init(
 		1.0f,					//꼬리 라이브 타임 ( 이게 크면 환영큐 사이즈가 커지고 꼬리가 오랬동안 남아있다 )
 		1.0f,					//폭
-		RESOURCE_TEXTURE->GetResource("../Resources/Testures/TrailTest.png"),	//메인 Texture
-		D3DXCOLOR(1, 0, 0, 1),												//메인 Texture 로 그릴때 컬러
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/TrailTest.png"),	//메인 Texture
+		D3DXCOLOR(0.5f, 0, 0, 0.8),												//메인 Texture 로 그릴때 컬러
 		NULL
 	);
 

@@ -151,6 +151,7 @@
     <ClInclude Include="cTrailRender.h" />
     <ClInclude Include="cTransform.h" />
     <ClInclude Include="cSkillUi.h" />
+    <ClInclude Include="cViewDamage.h" />
     <ClInclude Include="cWayPoint.h" />
     <ClInclude Include="cXMesh.h" />
     <ClInclude Include="cXMesh_Skinned.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="cTrailRender.cpp" />
     <ClCompile Include="cTransform.cpp" />
     <ClCompile Include="cSkillUi.cpp" />
+    <ClCompile Include="cViewDamage.cpp" />
     <ClCompile Include="cWayPoint.cpp" />
     <ClCompile Include="cXMesh.cpp" />
     <ClCompile Include="cXMesh_Skinned.cpp" />
