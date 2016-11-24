@@ -203,5 +203,5 @@ void cSpider::SetAniState()
 		m_strName = MyUtil::SetAnimation(m_state);
 	}
 
-	LOG_MGR->AddLog("%s", aniName.c_str());
+	// LOG_MGR->AddLog("%s", aniName.c_str());
 }

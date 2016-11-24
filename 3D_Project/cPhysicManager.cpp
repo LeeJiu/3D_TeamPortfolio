@@ -1455,7 +1455,21 @@ bool cPhysicManager::IsPointSphere(cTransform* pTransA, float radiusA, D3DXVECTO
 	}
 	return false;
 }
+//점과 구와 충돌체크
+bool cPhysicManager::IsPointSphere(D3DXVECTOR3* centerA, float radiusA, D3DXVECTOR3* centerB)
+{
+	//A의 반지름 = radiusA, 비교대상은  radiusB ( 비가 점)
+	D3DXVECTOR3 dir; // A - B
+	dir = *centerA - *centerB;
+	float length = D3DXVec3Length(&dir);
 
+	if (radiusA > length)
+	{
+		//LOG_MGR->AddLog("테스트 충돌.");
+		return true;
+	}
+	return false;
+}
 D3DXVECTOR3 cPhysicManager::getLastHeight(cBaseObject* enumy, Ray* ray, cTerrain* terrain, D3DXVECTOR3* outPos)
 {
 	D3DXVECTOR3 tempLast(0, 0, 0); // 임시 저장 변수.

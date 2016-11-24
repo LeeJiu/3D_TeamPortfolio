@@ -17,12 +17,8 @@ void cTickFunc::init(float tick)
 {
 	tickTime = tick;
 }
-void cTickFunc::tickUpdate()
-{
 
-}
-
-bool cTickFunc::tickFunc(float timeDelta)
+void cTickFunc::tickUpdate(float timeDelta)
 {
 	//처음 함수 들어왔을때 카운트 되겠금 함.
 
@@ -32,14 +28,12 @@ bool cTickFunc::tickFunc(float timeDelta)
 		{
 			countTime += timeDelta;  // 시간 값을 계산.
 			//hit = false;
-			return false;
 		}
 		else if (countTime >= tickTime)
 		{
 			countTime = 0.f; // 
 			start = false;
 			//hit = true;
-			return true;
 		}
 	}
 

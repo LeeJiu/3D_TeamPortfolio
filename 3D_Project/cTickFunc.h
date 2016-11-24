@@ -15,8 +15,7 @@ public:
 	~cTickFunc();
 
 	void init(float tick);
-	void tickUpdate();
-	bool tickFunc(float timeDelta);
+	void tickUpdate(float timeDelta);
 	bool tickStart();
 };
 

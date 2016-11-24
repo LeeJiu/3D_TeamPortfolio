@@ -315,3 +315,22 @@ void cGizmoManager::Quad(const D3DXVECTOR3& quad)
 	GIZMO_MGR->Line(&quad[3], &quad[2], 0xffff0000);
 	GIZMO_MGR->Line(&quad[2], &quad[0], 0xffff0000);
 }
+
+void cGizmoManager::Quad(const D3DXVECTOR3* quad)
+{
+	//================== Äõµå·Î ±×·ÁÁü ===========
+
+	//GIZMO_MGR->Line(&quad[0], &quad[1], 0xff00ff00);
+	//GIZMO_MGR->Line(&quad[1], &quad[3], 0xff00ff00);
+	//GIZMO_MGR->Line(&quad[3], &quad[2], 0xff00ff00);
+	//GIZMO_MGR->Line(&quad[2], &quad[0], 0xff00ff00);
+
+	//=================== »ï°¢Çü 2 °³  ===========
+	GIZMO_MGR->Line(quad[0], quad[1], 0xff00ff00);
+	GIZMO_MGR->Line(quad[1], quad[3], 0xff00ff00);
+	GIZMO_MGR->Line(quad[3], quad[0], 0xff00ff00);
+
+	GIZMO_MGR->Line(quad[0], quad[3], 0xffff0000);
+	GIZMO_MGR->Line(quad[3], quad[2], 0xffff0000);
+	GIZMO_MGR->Line(quad[2], quad[0], 0xffff0000);
+}
