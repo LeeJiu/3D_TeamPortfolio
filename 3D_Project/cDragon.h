@@ -48,6 +48,13 @@ private:
 
 	float skillCoolTime;                 // 스킬 쿨타임
 	float tempCoolTime;                  // 스킬 쿨타이밍에 계산 할 거
+
+	//========== 지진 관련 장판 보여줄때 쓸 변수
+	bool isRenderEarthquake;            // 지진중?
+	stSphere  m_circle[5];              // 원 장판
+	D3DXVECTOR3      m_quad[3][6];      // 쿼드 장판 
+	//
+    
 public:
 	cDragon();
 	~cDragon();
@@ -56,6 +63,7 @@ public:
 	void BaseObjectUpdate(float timeDelta);		//BaseObject 가 Update 때 실행....
 	void BaseObjectBoundBox();					//SetMesh() 하면 ComputeBoundBox() 실행되면서 실행됨
 	void BaseObjectRender();
+	
 	
 	//==========이곳에 함수 추가==========
 	void Damage(float fDamage);		//cMonster로 부를 수 있는 순수 가상 함수 / 반드시 override
@@ -83,6 +91,8 @@ public:
 	//플레이어 링크
 	void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
 
+	// 현재 좌표 기준 주변에 랜덤 좌표 생성
+	D3DXVECTOR3 makeRndVec(cTransform* trans, float fRadius);
 
 };
 

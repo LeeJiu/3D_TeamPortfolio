@@ -303,6 +303,9 @@
     <ClInclude Include="cSkill_Swing.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="cTickFunc.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -564,6 +567,9 @@
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Swing.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cTickFunc.cpp">
       <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
