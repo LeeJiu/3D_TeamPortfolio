@@ -152,6 +152,11 @@
     <ClInclude Include="cTrailRender.h" />
     <ClInclude Include="cTransform.h" />
     <ClInclude Include="cSkillUi.h" />
+    <ClInclude Include="cUI_CharacterBar.h" />
+    <ClInclude Include="cUI_Container.h" />
+    <ClInclude Include="cUI_Map.h" />
+    <ClInclude Include="cUI_MenuBar.h" />
+    <ClInclude Include="cUI_SkillDeck.h" />
     <ClInclude Include="cViewDamage.h" />
     <ClInclude Include="cWayPoint.h" />
     <ClInclude Include="cXMesh.h" />
@@ -243,6 +248,11 @@
     <ClCompile Include="cTrailRender.cpp" />
     <ClCompile Include="cTransform.cpp" />
     <ClCompile Include="cSkillUi.cpp" />
+    <ClCompile Include="cUI_CharacterBar.cpp" />
+    <ClCompile Include="cUI_Container.cpp" />
+    <ClCompile Include="cUI_Map.cpp" />
+    <ClCompile Include="cUI_MenuBar.cpp" />
+    <ClCompile Include="cUI_SkillDeck.cpp" />
     <ClCompile Include="cViewDamage.cpp" />
     <ClCompile Include="cWayPoint.cpp" />
     <ClCompile Include="cXMesh.cpp" />

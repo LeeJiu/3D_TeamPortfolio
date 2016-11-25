@@ -43,6 +43,9 @@
     <Filter Include="GameActor\Skill">
       <UniqueIdentifier>{01084c57-4e81-44d1-80cd-23a3996a12dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\UI">
+      <UniqueIdentifier>{6380eeef-81d6-4954-93bf-940340150263}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -305,6 +308,24 @@
     </ClInclude>
     <ClInclude Include="cTickFunc.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cViewDamage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_Map.h">
+      <Filter>Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_Container.h">
+      <Filter>Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_CharacterBar.h">
+      <Filter>Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_SkillDeck.h">
+      <Filter>Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_MenuBar.h">
+      <Filter>Component\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -571,6 +592,24 @@
     </ClCompile>
     <ClCompile Include="cTickFunc.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cViewDamage.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_Map.cpp">
+      <Filter>Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_Container.cpp">
+      <Filter>Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_CharacterBar.cpp">
+      <Filter>Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_SkillDeck.cpp">
+      <Filter>Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_MenuBar.cpp">
+      <Filter>Component\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

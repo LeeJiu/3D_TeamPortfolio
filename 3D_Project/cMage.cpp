@@ -23,14 +23,11 @@ cMage::cMage()
 cMage::~cMage()
 {
 	SAFE_DELETE(m_ATKBox);
-
-	SAFE_DELETE(m_ATKBox);
 	SAFE_DELETE(m_pSkill_SnowStorm);
 	SAFE_DELETE(m_pSurroundSkill);
 	SAFE_DELETE(m_pSkill_DarkRain);
 	SAFE_DELETE(m_pSkill_Front);
 	SAFE_DELETE(m_pSkill_magicShild);
-	SAFE_DELETE(m_pSurroundSkill);
 	SAFE_DELETE(m_pSkill_Escape);
 	SAFE_DELETE(m_pSkill_FlameRoad);
 
@@ -103,6 +100,7 @@ void cMage::BaseObjectEnable()
 
 	//SetMoveKeys();
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
+
 
 
 }
@@ -279,6 +277,8 @@ void cMage::BaseObjectUpdate(float timeDelta)
 
 	SKILL03();
 
+
+
 }
 
 
@@ -307,6 +307,7 @@ void cMage::BaseObjectRender()
 	{
 		m_magicATK->Render();
 	}
+
 
 
 }
