@@ -63,7 +63,7 @@ void cDragon::BaseObjectEnable()
 	m_tick[BasicAtt]->init(1.f);
 	m_tick[HeadAtt]->init(0.3f);
 	m_tick[Breath]->init(0.3f);
-	m_tick[Earthquake]->init(0.5f);
+	m_tick[Earthquake]->init(0.8f);
 	m_tick[Pattern]->init(10.f);
 
 	//=================== 초기화 ================
@@ -126,8 +126,6 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 {
 	m_nowAni = pSkinned->GetNowPlayingAni();
 	int chance = MyUtil::RandomIntRange(0, 10);
-
-
 
 	// 전투 범위에 들어오면 
 	if (battleRange() == true && isBattle == true)
@@ -248,17 +246,17 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
 	}
 
-	if (KEY_MGR->IsStayDown('L'))
-	{
-		m_pBreathParticle->pTransform->SetWorldPosition(0, 9, 0);
-		m_pBreathParticle->StartEmission();
-
-	}
-	else
-	{
-		*m_pBreathParticle->pTransform = *pTransform;
-		m_pBreathParticle->StopEmission();
-	}
+	// if (KEY_MGR->IsStayDown('L'))
+	// {
+	// 	m_pBreathParticle->pTransform->SetWorldPosition(0, 9, 0);
+	// 	m_pBreathParticle->StartEmission();
+	// 
+	// }
+	// else
+	// {
+	// 	*m_pBreathParticle->pTransform = *pTransform;
+	// 	m_pBreathParticle->StopEmission();
+	// }
 	
 	m_pBreathParticle->Update(TIME_MGR->GetFrameDeltaSec());
 
@@ -312,7 +310,7 @@ void cDragon::BaseObjectRender()
 	GIZMO_MGR->WireSphere(m_basicAttack.worldCenter, m_basicAttack.radius, 0xffff0000);
 	GIZMO_MGR->WireSphere(m_spone.worldCenter, m_spone.radius, 0xffffff00);
 
-	GIZMO_MGR->Sector(pTransform->GetWorldPosition(), pTransform->GetForward(), 40, 20 * ONE_RAD);
+	GIZMO_MGR->Sector(pTransform->GetWorldPosition(), pTransform->GetForward(), 50, 18 * ONE_RAD);
 	
 	// 스킬 이팩트 부분
 	for (int i = 0; i < COLLCIRCLE; i++)
@@ -656,14 +654,26 @@ void cDragon::breathUpdate()
 	{
 		float aniTime = pSkinned->GetTime();
 
-		if (aniTime > 0.5f)
+		if (0.58f<aniTime&&aniTime <= 0.59f)
+		{
+		m_pBreathParticle->StartEmission();
+		m_pBreathParticle->pTransform->SetWorldPosition(m_pBoneTrans[HEAD]->GetWorldPosition());
+		m_pBreathParticle->pTransform->SetRotateWorld(pTransform->GetWorldRotateMatrix());
+		LOG_MGR->AddLog("브레스 시작: %.2f", aniTime);
+
+		}
+
+		if (aniTime > 0.59f)
 		{
 			if (m_tick[Breath]->tickStart())
 			{
-				if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 40, 20 * ONE_RAD))
+				if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 50, 18 * ONE_RAD))
 				{
-
 					m_pPlayer->Damage(10.f);
+
+					m_pBreathParticle->pTransform->SetWorldPosition(m_pBoneTrans[HEAD]->GetWorldPosition());
+					m_pBreathParticle->pTransform->SetRotateWorld(pTransform->GetWorldRotateMatrix());
+
 					LOG_MGR->AddLog("브레스 맞음: %.2f", aniTime);
 
 				}
@@ -677,7 +687,7 @@ void cDragon::breathUpdate()
 		{
 			//LOG_MGR->AddLog(": %.2f", aniTime);
 			stateInit();
-
+			m_pBreathParticle->StopEmission();
 		}
 	}
 }
@@ -688,20 +698,17 @@ void cDragon::earthUpate()
 		float aniTime = pSkinned->GetTime();
 
 
-		if (aniTime > 0.3f)
+		if (aniTime > 0.2f)
 		{
-			if (aniTime == 0.4f)
-			{
-				
-			}
+
+			m_pBreathParticle->pTransform->SetWorldPosition(m_pBoneTrans[HEAD]->GetWorldPosition());
+			m_pBreathParticle->pTransform->SetRotateWorld(pTransform->GetWorldRotateMatrix());
 
 
-			if (m_tick[Breath]->tickStart())
+			if (m_tick[Earthquake]->tickStart())
 			{
 				for (int i = 0; i < COLLCIRCLE; i++)
 				{
-					
-
 					if (PHYSICS_MGR->IsPointSphere(&m_circle[i].worldCenter, m_circle[i].radius
 						, &m_pPlayer->pTransform->GetWorldPosition()))
 					{
@@ -709,11 +716,13 @@ void cDragon::earthUpate()
 						LOG_MGR->AddLog("원장판맞음");
 
 					}
+					if (PHYSICS_MGR->IsPointQuad(m_quad[i], &m_pPlayer->getMoveClass()->getRay()))
+					{
+						m_pPlayer->Damage(10.f);
+						LOG_MGR->AddLog("네모장판맞음");
+					}
 				}
-				for (int i = 0; i < COLLCIRCLE; i++)
-				{
-					//  PHYSICS_MGR->IsPointQuad(m_quad[i] )
-				}
+			
 			}
 			//m_pPlayer->Damage();
 
@@ -814,24 +823,24 @@ void cDragon::initParticle()
 
 
 	VEC_SCALE scales;
-	scales.push_back(0.2f);
-	scales.push_back(0.6f);
-	scales.push_back(1.f);
-	scales.push_back(1.2f);
-	scales.push_back(1.6f);
-	scales.push_back(2.f);
+	scales.push_back(1.3f);
+	scales.push_back(2.4f);
+	scales.push_back(4.5f);
+	scales.push_back(5.6f);
+	scales.push_back(7.7f);
+	scales.push_back(8.8f);
 
 	LPDIRECT3DTEXTURE9 pTex = RESOURCE_TEXTURE->GetResource(
 		"../Resources/Textures/FireExplosionBlurred.png");
 
 	//파티클 랜더러 셋팅
 	m_pBreathParticle->Init(
-		200,
-		25.0f,
-		3,
-		3.5f,
-		D3DXVECTOR3(0, 0,10),
-		D3DXVECTOR3(0, 0, 20),
+		500,
+		80.0f,
+		0.3f,
+		1.1f,
+		D3DXVECTOR3(0, 0,30),
+		D3DXVECTOR3(0, 0, 40),
 		D3DXVECTOR3(0, 0.2f, -0.5f),
 		D3DXVECTOR3(0, 0.4f, -1.0f),
 		colors,
@@ -841,6 +850,5 @@ void cDragon::initParticle()
 		pTex
 		);
 
-	m_pBreathParticle->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
-
+	
 }
