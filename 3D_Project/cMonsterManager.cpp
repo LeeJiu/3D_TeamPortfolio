@@ -118,7 +118,7 @@ void cMonsterManager::LoadMonsters()
 
 	//임시로 몬스터를 세팅하려면 CreateMonster()에 추가하고,
 	//다음과 같이 코드를 작성한다. type, pos
-	CreateMonster(DRAGON, D3DXVECTOR3(0, m_pTerrain->GetHeight(0, 0), 0));
+	//CreateMonster(DRAGON, D3DXVECTOR3(0, m_pTerrain->GetHeight(0, 0), 0));
 }
 
 void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
@@ -152,7 +152,7 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->SetActive(true);
 		break;
 	case SPIDER:
-		monster = new cSpider(1000, 10);
+		monster = new cSpider(1000, 15);
 		monster->SetTerrain(m_pTerrain);
 		monster->SetPlayer(m_pPlayer);
 		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_Spider.X"));

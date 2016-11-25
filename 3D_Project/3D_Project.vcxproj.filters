@@ -279,22 +279,7 @@
     <ClInclude Include="cSkill_DarkRain.h">
       <Filter>GameActor\Skill</Filter>
     </ClInclude>
-    <ClInclude Include="cSkill_Front.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_SelfBuff.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_MagicShild.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_Escape.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_FlameRoad.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_Meteo.h">
+    <ClInclude Include="cSkill_Burserk.h">
       <Filter>GameActor\Skill</Filter>
     </ClInclude>
   </ItemGroup>
@@ -536,22 +521,7 @@
     <ClCompile Include="cSkill_DarkRain.cpp">
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
-    <ClCompile Include="cSkill_Front.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_SelfBuff.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_MagicShild.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_Escape.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_FlameRoad.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_Meteo.cpp">
+    <ClCompile Include="cSkill_Burserk.cpp">
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
   </ItemGroup>

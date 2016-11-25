@@ -128,7 +128,7 @@ void cSkill_Surround::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 CasterWorldP
 
 	if (m_IsCoolTime) //쿨타임 중이면 
 	{
-		LOG_MGR->AddLog("쿨타임 중입니다");
+		//LOG_MGR->AddLog("쿨타임 중입니다");
 
 		m_CoolTimeCount++; //쿨타임을 계산해주자
 

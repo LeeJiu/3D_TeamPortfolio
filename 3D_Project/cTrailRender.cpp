@@ -11,7 +11,7 @@ cTrailRender::~cTrailRender(void)
 {
 }
 
-void		cTrailRender::Init(float trailLiveTime, float width, LPDIRECT3DTEXTURE9 pTrailTex, D3DXCOLOR color, LPDIRECT3DTEXTURE9 pDistortTex)
+void cTrailRender::Init(float trailLiveTime, float width, LPDIRECT3DTEXTURE9 pTrailTex, D3DXCOLOR color, LPDIRECT3DTEXTURE9 pDistortTex)
 {
 	//초당 60 프레임이란 기준으로 궤적 생존시간에 비례한 Trail Line 최대수 
 	this->m_nTrailMaxNum = (int)(trailLiveTime * 60) + 10;		//+10 은 혹시나.....
@@ -158,7 +158,7 @@ void		cTrailRender::Update(float timeDelta)
 
 
 }
-void		cTrailRender::Render()
+void cTrailRender::Render()
 {
 
 	DWORD triNum = 0;
@@ -280,7 +280,7 @@ void		cTrailRender::TrailGenStart()
 	this->m_PrevRightPosition = this->m_RightTransform.GetWorldPosition();
 }
 
-void		cTrailRender::RenderDistort(cCamera* pCam)
+void cTrailRender::RenderDistort(cCamera* pCam)
 {
 	//왜곡 Texture 가 없으면 안그린다.
 	if (m_pDistortTexture == NULL)
@@ -354,7 +354,7 @@ void		cTrailRender::RenderDistort(cCamera* pCam)
 
 
 	//Grab Texture 얻는다.
-	//GetDeviceGrabTexture(Device, m_pGrabTexture);
+	GetDeviceGrabTexture(Device, m_pGrabTexture);
 
 	//
 	// Effect 로 그린다.

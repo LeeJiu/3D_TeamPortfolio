@@ -443,6 +443,32 @@ namespace MyUtil{
 		return *pDword;
 	}
 
+	//디바이스의 Target Color 값을 Texture 에 쓴다.
+	void GetDeviceGrabTexture(LPDIRECT3DDEVICE9 pDevice, LPDIRECT3DTEXTURE9 grabTex)
+	{
+		// 현재 까지 그려진 백버퍼의 내용을 Texture 로 전달
+		LPDIRECT3DSURFACE9 deviceSurf = NULL;
+		pDevice->GetRenderTarget(0, &deviceSurf);
+
+		// GrabSampler 의 Surface 를 얻는다.
+		LPDIRECT3DSURFACE9 grabSurface = NULL;
+		grabTex->GetSurfaceLevel(0, &grabSurface);
+
+
+		//백버퍼의 TargetSurface 의 내용을 m_pGrabTexture Surface 로 복사
+		pDevice->StretchRect(
+			deviceSurf,			//원본 Surface
+			NULL,				//원본 Surface 의 영역 ( NULL 이면 전체 )
+			grabSurface,		//소스 Surface
+			NULL,				//소스 Surface 의 영역 ( NULL 이면 전체 )
+			D3DTEXF_LINEAR);
+
+		deviceSurf->Release();
+		grabSurface->Release();
+
+	}
+
+
 	std::string SetAnimation(ACTOR_STATE state)
 	{
 		std::string state_name;
@@ -479,6 +505,8 @@ namespace MyUtil{
 		case STUN:  state_name = "STUN";
 			break;
 		case STF_WAKEUP:  state_name = "STF_WAKEUP";
+			break;
+		case GET_UP:  state_name = "GET_UP";
 			break;
 		case IDLE:  state_name = "IDLE";
 			break;

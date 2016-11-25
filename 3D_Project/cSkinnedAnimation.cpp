@@ -77,6 +77,7 @@ void		cSkinnedAnimation::Update( float timeDelta )
 			//돌아갈 Animation 이 있다면..
 			if( this->m_pPrevPlayAnimationSet != NULL )
 			{
+				m_NowPlay = m_pPrevPlayAnimationSet->GetName();
 				m_fCrossFadeTime = m_fOutCrossFadeTime;
 				m_fLeftCrossFadeTime = m_fOutCrossFadeTime;
 				m_bLoop = true;
