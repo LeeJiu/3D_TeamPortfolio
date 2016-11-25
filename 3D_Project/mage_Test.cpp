@@ -52,6 +52,7 @@ HRESULT mage_Test::Scene_Init()
 
 
 
+
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Elf/Elf_Master.X", &matCorrection);
 	cXMesh_Skinned* pPet_Elephant = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Elephant/pet_Elephant.X", &matCorrection);
 
@@ -70,7 +71,6 @@ HRESULT mage_Test::Scene_Init()
 	m_pMonMgr->SetTerrain(m_pTerrain);
 	m_pMonMgr->SetPlayer(m_pPlayer);
 	m_pMonMgr->Init();
-
 
 	m_pPlayer->SetMonsterManager(m_pMonMgr);
 	m_pPlayer->SetActive(true);
@@ -196,5 +196,4 @@ void mage_Test::Scene_Render1()
 	//{
 	//	this->pPet->Render();
 	//}
-
 

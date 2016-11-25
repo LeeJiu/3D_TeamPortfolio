@@ -47,6 +47,8 @@ public:
 
 	//쿼드 그리는 함수
 	void Quad(const D3DXVECTOR3& quad);
+	void Quad(const D3DXVECTOR3* quad);
+
 
 
 };

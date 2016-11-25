@@ -282,6 +282,30 @@
     <ClInclude Include="cSkill_Burserk.h">
       <Filter>GameActor\Skill</Filter>
     </ClInclude>
+    <ClInclude Include="cSkill_Escape.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_FlameRoad.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Front.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_MagicShild.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Meteo.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_SelfBuff.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Swing.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cTickFunc.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -523,6 +547,30 @@
     </ClCompile>
     <ClCompile Include="cSkill_Burserk.cpp">
       <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Escape.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_FlameRoad.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Front.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_MagicShild.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Meteo.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_SelfBuff.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Swing.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cTickFunc.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

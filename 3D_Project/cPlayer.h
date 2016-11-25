@@ -87,6 +87,8 @@ public:
 	virtual void RangeCheck(float range);						//나를 중심으로 범위체크
 	virtual void RangeCircleCheck(D3DXVECTOR3& pos, float range);		//pos값 중심으로 범위체크
 	//virtual void RangeQuardCheck(D3DXVECTOR3& pos, float width, float height);		//pos값 중심으로 범위체크
+	
+	virtual void SkillInit();
 
 	virtual void SetBassClass();								//기본 클래스
 

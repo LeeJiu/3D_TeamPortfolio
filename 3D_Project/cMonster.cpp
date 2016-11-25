@@ -2,6 +2,7 @@
 #include "cMonster.h"
 #include "cWayPoint.h"
 #include "cTransform.h"
+#include "cBoundBox.h"
 #include "cTerrain.h"
 #include "cPlayer.h"
 
@@ -36,11 +37,6 @@ void cMonster::BaseObjectUpdate(float timeDelta)
 	}
 	else
 	{
-		//조건 추가해주자.
-		/*if (m_vObjects.empty() == false)
-		{
-		m_pWayPoint->SetBoundObjects(m_vObjects);
-		}*/
 		m_pWayPoint->Update(pTransform);
 	}
 }
