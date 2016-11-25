@@ -2,6 +2,9 @@
 #include "cMonster.h"
 #include "cBoundBox.h"
 #include "cTickFunc.h"
+#include "cPartcleEmitter.h"
+
+
 
 #define COLLISION 4
 #define TICKMAX 5
@@ -64,7 +67,10 @@ private:
 	//========== 지진 , 브레스 렌더 해주는 함수 
 	bool earthRender;
 	bool breathRender;
-    
+    //========== 파티클 변수 추가. 
+	cPartcleEmitter* m_pBreathParticle;
+
+
 public:
 	cDragon();
 	~cDragon();
@@ -106,6 +112,8 @@ public:
 	D3DXVECTOR3 makeRndVec(D3DXVECTOR3* pos, float fRadius);
 	// 동그랑 장판 네모 장판 한번에 만들어줌. 
 	void makeCircleQuad();
+	//파티클 초기화
+	void initParticle();
 	
 };
 

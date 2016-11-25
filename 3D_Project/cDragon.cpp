@@ -28,6 +28,9 @@ cDragon::~cDragon()
 	{
 		SAFE_DELETE(m_tick[i]);
 	}
+
+	m_pBreathParticle->Release();
+	SAFE_DELETE(m_pBreathParticle);
 }
 
 void cDragon::BaseObjectEnable()
@@ -98,6 +101,8 @@ void cDragon::BaseObjectEnable()
 	{
 		m_circle[i].radius = 10.f;
 	}
+
+	initParticle();
 }
 
 void cDragon::BaseObjectUpdate(float timeDelta)
@@ -218,6 +223,20 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
 	}
 
+	if (KEY_MGR->IsStayDown('L'))
+	{
+		*m_pBreathParticle->pTransform = *pTransform;
+		m_pBreathParticle->StartEmission();
+
+	}
+	else
+	{
+		*m_pBreathParticle->pTransform = *pTransform;
+		m_pBreathParticle->StopEmission();
+	}
+	
+	m_pBreathParticle->Update(TIME_MGR->GetFrameDeltaSec());
+
 	//=================== 업데이트 ==============
 
 }
@@ -270,6 +289,9 @@ void cDragon::BaseObjectRender()
 	{
 		GIZMO_MGR->Quad(m_quad[i]);
 	}
+
+	// 파티클 부분
+	m_pBreathParticle->Render();
 }
 
 void cDragon::collPosUpdate()
@@ -719,4 +741,55 @@ void cDragon::makeCircleQuad()
 		MyUtil::createQuad(m_quad[i], 8, 8, pTransform,
 			&makeRndVec(&pTransform->GetWorldPosition(), m_spone.radius / 2));
 	}
+}
+
+void cDragon::initParticle()
+{
+	m_pBreathParticle = new cPartcleEmitter();
+	m_pBreathParticle->SetActive(true);
+
+	//
+	// 화염 방사기
+	//
+
+	VEC_COLOR colors;
+	colors.push_back(D3DXCOLOR(0.3f, 0.5f, 0.5f, 0.0f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.5f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.5f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.8f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.8f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.8f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.8f, 8.0f, 0.2f));
+
+
+	VEC_SCALE scales;
+	scales.push_back(0.2f);
+	scales.push_back(0.6f);
+	scales.push_back(1.f);
+	scales.push_back(1.2f);
+	scales.push_back(1.6f);
+	scales.push_back(2.f);
+
+	LPDIRECT3DTEXTURE9 pTex = RESOURCE_TEXTURE->GetResource(
+		"../Resources/Testures/FireExplosionBlurred.png");
+
+	//파티클 랜더러 셋팅
+	m_pBreathParticle->Init(
+		400,
+		50.0f,
+		3,
+		3.5f,
+		D3DXVECTOR3(0, 0, 5),
+		D3DXVECTOR3(0, 0, 5),
+		D3DXVECTOR3(0, 0.2f, -0.5f),
+		D3DXVECTOR3(0, 0.4f, -1.0f),
+		colors,
+		scales,
+		2.3f,
+		3.0f,
+		pTex
+		);
+
+	m_pBreathParticle->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
+
 }
