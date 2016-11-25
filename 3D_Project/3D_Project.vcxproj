@@ -140,6 +140,7 @@
     <ClInclude Include="cSkill_SnowStorm.h" />
     <ClInclude Include="cSkill_Surround.h" />
     <ClInclude Include="cSkill_Swing.h" />
+    <ClInclude Include="cSkill_Thunder.h" />
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSoundManager.h" />
     <ClInclude Include="cSpider.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="cSkill_SnowStorm.cpp" />
     <ClCompile Include="cSkill_Surround.cpp" />
     <ClCompile Include="cSkill_Swing.cpp" />
+    <ClCompile Include="cSkill_Thunder.cpp" />
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSoundManager.cpp" />
     <ClCompile Include="cSpider.cpp" />

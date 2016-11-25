@@ -96,10 +96,20 @@ void cDragon::BaseObjectEnable()
 	//스킬 사용할 숫자. 
 	skillChance = 0;          // max 3 개 1,2,3 사용
 
+
+
+
 	// 장판 범위 
 	for (int i = 0; i < 5; i++)
 	{
 		m_circle[i].radius = 10.f;
+		m_Skill_Meteo[i] = new cSkill_Meteo;
+		m_Skill_Meteo[i]->BaseObjectEnable(pTransform->GetWorldPosition(), 10, 100, 100, 200, 1);
+		m_Skill_Meteo[i]->Effect_Init();
+		m_Skill_Thunder[i] = new cSkill_Thunder;
+		m_Skill_Thunder[i]->BaseObjectEnable(pTransform->GetWorldPosition(), 10, 100, 100, 200, 1);
+		m_Skill_Thunder[i]->Effect_Init();
+
 	}
 
 	initParticle();
@@ -176,6 +186,14 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 						isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
 						LOG_MGR->AddLog("랜덤: %d", skillChance);
 						makeCircleQuad();
+						for (int i = 0; i < 5; i++)
+						{
+							m_Skill_Meteo[i]->Effect_Init();
+							m_Skill_Meteo[i]->StartCasting();
+							m_Skill_Thunder[i]->Effect_Init();
+							m_Skill_Thunder[i]->StartCasting();
+						}
+
 
 						break;
 
@@ -237,6 +255,14 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 	
 	m_pBreathParticle->Update(TIME_MGR->GetFrameDeltaSec());
 
+	for (int i = 0; i < 5; i++)
+	{
+		m_Skill_Meteo[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_circle[i].worldCenter);
+		m_Skill_Meteo[i]->Effect_Update(timeDelta);
+		m_Skill_Thunder[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_circle[i].worldCenter);
+		m_Skill_Thunder[i]->Effect_Update(timeDelta);
+	}
+
 	//=================== 업데이트 ==============
 
 }
@@ -283,6 +309,10 @@ void cDragon::BaseObjectRender()
 	for (int i = 0; i < 5; i++)
 	{
 		GIZMO_MGR->WireSphere(m_circle[i].worldCenter, m_circle[i].radius, 0xffff0000);
+		m_Skill_Meteo[i]->BaseObjectRender();
+		m_Skill_Meteo[i]->Effect_Render();
+		m_Skill_Thunder[i]->BaseObjectRender();
+		m_Skill_Thunder[i]->Effect_Render();
 	}
 
 	for (int i = 0; i < 3; i++)
@@ -292,6 +322,7 @@ void cDragon::BaseObjectRender()
 
 	// 파티클 부분
 	m_pBreathParticle->Render();
+
 }
 
 void cDragon::collPosUpdate()
@@ -622,6 +653,7 @@ void cDragon::breathUpdate()
 			{
 				if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 40, 20 * ONE_RAD))
 				{
+
 					m_pPlayer->Damage(10.f);
 					LOG_MGR->AddLog("브레스 맞음: %.2f", aniTime);
 
@@ -649,10 +681,18 @@ void cDragon::earthUpate()
 
 		if (aniTime > 0.3f)
 		{
+			if (aniTime == 0.4f)
+			{
+				
+			}
+
+
 			if (m_tick[Breath]->tickStart())
 			{
 				for (int i = 0; i < 5; i++)
 				{
+					
+
 					if (PHYSICS_MGR->IsPointSphere(&m_circle[i].worldCenter, m_circle[i].radius
 						, &m_pPlayer->pTransform->GetWorldPosition()))
 					{

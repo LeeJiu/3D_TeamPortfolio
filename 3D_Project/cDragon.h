@@ -3,8 +3,8 @@
 #include "cBoundBox.h"
 #include "cTickFunc.h"
 #include "cPartcleEmitter.h"
-
-
+#include  "cSkill_Meteo.h"
+#include  "cSkill_Thunder.h"
 
 #define COLLISION 4
 #define TICKMAX 5
@@ -69,6 +69,9 @@ private:
 	bool breathRender;
     //========== 파티클 변수 추가. 
 	cPartcleEmitter* m_pBreathParticle;
+
+	cSkill_Meteo* m_Skill_Meteo[5];
+	cSkill_Thunder* m_Skill_Thunder[5];
 
 
 public:

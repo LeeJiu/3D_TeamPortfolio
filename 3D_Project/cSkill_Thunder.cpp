@@ -1,37 +1,22 @@
 #include "stdafx.h"
-#include "cSkill_Meteo.h"
+#include "cSkill_Thunder.h"
 
 
-cSkill_Meteo::cSkill_Meteo()
+cSkill_Thunder::cSkill_Thunder()
 {
 }
 
 
-cSkill_Meteo::~cSkill_Meteo()
+cSkill_Thunder::~cSkill_Thunder()
 {
-	SAFE_DELETE(m_lavaStone);
-	SAFE_DELETE(m_snowStrom);
-	SAFE_DELETE(m_snowStrom_under);
-	SAFE_DELETE(m_snow);
 }
 
 
-void cSkill_Meteo::Effect_Init()
+void cSkill_Thunder::Effect_Init()
 {
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
 	D3DXMATRIXA16 matCorrection = matScale;
-
-
-
-	m_lavaStone = new cXMesh_Static;
-	m_lavaStone->Init("../Resources/Textures/Effects/lavaStone.x", &matCorrection);
-
-	m_lavaStoneTrans = new cTransform;
-	D3DXVECTOR3 lavaStoneHight(0, 20, 0);
-	m_lavaStoneTrans->SetWorldPosition(lavaStoneHight);
-
-	m_speed = 0.5f;
 
 
 	m_snowStrom = new cQuadParticleEmitter();
@@ -63,7 +48,7 @@ void cSkill_Meteo::Effect_Init()
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors, scales,
 		2.0f, 9.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/flame_green.tga"),
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/lighting_01.tga"),
 		true);
 
 
@@ -97,7 +82,7 @@ void cSkill_Meteo::Effect_Init()
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors2, scales2,
 		9.0f, 9.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/lavaStorm.tga"),
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/TAK_houling01.tga"),
 		true);
 
 	m_snow = new cPartcleEmitter();
@@ -146,7 +131,7 @@ void cSkill_Meteo::Effect_Init()
 }
 
 
-void cSkill_Meteo::Effect_Update(float timeDelta)
+void cSkill_Thunder::Effect_Update(float timeDelta)
 {
 	if (m_CastTime / 1.2 == m_CastTimeCount)
 	{
@@ -167,9 +152,7 @@ void cSkill_Meteo::Effect_Update(float timeDelta)
 		m_snowStrom_under->pTransform->RotateSelf(D3DXVECTOR3(0, -5.0*timeDelta, 0));
 		m_snowStrom_under->Update(timeDelta);
 
-		m_speed += 0.3f;
-		m_lavaStoneTrans->SetWorldPosition(D3DXVECTOR3(m_AttackPos.x, m_lavaStoneTrans->GetWorldPosition().y - m_speed * timeDelta, m_AttackPos.z));
-		m_snow->pTransform->SetWorldPosition(m_lavaStoneTrans->GetWorldPosition() + D3DXVECTOR3(0, 7, 0));
+		m_snow->pTransform->SetWorldPosition(m_AttackPos + D3DXVECTOR3(0, 7, 0));
 		m_snow->Update(timeDelta);
 
 
@@ -187,14 +170,11 @@ void cSkill_Meteo::Effect_Update(float timeDelta)
 
 }
 
-void cSkill_Meteo::Effect_Render()
+void cSkill_Thunder::Effect_Render()
 {
 	if (m_IsCasting || m_IsAttacking)
 	{
 		m_snowStrom_under->Render();
-
-		m_lavaStone->Render(m_lavaStoneTrans);
-
 		m_snow->Render();
 	}
 
