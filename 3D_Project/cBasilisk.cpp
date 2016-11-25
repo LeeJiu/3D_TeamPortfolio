@@ -33,76 +33,28 @@ void cBasilisk::BaseObjectEnable()
 
 void cBasilisk::BaseObjectUpdate(float timeDelta)
 {
+	if (m_state == DIE)
+	{
+		m_fDeadTime += timeDelta;
+		if (m_fDeadTime > 5.0f)
+		{
+			m_fDeadTime = 0;
+			SetActive(false);
+		}
+		return;
+	}
+
 	float distance = D3DXVec3Length(&(m_pPlayer->pTransform->GetWorldPosition() - pTransform->GetWorldPosition()));
 
+	//공격 개시 범위
 	if (distance < m_fRange)
 	{
-		m_bIsOverlap = PHYSICS_MGR->IsOverlap(this, m_pPlayer);
-		//m_bIsOverlap = PHYSICS_MGR->IsOverlap(m_pHitTrans, &m_pHitBound, m_pPlayer->pTransform, &m_pPlayer->BoundBox);
-
-		if (m_state == WALK || m_state == WAIT)
-		{
-			if (m_bIsOverlap == true)
-			{
-				if (m_bHit2 == false)
-				{
-					Attack02(timeDelta);
-				}
-				else
-				{
-					Attack01(timeDelta);
-				}
-			}
-			else
-			{
-				m_state = RUN;
-				m_strName = MyUtil::SetAnimation(m_state);
-				pSkinned->Play(m_strName);
-			}
-			
-		}
-		else if (m_state == RUN)
-		{
-			if (m_bIsOverlap == true)
-			{
-				if (m_bHit2 == false)
-				{
-					Attack02(timeDelta);
-				}
-				else
-				{
-					Attack01(timeDelta);
-				}
-			}
-			else
-			{
-				MoveToPlayer();
-			}
-		}
-		else if (m_state == ATK_01)
-		{
-			Attack01(timeDelta);
-		}
-		else if (m_state == ATK_02)
-		{
-			Attack02(timeDelta);
-		}
+		RangeIn(timeDelta);
 	}
 	//범위 밖
 	else
 	{
-		if (m_state == RUN)
-		{
-			m_state = WAIT;
-			m_strName = MyUtil::SetAnimation(m_state);
-			pSkinned->Play(m_strName);
-		}
-		else if (m_state == WALK)
-		{
-			m_pWayPoint->Update(pTransform);
-		}
-
-		m_bHit2 = false;
+		RangeOut();
 	}
 
 	SetAniState();
@@ -294,4 +246,73 @@ void cBasilisk::SetAniState()
 		m_fAtkTime = 0;
 		m_bHit = false;
 	}
+}
+
+void cBasilisk::RangeIn(float timeDelta)
+{
+	m_bIsOverlap = PHYSICS_MGR->IsOverlap(this, m_pPlayer);
+
+	if (m_state == WALK || m_state == WAIT)
+	{
+		if (m_bIsOverlap == true)
+		{
+			if (m_bHit2 == false)
+			{
+				Attack02(timeDelta);
+			}
+			else
+			{
+				Attack01(timeDelta);
+			}
+		}
+		else
+		{
+			m_state = RUN;
+			m_strName = MyUtil::SetAnimation(m_state);
+			pSkinned->Play(m_strName);
+		}
+
+	}
+	else if (m_state == RUN)
+	{
+		if (m_bIsOverlap == true)
+		{
+			if (m_bHit2 == false)
+			{
+				Attack02(timeDelta);
+			}
+			else
+			{
+				Attack01(timeDelta);
+			}
+		}
+		else
+		{
+			MoveToPlayer();
+		}
+	}
+	else if (m_state == ATK_01)
+	{
+		Attack01(timeDelta);
+	}
+	else if (m_state == ATK_02)
+	{
+		Attack02(timeDelta);
+	}
+}
+
+void cBasilisk::RangeOut()
+{
+	if (m_state == RUN)
+	{
+		m_state = WAIT;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->Play(m_strName);
+	}
+	else if (m_state == WALK)
+	{
+		m_pWayPoint->Update(pTransform);
+	}
+
+	m_bHit2 = false;
 }

@@ -37,6 +37,7 @@ void cSpider::BaseObjectUpdate(float timeDelta)
 			m_fDeadTime = 0;
 			SetActive(false);
 		}
+		return;
 	}
 
 	float distance = D3DXVec3Length(&(m_pPlayer->pTransform->GetWorldPosition() - pTransform->GetWorldPosition()));
@@ -44,64 +45,17 @@ void cSpider::BaseObjectUpdate(float timeDelta)
 	//인식 범위에 들어왔을 때
 	if (distance > m_fRange2 && distance < m_fRange)
 	{
-		if (m_state == IDLE)
-		{
-			m_state = GET_UP;
-			m_strName = MyUtil::SetAnimation(m_state);
-			pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3f);
-		}
-		else if (m_state == RUN)
-		{
-			m_state = WAIT;
-			m_strName = MyUtil::SetAnimation(m_state);
-			pSkinned->Play(m_strName, 0.3f);
-		}
+		Alert();
 	}
 	//공격 범위에 들어왔을 때
 	else if (distance < m_fRange2)
 	{
-		//m_bIsOverlap = PHYSICS_MGR->IsOverlap(m_pHitTrans, &m_pHitBound, m_pPlayer->pTransform, &m_pPlayer->BoundBox);
-		m_bIsOverlap = PHYSICS_MGR->IsOverlap(this, m_pPlayer);
-
-		if (m_state == WAIT || m_state == GET_UP)
-		{
-			if (m_bIsOverlap == true)
-			{
-				Attack01(timeDelta);
-			}
-			else
-			{
-				m_state = RUN;
-				m_strName = MyUtil::SetAnimation(m_state);
-				pSkinned->Stop();
-				pSkinned->Play(m_strName);
-			}
-		}
-		else if (m_state == RUN)
-		{
-			if (m_bIsOverlap == true)
-			{
-				Attack01(timeDelta);
-			}
-			else
-			{
-				MoveToPlayer();
-			}
-		}
-		else if (m_state == ATK_01)
-		{
-			Attack01(timeDelta);
-		}
+		RangeIn(timeDelta);
 	}
 	//범위 밖
 	else
 	{
-		if (m_state == RUN)
-		{
-			m_state = WAIT;
-			m_strName = MyUtil::SetAnimation(m_state);
-			pSkinned->Play(m_strName, 0.3f);
-		}
+		RangeOut();
 	}
 
 	SetAniState();
@@ -208,5 +162,66 @@ void cSpider::SetAniState()
 		m_strName = MyUtil::SetAnimation(m_state);
 		m_fAtkTime = 0;
 		m_bHit = false;
+	}
+}
+
+void cSpider::Alert()
+{
+	if (m_state == IDLE)
+	{
+		m_state = GET_UP;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3f);
+	}
+	else if (m_state == RUN)
+	{
+		m_state = WAIT;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->Play(m_strName, 0.3f);
+	}
+}
+
+void cSpider::RangeIn(float timeDelta)
+{
+	m_bIsOverlap = PHYSICS_MGR->IsOverlap(this, m_pPlayer);
+
+	if (m_state == WAIT || m_state == GET_UP)
+	{
+		if (m_bIsOverlap == true)
+		{
+			Attack01(timeDelta);
+		}
+		else
+		{
+			m_state = RUN;
+			m_strName = MyUtil::SetAnimation(m_state);
+			pSkinned->Stop();
+			pSkinned->Play(m_strName);
+		}
+	}
+	else if (m_state == RUN)
+	{
+		if (m_bIsOverlap == true)
+		{
+			Attack01(timeDelta);
+		}
+		else
+		{
+			MoveToPlayer();
+		}
+	}
+	else if (m_state == ATK_01)
+	{
+		Attack01(timeDelta);
+	}
+}
+
+void cSpider::RangeOut()
+{
+	if (m_state == RUN)
+	{
+		m_state = WAIT;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->Play(m_strName, 0.3f);
 	}
 }

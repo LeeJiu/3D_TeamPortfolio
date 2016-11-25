@@ -6,9 +6,6 @@ class cSpider : public cMonster
 private:
 	float			m_fRange2;
 
-	float			m_fAtkTime;
-	float			m_fDeadTime;
-
 public:
 	cSpider();
 	~cSpider();
@@ -21,6 +18,10 @@ public:
 	void Attack01(float timeDelta);
 	void Damage(float fDamage);
 	void SetAniState();
+
+	void Alert();
+	void RangeIn(float timeDelta);
+	void RangeOut();
 
 	void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
 };

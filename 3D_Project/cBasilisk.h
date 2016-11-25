@@ -6,9 +6,6 @@ class cBasilisk : public cMonster
 private:
 	bool			m_bHit2;
 
-	float			m_fAtkTime;
-	float			m_fDeadTime;
-
 public:
 	cBasilisk();
 	~cBasilisk();
@@ -24,6 +21,9 @@ public:
 	void Attack01(float timeDelta);
 	void Attack02(float timeDelta);
 	void SetAniState();
+
+	void RangeIn(float timeDelta);
+	void RangeOut();
 
 
 	//플레이어 링크

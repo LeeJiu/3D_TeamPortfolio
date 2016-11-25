@@ -18,6 +18,9 @@ protected:
 	ACTOR_STATE		m_state;
 	string			m_strName;
 
+	float			m_fAtkTime;
+	float			m_fDeadTime;
+
 	bool			m_bHit;
 	bool			m_bIsOverlap;
 	bool			m_inRange;
