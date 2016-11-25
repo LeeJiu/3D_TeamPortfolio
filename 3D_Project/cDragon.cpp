@@ -225,7 +225,7 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 
 	if (KEY_MGR->IsStayDown('L'))
 	{
-		*m_pBreathParticle->pTransform = *pTransform;
+		m_pBreathParticle->pTransform->SetWorldPosition(0, 9, 0);
 		m_pBreathParticle->StartEmission();
 
 	}
@@ -771,16 +771,16 @@ void cDragon::initParticle()
 	scales.push_back(2.f);
 
 	LPDIRECT3DTEXTURE9 pTex = RESOURCE_TEXTURE->GetResource(
-		"../Resources/Testures/FireExplosionBlurred.png");
+		"../Resources/Textures/FireExplosionBlurred.png");
 
 	//파티클 랜더러 셋팅
 	m_pBreathParticle->Init(
-		400,
-		50.0f,
+		200,
+		25.0f,
 		3,
 		3.5f,
-		D3DXVECTOR3(0, 0, 5),
-		D3DXVECTOR3(0, 0, 5),
+		D3DXVECTOR3(0, 0,10),
+		D3DXVECTOR3(0, 0, 20),
 		D3DXVECTOR3(0, 0.2f, -0.5f),
 		D3DXVECTOR3(0, 0.4f, -1.0f),
 		colors,
