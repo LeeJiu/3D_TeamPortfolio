@@ -23,6 +23,20 @@ cMage::cMage()
 cMage::~cMage()
 {
 	SAFE_DELETE(m_ATKBox);
+
+	SAFE_DELETE(m_ATKBox);
+	SAFE_DELETE(m_pSkill_SnowStorm);
+	SAFE_DELETE(m_pSurroundSkill);
+	SAFE_DELETE(m_pSkill_DarkRain);
+	SAFE_DELETE(m_pSkill_Front);
+	SAFE_DELETE(m_pSkill_magicShild);
+	SAFE_DELETE(m_pSurroundSkill);
+	SAFE_DELETE(m_pSkill_Escape);
+	SAFE_DELETE(m_pSkill_FlameRoad);
+
+
+
+
 }
 
 
@@ -31,10 +45,9 @@ void cMage::BaseObjectEnable()
 {
 
 	//몬스터 관련
-	MonsterInit();
 	SetBassClass();
 
-	m_pMonsterMgr = new cMonsterManager;
+
 	
 	//무기 관련
 
@@ -56,6 +69,7 @@ void cMage::BaseObjectEnable()
 
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
+	BaseObjectBoundBox();
 
 	m_isPetOn = false;
 
@@ -69,6 +83,7 @@ void cMage::BaseObjectEnable()
 	m_ATKBox->BoundBox.SetBound(&m_ATKBox->pTransform->GetWorldPosition(), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
 	pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
 
+	m_vMonster = m_pMonMgr->GetMonsters();
 
 	//캐릭터의 그려진 위치를 세팅
 	//D3DXVECTOR3	minPos(-1, 0, -1);
@@ -262,7 +277,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		m_magicATK->pTransform->SetWorldPosition(this->m_ATKBox->pTransform->GetWorldPosition());
 	}
 
-	MonsterUpdate(timeDelta);
+	SKILL03();
 
 }
 
@@ -274,8 +289,6 @@ void cMage::BaseObjectRender()
 	m_ATKBox->BoundBox.RenderGizmo(m_ATKBox->pTransform);
 
 	//this->m_Weapon->Render();
-
-	MonsterRender();
 
 
 	m_pSurroundSkill->BaseObjectRender();
@@ -384,51 +397,30 @@ void cMage::MagicATKInit()
 
 
 
-
-void cMage::MonsterInit()
-{
-	D3DXMATRIXA16 matScale;
-	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
-	D3DXMATRIXA16 matRotate;
-	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
-	D3DXMATRIXA16 matCorrection = matScale * matRotate;
-
-	cXMesh_Skinned* pMonster = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Minho/MOB_Minho.X", &matCorrection);
-
-	//무기 관련
-	m_pMonster = new cBaseObject;
-	m_pMonster->SetMesh(pMonster);
-	m_pMonster->SetActive(true);
-
-	m_pMonster->BoundBox.Init(D3DXVECTOR3(-0.5, -0.5, -0.5), D3DXVECTOR3(0.5, 5.5, 0.5));
-	m_pMonster->pTransform->SetWorldPosition(D3DXVECTOR3(0, 8, 0));
-
-
-	m_isTarget = false;
-	m_MobCollision = false;
-
+	//D3DXMATRIXA16 matScale;
+	//D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
+	//D3DXMATRIXA16 matRotate;
+	//D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
+	//D3DXMATRIXA16 matCorrection = matScale * matRotate;
+	//
+	//cXMesh_Skinned* pMonster = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Minho/MOB_Minho.X", &matCorrection);
+	//
+	////무기 관련
+	//m_pMonster = new cBaseObject;
+	//m_pMonster->SetMesh(pMonster);
+	//m_pMonster->SetActive(true);
+	//
+	//m_pMonster->BoundBox.Init(D3DXVECTOR3(-0.5, -0.5, -0.5), D3DXVECTOR3(0.5, 5.5, 0.5));
+	//m_pMonster->pTransform->SetWorldPosition(D3DXVECTOR3(0, 8, 0));
+	//
+	//
+	//m_isTarget = false;
+	//m_MobCollision = false;
+	//
+	//MonsterCollision(timeDelta);
 
 
 
-}
-
-
-void cMage::MonsterUpdate(float timeDelta)
-{
-
-	m_pMonster->pSkinned->Update(timeDelta);
-
-
-
-	MonsterCollision(timeDelta);
-
-
-
-}
-
-
-void cMage::MonsterCollision(float timeDelta)
-{
 
   //D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_pMonster->pTransform->GetWorldPosition();
   //
@@ -513,21 +505,32 @@ void cMage::MonsterCollision(float timeDelta)
   
 
 
-}
 
-
-void cMage::MonsterRender()
+void cMage::BaseObjectBoundBox()
 {
-
-	m_pMonster->Render();
-	m_pMonster->BoundBox.RenderGizmo(m_pMonster->pTransform);
-
+	BoundBox.SetBound(&D3DXVECTOR3(0, 1.5f, 0), &D3DXVECTOR3(0.5f, 1.5f, 0.5f));
 }
-
 
 
 void  cMage::Damage(float damage)
 {
+	m_fHP -= damage;
+	if (m_fHP <= FEPSILON)
+	{
+		m_fHP = 0.0f;
+		m_state = DEAD;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->PlayOneShotAfterHold(m_strName);
+		return;
+	}
+
+	if (m_state != DMG)
+	{
+		m_state = DMG;
+		m_strName = MyUtil::SetAnimation(m_state);
+		pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3f);
+		m_state = IDLE;
+	}
 
 }
 
@@ -541,6 +544,7 @@ void cMage::Attack02()
 }
 void cMage::Attack03()
 {
+	
 
 }
 
@@ -554,6 +558,24 @@ void cMage::SKILL02()
 }
 void cMage::SKILL03()
 {
+
+	if (m_pSkill_SnowStorm->GetIsAttacking())
+	{
+		RangeCheck(10);
+
+		int size = m_vMonster.size();
+		for (int i = 0; i < size; i++)
+		{
+			LOG_MGR->AddLog("vector[%d] = %d",i, m_vMonster[i]->GetInRange());
+
+			if (!m_vMonster[i]->GetInRange()) continue;
+			
+			m_vMonster[i]->Damage(100);
+			LOG_MGR->AddLog("데미지 받는중");
+		}
+	}
+
+	//LOG_MGR->AddLog(" %d", m_pSkill_SnowStorm->GetIsAttacking());
 
 }
 void cMage::SKILL04()

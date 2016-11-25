@@ -9,6 +9,8 @@ cSkill_Escape::cSkill_Escape()
 
 cSkill_Escape::~cSkill_Escape()
 {
+	SAFE_DELETE(m_CircleEfc);
+
 }
 
 void cSkill_Escape::BaseObjectEnable(D3DXVECTOR3  casterWorldPos, float moveLength, int castTime, int buffCount, int coolTime)

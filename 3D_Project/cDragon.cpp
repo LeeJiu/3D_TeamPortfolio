@@ -23,6 +23,11 @@ cDragon::~cDragon()
 	{
 		SAFE_DELETE(m_pCollTrans[i]);
 	}
+
+	for (int i = 0; i < TICKMAX; i++)
+	{
+		SAFE_DELETE(m_tick[i]);
+	}
 }
 
 void cDragon::BaseObjectEnable()
@@ -40,6 +45,17 @@ void cDragon::BaseObjectEnable()
 	{
 		m_pCollTrans[i] = new cTransform; //동적 할당 되있는거. 
 	}
+	for (int i = 0; i < TICKMAX; i++)
+	{
+		m_tick[i] = new cTickFunc;
+		m_tick[i]->init(0.3f);
+	}
+	m_tick[BasicAtt]->init(1.f);
+	m_tick[HeadAtt]->init(0.3f);
+	m_tick[Breath]->init(0.3f);
+	m_tick[Earthquake]->init(0.5f);
+	m_tick[Pattern]->init(10.f);
+
 	//=================== 초기화 ================
 	//pTransform , 몬스터 움직일때 쓰는 trans 
 
@@ -62,7 +78,7 @@ void cDragon::BaseObjectEnable()
 	collPosUpdate();
 	// 스폰 지역 월드 센터 값 
 	m_spone.worldCenter = pTransform->GetWorldPosition();
-	m_spone.radius = 30.f;
+	m_spone.radius = 100.f;
 	// 평타 사정거리
 	m_basicAttack.radius = m_bound[0].radius;
 
@@ -76,13 +92,19 @@ void cDragon::BaseObjectEnable()
 	isNoneBasicAttack = false;// 브레스 , 장판 ,머리 치기 중 이니?
 	//스킬 사용할 숫자. 
 	skillChance = 0;          // max 3 개 1,2,3 사용
+
+	// 장판 범위 
+	for (int i = 0; i < 5; i++)
+	{
+		m_circle[i].radius = 10.f;
+	}
 }
 
 void cDragon::BaseObjectUpdate(float timeDelta)
 {
 	m_nowAni = pSkinned->GetNowPlayingAni();
 	int chance = MyUtil::RandomIntRange(0, 10);
-	
+
 
 
 	// 전투 범위에 들어오면 
@@ -100,16 +122,23 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 		// 평타 범위 안에 들어오면 평타 공격을 한다. 
 		if (basicRange() == true)
 		{
-			if (chance == 5)  // 1/10 확률로 머리치기 /
+			if (chance == 5 && isBasicAttack != true)  // 1/10 확률로 머리치기 /
 			{
 				isHeadAtt = true;
 				isNoneBasicAttack = true;
 			}
+			else if (chance == 3 && isBasicAttack != true)
+			{
+				isEarthquake = true;     // 장판중?
+				isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
+				LOG_MGR->AddLog("평타중 발동: %d", skillChance);
+				makeCircleQuad();
+			}
 			else
 			{
-			//기본 공격을 하기 위해서는 멈춰야 한다. 
-			isMove = false;
-			isBasicAttack = true;     // 기본 공격 
+				//기본 공격을 하기 위해서는 멈춰야 한다. 
+				isMove = false;
+				isBasicAttack = true;     // 기본 공격 
 
 			}
 
@@ -118,30 +147,37 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 		{
 			//스킬 쓰고나서 초기 해야 할 값
 			//skillChance =0, isNoneBasicAttack = false, 스킬에 사용한 값
-			if (skillChance == 0)
+			if (m_tick[Pattern]->tickStart())
 			{
-				skillChance = MyUtil::RandomIntRange(1, 3);
-				isMove = false;
-				isBasicAttack = false;
-				LOG_MGR->AddLog("랜덤: %d", skillChance);
-				//LookPos(m_pPlayer->pTransform->GetWorldPosition());
-				MoveToPlayer();
-			}
-			switch (skillChance)
-			{
-			case 1:
-				isBreath = true;         // 브레스중?
-				isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
 
-				break;
-			case 2:
-				isEarthquake = true;     // 장판중?
-				isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
-				break;
-		
-			default:
-				break;
+				if (skillChance == 0)
+				{
+					skillChance = MyUtil::RandomIntRange(1, 3);
+					isMove = false;
+					isBasicAttack = false;
+					//LookPos(m_pPlayer->pTransform->GetWorldPosition());
+					MoveToPlayer();
+					switch (skillChance)
+					{
+					case 1:
+						if (isBreath == true)break;
+						isBreath = true;         // 브레스중?
+						isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
+
+						break;
+					case 2:
+						if (isEarthquake == true)break;
+						isEarthquake = true;     // 장판중?
+						isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
+						LOG_MGR->AddLog("랜덤: %d", skillChance);
+						makeCircleQuad();
+
+						break;
+
+					}
+				}
 			}
+
 		}
 	}
 	else if (battleRange() == true && isBattle == false)
@@ -154,53 +190,36 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 		MoveToSpone(m_spone.worldCenter);
 	}
 
-	basicAttackUpdate();
+	if (isBattle == true)
+	{
+		if (isBasicAttack == true)
+		{
+			basicAttackUpdate();
+		}
+		if (isBreath == true)
+		{
+			breathUpdate();
+		}
+		if (isEarthquake == true)
+		{
+			earthUpate();
+		}
+		if (isHeadAtt == true)
+		{
+			HeadAttUpate();
 
-	breathUpdate();
-	earthUpate();
-	HeadAttUpate();
+		}
+		aniManager();
 
-	aniManager();
+	}
+
+	for (int i = 0; i < TICKMAX; i++)
+	{
+		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
+	}
 
 	//=================== 업데이트 ==============
-	if (KEY_MGR->IsStayDown(VK_LCONTROL))
-	{
-		if (KEY_MGR->IsOnceDown('1'))
-			this->pSkinned->Play("None_1", 0.3f);
 
-		if (KEY_MGR->IsOnceDown('2'))
-			this->pSkinned->Play("SK_Fring_03", 0.3f);
-
-		if (KEY_MGR->IsOnceDown('3'))
-			this->pSkinned->Play("Spawn", 0.3f);
-
-		if (KEY_MGR->IsOnceDown(VK_SPACE))
-			this->pSkinned->PlayOneShot("Walk_F", 0.3, 0.3);
-
-		if (KEY_MGR->IsOnceDown('4'))
-			this->pSkinned->Play("SK_Firing_02", 0.3f);
-		if (KEY_MGR->IsOnceDown('5'))
-			this->pSkinned->Play("SK_Firing_01", 0.3f);
-		if (KEY_MGR->IsOnceDown('6'))
-			this->pSkinned->Play("Run_F", 0.3f);
-		if (KEY_MGR->IsOnceDown('7'))
-			this->pSkinned->Play("Passout", 0.3f);
-		if (KEY_MGR->IsOnceDown('8'))
-			this->pSkinned->Play("IDLE_P_01", 0.3f);
-		if (KEY_MGR->IsOnceDown('9'))
-			this->pSkinned->Play("IDLE_C", 0.3f);
-		if (KEY_MGR->IsOnceDown('0'))
-			this->pSkinned->Play("DMG_F", 0.3f);
-		if (KEY_MGR->IsOnceDown('Z'))
-			this->pSkinned->Play("DMG_B", 0.3f);
-		if (KEY_MGR->IsOnceDown('X'))
-			this->pSkinned->Play("ATK_02", 0.3f);
-		if (KEY_MGR->IsOnceDown('C'))
-			this->pSkinned->Play("ATK_01", 0.3f);
-
-		if (KEY_MGR->IsOnceDown('V'))
-			this->pSkinned->Stop();
-	}
 }
 
 void cDragon::BaseObjectBoundBox()
@@ -227,7 +246,6 @@ void cDragon::BaseObjectRender()
 	for (int i = 0; i < COLLISION; i++)
 	{
 		//m_pBoneTrans[i]->RenderGimozo(true);
-
 	}
 	for (int i = 0; i < COLLISION; i++)
 	{
@@ -242,6 +260,16 @@ void cDragon::BaseObjectRender()
 	GIZMO_MGR->WireSphere(m_basicAttack.worldCenter, m_basicAttack.radius, 0xffff0000);
 	GIZMO_MGR->WireSphere(m_spone.worldCenter, m_spone.radius, 0xffffff00);
 
+	GIZMO_MGR->Sector(pTransform->GetWorldPosition(), pTransform->GetForward(), 40, 20 * ONE_RAD);
+	for (int i = 0; i < 5; i++)
+	{
+		GIZMO_MGR->WireSphere(m_circle[i].worldCenter, m_circle[i].radius, 0xffff0000);
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		GIZMO_MGR->Quad(m_quad[i]);
+	}
 }
 
 void cDragon::collPosUpdate()
@@ -306,6 +334,7 @@ void cDragon::MoveToSpone(D3DXVECTOR3 target)
 	if (PHYSICS_MGR->IsPointSphere(pTransform, 1.f, target))
 	{
 		isMove = false;
+		isBattle = false;
 		stateInit();
 
 		if (strcmp(m_nowAni.c_str(), "Spawn") != 0)
@@ -475,22 +504,28 @@ void cDragon::LookPos(D3DXVECTOR3 target)
 }
 void cDragon::basicAttackUpdate()
 {
+	if (isNoneBasicAttack == true)return;
 	if (strcmp(m_nowAni.c_str(), "ATK_02") == 0);
 	{
 
 		float aniTime = pSkinned->GetTime();
 
-		if (aniTime > 0.8f)
+		if (aniTime > 0.9f)
 		{
-			m_pPlayer->Damage(10.f);
-			// 플레이어 데미지 주는 부분,
+			if (m_tick[BasicAtt]->tickStart())
+			{
+				m_pPlayer->Damage(10.f);
+				// 플레이어 데미지 주는 부분,
+				LOG_MGR->AddLog(": Damage.2f", aniTime);
+
+			}
 		}
-		if (aniTime > 0.98f)
+
+		if (aniTime > 0.99f)
 		{
-			LOG_MGR->AddLog(": %.2f", aniTime);
+			//LOG_MGR->AddLog(": %.2f", aniTime);
 			stateInit();
-			
-		
+
 		}
 	}
 }
@@ -536,7 +571,8 @@ void cDragon::spawn()
 		if (strcmp(m_nowAni.c_str(), "Spawn") == 0);
 		{
 			float aniTime = pSkinned->GetTime();
-			if (aniTime > 0.95f)
+
+			if (aniTime > 0.99f)
 			{
 				isBattle = true;
 			}
@@ -558,13 +594,23 @@ void cDragon::breathUpdate()
 	{
 		float aniTime = pSkinned->GetTime();
 
-		if (aniTime > 0.8f)
+		if (aniTime > 0.5f)
 		{
+			if (m_tick[Breath]->tickStart())
+			{
+				if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 40, 20 * ONE_RAD))
+				{
+					m_pPlayer->Damage(10.f);
+					LOG_MGR->AddLog("브레스 맞음: %.2f", aniTime);
+
+				}
+
+			}
 			//m_pPlayer->Damage();
 
 			// 플레이어 데미지 주는 부분,
 		}
-		if (aniTime > 0.98f)
+		if (aniTime > 0.99f)
 		{
 			//LOG_MGR->AddLog(": %.2f", aniTime);
 			stateInit();
@@ -579,13 +625,30 @@ void cDragon::earthUpate()
 		float aniTime = pSkinned->GetTime();
 
 
-		if (aniTime > 0.8f)
+		if (aniTime > 0.3f)
 		{
+			if (m_tick[Breath]->tickStart())
+			{
+				for (int i = 0; i < 5; i++)
+				{
+					if (PHYSICS_MGR->IsPointSphere(&m_circle[i].worldCenter, m_circle[i].radius
+						, &m_pPlayer->pTransform->GetWorldPosition()))
+					{
+						m_pPlayer->Damage(10.f);
+						LOG_MGR->AddLog("원장판맞음");
+
+					}
+				}
+				for (int i = 0; i < 3; i++)
+				{
+					//  PHYSICS_MGR->IsPointQuad(m_quad[i] )
+				}
+			}
 			//m_pPlayer->Damage();
 
 			// 플레이어 데미지 주는 부분,
 		}
-		if (aniTime > 0.98f)
+		if (aniTime > 0.99f)
 		{
 			//LOG_MGR->AddLog(": %.2f", aniTime);
 			stateInit();
@@ -598,16 +661,23 @@ void cDragon::HeadAttUpate()
 	if (strcmp(m_nowAni.c_str(), "SK_Firing_01") == 0);
 	{
 		float aniTime = pSkinned->GetTime();
-		if (PHYSICS_MGR->IsOverlap(m_pPlayer->pTransform, &m_pPlayer->BoundBox,
-			m_pBoneTrans[BODY], &m_bound[BODY]))
-		{
-			m_pPlayer->Damage(10.f);
-		}
-	
 
-		if (aniTime > 0.98f)
+		if (m_tick[HeadAtt]->tickStart())
 		{
-			//LOG_MGR->AddLog(": %.2f", aniTime);
+			if (PHYSICS_MGR->IsOverlap(m_pPlayer->pTransform, &m_pPlayer->BoundBox,
+				m_pBoneTrans[HEAD], &m_bound[HEAD]))
+			{
+				m_pPlayer->Damage(10.f);
+				LOG_MGR->AddLog("머리에 맞음");
+
+			}
+
+		}
+
+
+		if (aniTime > 0.99f)
+		{
+
 			stateInit();
 
 		}
@@ -622,4 +692,31 @@ void cDragon::stateInit()
 	isEarthquake = false;     // 장판중?
 	isHeadAtt = false;         // 머리 치기
 	isNoneBasicAttack = false;// 브레스 , 장판 ,머리 치기 중 이니?
+}
+
+D3DXVECTOR3 cDragon::makeRndVec(D3DXVECTOR3* pos, float fRadius)
+{
+	float tX = pos->x;
+	float tZ = pos->z;
+
+	float x, z;
+	x = RandomFloatRange(tX - fRadius, tX + fRadius);
+	z = RandomFloatRange(tZ - fRadius, tZ + fRadius);
+
+	D3DXVECTOR3 finalPos(x, pTerrain->GetHeight(x, z), z);
+	return finalPos;
+}
+
+void cDragon::makeCircleQuad()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		m_circle[i].worldCenter = makeRndVec(&pTransform->GetWorldPosition(), m_spone.radius / 2);
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		MyUtil::createQuad(m_quad[i], 8, 8, pTransform,
+			&makeRndVec(&pTransform->GetWorldPosition(), m_spone.radius / 2));
+	}
 }

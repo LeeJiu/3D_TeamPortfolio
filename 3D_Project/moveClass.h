@@ -55,7 +55,7 @@ public:
 
 	bool GetIsMove() { return isMove; }
 	bool GetIsJump() { return isJump; }
-
+	Ray getRay(){ return moveRay; }
 	moveClass();
 	~moveClass();
 };

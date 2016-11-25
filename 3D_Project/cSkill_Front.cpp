@@ -9,6 +9,8 @@ cSkill_Front::cSkill_Front()
 
 cSkill_Front::~cSkill_Front()
 {
+	SAFE_DELETE(m_CastEfc)
+
 }
 
 void cSkill_Front::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float maxDistance, float maxWidth, int castTime, int attackingTime, int coolTime)
