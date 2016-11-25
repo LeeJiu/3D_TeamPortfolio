@@ -8,6 +8,7 @@
 
 #define COLLISION 4
 #define TICKMAX 5
+#define COLLCIRCLE 4
 /*
    전투를 걸어야 전투가 시작됨.
    도망 치려면 전투 범위에서 벗어나야됨.
@@ -62,16 +63,17 @@ private:
 	//========== 지진 관련 장판 보여줄때 쓸 변수
 	bool isRenderEarthquake;            // 지진중?
 	
-	stSphere  m_circle[5];              // 원 장판
-	D3DXVECTOR3      m_quad[3][6];      // 쿼드 장판 
+	stSphere  m_circle[COLLCIRCLE];              // 원 장판
+	D3DXVECTOR3      m_quad[COLLCIRCLE][6];      // 쿼드 장판 
+	D3DXVECTOR3      m_quadPos[COLLCIRCLE];      // 쿼드 장판
 	//========== 지진 , 브레스 렌더 해주는 함수 
 	bool earthRender;
 	bool breathRender;
     //========== 파티클 변수 추가. 
 	cPartcleEmitter* m_pBreathParticle;
 
-	cSkill_Meteo* m_Skill_Meteo[5];
-	cSkill_Thunder* m_Skill_Thunder[5];
+	cSkill_Meteo* m_Skill_Meteo[COLLCIRCLE];
+	cSkill_Thunder* m_Skill_Thunder[COLLCIRCLE];
 
 
 public:

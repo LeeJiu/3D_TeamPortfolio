@@ -31,6 +31,13 @@ cDragon::~cDragon()
 
 	m_pBreathParticle->Release();
 	SAFE_DELETE(m_pBreathParticle);
+
+	for (int i = 0; i < COLLCIRCLE; i++)
+	{
+		SAFE_DELETE(m_Skill_Meteo[i]);
+		SAFE_DELETE(m_Skill_Thunder[i]);
+
+	}
 }
 
 void cDragon::BaseObjectEnable()
@@ -100,7 +107,7 @@ void cDragon::BaseObjectEnable()
 
 
 	// 장판 범위 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
 		m_circle[i].radius = 10.f;
 		m_Skill_Meteo[i] = new cSkill_Meteo;
@@ -186,7 +193,7 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 						isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
 						LOG_MGR->AddLog("랜덤: %d", skillChance);
 						makeCircleQuad();
-						for (int i = 0; i < 5; i++)
+						for (int i = 0; i < COLLCIRCLE; i++)
 						{
 							m_Skill_Meteo[i]->Effect_Init();
 							m_Skill_Meteo[i]->StartCasting();
@@ -255,11 +262,11 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 	
 	m_pBreathParticle->Update(TIME_MGR->GetFrameDeltaSec());
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
 		m_Skill_Meteo[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_circle[i].worldCenter);
 		m_Skill_Meteo[i]->Effect_Update(timeDelta);
-		m_Skill_Thunder[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_circle[i].worldCenter);
+		m_Skill_Thunder[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_quadPos[i]);
 		m_Skill_Thunder[i]->Effect_Update(timeDelta);
 	}
 
@@ -306,7 +313,9 @@ void cDragon::BaseObjectRender()
 	GIZMO_MGR->WireSphere(m_spone.worldCenter, m_spone.radius, 0xffffff00);
 
 	GIZMO_MGR->Sector(pTransform->GetWorldPosition(), pTransform->GetForward(), 40, 20 * ONE_RAD);
-	for (int i = 0; i < 5; i++)
+	
+	// 스킬 이팩트 부분
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
 		GIZMO_MGR->WireSphere(m_circle[i].worldCenter, m_circle[i].radius, 0xffff0000);
 		m_Skill_Meteo[i]->BaseObjectRender();
@@ -315,7 +324,7 @@ void cDragon::BaseObjectRender()
 		m_Skill_Thunder[i]->Effect_Render();
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
 		GIZMO_MGR->Quad(m_quad[i]);
 	}
@@ -689,7 +698,7 @@ void cDragon::earthUpate()
 
 			if (m_tick[Breath]->tickStart())
 			{
-				for (int i = 0; i < 5; i++)
+				for (int i = 0; i < COLLCIRCLE; i++)
 				{
 					
 
@@ -701,7 +710,7 @@ void cDragon::earthUpate()
 
 					}
 				}
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < COLLCIRCLE; i++)
 				{
 					//  PHYSICS_MGR->IsPointQuad(m_quad[i] )
 				}
@@ -771,15 +780,17 @@ D3DXVECTOR3 cDragon::makeRndVec(D3DXVECTOR3* pos, float fRadius)
 
 void cDragon::makeCircleQuad()
 {
-	for (int i = 0; i < 5; i++)
+	// 서클 좌표 생성
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
 		m_circle[i].worldCenter = makeRndVec(&pTransform->GetWorldPosition(), m_spone.radius / 2);
 	}
-
-	for (int i = 0; i < 3; i++)
+	// 쿼드 좌표 생성. 
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
+		m_quadPos[i] = makeRndVec(&pTransform->GetWorldPosition(), m_spone.radius / 2);
 		MyUtil::createQuad(m_quad[i], 8, 8, pTransform,
-			&makeRndVec(&pTransform->GetWorldPosition(), m_spone.radius / 2));
+			&m_quadPos[i]);
 	}
 }
 
