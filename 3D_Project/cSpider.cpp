@@ -14,12 +14,12 @@ cSpider::cSpider()
 	m_bHit = false;
 	m_fAtkTime = 0;
 	m_fDeadTime = 0;
-	m_pHitTrans = new cTransform;
 }
 
 
 cSpider::~cSpider()
 {
+	
 }
 
 void cSpider::BaseObjectEnable()
@@ -158,7 +158,7 @@ void cSpider::Damage(float fDamage)
 	{
 		m_state = DMG;
 		m_strName = MyUtil::SetAnimation(m_state);
-		pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3f);
+		pSkinned->PlayOneShotAfterOther(m_strName, "WAIT");
 		m_fHP -= fDamage;
 	}
 	else if (m_state == DIE || m_state == DMG)
@@ -202,6 +202,11 @@ void cSpider::SetAniState()
 		m_state = RUN;
 		m_strName = MyUtil::SetAnimation(m_state);
 	}
-
-	LOG_MGR->AddLog("%s", aniName.c_str());
+	else if (strcmp(aniName.c_str(), "DMG") == 0)
+	{
+		m_state = DMG;
+		m_strName = MyUtil::SetAnimation(m_state);
+		m_fAtkTime = 0;
+		m_bHit = false;
+	}
 }

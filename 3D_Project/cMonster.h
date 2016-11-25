@@ -18,6 +18,7 @@ protected:
 	ACTOR_STATE		m_state;
 	string			m_strName;
 
+	bool			m_bHit;
 	bool			m_bIsOverlap;
 	bool			m_inRange;
 

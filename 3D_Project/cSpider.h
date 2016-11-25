@@ -5,7 +5,6 @@ class cSpider : public cMonster
 {
 private:
 	float			m_fRange2;
-	bool			m_bHit;
 
 	float			m_fAtkTime;
 	float			m_fDeadTime;
