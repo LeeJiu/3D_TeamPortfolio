@@ -111,7 +111,7 @@ HRESULT cQuadParticleEmitter::Init(
 
 	return S_OK;
 }
-	
+
 void cQuadParticleEmitter::Release()
 {
 	SAFE_DELETE_ARR( m_pSortArray );
@@ -212,21 +212,21 @@ void cQuadParticleEmitter::BaseObjectRender()
 	else
 	{
 		
-		for( int i = 0 ; i < m_PaticleNum ; i++ ){
-			
-			//해당파티클이 활성화 중이니?
-			if( m_pPaticles[i].isLive() ){
-				//해당 파티클의 정보를 얻는다.
-				m_pPaticles[i].GetParticleVertex(
-					&( m_ParticleVerticles[drawParticleNum * 4] ),		//써질 정점 주소 4 씩 쓴다.
-					&( m_ParticleIndex[drawParticleNum * 6] ),			//써질 인덱스 주소 6 씩 쓴다.
-					m_Colors, 
-					m_Scales, 
-					drawParticleNum										//인덱스 땜에 현제까지 그려진 파티클수도 같이 넘겨야 한다....
-					);
-				drawParticleNum++;
-			}
-		}
+		//for( int i = 0 ; i < m_PaticleNum ; i++ ){
+		//	
+		//	//해당파티클이 활성화 중이니?
+		//	if( m_pPaticles[i].isLive() ){
+		//		//해당 파티클의 정보를 얻는다.
+		//		m_pPaticles[i].GetParticleVertex(
+		//			&( m_ParticleVerticles[drawParticleNum * 4] ),		//써질 정점 주소 4 씩 쓴다.
+		//			&( m_ParticleIndex[drawParticleNum * 6] ),			//써질 인덱스 주소 6 씩 쓴다.
+		//			m_Colors, 
+		//			m_Scales, 
+		//			drawParticleNum										//인덱스 땜에 현제까지 그려진 파티클수도 같이 넘겨야 한다....
+		//			);
+		//		drawParticleNum++;
+		//	}
+		//}
 
 	}
 

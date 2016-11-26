@@ -2,11 +2,15 @@
 #include "cPlayer.h"
 #include "cSkill_Swing.h"
 
+
 #define CONTROL_KEY 5
+
+class cViewDamage;
 
 class cBerserker : public cPlayer
 {
 private:
+	cViewDamage*		m_ViewDamage;
 	cSkill_Surround*    m_pSurroundSkill;	//주변범위
 
 	//스킬
