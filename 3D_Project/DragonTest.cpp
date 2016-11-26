@@ -164,7 +164,7 @@ void DragonTest::Scene_Render1()
 
 	this->pBerserker->Render();
 	this->m_pMonMgr->Render();
-
+	//RenderEnvironment(pBerserker->pTransform);
 	//m_Land->Render();
 }
 
