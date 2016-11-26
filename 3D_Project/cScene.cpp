@@ -92,6 +92,8 @@ HRESULT cScene::Init()
 
 
 	this->postEffect = RESOURCE_FX->GetResource( "../Resources/Shaders/PostEffect.fx" );
+	// ================ ½ºÄ«ÀÌ ¸Ê ÀÌµ÷.
+	this->SetEnvironment("../Resources/TextureCUBE/desertCube.dds");
 
 	return S_OK;
 }
@@ -258,6 +260,9 @@ void cScene::RenderEnvironment()
 	//WVP ¸ÅÆ®¸¯½º
 	D3DXMATRIXA16 matWorld = this->pMainCamera->GetFinalMatrix();
 	D3DXMATRIXA16 matViewProj = this->pMainCamera->GetViewProjectionMatrix();
+	//matWorld._41 = 0.f;
+	//matWorld._42 = 0.f;
+	//matWorld._43 = 0.f;
 	D3DXMATRIXA16 matWVP = matWorld * matViewProj;
 
 	this->evironmentEffect->SetMatrix( "matWVP", &matWVP );
