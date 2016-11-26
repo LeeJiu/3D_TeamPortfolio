@@ -102,7 +102,7 @@ public:
 	//카메라 소팅을 할꺼니?
 	void SetCameraSort( cTransform* pCameraTrans, bool bSort );
 
-	
+	void SetTexture(LPDIRECT3DTEXTURE9 tex) { m_pTex = tex; }
 	void SetRenderLocal( bool bLocal ){
 		m_bLocal = bLocal;
 	}

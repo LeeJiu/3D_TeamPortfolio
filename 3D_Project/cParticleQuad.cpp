@@ -136,10 +136,11 @@ void cParticleQuad::GetParticleVertex(
 
 		//보간값
 		float fN = position - startIndex;
-		s = ( scales[endIndex] - scales[startIndex] ) * fN + scales[startIndex];
+		//////////////////////////////스케일, 컬러벡터잠굼
+		//s = ( scales[endIndex] - scales[startIndex] ) * fN + scales[startIndex];
 
 		//최종 스케일 값 셋팅
-		scale = m_fScale * s;
+		scale = m_fScale;// *s;
 
 
 
