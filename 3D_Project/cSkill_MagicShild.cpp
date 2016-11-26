@@ -9,6 +9,9 @@ cSkill_MagicShild::cSkill_MagicShild()
 
 cSkill_MagicShild::~cSkill_MagicShild()
 {
+	SAFE_DELETE(m_magicShild);
+	SAFE_DELETE(m_snowStrom_under);
+
 }
 
 
@@ -42,7 +45,7 @@ void cSkill_MagicShild::Effect_Init()
 		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors, scales,
-		2.0f, 2.0f,
+		2.0f/2, 2.0f/2,
 		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/magicShild.tga"),
 		true);
 
@@ -75,7 +78,7 @@ void cSkill_MagicShild::Effect_Init()
 		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors2, scales2,
-		2.0f, 2.0f,
+		2.0f/2, 2.0f/2,
 		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/magicAura.tga"),
 		true);
 
@@ -90,7 +93,7 @@ void cSkill_MagicShild::Effect_Update(float timeDelta)
 	{
 		m_magicShild->Update(timeDelta);
 		m_magicShild->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
-		m_magicShild->pTransform->SetWorldPosition(pTransform->GetWorldPosition().x, pTransform->GetWorldPosition().y + 2, pTransform->GetWorldPosition().z);
+		m_magicShild->pTransform->SetWorldPosition(pTransform->GetWorldPosition().x, pTransform->GetWorldPosition().y + 1, pTransform->GetWorldPosition().z);
 		m_snowStrom_under->Update(timeDelta);
 		m_snowStrom_under->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
 		m_snowStrom_under->pTransform->SetWorldPosition(pTransform->GetWorldPosition().x, pTransform->GetWorldPosition().y, pTransform->GetWorldPosition().z);

@@ -9,6 +9,10 @@ cSkill_Meteo::cSkill_Meteo()
 
 cSkill_Meteo::~cSkill_Meteo()
 {
+	SAFE_DELETE(m_lavaStone);
+	SAFE_DELETE(m_snowStrom);
+	SAFE_DELETE(m_snowStrom_under);
+	SAFE_DELETE(m_snow);
 }
 
 
@@ -59,7 +63,7 @@ void cSkill_Meteo::Effect_Init()
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors, scales,
 		2.0f, 9.0f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/flame.tga"),
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/flame_green.tga"),
 		true);
 
 
@@ -109,7 +113,7 @@ void cSkill_Meteo::Effect_Init()
 	scales_snow.push_back(0.1f);
 
 	LPDIRECT3DTEXTURE9 pTex = RESOURCE_TEXTURE->GetResource(
-		"../Resources/Textures/Effects/flame3.tga");
+		"../Resources/Textures/Effects/flame4.tga");
 
 	//파티클 랜더러 셋팅
 	m_snow->Init(

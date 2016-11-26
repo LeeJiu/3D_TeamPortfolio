@@ -9,6 +9,7 @@
 #include "cSKill_Escape.h"
 #include "cSkill_FlameRoad.h"
 
+
 #define CONTROL_KEY 5
 
 
@@ -18,17 +19,11 @@ class cPartcleEmitter;
 class cParticleQuad;
 class cParticle;
 
-class cMonsterManager;
-
 class cMage : public cPlayer
 {
 private:
 
-	//몬스터에 관한것
 
-	cMonsterManager*      m_pMonsterMgr;
-
-	cBaseObject*          m_pMonster;
 	int                   m_StateCount;
 	bool                  m_isTarget;
 	bool                  m_MobCollision;
@@ -76,16 +71,10 @@ public:
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
 	void BaseObjectRender();
 	void WeaponRender();
+	void BaseObjectBoundBox();
 
 
 private:
-	//몬스터와의 상호교류
-	void MonsterInit();
-
-	void MonsterUpdate(float timeDelta);
-	void MonsterCollision(float timeDelta); //충돌 체크하고
-
-	void MonsterRender();
 
 
 	//펫

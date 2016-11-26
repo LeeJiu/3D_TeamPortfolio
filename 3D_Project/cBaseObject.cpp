@@ -106,7 +106,6 @@ void  cBaseObject::SetMesh( cXMesh*	pMesh ){
 	
 	this->pMesh = pMesh;
 	cXMesh_Skinned* pSkin  = dynamic_cast<cXMesh_Skinned*>( pMesh );
-	this->ComputeBoundBox();
 
 	//StaticMesh ¶ó¸é...
 	if( pSkin == NULL )
@@ -128,4 +127,5 @@ void  cBaseObject::SetMesh( cXMesh*	pMesh ){
 		this->pSkinned->Init( pSkin );
 	}
 
+	this->ComputeBoundBox();
 }

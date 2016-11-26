@@ -2,18 +2,20 @@
 #include "cMonster.h"
 #include "cWayPoint.h"
 #include "cTransform.h"
+#include "cBoundBox.h"
 #include "cTerrain.h"
 #include "cPlayer.h"
 
 
 cMonster::cMonster()
 {
-
+	m_pHitTrans = new cTransform;
 }
 
 
 cMonster::~cMonster()
 {
+	SAFE_DELETE(m_pHitTrans);
 }
 
 void cMonster::BaseObjectEnable()
@@ -61,16 +63,6 @@ void cMonster::MoveToPlayer()
 	ray.direction = D3DXVECTOR3(0, -1, 0);
 	ray.origin = currentPos;
 	ray.origin.y += 3;
-
-	////플레이어와 충돌했다면 더이상 따라가지 않는다.
-	//if (PHYSICS_MGR->IsOverlap(this, m_pPlayer))
-	//{
-	//	m_bIsOverlap = true;
-	//	return;
-	//}
-	//
-	////플레이어와 충돌하지 않았다.
-	//m_bIsOverlap = false;
 
 
 	//거리를 구한다. / 플레이어와 몬스터의 거리

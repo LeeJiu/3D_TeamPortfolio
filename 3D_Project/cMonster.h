@@ -12,14 +12,22 @@ protected:
 	cPlayer*		m_pPlayer;
 
 	std::vector<cBaseObject*>		m_vObjects;
-	
+
 	float			m_fHP;
 	float			m_fRange;
 	ACTOR_STATE		m_state;
 	string			m_strName;
 
+	float			m_fAtkTime;
+	float			m_fDeadTime;
+
+	bool			m_bHit;
 	bool			m_bIsOverlap;
 	bool			m_inRange;
+
+	//몬스터의 어택용 트랜스와 바운드박스
+	cTransform*		m_pHitTrans;
+	cBoundBox		m_pHitBound;
 
 public:
 	cMonster();

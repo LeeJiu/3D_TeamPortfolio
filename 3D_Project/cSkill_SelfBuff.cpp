@@ -9,6 +9,7 @@ cSkill_SelfBuff::cSkill_SelfBuff()
 
 cSkill_SelfBuff::~cSkill_SelfBuff()
 {
+
 }
 
 void cSkill_SelfBuff::BaseObjectEnable(D3DXVECTOR3  casterWorldPos, int castTime, int buffCount, int coolTime)
