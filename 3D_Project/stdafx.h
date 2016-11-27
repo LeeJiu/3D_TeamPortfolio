@@ -136,3 +136,4 @@ using namespace std;
 #include "cResourceMgr_XSkinnedMesh.h"
 #include "cSoundManager.h"
 #include "cItemManager.h"
+#include "cLoadManager.h"

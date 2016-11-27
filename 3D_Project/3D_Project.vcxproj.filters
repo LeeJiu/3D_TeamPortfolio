@@ -249,16 +249,7 @@
     <ClInclude Include="cBasilisk.h">
       <Filter>GameActor\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="cGriff.h">
-      <Filter>GameActor\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="cMinotauros.h">
-      <Filter>GameActor\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="cSpiderQueen.h">
-      <Filter>GameActor\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="cSuccubus.h">
       <Filter>GameActor\Monster</Filter>
     </ClInclude>
     <ClInclude Include="DragonTest.h">
@@ -305,6 +296,15 @@
     </ClInclude>
     <ClInclude Include="cTickFunc.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cViewDamage.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cSuccubus.h">
+      <Filter>GameActor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="cLoadManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -512,16 +512,7 @@
     <ClCompile Include="cDragon.cpp">
       <Filter>GameActor\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="cSuccubus.cpp">
-      <Filter>GameActor\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="cSpiderQueen.cpp">
-      <Filter>GameActor\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="cMinotauros.cpp">
-      <Filter>GameActor\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="cGriff.cpp">
       <Filter>GameActor\Monster</Filter>
     </ClCompile>
     <ClCompile Include="cBasilisk.cpp">
@@ -571,6 +562,15 @@
     </ClCompile>
     <ClCompile Include="cTickFunc.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cViewDamage.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cSuccubus.cpp">
+      <Filter>GameActor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="cLoadManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

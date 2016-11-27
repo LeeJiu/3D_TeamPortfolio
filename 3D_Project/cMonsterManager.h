@@ -1,9 +1,9 @@
 #pragma once
 #include "cBasilisk.h"
-#include "cGriff.h"
+//#include "cGriff.h"
 #include "cMinotauros.h"
 #include "cSpider.h"
-#include "cSpiderQueen.h"
+//#include "cSpiderQueen.h"
 #include "cSuccubus.h"
 #include "cDragon.h"
 

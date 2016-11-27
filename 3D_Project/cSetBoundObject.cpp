@@ -15,7 +15,7 @@ cSetBoundObject::~cSetBoundObject(void)
 
 void cSetBoundObject::BaseObjectUpdate( float timeDelta )
 {
-	this->pTransform->DefaultControl2( timeDelta );
+	this->pTransform->DefaultControl4( timeDelta );
 
 	if( KEY_MGR->IsStayDown( 'T' ) )
 	{
@@ -25,20 +25,20 @@ void cSetBoundObject::BaseObjectUpdate( float timeDelta )
 	else if( KEY_MGR->IsStayDown( 'G' ) )
 	{
 		this->halfSize.z -= timeDelta;
-		if( this->halfSize.z < 0.0f )
-			this->halfSize.z = 0.0f;
+		if( this->halfSize.z < 1.0f )
+			this->halfSize.z = 1.0f;
 	}
 
 	if( KEY_MGR->IsStayDown( 'F' ) )
 	{
-		this->halfSize.x += timeDelta;
+		this->halfSize.x -= timeDelta;
+		if (this->halfSize.x < 1.0f)
+			this->halfSize.x = 1.0f;
 	}
 
 	else if( KEY_MGR->IsStayDown( 'H' ) )
 	{
-		this->halfSize.x -= timeDelta;
-		if( this->halfSize.x < 0.0f )
-			this->halfSize.x = 0.0f;
+		this->halfSize.x += timeDelta;
 	}
 
 
@@ -50,8 +50,8 @@ void cSetBoundObject::BaseObjectUpdate( float timeDelta )
 	else if( KEY_MGR->IsStayDown( 'J' ) )
 	{
 		this->halfSize.y -= timeDelta;
-		if( this->halfSize.y < 0.0f )
-			this->halfSize.y = 0.0f;
+		if( this->halfSize.y < 1.0f )
+			this->halfSize.y = 1.0f;
 	}
 
 

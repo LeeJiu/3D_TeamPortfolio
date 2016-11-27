@@ -24,7 +24,6 @@ HRESULT cMonsterManager::Init()
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Bashil/MOB_Bashil.X", &matCorrection);
-	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Griff/MOB_HipGriff.X", &matCorrection);
 	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Minho/MOB_Minho.X", &matCorrection);
 	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_Spider.X", &matCorrection);
 	RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_SpiderQueen.X", &matCorrection);
@@ -113,13 +112,13 @@ void cMonsterManager::LoadMonsters()
 
 
 		//푸쉬 
-		//CreateMonster(type, pos);
+		CreateMonster(type, pos);
 	}
 
 	//임시로 몬스터를 세팅하려면 CreateMonster()에 추가하고,
 	//다음과 같이 코드를 작성한다. type, pos
 	//CreateMonster(DRAGON, D3DXVECTOR3(0, m_pTerrain->GetHeight(0, 0), 0));
-	CreateMonster(MINO, D3DXVECTOR3(20, m_pTerrain->GetHeight(20, 20), 20));
+	//CreateMonster(SUCCUBUS, D3DXVECTOR3(20, m_pTerrain->GetHeight(20, 20), 20));
 }
 
 void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
@@ -136,14 +135,14 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->pTransform->SetWorldPosition(pos);
 		monster->SetActive(true);
 		break;
-	case GRIFF:
+	/*case GRIFF:
 		monster = new cGriff;
 		monster->SetTerrain(m_pTerrain);
 		monster->SetPlayer(m_pPlayer);
 		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Griff/MOB_HipGriff.X"));
 		monster->pTransform->SetWorldPosition(pos);
 		monster->SetActive(true);
-		break;
+		break;*/
 	case MINO:
 		monster = new cMinotauros;
 		monster->SetTerrain(m_pTerrain);
@@ -160,16 +159,15 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->pTransform->SetWorldPosition(pos);
 		monster->SetActive(true);
 		break;
-	case SPIDER_QUEEN:
+	/*case SPIDER_QUEEN:
 		monster = new cSpiderQueen;
 		monster->SetTerrain(m_pTerrain);
 		monster->SetPlayer(m_pPlayer);
 		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_SpiderQueen.X"));
 		monster->pTransform->SetWorldPosition(pos);
 		monster->SetActive(true);
-		break;
+		break;*/
 	case SUCCUBUS:
-		monster = new cSuccubus;
 		monster->SetTerrain(m_pTerrain);
 		monster->SetPlayer(m_pPlayer);
 		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Surcubus/surcubus.X"));
