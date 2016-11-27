@@ -28,6 +28,16 @@ cDragon::~cDragon()
 	{
 		SAFE_DELETE(m_tick[i]);
 	}
+
+	m_pBreathParticle->Release();
+	SAFE_DELETE(m_pBreathParticle);
+
+	for (int i = 0; i < COLLCIRCLE; i++)
+	{
+		SAFE_DELETE(m_Skill_Meteo[i]);
+		SAFE_DELETE(m_Skill_Thunder[i]);
+
+	}
 }
 
 void cDragon::BaseObjectEnable()
@@ -53,7 +63,7 @@ void cDragon::BaseObjectEnable()
 	m_tick[BasicAtt]->init(1.f);
 	m_tick[HeadAtt]->init(0.3f);
 	m_tick[Breath]->init(0.3f);
-	m_tick[Earthquake]->init(0.5f);
+	m_tick[Earthquake]->init(0.8f);
 	m_tick[Pattern]->init(10.f);
 
 	//=================== 초기화 ================
@@ -93,19 +103,29 @@ void cDragon::BaseObjectEnable()
 	//스킬 사용할 숫자. 
 	skillChance = 0;          // max 3 개 1,2,3 사용
 
+
+
+
 	// 장판 범위 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
 		m_circle[i].radius = 10.f;
+		m_Skill_Meteo[i] = new cSkill_Meteo;
+		m_Skill_Meteo[i]->BaseObjectEnable(pTransform->GetWorldPosition(), 10, 100, 100, 200, 1);
+		m_Skill_Meteo[i]->Effect_Init();
+		m_Skill_Thunder[i] = new cSkill_Thunder;
+		m_Skill_Thunder[i]->BaseObjectEnable(pTransform->GetWorldPosition(), 10, 100, 100, 200, 1);
+		m_Skill_Thunder[i]->Effect_Init();
+
 	}
+
+	initParticle();
 }
 
 void cDragon::BaseObjectUpdate(float timeDelta)
 {
 	m_nowAni = pSkinned->GetNowPlayingAni();
 	int chance = MyUtil::RandomIntRange(0, 10);
-
-
 
 	// 전투 범위에 들어오면 
 	if (battleRange() == true && isBattle == true)
@@ -171,6 +191,14 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 						isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
 						LOG_MGR->AddLog("랜덤: %d", skillChance);
 						makeCircleQuad();
+						for (int i = 0; i < COLLCIRCLE; i++)
+						{
+							m_Skill_Meteo[i]->Effect_Init();
+							m_Skill_Meteo[i]->StartCasting();
+							m_Skill_Thunder[i]->Effect_Init();
+							m_Skill_Thunder[i]->StartCasting();
+						}
+
 
 						break;
 
@@ -218,6 +246,28 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
 	}
 
+	// if (KEY_MGR->IsStayDown('L'))
+	// {
+	// 	m_pBreathParticle->pTransform->SetWorldPosition(0, 9, 0);
+	// 	m_pBreathParticle->StartEmission();
+	// 
+	// }
+	// else
+	// {
+	// 	*m_pBreathParticle->pTransform = *pTransform;
+	// 	m_pBreathParticle->StopEmission();
+	// }
+	
+	m_pBreathParticle->Update(TIME_MGR->GetFrameDeltaSec());
+
+	for (int i = 0; i < COLLCIRCLE; i++)
+	{
+		m_Skill_Meteo[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_circle[i].worldCenter);
+		m_Skill_Meteo[i]->Effect_Update(timeDelta);
+		m_Skill_Thunder[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_quadPos[i]);
+		m_Skill_Thunder[i]->Effect_Update(timeDelta);
+	}
+
 	//=================== 업데이트 ==============
 
 }
@@ -260,16 +310,26 @@ void cDragon::BaseObjectRender()
 	GIZMO_MGR->WireSphere(m_basicAttack.worldCenter, m_basicAttack.radius, 0xffff0000);
 	GIZMO_MGR->WireSphere(m_spone.worldCenter, m_spone.radius, 0xffffff00);
 
-	GIZMO_MGR->Sector(pTransform->GetWorldPosition(), pTransform->GetForward(), 40, 20 * ONE_RAD);
-	for (int i = 0; i < 5; i++)
+	GIZMO_MGR->Sector(pTransform->GetWorldPosition(), pTransform->GetForward(), 50, 18 * ONE_RAD);
+	
+	// 스킬 이팩트 부분
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
 		GIZMO_MGR->WireSphere(m_circle[i].worldCenter, m_circle[i].radius, 0xffff0000);
+		m_Skill_Meteo[i]->BaseObjectRender();
+		m_Skill_Meteo[i]->Effect_Render();
+		m_Skill_Thunder[i]->BaseObjectRender();
+		m_Skill_Thunder[i]->Effect_Render();
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
 		GIZMO_MGR->Quad(m_quad[i]);
 	}
+
+	// 파티클 부분
+	m_pBreathParticle->Render();
+
 }
 
 void cDragon::collPosUpdate()
@@ -594,13 +654,26 @@ void cDragon::breathUpdate()
 	{
 		float aniTime = pSkinned->GetTime();
 
-		if (aniTime > 0.5f)
+		if (0.58f<aniTime&&aniTime <= 0.59f)
+		{
+		m_pBreathParticle->StartEmission();
+		m_pBreathParticle->pTransform->SetWorldPosition(m_pBoneTrans[HEAD]->GetWorldPosition());
+		m_pBreathParticle->pTransform->SetRotateWorld(pTransform->GetWorldRotateMatrix());
+		LOG_MGR->AddLog("브레스 시작: %.2f", aniTime);
+
+		}
+
+		if (aniTime > 0.59f)
 		{
 			if (m_tick[Breath]->tickStart())
 			{
-				if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 40, 20 * ONE_RAD))
+				if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 50, 18 * ONE_RAD))
 				{
 					m_pPlayer->Damage(10.f);
+
+					m_pBreathParticle->pTransform->SetWorldPosition(m_pBoneTrans[HEAD]->GetWorldPosition());
+					m_pBreathParticle->pTransform->SetRotateWorld(pTransform->GetWorldRotateMatrix());
+
 					LOG_MGR->AddLog("브레스 맞음: %.2f", aniTime);
 
 				}
@@ -614,7 +687,7 @@ void cDragon::breathUpdate()
 		{
 			//LOG_MGR->AddLog(": %.2f", aniTime);
 			stateInit();
-
+			m_pBreathParticle->StopEmission();
 		}
 	}
 }
@@ -625,11 +698,16 @@ void cDragon::earthUpate()
 		float aniTime = pSkinned->GetTime();
 
 
-		if (aniTime > 0.3f)
+		if (aniTime > 0.2f)
 		{
-			if (m_tick[Breath]->tickStart())
+
+			m_pBreathParticle->pTransform->SetWorldPosition(m_pBoneTrans[HEAD]->GetWorldPosition());
+			m_pBreathParticle->pTransform->SetRotateWorld(pTransform->GetWorldRotateMatrix());
+
+
+			if (m_tick[Earthquake]->tickStart())
 			{
-				for (int i = 0; i < 5; i++)
+				for (int i = 0; i < COLLCIRCLE; i++)
 				{
 					if (PHYSICS_MGR->IsPointSphere(&m_circle[i].worldCenter, m_circle[i].radius
 						, &m_pPlayer->pTransform->GetWorldPosition()))
@@ -638,11 +716,13 @@ void cDragon::earthUpate()
 						LOG_MGR->AddLog("원장판맞음");
 
 					}
+					if (PHYSICS_MGR->IsPointQuad(m_quad[i], &m_pPlayer->getMoveClass()->getRay()))
+					{
+						m_pPlayer->Damage(10.f);
+						LOG_MGR->AddLog("네모장판맞음");
+					}
 				}
-				for (int i = 0; i < 3; i++)
-				{
-					//  PHYSICS_MGR->IsPointQuad(m_quad[i] )
-				}
+			
 			}
 			//m_pPlayer->Damage();
 
@@ -709,14 +789,66 @@ D3DXVECTOR3 cDragon::makeRndVec(D3DXVECTOR3* pos, float fRadius)
 
 void cDragon::makeCircleQuad()
 {
-	for (int i = 0; i < 5; i++)
+	// 서클 좌표 생성
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
 		m_circle[i].worldCenter = makeRndVec(&pTransform->GetWorldPosition(), m_spone.radius / 2);
 	}
-
-	for (int i = 0; i < 3; i++)
+	// 쿼드 좌표 생성. 
+	for (int i = 0; i < COLLCIRCLE; i++)
 	{
+		m_quadPos[i] = makeRndVec(&pTransform->GetWorldPosition(), m_spone.radius / 2);
 		MyUtil::createQuad(m_quad[i], 8, 8, pTransform,
-			&makeRndVec(&pTransform->GetWorldPosition(), m_spone.radius / 2));
+			&m_quadPos[i]);
 	}
+}
+
+void cDragon::initParticle()
+{
+	m_pBreathParticle = new cPartcleEmitter();
+	m_pBreathParticle->SetActive(true);
+
+	//
+	// 화염 방사기
+	//
+
+	VEC_COLOR colors;
+	colors.push_back(D3DXCOLOR(0.3f, 0.5f, 0.5f, 0.0f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.5f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.5f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.8f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.8f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.8f, 8.0f, 0.2f));
+	colors.push_back(D3DXCOLOR(0.3f, 0.8f, 8.0f, 0.2f));
+
+
+	VEC_SCALE scales;
+	scales.push_back(1.3f);
+	scales.push_back(2.4f);
+	scales.push_back(4.5f);
+	scales.push_back(5.6f);
+	scales.push_back(7.7f);
+	scales.push_back(8.8f);
+
+	LPDIRECT3DTEXTURE9 pTex = RESOURCE_TEXTURE->GetResource(
+		"../Resources/Textures/FireExplosionBlurred.png");
+
+	//파티클 랜더러 셋팅
+	m_pBreathParticle->Init(
+		500,
+		80.0f,
+		0.3f,
+		1.1f,
+		D3DXVECTOR3(0, 0,30),
+		D3DXVECTOR3(0, 0, 40),
+		D3DXVECTOR3(0, 0.2f, -0.5f),
+		D3DXVECTOR3(0, 0.4f, -1.0f),
+		colors,
+		scales,
+		2.3f,
+		3.0f,
+		pTex
+		);
+
+	
 }

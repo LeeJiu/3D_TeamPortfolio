@@ -2,7 +2,7 @@
 #include "cScene.h"
 #include "cMage.h"
 #include "cMonsterManager.h"
-
+#include "cUI_Container.h"
 
 class cBaseObject;
 class cCamera;
@@ -13,6 +13,9 @@ class cPet;
 class mage_Test : public cScene
 {
 private:
+
+
+	cUI_Container*  m_UIContainer;
 
 	cTerrain*		m_pTerrain;
 	cPlayer*	    m_pPlayer;
@@ -59,7 +62,7 @@ public:
 
 	virtual void Scene_Render1();
 
-
+	virtual void Scene_RenderSprite();
 };
 
 

@@ -55,7 +55,7 @@ void cSkill_SnowStorm::Effect_Init()
 		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors, scales,
-		3.0f, 3.0f,
+		3.0f/2, 3.0f/2,
 		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/snowStrom.tga"),
 		true);
 
@@ -89,7 +89,7 @@ void cSkill_SnowStorm::Effect_Init()
 		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
 		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
 		colors2, scales2,
-		3.0f, 9.0f,
+		3.0f/2, 9.0f/2,
 		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/snowStorm2.tga"),
 		true);
 
@@ -121,7 +121,7 @@ void cSkill_SnowStorm::Effect_Init()
 		colors_snow,				//컬러 배열
 		scales_snow,				//스케일 배열
 		1.1f,				//입자크기 최소값
-		50.2f,				//최대값
+		50.2f /2,				//최대값
 		pTex,				//텍스쳐
 		false);
 
