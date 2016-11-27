@@ -17,6 +17,8 @@ private:
 	vector<cMonster*>				m_vMonster;
 	vector<cMonster*>::iterator		m_viMonster;
 
+	//vector<cBaseObject*>		    m_vShadow;
+
 
 	//링크 걸어줄 객체
 	cPlayer*		m_pPlayer;
@@ -38,5 +40,8 @@ public:
 	void SetTerrain(cTerrain* pTerrain) { m_pTerrain = pTerrain; }
 
 	vector<cMonster*>& GetMonsters() { return m_vMonster; }
+
+	//vector<cBaseObject*> getShadow(){ return m_vShadow; }
+	//vector<cBaseObject*> MonToBasic();
 };
 

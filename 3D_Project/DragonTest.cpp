@@ -146,6 +146,8 @@ void DragonTest::Scene_Update(float timeDelta)
 
 	this->pBerserker->Update(timeDelta);
 	m_pMonMgr->Update(timeDelta);
+	
+	this->ReadyShadowMap(&m_pMonMgr->MonToBasic());
 }
 
 void DragonTest::Scene_Render1()
@@ -163,7 +165,7 @@ void DragonTest::Scene_Render1()
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 	
 	cXMesh_Static::SetCamera(this->pMainCamera);
-	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
+	cXMesh_Static::SetTechniqueName("ReciveShadow");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	this->pBerserker->Render();

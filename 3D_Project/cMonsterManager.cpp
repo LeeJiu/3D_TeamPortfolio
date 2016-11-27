@@ -189,3 +189,15 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 
 	m_vMonster.push_back(monster);
 }
+
+
+//vector<cBaseObject*> cMonsterManager::MonToBasic()
+//{
+//	m_vShadow.clear();
+//	int size = m_vMonster.size();
+//	for (int i = 0; i < size; ++i)
+//	{
+//		m_vShadow.push_back(dynamic_cast<cBaseObject*>(m_vMonster[i]));
+//	}
+//	return m_vShadow;
+//}
