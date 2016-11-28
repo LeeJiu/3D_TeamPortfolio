@@ -328,6 +328,12 @@
       <Filter>Component\UI</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Thunder.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Shot.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_MagicShot.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -615,6 +621,12 @@
       <Filter>Component\UI</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Thunder.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Shot.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_MagicShot.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

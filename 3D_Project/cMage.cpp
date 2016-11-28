@@ -70,9 +70,6 @@ void cMage::BaseObjectEnable()
 
 	m_isPetOn = false;
 
-	//스킬 관련
-	SkillInit();
-
 	//평타 박스
 	m_ATKBox = new cBaseObject;
 	m_ATKBox->BoundBox.Init(D3DXVECTOR3(-0.3f, -0.3f, -0.3f), D3DXVECTOR3(0.3f, 0.3f, 0.3f));
@@ -82,10 +79,6 @@ void cMage::BaseObjectEnable()
 
 	m_vMonster = m_pMonMgr->GetMonsters();
 
-	//캐릭터의 그려진 위치를 세팅
-	//D3DXVECTOR3	minPos(-1, 0, -1);
-	//D3DXVECTOR3	maxPos(1, 3, 1);
-	//BoundBox.Init(minPos, maxPos);
 
 	m_state = IDLE;
 	m_strName = MyUtil::SetAnimation(m_state);
@@ -101,6 +94,10 @@ void cMage::BaseObjectEnable()
 	//SetMoveKeys();
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
+	//스킬 관련
+	SkillInit();
+
+	m_target = NULL;
 
 
 }
@@ -134,21 +131,6 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	//else
 	//{
 
-
-
-
-	if (KEY_MGR->IsOnceDown('1'))
-	{
-		m_isAttack = true;
-		m_state = ATK_01;
-		MagicATKInit();
-		m_magicATK->StartEmission();
-		m_aniCount = 0;
-
-
-		m_strName = MyUtil::SetAnimation(m_state);
-		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
-	}
 
 	if (KEY_MGR->IsOnceDown('2'))
 	{
@@ -242,10 +224,58 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	m_pSkill_magicShild->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition());
 	m_pSkill_magicShild->Effect_Update(timeDelta);
 
-	m_pSkill_Escape->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), pTransform->GetForward(0));
+	m_pSkill_Escape->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), pTransform->GetForward());
 	
 	m_pSkill_FlameRoad->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), pTransform->GetForward());
 	m_pSkill_FlameRoad->Effect_Update(timeDelta);
+
+
+	if (m_target != NULL)
+	{
+		D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_target->pTransform->GetWorldPosition();
+		D3DXVECTOR3 magicATKCollision = m_ATKBox->pTransform->GetWorldPosition() - m_target->pTransform->GetWorldPosition();
+
+
+		if (D3DXVec3Length(&magicATKLegth) < 20);
+		{
+			if (KEY_MGR->IsOnceDown('1'))
+			{
+				m_isAttack = true;
+				m_pMagicShot->Effect_Init();
+				m_pMagicShot->MakeAtk();
+			
+				m_strName = ATK_01;
+				m_strName = MyUtil::SetAnimation(m_state);
+				this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+			}
+
+		}
+
+	
+
+		
+		if (m_isAttack)
+		{
+			pSkinned->RemoveBoneTransform("Bip01-L-Hand");
+			m_ATKBox->pTransform->LookPosition(m_target->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
+			m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
+
+			if (D3DXVec3Length(&magicATKCollision) < 3);
+			{
+				m_isAttack = false;
+			}
+		}
+		
+		
+	}
+
+
+	if (!m_isAttack)
+	{
+		pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
+	}
+
+	
 
 
 	if (m_pSkill_Escape->GetBuffCount() == 100)
@@ -253,31 +283,10 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		pTransform->SetWorldPosition(D3DXVECTOR3(m_pSkill_Escape->GetEscapePos().x, pTransform->GetWorldPosition().y, m_pSkill_Escape->GetEscapePos().z));
 	}
 
-	if (m_pSkill_DarkRain->GetIsAttacking())
-	{
-		//m_camera->ShakePos(0.3f, 0.4f);
-		//m_camera->SetShakePosFlag(SHAKE_);
-		//m_camera->ShakeUpdate(timeDelta);
-	}
-	//스킬 사용 관련
-
-	if (m_aniCount == 120)
-	{
-		m_magicATK->StopEmission();
-		m_isAttack = false;
-	}
-
-	
-	if (m_isAttack)
-	{
-		m_aniCount++;
-		m_magicATK->Update(timeDelta);
-		m_magicATK->pTransform->SetWorldPosition(this->m_ATKBox->pTransform->GetWorldPosition());
-	}
-
 	SKILL03();
 
-
+	m_pMagicShot->BaseObjectUpdate(timeDelta, m_ATKBox->pTransform->GetWorldPosition(), pTransform->GetForward());
+	m_pMagicShot->Effect_Update(timeDelta);
 
 }
 
@@ -287,9 +296,6 @@ void cMage::BaseObjectRender()
 	this->pSkinned->Render(this->pTransform);
 
 	m_ATKBox->BoundBox.RenderGizmo(m_ATKBox->pTransform);
-
-	//this->m_Weapon->Render();
-
 
 	m_pSurroundSkill->BaseObjectRender();
 	m_pRoundSkill->BaseObjectRender();
@@ -302,11 +308,9 @@ void cMage::BaseObjectRender()
 	m_pSkill_Escape->BaseObjectRender();
 	m_pSkill_FlameRoad->BaseObjectRender();
 	m_pSkill_FlameRoad->Effect_Render();
+	m_pMagicShot->BaseObjectRender();
+	m_pMagicShot->Effect_Render();
 
-	if (m_isAttack)
-	{
-		m_magicATK->Render();
-	}
 
 
 
@@ -346,166 +350,15 @@ void  cMage::SkillInit()
 	m_pSkill_FlameRoad->SetActive(true);
 	m_pSkill_FlameRoad->BaseObjectEnable(pTransform->GetWorldPosition(), 20.0f, 3.0f, 130, 250, 100);
 
+	m_pMagicShot = new cSkill_MagicShot;
+	m_pMagicShot->SetActive(true);
+	m_pMagicShot->BaseObjectEnable(m_ATKBox->pTransform->GetWorldPosition(), 30.0f, 100);
+
+
 	m_aniCount = 0;
 	
 
 }
-
-
-//평타
-void cMage::MagicATKInit()
-{
-
-	m_magicATK = new cQuadParticleEmitter;
-	m_magicATK->SetActive(true);
-
-	VEC_COLOR colors;
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	colors.push_back(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-
-	VEC_SCALE scales;
-	scales.push_back(1.5f);  //초반 크기
-	scales.push_back(2.5f);
-
-	m_magicATK->Init(
-		100,
-		50.0f,     //이펙트 몇장
-		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
-		1.0f,
-		D3DXVECTOR3(0, 0, 0),     //시작위치에서 끝점까지의 거리
-		D3DXVECTOR3(0, 1, -1),
-		D3DXVECTOR3(0, 1, -1),     //회전량
-		D3DXVECTOR3(1, 1, 1),     //축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(90 * ONE_RAD, 90 * ONE_RAD, 0),	//초기시작시 회전 min
-		D3DXVECTOR3(180 * ONE_RAD, 180 * ONE_RAD, 0),     //초기시작시 회전Max
-		D3DXVECTOR3(0, 0, 0),				//초당 회전할 회전 량 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		D3DXVECTOR3(0, 0, 0),				//초당 회전 가속 Min
-		D3DXVECTOR3(0, 0, 0),				//축회전 없이 태풍같은 이펙트는 고정
-		colors, scales,
-		1.0f, 2.5f,
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/Effects/magicalATK.tga"),
-		true);
-
-	m_magicATK->StartEmission();
-
-
-
-
-}
-
-
-
-
-	//D3DXMATRIXA16 matScale;
-	//D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
-	//D3DXMATRIXA16 matRotate;
-	//D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
-	//D3DXMATRIXA16 matCorrection = matScale * matRotate;
-	//
-	//cXMesh_Skinned* pMonster = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Minho/MOB_Minho.X", &matCorrection);
-	//
-	////무기 관련
-	//m_pMonster = new cBaseObject;
-	//m_pMonster->SetMesh(pMonster);
-	//m_pMonster->SetActive(true);
-	//
-	//m_pMonster->BoundBox.Init(D3DXVECTOR3(-0.5, -0.5, -0.5), D3DXVECTOR3(0.5, 5.5, 0.5));
-	//m_pMonster->pTransform->SetWorldPosition(D3DXVECTOR3(0, 8, 0));
-	//
-	//
-	//m_isTarget = false;
-	//m_MobCollision = false;
-	//
-	//MonsterCollision(timeDelta);
-
-
-
-
-  //D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_pMonster->pTransform->GetWorldPosition();
-  //
-  //if (KEY_MGR->IsOnceDown(VK_LBUTTON))
-  //{
-  //	Ray ray;
-  //	POINT ptMousePos = GetMousePos();
-  //	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
-  //	this->m_camera->ComputeRay(&ray, &screenPos);
-  //
-  //	if (PHYSICS_MGR->IsRayHitBound(&ray, &m_pMonMgr->GetMonsters().size, m_pMonster->pTransform, NULL, NULL))
-  //	{
-  //		m_isTarget = true;
-  //		//m_pMonster->pSkinned->PlayOneShot("WAIT", 0.3f);
-  //
-  //	}
-  //	else
-  //	{
-  //		m_isTarget = false;
-  //		m_pMonster->pSkinned->Play("IDLE", 0.3f);
-  //	}
-  //
-  //
-  //	if (m_isTarget &&D3DXVec3Length(&magicATKLegth) > 20)
-  //	{
-  //		m_state = RUN;
-  //		m_strName = MyUtil::SetAnimation(m_state);
-  //		this->pSkinned->Play(m_strName, 0.3);
-  //	}
-  //
-  //
-  //}
-  //
-  //
-  //
-  //if (m_isTarget && D3DXVec3Length(&magicATKLegth) > 20)
-  //{
-  //	pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition(), 90.0f * ONE_RAD);
-  //	pTransform->MovePositionSelf(D3DXVECTOR3(0, 0, 10.0f * timeDelta));
-  //	m_StateCount = 0;
-  //	//사거리 밖이면 이동해라
-  //}
-  //else
-  //{
-  //
-  //	m_StateCount++;
-  //	if (m_StateCount == 1)
-  //	{
-  //		m_state = WAIT;
-  //		m_strName = MyUtil::SetAnimation(m_state);
-  //		this->pSkinned->Play(m_strName, 0.3);
-  //	}
-  //
-  //}
-  //
-  //
-  //
-  //
-  //if (m_isTarget && D3DXVec3Length(&magicATKLegth) < 20);
-  //{
-  //
-  //
-  //	if (m_isAttack)
-  //	{
-  //		pSkinned->RemoveBoneTransform("Bip01-L-Hand");
-  //		m_ATKBox->pTransform->LookPosition(m_pMonster->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
-  //		m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
-  //	}
-  //	else
-  //	{
-  //		pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
-  //	}
-  //
-  //}
-  //
-  //if (PHYSICS_MGR->IsOverlap(m_ATKBox, m_pMonster))
-  //{
-  //
-  //}
-  //
-  //
-  
-
-
 
 void cMage::BaseObjectBoundBox()
 {

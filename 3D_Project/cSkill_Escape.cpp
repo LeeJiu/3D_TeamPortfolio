@@ -9,7 +9,7 @@ cSkill_Escape::cSkill_Escape()
 
 cSkill_Escape::~cSkill_Escape()
 {
-	SAFE_DELETE(m_CircleEfc);
+	
 
 }
 

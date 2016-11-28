@@ -9,9 +9,7 @@ cSkill_DarkRain::cSkill_DarkRain()
 
 cSkill_DarkRain::~cSkill_DarkRain()
 {
-	SAFE_DELETE(m_snowStrom);
-	SAFE_DELETE(m_snowStrom_under);
-	SAFE_DELETE(m_snow);
+
 }
 
 

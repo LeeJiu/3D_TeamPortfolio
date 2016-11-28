@@ -11,9 +11,6 @@ cSkill_SnowStorm::cSkill_SnowStorm()
 
 cSkill_SnowStorm::~cSkill_SnowStorm()
 {
-	SAFE_DELETE(m_snowStrom);
-	SAFE_DELETE(m_snowStrom_under);
-	SAFE_DELETE(m_snow);
 
 }
 
