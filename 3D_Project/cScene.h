@@ -17,6 +17,8 @@ private:
 
 protected:
 	cCamera*						pMainCamera;
+	cTransform*                     CameraPos;
+
 	LPDIRECT3DCUBETEXTURE9			evironmentTexture;			//환경 Texture
 	LPD3DXMESH						evironmemtSphereMesh;		//환경 구
 	LPD3DXEFFECT					evironmentEffect;			//환경 Effect

@@ -123,7 +123,6 @@ void cSkill_Round::BaseObjectEnable(D3DXVECTOR3  casterWorldPos, float surroundL
 
 
 	//사거리 표시 범위
-
 	m_SurroundEfc = new cQuadParticleEmitter();
 	m_SurroundEfc->SetActive(true);
 
@@ -161,7 +160,7 @@ void cSkill_Round::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos,
 
 	if (m_IsCasting)  //캐스팅이 시작되면
 	{
-		LOG_MGR->AddLog("캐스팅시작");
+	//	LOG_MGR->AddLog("캐스팅시작");
 		m_IsSelect = false;
 		m_CastTimeCount++;
 
@@ -187,7 +186,7 @@ void cSkill_Round::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos,
 		{
 
 			m_IsAttacking = false;
-			LOG_MGR->AddLog("스킬끝");
+		//	LOG_MGR->AddLog("스킬끝");
 		}
 
 	}
@@ -196,7 +195,7 @@ void cSkill_Round::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos,
 
 	if (m_IsCoolTime) //쿨타임 중이면 
 	{
-		LOG_MGR->AddLog("쿨타임 중입니다");
+	//	LOG_MGR->AddLog("쿨타임 중입니다");
 
 		m_CoolTimeCount++; //쿨타임을 계산해주자
 
@@ -217,7 +216,7 @@ void cSkill_Round::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos,
 
 			if (D3DXVec3Length(&selectMax) < m_MaxDistance)
 			{
-				LOG_MGR->AddLog("범위 가능");
+			//	LOG_MGR->AddLog("범위 가능");
 				m_CircleEfc->Update(timeDelta);
 				m_CircleEfc->pTransform->SetWorldPosition(m_MousePos);
 
@@ -225,7 +224,7 @@ void cSkill_Round::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos,
 
 				if (KEY_MGR->IsOnceDown(VK_LBUTTON))
 				{
-					LOG_MGR->AddLog("시전시작");
+				//	LOG_MGR->AddLog("시전시작");
 					m_IsCasting = true;
 					m_IsSelect = false;
 					
@@ -233,7 +232,7 @@ void cSkill_Round::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos,
 			}
 			else
 			{
-				LOG_MGR->AddLog("범위 불가능");
+			//	LOG_MGR->AddLog("범위 불가능");
 				m_CastEfc->Update(timeDelta);
 				m_CastEfc->pTransform->SetWorldPosition(m_MousePos);
 			}

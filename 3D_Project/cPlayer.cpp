@@ -123,7 +123,7 @@ void cPlayer::CamControl(float timeDelta)
 	//
 	//D3DXVECTOR3 target = inputVector * delta;
 	//this->m_camera->MovePositionSelf(target * timeDelta);
-	//this->m_camera->DefaultControl3(timeDelta, this->pTransform);
+	this->m_camera->DefaultControl3(timeDelta, this->pTransform);
 }
 
 void cPlayer::UiUpdate(float timeDelta, cCamera* camera)

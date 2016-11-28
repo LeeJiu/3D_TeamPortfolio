@@ -92,13 +92,17 @@ HRESULT cScene::Init()
 
 
 	this->postEffect = RESOURCE_FX->GetResource( "../Resources/Shaders/PostEffect.fx" );
+	// ================ 스카이 맵 이딧.
+
+	CameraPos = new cTransform;
+	this->SetEnvironment("../Resources/TextureCUBE/desertCube.dds");
 
 	return S_OK;
 }
 
 void cScene::Release()
 {
-
+	SAFE_DELETE(CameraPos);
 	//씬의 해제가 일어난다.
 	this->Scene_Release();
 }
@@ -109,6 +113,9 @@ void cScene::Update( float timeDelta )
 	
 	pMainCamera->UpdateCamToDevice( Device );
 	pMainCamera->UpdateFrustum();
+	//
+	CameraPos->SetWorldPosition(pMainCamera->GetWorldPosition());
+	//
 
 	//메인카메라에 DirectionLight 를 방향을 유지한체 따라다니게....
 	
@@ -202,7 +209,7 @@ void cScene::RenderToMainCamTexture()
 	this->pMainCamera->RenderTextureBegin( 0x00101010 );
 	
 	//환경 랜더
-	this->RenderEnvironment();
+	//this->RenderEnvironment();
 
 	//랜더된다.
 	this->Scene_Render0();
@@ -235,11 +242,17 @@ void cScene::SetEnvironment( std::string cubeFilePath )
 	//환경구 로딩되어있지 않다면....
 	if( this->evironmemtSphereMesh == NULL )
 	{
-		D3DXCreateSphere( Device, 
+		// D3DXCreateSphere( Device, 
+		// 	3.0f,
+		// 	20, 
+		// 	20, 
+		// 	&evironmemtSphereMesh, NULL );
+
+		D3DXCreateSphere(Device,
 			3.0f,
-			20, 
-			20, 
-			&evironmemtSphereMesh, NULL );
+			20,
+			20,
+			&evironmemtSphereMesh, NULL);
 	}
 
 }
@@ -256,8 +269,13 @@ void cScene::RenderEnvironment()
 	this->evironmentEffect->SetTexture("MyCube_Tex", this->evironmentTexture);
 
 	//WVP 매트릭스
-	D3DXMATRIXA16 matWorld = this->pMainCamera->GetFinalMatrix();
+	//D3DXMATRIXA16 matWorld = this->pMainCamera->GetFinalMatrix();
+	//CameraPos
+	D3DXMATRIXA16 matWorld = CameraPos->GetFinalMatrix();
 	D3DXMATRIXA16 matViewProj = this->pMainCamera->GetViewProjectionMatrix();
+	//matWorld._41 = 0.f;
+	//matWorld._42 = 0.f;
+	//matWorld._43 = 0.f;
 	D3DXMATRIXA16 matWVP = matWorld * matViewProj;
 
 	this->evironmentEffect->SetMatrix( "matWVP", &matWVP );

@@ -9,7 +9,6 @@ private:
 	bool		m_bAttacked2;
 	bool		m_bAlert;
 
-
 public:
 	cMinotauros();
 	~cMinotauros();

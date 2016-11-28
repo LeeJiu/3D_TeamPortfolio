@@ -2,6 +2,7 @@
 #include "cScene.h"
 #include "cMonsterManager.h"
 #include "cBerserker.h"
+#include "cUI_Container.h"
 
 class cBaseObject;
 class cCamera;
@@ -34,6 +35,8 @@ private:
 	cBaseObject*	m_Land;			//컬링된 오브젝트
 
 	D3DXMATRIXA16 temp;
+
+	cUI_CharacterBar* m_CharacterBar;
 
 
 public:

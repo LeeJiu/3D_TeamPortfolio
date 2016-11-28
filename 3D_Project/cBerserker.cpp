@@ -6,6 +6,7 @@
 #include "cCamera.h"
 #include "cInven.h"
 #include "cTrailRender.h"
+#include "cViewDamage.h"
 
 cBerserker::cBerserker()
 {
@@ -13,6 +14,7 @@ cBerserker::cBerserker()
 
 cBerserker::~cBerserker()
 {
+	SAFE_DELETE(m_ViewDamage);
 }
 
 void cBerserker::BaseObjectEnable()
@@ -44,14 +46,6 @@ void cBerserker::BaseObjectEnable()
 	m_camera->AttachTo(pTransform);
 	m_camera->SetLocalPosition(0, 2, -5);
 
-	//D3DXVECTOR3 VecPlayer(0, this->pTransform->GetWorldPosition().y, this->pTransform->GetWorldPosition().z);
-	//D3DXVECTOR3 VecCam(0, this->m_camera->GetWorldPosition().y, this->m_camera->GetWorldPosition().z);
-	//float CamAngle = D3DXVec3Dot(D3DXVec3Normalize(&VecPlayer, &VecPlayer), D3DXVec3Normalize(&VecCam, &VecCam));
-	//m_Angle = acos(CamAngle);
-	//MaxZoomIn = 2;
-	//MaxZoomOut = -10;
-	//Zoom = 0;
-
 	m_atkCnt = 1;
 	m_time = 0;
 	m_testtime = 0;
@@ -59,10 +53,14 @@ void cBerserker::BaseObjectEnable()
 	m_invenOn = false;
 
 	SkillInit();
+	m_ViewDamage = new cViewDamage;					//init
+	m_ViewDamage->Init();
 }
 
 void cBerserker::BaseObjectUpdate(float timeDelta)
 {
+	if(m_target)
+		m_ViewDamage->Update(timeDelta, m_target->pTransform, m_camera);
 	CamControl(timeDelta);
 	Move(timeDelta);
 	if (!m_invenOn)
@@ -72,8 +70,9 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	UiUpdate(timeDelta, m_camera);
 	if (this->pTrailRender != NULL)
 		this->pTrailRender->Update(timeDelta);
-	//======================테스트용 애니 확인==================================
 
+	/*
+	//======================테스트용 애니 확인==================================
 	if (KEY_MGR->IsOnceDown(VK_NUMPAD1))
 		this->pSkinned->PlayOneShotAFTERIDLE("SK_BUFF", 0.3, 0.15);
 
@@ -99,7 +98,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		this->pSkinned->PlayOneShotAFTERIDLE("SK_ESCAPE", 0.3, 0.15);
 	
 	//==============================================================
-
+	*/
 	
 	m_time += timeDelta;
 	m_testtime += timeDelta;
@@ -107,6 +106,12 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//
 	//=================평타=================
 	//
+	if (KEY_MGR->IsOnceDown('Z'))
+	{
+		
+		
+	}
+
 	if (LengthCheck() && !m_isAttack && KEY_MGR->IsOnceDown('1'))
 	{
 		m_isAttack = true;
@@ -216,13 +221,14 @@ void cBerserker::BaseObjectRender()
 		m_inven->GetWeapon()->BoundBox.RenderGizmo(m_inven->GetWeapon()->pTransform);
 		if (this->pTrailRender != NULL)
 		{
-			//this->pTrailRender->Render();
 			this->pTrailRender->RenderDistort(this->m_camera);
 		}
 	}
 
 	m_Swing->BaseObjectRender();
 	m_Swing->Effect_Render();
+	m_ViewDamage->Render();
+
 }
 
 void cBerserker::BaseSpriteRender()
@@ -262,7 +268,9 @@ void cBerserker::Attack01()
 {	
 	int damage = m_damage * 1;
 	damage = RandomIntRange(damage - 10, damage + 10);
-	
+
+	m_ViewDamage->SetNumber(damage);//여기서 트랜스폼넘겨줘야지 .
+
 	LOG_MGR->AddLog("%d데미지 줌", damage);
 	m_target->Damage(damage);
 }
@@ -272,6 +280,8 @@ void cBerserker::Attack02()
 	int damage = m_damage * 2;
 	damage = RandomIntRange(damage - 10, damage + 10);
 	
+	m_ViewDamage->SetNumber(damage);
+
 	LOG_MGR->AddLog("%d데미지 줌", damage);
 	m_target->Damage(damage);
 }
@@ -281,6 +291,8 @@ void cBerserker::Attack03()
 	int damage = m_damage * 3;
 	damage = RandomIntRange(damage - 10, damage + 10);
 	
+	m_ViewDamage->SetNumber(damage);
+
 	LOG_MGR->AddLog("%d데미지 줌", damage);
 	m_target->Damage(damage);
 }

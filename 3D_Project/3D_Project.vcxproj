@@ -88,11 +88,11 @@
     <ClInclude Include="cBoundBox.h" />
     <ClInclude Include="cBoundSphere.h" />
     <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cLoadManager.h" />
     <ClInclude Include="cDragon.h" />
     <ClInclude Include="cDXFontManager.h" />
     <ClInclude Include="cFrustum.h" />
     <ClInclude Include="cGizmoManager.h" />
-    <ClInclude Include="cGriff.h" />
     <ClInclude Include="cImage.h" />
     <ClInclude Include="cInven.h" />
     <ClInclude Include="cItem.h" />
@@ -146,7 +146,6 @@
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSoundManager.h" />
     <ClInclude Include="cSpider.h" />
-    <ClInclude Include="cSpiderQueen.h" />
     <ClInclude Include="cSpriteManager.h" />
     <ClInclude Include="cSuccubus.h" />
     <ClInclude Include="cTerrain.h" />
@@ -187,11 +186,11 @@
     <ClCompile Include="cBoundBox.cpp" />
     <ClCompile Include="cBoundSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cLoadManager.cpp" />
     <ClCompile Include="cDragon.cpp" />
     <ClCompile Include="cDXFontManager.cpp" />
     <ClCompile Include="cFrustum.cpp" />
     <ClCompile Include="cGizmoManager.cpp" />
-    <ClCompile Include="cGriff.cpp" />
     <ClCompile Include="cImage.cpp" />
     <ClCompile Include="cInven.cpp" />
     <ClCompile Include="cItem.cpp" />
@@ -245,7 +244,6 @@
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSoundManager.cpp" />
     <ClCompile Include="cSpider.cpp" />
-    <ClCompile Include="cSpiderQueen.cpp" />
     <ClCompile Include="cSpriteManager.cpp" />
     <ClCompile Include="cSuccubus.cpp" />
     <ClCompile Include="cTerrain.cpp" />
