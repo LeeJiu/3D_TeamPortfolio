@@ -11,8 +11,6 @@ cSkill_Surround::cSkill_Surround()
 
 cSkill_Surround::~cSkill_Surround()
 {
-	SAFE_DELETE(m_CircleEfc);
-	SAFE_DELETE(m_CastEfc);
 
 }
 

@@ -6,6 +6,15 @@
 
 class cSkill_Surround : public cBaseObject
 {
+public:
+	int                   m_CastTimeCount; //캐스팅 재는 타임
+	int                   m_CastTime;      //캐스팅 풀 타임
+
+	int                   m_CoolTimeCount; //쿨타임 잰다
+	int                   m_CoolTime;      //쿨타임
+
+	int                   m_AttackingCount; //공격 시전시간을 잰다
+	int                   m_AttackingTime;	//공격시간
 
 protected:
 	bool               m_IsSelect;       // 스킬 마우스 오버중이니
@@ -18,15 +27,6 @@ protected:
 
 	cQuadParticleEmitter*   m_CircleEfc;
 	cQuadParticleEmitter*   m_CastEfc;
-
-	int                   m_CastTimeCount; //캐스팅 재는 타임
-	int                   m_CastTime;      //캐스팅 풀 타임
-
-	int                   m_CoolTimeCount; //쿨타임 잰다
-	int                   m_CoolTime;      //쿨타임
-
-	int                   m_AttackingCount; //공격 시전시간을 잰다
-	int                   m_AttackingTime;
 
 	float                 m_CastEfcScale;
 

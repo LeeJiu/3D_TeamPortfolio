@@ -38,7 +38,6 @@ HRESULT cMainGame::Init(void)
 	GIZMO_MGR->Init( Device );
 	SPRITE_MGR->Init( Device );
 	ITEM_MGR->init();
-	LOAD_MGR->Init();
 
 	
 	//게임에 사용되는 씬 추가
@@ -98,8 +97,6 @@ void cMainGame::Release()
 
 	ITEM_MGR->release();
 	cItemManager::ReleaseInstance();
-	LOAD_MGR->Release();
-	cLoadManager::ReleaseInstance();
 
 
 	RESOURCE_TEXTURE->ClearResource();

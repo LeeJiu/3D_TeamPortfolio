@@ -5,8 +5,8 @@ class cSkill_Swing : public cSkill_Surround
 {
 private:
 	// ½ºÀ®
-	//cQuadParticleEmitter*  m_snowStrom;
-	//cQuadParticleEmitter*  m_snowStrom_under;
+	cQuadParticleEmitter*  m_SwingStrom;
+	cQuadParticleEmitter*  m_SwingStrom_under;
 	//cPartcleEmitter*       m_snow;
 	bool                   m_Swing;
 	int                    m_aniCount;
