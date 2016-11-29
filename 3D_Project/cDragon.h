@@ -27,9 +27,16 @@ struct stSphere
 	float radius;
 };
 
+class cTrailRender;
+
 class cDragon : public cMonster
 {
 private:
+	cTrailRender* m_pTrailLEye;			//왼눈에붙일트레일
+	cTrailRender* m_pTrailREye;			//오른눈에붙일트레일
+	cTransform    m_LEyeTrans;			//왼눈 트레일트랜스
+	cTransform    m_REyeTrans;			//오른눈 트레일트랜스
+
 	int m_collCount;                    //포문 돌릴때 가져다 쓰셈
 	cBoundBox m_bound[COLLISION];       //뼈에 들어갈 바운스
 	cTransform* m_pBoneTrans[COLLISION]; //뼈에 들어갈 트렌스
@@ -85,6 +92,7 @@ public:
 	void BaseObjectBoundBox();					//SetMesh() 하면 ComputeBoundBox() 실행되면서 실행됨
 	void BaseObjectRender();
 	
+	void TrailSetting();
 	
 	//==========이곳에 함수 추가==========
 	void Damage(float fDamage);		//cMonster로 부를 수 있는 순수 가상 함수 / 반드시 override
@@ -120,5 +128,7 @@ public:
 	//파티클 초기화
 	void initParticle();
 	
+
+	cBoundBox GetBodyBound() { return m_bound[0]; }
 };
 

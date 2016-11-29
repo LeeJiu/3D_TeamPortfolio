@@ -29,9 +29,9 @@ public:
 
 	void Init();
 
-	void SetNumber(int number);
+	void SetNumber(int number, cTransform* trans);
 	void Release();
-	void Update(float timeDelta, cTransform * trans, cCamera* camera);
+	void Update(float timeDelta, cCamera* camera);
 	void Render();
 
 	bool GetIsDrawing() { return m_isDrawing; }

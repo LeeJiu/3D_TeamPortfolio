@@ -1,17 +1,29 @@
 #pragma once
 #include "cPlayer.h"
 #include "cSkill_Swing.h"
-
+#include "cSkill_Howling.h"
+#include "cSkill_Burserk.h"
+#include "cTickFunc.h"
 
 #define CONTROL_KEY 5
+#define TICKMAX 3
+
+enum BK_SKILL //틱 클래스에서 쓸꺼. 
+{
+	BK_HOWL, BK_SWING, BK_ACCEL
+};
 
 class cViewDamage;
+class cShowDamage;
 
 class cBerserker : public cPlayer
 {
 private:
-	cViewDamage*		m_ViewDamage;
+	//cViewDamage*        m_ViewDamage;
+	cShowDamage*		m_ShowDamage;
 	cSkill_Surround*    m_pSurroundSkill;	//주변범위
+	
+	cTickFunc*			m_tick[TICKMAX];	//틱데미쥐
 
 	//스킬
 	int					m_atkCnt;		//평타단계 수
@@ -19,8 +31,15 @@ private:
 	float				m_time;			//커맨드체크할 타이머
 	float				m_fadeOut;		//애니 끝나는시간
 
+	//스킬2
+	cSkill_Howling*		m_Howling;		//하울링
+
 	//스킬3 
 	cSkill_Swing*		m_Swing;		//스윙스킬
+
+	//스킬5
+	cSkill_Burserk*		m_Burserk;		//버서크모드
+
 	int					m_SwingCnt;
 
 	float				m_testtime;		//로그찎는용 타이머
@@ -48,5 +67,9 @@ private:
 	void SKILL02();			//내려찍기	(타겟, 범위기)
 	void SKILL03();			//휠윈드 (원형 범위기)
 	void SKILL04();			//버프기
+
+	void BasixWeaponSet();
+	void SetTickCount();
+	void UiUpdate(float timeDelta, cCamera* camera);		//버서커유아이
 };
 

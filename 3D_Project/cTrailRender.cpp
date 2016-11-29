@@ -264,9 +264,9 @@ void cTrailRender::Render()
 	Device->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 
-	this->Transform.RenderGimozo(Device);
-	this->m_LeftTransform.RenderGimozo(Device);
-	this->m_RightTransform.RenderGimozo(Device);
+	//this->Transform.RenderGimozo(Device);
+	//this->m_LeftTransform.RenderGimozo(Device);
+	//this->m_RightTransform.RenderGimozo(Device);
 }
 
 

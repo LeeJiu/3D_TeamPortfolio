@@ -6,11 +6,9 @@ cSkill_Burserk::cSkill_Burserk()
 {
 }
 
-
 cSkill_Burserk::~cSkill_Burserk()
 {
 }
-
 
 void cSkill_Burserk::Effect_Init()
 {
@@ -83,8 +81,10 @@ void cSkill_Burserk::Effect_Init()
 	m_burserking_under->StartEmission();
 }
 
+
 void cSkill_Burserk::Effect_Update(float timeDelta)
 {
+
 	if (m_IsInBuff)
 	{
 		m_burserking->Update(timeDelta);
@@ -95,13 +95,17 @@ void cSkill_Burserk::Effect_Update(float timeDelta)
 		m_burserking_under->pTransform->SetWorldPosition(pTransform->GetWorldPosition().x, pTransform->GetWorldPosition().y, pTransform->GetWorldPosition().z);
 		m_burserking_under->pTransform->RotateSelf(D3DXVECTOR3(0, 5.0f, 0));
 	}
+
 }
 
 void cSkill_Burserk::Effect_Render()
 {
+
 	if (m_IsInBuff)
 	{
 		m_burserking->Render();
 		m_burserking_under->Render();
 	}
 }
+
+
