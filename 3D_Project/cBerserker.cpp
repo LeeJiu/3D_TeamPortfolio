@@ -16,7 +16,6 @@ cBerserker::cBerserker()
 
 cBerserker::~cBerserker()
 {
-	//SAFE_DELETE(m_ViewDamage);
 	SAFE_DELETE(m_ShowDamage);
 }
 
@@ -40,7 +39,7 @@ void cBerserker::BaseObjectEnable()
 	m_botton = false;
 
 	m_fHP = 3000;					//신상정보
-	m_currentHp = 3000;			//신상정보
+	m_currentHp = 3000;				//신상정보
 	m_attackLength = 5;				//신상정보
 	m_damage = 100;					//신상정보
 	m_isAttack = false;				//신상정보
@@ -63,8 +62,6 @@ void cBerserker::BaseObjectEnable()
 	SkillInit();
 	SetTickCount();
 	
-	//m_ViewDamage = new cViewDamage;					//init
-	//m_ViewDamage->Init();
 	m_ShowDamage = new cShowDamage;
 }
 
@@ -72,17 +69,16 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 {
 	m_UIContainer->UI_Update();
 
-	//m_ViewDamage->Update(timeDelta, m_camera);
 	m_ShowDamage->Update(timeDelta);
 	CamControl(timeDelta);
 	Move(timeDelta);
 
 	//틱업데이트
 
-	//for (int i = 0; i < TICKMAX; i++)
-	//{
-	//	m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
-	//}
+	for (int i = 0; i < BK_TICKMAX; i++)
+	{
+		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
+	}
 
 
 	if (!m_invenOn)
@@ -287,18 +283,18 @@ void cBerserker::BaseSpriteRender()
 	m_ShowDamage->Render();
 	m_UIContainer->UI_Render();
 
-	char temp[32];
-	sprintf_s(temp, "../Resources/Textures/num_%d.tga", 2);
-
-	RECT rc = RectMake(0, 0, 64, 64);
-
-	SPRITE_MGR->DrawTexture(
-		RESOURCE_TEXTURE->GetResource(temp),
-		&rc,
-		WINSIZE_X / 2, WINSIZE_Y / 2,
-		0xffffffff,
-		NULL
-	);
+	//char temp[32];
+	//sprintf_s(temp, "../Resources/Textures/num_%d.tga", 2);
+	//
+	//RECT rc = RectMake(0, 0, 64, 64);
+	//
+	//SPRITE_MGR->DrawTexture(
+	//	RESOURCE_TEXTURE->GetResource(temp),
+	//	&rc,
+	//	WINSIZE_X / 2, WINSIZE_Y / 2,
+	//	0xffffffff,
+	//	NULL
+	//);
 }
 
 void cBerserker::BaseObjectBoundBox()
@@ -340,7 +336,7 @@ void cBerserker::Damage(float damage)
 void cBerserker::Attack01()
 {	
 	int damage = m_damage * 1;
-	damage = 2; 
+	damage = 5; 
 	//damage = RandomIntRange(damage - 10, damage + 10);
 
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
@@ -353,7 +349,7 @@ void cBerserker::Attack01()
 void cBerserker::Attack02()
 {
 	int damage = m_damage * 2;
-	damage = 5;
+	damage = 10;
 	//damage = RandomIntRange(damage - 10, damage + 10);
 
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
@@ -366,7 +362,7 @@ void cBerserker::Attack02()
 void cBerserker::Attack03()
 {
 	int damage = m_damage * 3;
-	damage = 8;
+	damage = 19;
 	//damage = RandomIntRange(damage - 10, damage + 10);
 	
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
@@ -416,12 +412,10 @@ void cBerserker::SKILL02()
 			if (m_tick[BK_SWING]->tickStart())
 			{
 				//이거 틱데미지로바꿔
-				//if (PHYSICS_MGR->IsOverlap(m_Weapon->pTransform, &m_inven->GetWeapon()->BoundBox, m_vMonster[i]->pTransform, &m_vMonster[i]->BoundBox))
-				if (PHYSICS_MGR->IsOverlap(m_Weapon, m_vMonster[i]))
+				//if (PHYSICS_MGR->IsOverlap(m_Weapon, m_vMonster[i]))
 				{
 					LOG_MGR->AddLog("%d 데미지줌", damage);
-					//m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
-					//m_ViewDamage->SetNumber(damage, m_vMonster[i]->pTransform);
+					m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
 					m_vMonster[i]->Damage(damage);
 				}
 			}
@@ -514,7 +508,6 @@ void cBerserker::UiUpdate(float timeDelta, cCamera* camera)
 		this->pTrailRender->Transform.AttachTo(m_Weapon->pTransform);
 		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
 		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
-		
 		
 		//this->pTrailRender->Transform.AttachTo(m_inven->GetWeapon()->pTransform);
 		//this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
