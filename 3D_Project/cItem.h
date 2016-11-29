@@ -10,6 +10,7 @@ class cItem : public cBaseObject
 {
 	static unsigned int increaseNum; // 고유번호 계산
 
+
 	string m_itemName;
 	D3DXVECTOR3 m_basicScale;   // 변환시킬 스케일
 	D3DXQUATERNION m_basicRotation; // 기존 회전값
@@ -18,8 +19,10 @@ class cItem : public cBaseObject
 	
 	
 	unsigned int m_itemNum; // 아이템 고유 번호 .
-
+	int m_Dmg;				//무공
+	
 public:
+	
 	float m_lifeTime;       // 아이템 생존 시간. 
 	int getRow(){ return m_row; }
 	int getColl(){ return m_coll; }
@@ -30,6 +33,8 @@ public:
 	unsigned int getItemNum(){ return m_itemNum; }
 	D3DXQUATERNION getBasicRotaion(){ return m_basicRotation; }
 	string getItemName(){ return m_itemName; }
+	void setDmg(int dmg) { m_Dmg = dmg; }
+	int getDmg() { return m_Dmg; }
 	cItem();
 	~cItem();
 	

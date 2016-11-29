@@ -1,12 +1,10 @@
 #pragma once
-#include "cMonster.h"
+
 
 class cCamera;
 class cLight_Direction;
 
 class cTerrain;
-class cMonster;
-class cPlayer;
 
 class cScene
 {
@@ -19,8 +17,7 @@ private:
 
 protected:
 	cCamera*						pMainCamera;
-	cTransform*                     CameraPos;
-
+	cTransform*                        CameraPos;
 	LPDIRECT3DCUBETEXTURE9			evironmentTexture;			//환경 Texture
 	LPD3DXMESH						evironmemtSphereMesh;		//환경 구
 	LPD3DXEFFECT					evironmentEffect;			//환경 Effect
@@ -40,21 +37,20 @@ public:
 
 	cScene(void);
 	~cScene(void);
-	
+
 	HRESULT Init();
 	void Release();
-	void Update( float timeDelta );
+	void Update(float timeDelta);
 	void Render();
 
 	//메인 카메라의 RenderToTexture 만 업데이트한다.
 	void RenderToMainCamTexture();
 
-	void SetEnvironment( std::string cubeFilePath );
+	void SetEnvironment(std::string cubeFilePath);
 
-	void ReadyShadowMap( std::vector<cBaseObject*>* renderObjects, cTerrain* pTerrain = NULL );
-	void ReadyShadowMap(std::vector<cMonster*>* renderObjects, cTerrain* pTerrain = NULL);
+	void ReadyShadowMap(std::vector<cBaseObject*>* renderObjects, cTerrain* pTerrain = NULL);
 
-	
+
 	//메인카메라의 랜더 Texture 를 얻는다.
 	LPDIRECT3DTEXTURE9 GetTexture();
 
@@ -63,22 +59,29 @@ private:
 	//씬에서 호출될 함수들을 추상함수로...
 	virtual HRESULT Scene_Init() = 0;
 	virtual void Scene_Release() = 0;
-	virtual void Scene_Update(float timeDelta) = 0;
-	
+	virtual void Scene_Update(float timDelta) = 0;
+
 
 	virtual void Scene_Render0(){}
 	virtual void Scene_Render1() = 0;
 	virtual void Scene_Render2(){}
+	virtual void Scene_Render_AfterPostEffect(LPDIRECT3DTEXTURE9 pScreen){}
 
 	virtual void Scene_RenderSprite(){}
+	virtual void Scene_RenderFont() {}
+
 
 	//환경구 랜더
 	void RenderEnvironment();
-	
 
+
+private:
+	void RenderBase();
 	void RenderOutline();
+	void RenderBBo();
+	void RenderDepthOfField();
+	void RenderColorLevel();
 
-	cCamera* getDirectionLight(){ return pDirectionLightCamera; }
-
+	void RenderGlow();
 };
 

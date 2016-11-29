@@ -65,6 +65,10 @@ public:
 	int  GetAtkCount()   { return m_AttackingCount; }
 	bool GetIsSelecting() { return m_IsSelect; } //선택중이니?
 	bool GetIsAttacking() { return m_IsAttacking; } //공격하고있니?
+	bool GetIsCool() { return m_IsCoolTime; }
+
+
+	D3DXVECTOR3 GetAttackPos() { return m_AttackPos; }
 
 
 protected:

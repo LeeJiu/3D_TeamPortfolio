@@ -118,7 +118,7 @@ void cMonsterManager::LoadMonsters()
 
 	//임시로 몬스터를 세팅하려면 CreateMonster()에 추가하고,
 	//다음과 같이 코드를 작성한다. type, pos
-	//CreateMonster(DRAGON, D3DXVECTOR3(0, m_pTerrain->GetHeight(0, 0), 0));
+	CreateMonster(DRAGON, D3DXVECTOR3(0, m_pTerrain->GetHeight(0, 0), 0));
 	//CreateMonster(MINO, D3DXVECTOR3(20, m_pTerrain->GetHeight(20, 20), 20));
 }
 

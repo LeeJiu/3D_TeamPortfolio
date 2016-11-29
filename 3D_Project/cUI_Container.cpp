@@ -11,8 +11,7 @@ cUI_Container::~cUI_Container()
 {
 }
 
-
-void cUI_Container::UI_Init()
+void cUI_Container::UI_Init(float maxHp, float maxSp, CHARAC_TYPE cType)
 {
 
 
@@ -20,10 +19,10 @@ void cUI_Container::UI_Init()
 	m_Map->init();
 
 	m_CharacterBar = new cUI_CharacterBar;
-	m_CharacterBar->init();
+	m_CharacterBar->init(maxHp, maxSp);
 
 	m_SkillDeck = new cUI_SkillDeck;
-	m_SkillDeck->init();
+	m_SkillDeck->init(cType);
 
 	m_MenuBar = new cUI_MenuBar;
 	m_MenuBar->init();
@@ -38,10 +37,11 @@ void cUI_Container::UI_Release()
 	SAFE_DELETE(m_MenuBar);
 
 }
-void cUI_Container::UI_Update()
+
+void cUI_Container::UI_Update(float m_currentHp, float m_currentSp)
 {
 	m_Map->update();
-	m_CharacterBar->update();
+	m_CharacterBar->update(m_currentHp, m_currentSp);
 	m_SkillDeck->update();
 	m_MenuBar->update();
 
@@ -63,4 +63,10 @@ void cUI_Container::UI_Render()
 
 	m_MenuBar->uiRender();
 
+	
+}
+
+void cUI_Container::UI_fontRender()
+{
+	m_CharacterBar->fontRender();
 }

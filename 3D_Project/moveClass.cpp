@@ -105,7 +105,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 
 	if (m_InputKey.find(VK_SPACE)->second)
 	{
-		m_jumpPower = 30;
+		m_jumpPower = 10;
 		this->isJump = true;
 	}
 
@@ -181,7 +181,7 @@ void moveClass::update(float timeDelta, cBaseObject * collObj, cBoundBox * collB
 
 	if (m_InputKey.find(VK_SPACE)->second)
 	{
-		m_jumpPower = 13.5;
+		m_jumpPower = 12;
 		this->isJump = true;
 	}
 

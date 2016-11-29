@@ -17,9 +17,10 @@ public:
 	cUI_Container();
 	~cUI_Container();
 
-	void UI_Init();
-	void UI_Update();
+	void UI_Init(float maxHp, float maxSp, CHARAC_TYPE cType);
+	void UI_Update(float m_currentHp, float m_currentSp);
 	void UI_Render();
 	void UI_Release();
+	void UI_fontRender();
 };
 

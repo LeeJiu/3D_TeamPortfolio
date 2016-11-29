@@ -11,7 +11,7 @@
 
 enum BK_SKILL //틱 클래스에서 쓸꺼. 
 {
-	BK_HOWL, BK_SWING, BK_ACCEL
+	BK_CHARGE, BK_SWING, BK_ACCEL
 };
 
 class cShowDamage;
@@ -24,26 +24,20 @@ private:
 	
 	cTickFunc*			m_tick[BK_TICKMAX];	//틱데미쥐
 
-	//스킬
 	int					m_atkCnt;		//평타단계 수
 	int					m_aniCount;		//애니메이션 카운터
 	float				m_time;			//커맨드체크할 타이머
 	float				m_fadeOut;		//애니 끝나는시간
+	float				m_testtime;		//로그찎는용 타이머
 
-	//스킬2
 	cSkill_Howling*		m_Howling;		//하울링
-
-	//스킬3 
 	cSkill_Swing*		m_Swing;		//스윙스킬
-
-	//스킬5
 	cSkill_Burserk*		m_Burserk;		//버서크모드
 
+	bool				m_isBurserk;
 	cSkill_AmorCrash*   m_ArmorCrash;
 
 	int					m_SwingCnt;
-
-	float				m_testtime;		//로그찎는용 타이머
 
 public:
 	cBerserker();
@@ -53,6 +47,7 @@ public:
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
 	void BaseObjectRender();
 	void BaseSpriteRender();
+	void BaseFontRender();
 	void BaseObjectBoundBox();
 
 private:
@@ -69,7 +64,7 @@ private:
 	void SKILL03();			//휠윈드 (원형 범위기)
 	void SKILL04();			//버프기
 
-	void BasixWeaponSet();
+	void BasicWeaponSet();
 	void SetTickCount();
 	void UiUpdate(float timeDelta, cCamera* camera);		//버서커유아이
 };

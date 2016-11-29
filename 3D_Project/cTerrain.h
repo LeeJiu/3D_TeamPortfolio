@@ -7,11 +7,11 @@ class cLight_Direction;
 class cTerrain
 {
 public:
-	
+
 	//Terrain 정점 구조체
 	typedef struct tagTERRAINVERTEX{
 		D3DXVECTOR3 pos;
-		D3DXVECTOR3 normal;				
+		D3DXVECTOR3 normal;
 		D3DXVECTOR3 binormal;
 		D3DXVECTOR3 tangent;
 		D3DXVECTOR2 baseUV;			//0~1 UV
@@ -60,7 +60,7 @@ private:
 
 	cQuadTree*							m_pQuadTree;				//쿼드 트리
 
-	
+
 	LPDIRECT3DTEXTURE9	m_pTexTile_0;				//터레인 0 층 타일
 	LPDIRECT3DTEXTURE9	m_pTexTile_1;				//터레인 1 층 타일
 	LPDIRECT3DTEXTURE9	m_pTexTile_2;				//터레인 2 층 타일
@@ -77,7 +77,7 @@ public:
 	~cTerrain(void);
 
 	//초기화 
-	HRESULT Init( 
+	HRESULT Init(
 		const char* szHeightMapName,		//높이맵 이름
 		const char* szTile_0,				// 타일 이미지 0
 		const char* szTile_1,				// 타일 이미지 1
@@ -94,21 +94,21 @@ public:
 	void Release();
 
 	//랜더
-	void Render( cCamera* pCam, cLight_Direction* pDirectionLight );
-	void Render( cCamera* pCam, cLight_Direction* pDirectionLight, cCamera* pDirectionLightCamera );
-	void RenderShadow( cCamera* pDirectionLightCam );
+	void Render(cCamera* pCam, cLight_Direction* pDirectionLight);
+	void Render(cCamera* pCam, cLight_Direction* pDirectionLight, cCamera* pDirectionLightCamera);
+	void RenderShadow(cCamera* pDirectionLightCam);
 
 
 
 
 	//Ray 히트 위치를 얻는다.
-	bool IsIntersectRay( D3DXVECTOR3* pOut, const LPRay pRay ); 
+	bool IsIntersectRay(D3DXVECTOR3* pOut, const LPRay pRay);
 
 	//해당 X, Z 위치의 지형의 높이를 얻는다.
-	float GetHeight( float x, float z );
+	float GetHeight(float x, float z);
 
 	//해당 X, Z 위치의 경사 벡터를 얻는다.
-	bool GetSlant( D3DXVECTOR3* pOut, float gravityPower, float x, float z );
+	bool GetSlant(D3DXVECTOR3* pOut, float gravityPower, float x, float z);
 
 
 
@@ -116,10 +116,10 @@ public:
 private:
 
 	//터레인 만들기
-	HRESULT CreateTerrain( int smooth, int tileNum );
+	HRESULT CreateTerrain(int smooth, int tileNum);
 
 	//터레인 스무싱
-	void SmoothTerrain( int passed );
+	void SmoothTerrain(int passed);
 
 
 

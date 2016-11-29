@@ -14,9 +14,6 @@ cUI_MenuBar::~cUI_MenuBar()
 
 void cUI_MenuBar::init()
 {
-
-
-
 	for (int i = 0; i < MENUBARNUM; i++)
 	{
 

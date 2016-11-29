@@ -9,6 +9,7 @@ cItem::cItem()
 	m_lifeTime = 60.f; // 아이템 생존 시간. 
 	m_itemNum = 0.f;
 	m_active = true;
+
 }
 
 
@@ -22,6 +23,7 @@ void cItem::init(cItem* copyItem)
 	m_itemName = copyItem->m_itemName;
 	m_basicScale = copyItem->m_basicScale;
 	m_basicRotation = copyItem->m_basicRotation;
+	m_Dmg = copyItem->m_Dmg;
 	//m_lifeTime = copyItem->m_lifeTime;
 	m_active = copyItem->m_active;
 	m_row = copyItem->m_row;

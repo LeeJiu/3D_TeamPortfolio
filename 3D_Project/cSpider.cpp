@@ -6,6 +6,7 @@
 cSpider::cSpider()
 {
 	m_fHP = 1000;
+	m_damage = 50;
 	m_fRange = 20;
 	m_fRange2 = 10;
 	m_state = IDLE;
@@ -98,7 +99,8 @@ void cSpider::Attack01(float timeDelta)
 		//피격 판정 + 플레이어에게 데미지 전달
 		if (PHYSICS_MGR->IsOverlap(m_pHitTrans, &m_pHitBound, m_pPlayer->pTransform, &m_pPlayer->BoundBox))
 		{
-			m_pPlayer->Damage(100);
+			int damage = MyUtil::RandomIntRange(m_damage - 10, m_damage + 10);
+			m_pPlayer->Damage(damage);
 			LOG_MGR->AddLog("때린다 %d",100);
 			m_fAtkTime = 0;
 			m_bHit = false;

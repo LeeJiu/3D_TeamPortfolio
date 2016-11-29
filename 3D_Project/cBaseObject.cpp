@@ -129,3 +129,26 @@ void  cBaseObject::SetMesh( cXMesh*	pMesh ){
 
 	this->ComputeBoundBox();
 }
+
+
+//
+
+
+void cBaseObject::BaseObjectRenderShadow()
+{
+	if (this->pMesh != NULL && this->IgnoreCreateShadow == false){
+
+		Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+		if (this->pSkinned){
+			cXMesh_Skinned::SetTechniqueName("CreateShadow");
+			this->pSkinned->Render(this->pTransform);
+		}
+
+		else{
+			cXMesh_Static::SetTechniqueName("CreateShadow");
+			this->pMesh->Render(this->pTransform);
+
+		}
+	}
+}

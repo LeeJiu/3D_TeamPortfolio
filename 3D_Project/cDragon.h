@@ -81,8 +81,11 @@ private:
 
 	cSkill_Meteo* m_Skill_Meteo[COLLCIRCLE];
 	cSkill_Thunder* m_Skill_Thunder[COLLCIRCLE];
-
-
+	// 기지모 그릴까?
+	bool renderGizimo;
+	// 죽었다. 
+	bool isDie;
+	float dieAniTime;
 public:
 	cDragon();
 	~cDragon();
@@ -111,6 +114,8 @@ public:
 	void breathUpdate();
 	void earthUpate();
 	void HeadAttUpate();
+	void dieUpdate(float timeDelta);
+
 	// 상태값 초기화.
 	void stateInit();
 	// 몬스터 회전 시키게 하는 함수
