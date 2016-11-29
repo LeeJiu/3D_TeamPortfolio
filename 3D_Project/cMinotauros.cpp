@@ -22,6 +22,7 @@ cMinotauros::cMinotauros()
 
 cMinotauros::~cMinotauros()
 {
+	SAFE_DELETE(m_pWayPoint);
 }
 
 void cMinotauros::BaseObjectEnable()
@@ -48,7 +49,7 @@ void cMinotauros::BaseObjectUpdate(float timeDelta)
 	float distance = D3DXVec3Length(&(m_pPlayer->pTransform->GetWorldPosition() - pTransform->GetWorldPosition()));
 
 
-	if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 2, 120 * ONE_RAD) == true)
+	if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 2, 100 * ONE_RAD) == true)
 	{
 		RangeIn(timeDelta);
 	}
@@ -68,8 +69,8 @@ void cMinotauros::BaseObjectUpdate(float timeDelta)
 void cMinotauros::BaseObjectBoundBox()
 {
 	pSkinned->AddBoneTransform("BN_Weapon_R", m_pHitTrans);
-	m_pHitTrans->MovePositionSelf(0.3f, 0.8f, 0);
-	m_pHitBound.SetBound(&m_pHitTrans->GetWorldPosition(), &D3DXVECTOR3(0.7f, 1.5f, 0.5f));
+	m_pHitTrans->MovePositionSelf(0.3f, 0.8f, 0.2f);
+	m_pHitBound.SetBound(&m_pHitTrans->GetWorldPosition(), &D3DXVECTOR3(0.7f, 1.5f, 0.25f));
 
 	BoundBox.SetBound(&D3DXVECTOR3(0, 1.5f, 0), &D3DXVECTOR3(1.0f, 1.5f, 1.0f));
 }
@@ -248,6 +249,10 @@ void cMinotauros::RangeOut()
 			m_state = WAIT;
 			m_strName = MyUtil::SetAnimation(m_state);
 			pSkinned->Play(m_strName);
+		}
+		else if (m_state == DMG)
+		{
+			pTransform->RotateSelf(0, 5 * ONE_RAD, 0);
 		}
 	}
 	else

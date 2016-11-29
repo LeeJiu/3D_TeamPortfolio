@@ -8,6 +8,7 @@
 #include "cSkill_MagicShild.h"
 #include "cSKill_Escape.h"
 #include "cSkill_FlameRoad.h"
+#include "cSkill_MagicShot.h"
 
 
 #define CONTROL_KEY 5
@@ -44,6 +45,7 @@ private:
 	int                    m_aniCount;
 
 	//스킬에 관한 것
+	cSkill_MagicShot*    m_pMagicShot;
 	cSkill_Surround*     m_pSurroundSkill;
 	cSkill_Round*        m_pRoundSkill;
 	cSkill_SnowStorm*    m_pSkill_SnowStorm;
@@ -56,8 +58,7 @@ private:
 
 
 	//평타
-	cQuadParticleEmitter*  m_magicATK;
-	cQuadParticleEmitter*  m_magicATK2;
+
 
 
 
@@ -83,10 +84,6 @@ private:
 	void SkillInit();
 	void SkillUpdate();
 
-
-	//스킬
-	void MagicATKInit();
-	
 
 
 	void Damage(float damage);

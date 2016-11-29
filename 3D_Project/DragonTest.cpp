@@ -103,7 +103,8 @@ HRESULT DragonTest::Scene_Init()
 
 	isClick = false;
 
-
+	m_CharacterBar = new cUI_CharacterBar;
+	m_CharacterBar->init();
 
 	return S_OK;
 }
@@ -122,11 +123,14 @@ void DragonTest::Scene_Release()
 		SAFE_DELETE(lights[i]);
 	}
 	lights.clear();
+
+	SAFE_DELETE(m_CharacterBar);
 }
 
 void DragonTest::Scene_Update(float timeDelta)
 {
 	//this->pTransForCamera->SetWorldPosition(this->pBerserker->pTransform->GetWorldPosition());
+	m_CharacterBar->update();
 
 	if (KEY_MGR->IsOnceUp('T'))
 	{
@@ -142,6 +146,8 @@ void DragonTest::Scene_Update(float timeDelta)
 
 	this->pBerserker->Update(timeDelta);
 	m_pMonMgr->Update(timeDelta);
+	
+	//this->ReadyShadowMap(&m_pMonMgr->MonToBasic());
 }
 
 void DragonTest::Scene_Render1()
@@ -159,12 +165,12 @@ void DragonTest::Scene_Render1()
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 	
 	cXMesh_Static::SetCamera(this->pMainCamera);
-	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
+	cXMesh_Static::SetTechniqueName("ReciveShadow");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	this->pBerserker->Render();
 	this->m_pMonMgr->Render();
-
+	//RenderEnvironment(pBerserker->pTransform);
 	//m_Land->Render();
 }
 
@@ -172,5 +178,7 @@ void DragonTest::Scene_Render1()
 void DragonTest::Scene_RenderSprite()
 {
 	this->pBerserker->BaseSpriteRender();
+	m_CharacterBar->uiRender();
+
 
 }

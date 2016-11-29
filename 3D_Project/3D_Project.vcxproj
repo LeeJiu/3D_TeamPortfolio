@@ -22,7 +22,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -88,11 +88,11 @@
     <ClInclude Include="cBoundBox.h" />
     <ClInclude Include="cBoundSphere.h" />
     <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cLoadManager.h" />
     <ClInclude Include="cDragon.h" />
     <ClInclude Include="cDXFontManager.h" />
     <ClInclude Include="cFrustum.h" />
     <ClInclude Include="cGizmoManager.h" />
-    <ClInclude Include="cGriff.h" />
     <ClInclude Include="cImage.h" />
     <ClInclude Include="cInven.h" />
     <ClInclude Include="cItem.h" />
@@ -136,9 +136,11 @@
     <ClInclude Include="cSkill_Front.h" />
     <ClInclude Include="cSkill_Howling.h" />
     <ClInclude Include="cSkill_MagicShild.h" />
+    <ClInclude Include="cSkill_MagicShot.h" />
     <ClInclude Include="cSkill_Meteo.h" />
     <ClInclude Include="cSkill_Round.h" />
     <ClInclude Include="cSkill_SelfBuff.h" />
+    <ClInclude Include="cSkill_Shot.h" />
     <ClInclude Include="cSkill_SnowStorm.h" />
     <ClInclude Include="cSkill_Surround.h" />
     <ClInclude Include="cSkill_Swing.h" />
@@ -146,7 +148,6 @@
     <ClInclude Include="cSkinnedAnimation.h" />
     <ClInclude Include="cSoundManager.h" />
     <ClInclude Include="cSpider.h" />
-    <ClInclude Include="cSpiderQueen.h" />
     <ClInclude Include="cSpriteManager.h" />
     <ClInclude Include="cSuccubus.h" />
     <ClInclude Include="cTerrain.h" />
@@ -187,11 +188,11 @@
     <ClCompile Include="cBoundBox.cpp" />
     <ClCompile Include="cBoundSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cLoadManager.cpp" />
     <ClCompile Include="cDragon.cpp" />
     <ClCompile Include="cDXFontManager.cpp" />
     <ClCompile Include="cFrustum.cpp" />
     <ClCompile Include="cGizmoManager.cpp" />
-    <ClCompile Include="cGriff.cpp" />
     <ClCompile Include="cImage.cpp" />
     <ClCompile Include="cInven.cpp" />
     <ClCompile Include="cItem.cpp" />
@@ -235,9 +236,11 @@
     <ClCompile Include="cSkill_Front.cpp" />
     <ClCompile Include="cSkill_Howling.cpp" />
     <ClCompile Include="cSkill_MagicShild.cpp" />
+    <ClCompile Include="cSkill_MagicShot.cpp" />
     <ClCompile Include="cSkill_Meteo.cpp" />
     <ClCompile Include="cSkill_Round.cpp" />
     <ClCompile Include="cSkill_SelfBuff.cpp" />
+    <ClCompile Include="cSkill_Shot.cpp" />
     <ClCompile Include="cSkill_SnowStorm.cpp" />
     <ClCompile Include="cSkill_Surround.cpp" />
     <ClCompile Include="cSkill_Swing.cpp" />
@@ -245,7 +248,6 @@
     <ClCompile Include="cSkinnedAnimation.cpp" />
     <ClCompile Include="cSoundManager.cpp" />
     <ClCompile Include="cSpider.cpp" />
-    <ClCompile Include="cSpiderQueen.cpp" />
     <ClCompile Include="cSpriteManager.cpp" />
     <ClCompile Include="cSuccubus.cpp" />
     <ClCompile Include="cTerrain.cpp" />

@@ -154,8 +154,6 @@ void cScene_Mgr::Update( float timeDelta )
 			m_pNowScene->Update( timeDelta );
 	}
 
-
-
 }
 
 void cScene_Mgr::Render()

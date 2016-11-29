@@ -98,6 +98,7 @@ public:
 	virtual void SetCamera(cCamera* camera) { m_camera = camera; }
 	virtual void SetMonsterManager(cMonsterManager* pMonMgr) { m_pMonMgr = pMonMgr; }
 
+	cTransform* getTrans(){ return pTransform; }
 	moveClass* getMoveClass(){ return m_pMove; }
 };
 

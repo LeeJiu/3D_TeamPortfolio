@@ -20,6 +20,6 @@ public:
 	void UI_Init();
 	void UI_Update();
 	void UI_Render();
-
+	void UI_Release();
 };
 

@@ -17,12 +17,13 @@ private:
 	std::vector<cBaseObject*>				m_vObjects;
 	std::vector<cBaseObject*>::iterator		m_viObjects;
 
-	cSetBoundObject*				selectBound;
-	std::vector<cSetBoundObject*>	boundObjects;
-
 	cBaseObject*							m_pSelectMonster;
 	std::vector<cBaseObject*>				m_vMonsters;
 	std::vector<cBaseObject*>::iterator		m_viMonsters;
+
+	cSetBoundObject*						m_pSelectBound;
+	std::vector<cSetBoundObject*>			m_vBoundBoxes;
+	std::vector<cSetBoundObject*>::iterator	m_viBoundBoxes;
 
 	std::vector<cLight*>	lights;
 
@@ -32,6 +33,7 @@ private:
 	bool		m_bSelectMon;
 
 	bool		m_bSwapSelection;
+	bool		m_bSetBoundBox;
 
 public:
 	cScene_BoundBoxTool();
@@ -46,8 +48,10 @@ public:
 	void Scene_Render1();
 
 	void KeyControl(float timeDelta);
+	void KeyControl2(float timeDelta);
 	void ControlObjects(float timeDelta);
 	void ControlMonsters(float timeDelta);
+	void ControlBoxes(float timeDelta);
 
 	void SetObjects();
 	void SelectObject();
@@ -57,6 +61,9 @@ public:
 	void SelectMonster();
 	void DeleteMonster();
 
+	void SelectBoundBox();
+	void DeleteBoundBox();
+
 	void SelectObjMesh(OBJECT_TYPE type);
 	void SelectMonMesh(MONSTER_TYPE type);
 
@@ -65,5 +72,8 @@ public:
 
 	void SaveMonsters();
 	void LoadMonsters();
+
+	void SaveBoundBox();
+	void LoadBoundBox();
 };
 

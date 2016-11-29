@@ -30,7 +30,14 @@ void cUI_Container::UI_Init()
 
 }
 
+void cUI_Container::UI_Release()
+{
+	SAFE_DELETE(m_Map);
+	SAFE_DELETE(m_CharacterBar);
+	SAFE_DELETE(m_SkillDeck);
+	SAFE_DELETE(m_MenuBar);
 
+}
 void cUI_Container::UI_Update()
 {
 	m_Map->update();

@@ -10,6 +10,7 @@
 
 cScene_BoundBoxTool::cScene_BoundBoxTool()
 {
+	m_pSelectBound = NULL;
 }
 
 
@@ -121,7 +122,8 @@ HRESULT cScene_BoundBoxTool::Scene_Init()
 
 
 	m_bSelectObj = false;
-	m_bSwapSelection = false; //오브젝트로 선택
+	m_bSwapSelection = false;	//오브젝트로 선택
+	m_bSetBoundBox = false;		//바운드 박스 설치하려면 true로
 
 	return S_OK;
 }
@@ -154,28 +156,47 @@ void cScene_BoundBoxTool::Scene_Update(float timeDelta)
 	//다이렉션 라이트 조종
 	//lights[0]->pTransform->DefaultControl2(timeDelta);
 
-	if (m_vObjects.empty())
+	//카메라 조종
+	pMainCamera->DefaultControl(timeDelta);
+	
+	//바운드박스 설치 / 오브젝트|몬스터 설치
+	if (KEY_MGR->IsOnceDown('B'))
 	{
-		m_pSelectObject = new cBaseObject;
-		m_pSelectObject->SetActive(true);
-		m_pSelectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X"));
-		m_pSelectObject->objType = MIGDAL_WALL;
+		m_bSetBoundBox = !m_bSetBoundBox;
+		if (m_bSetBoundBox)
+		{
+			LOG_MGR->AddLog("[바운드박스]");
+		}
+		else
+		{
+			LOG_MGR->AddLog("[오브젝트|몬스터]");
+		}
+	}
+
+	//세이브 & 로드
+	if (KEY_MGR->IsStayDown(VK_LCONTROL) && KEY_MGR->IsOnceDown('S'))
+	{
+		SaveObjects();
+		SaveMonsters();
+		SaveBoundBox();
+	}
+
+	if (KEY_MGR->IsStayDown(VK_LCONTROL) && KEY_MGR->IsOnceDown('L'))
+	{
+		LoadObjects();
+		LoadMonsters();
+		LoadBoundBox();
+	}
+
+
+	if (m_bSetBoundBox == false)
+	{
+		KeyControl(timeDelta);
 	}
 	else
 	{
-		//선택한 오브젝트 크기 및 이동 설정
-		m_pSelectObject->pTransform->DefaultControl4(timeDelta);
+		KeyControl2(timeDelta);
 	}
-
-	if (m_vMonsters.empty())
-	{
-		m_pSelectMonster = new cBaseObject;
-		m_pSelectMonster->SetActive(true);
-		m_pSelectMonster->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Monster/Bashil/MOB_Bashil.X"));
-		m_pSelectMonster->monType = BASILISK;
-	}
-
-	KeyControl(timeDelta);
 }
 
 void cScene_BoundBoxTool::Scene_Render1()
@@ -205,13 +226,16 @@ void cScene_BoundBoxTool::Scene_Render1()
 	}
 
 	//바운드를 그린다.
-	/*for (int i = 0; i < this->boundObjects.size(); i++)
-		this->boundObjects[i]->Render();
-
-	if (this->selectBound != NULL)
+	size = m_vBoundBoxes.size();
+	for (int i = 0; i < size; i++)
 	{
-		this->selectBound->pTransform->RenderGimozo();
-	}*/
+		this->m_vBoundBoxes[i]->Render();
+	}
+
+	if (this->m_pSelectBound != NULL)
+	{
+		this->m_pSelectBound->pTransform->RenderGimozo();
+	}
 }
 
 void cScene_BoundBoxTool::KeyControl(float timeDelta)
@@ -241,21 +265,33 @@ void cScene_BoundBoxTool::KeyControl(float timeDelta)
 	else
 	{
 		ControlObjects(timeDelta);
-	}
+	}	
+}
 
-
-	//세이브 & 로드
-	if (KEY_MGR->IsStayDown(VK_LCONTROL) && KEY_MGR->IsOnceDown('S'))
+void cScene_BoundBoxTool::KeyControl2(float timeDelta)
+{
+	//바운드 박스 추가
+	if (KEY_MGR->IsOnceDown(VK_ADD))
 	{
-		SaveObjects();
-		SaveMonsters();
+		//현재 마우스 위치에 바운드 박스를 생성
+		Ray ray;
+		POINT ptMouse = GetMousePos();
+		D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
+		this->pMainCamera->ComputeRay(&ray, &screenPos);
+
+		//레이의 터레인 히트 포인트를 얻는다.
+		D3DXVECTOR3 pos;
+		m_pTerrain->IsIntersectRay(&pos, &ray);
+
+		cSetBoundObject* pNewBound = new cSetBoundObject();
+		pNewBound->pTransform->SetWorldPosition(pos);
+		pNewBound->SetActive(true);
+		this->m_vBoundBoxes.push_back(pNewBound);
+
+		this->m_pSelectBound = pNewBound;
 	}
 
-	if (KEY_MGR->IsStayDown(VK_LCONTROL) && KEY_MGR->IsOnceDown('L'))
-	{
-		LoadObjects();
-		LoadMonsters();
-	}
+	ControlBoxes(timeDelta);
 }
 
 void cScene_BoundBoxTool::ControlObjects(float timeDelta)
@@ -343,6 +379,19 @@ void cScene_BoundBoxTool::ControlObjects(float timeDelta)
 			SetObjects();
 		}
 	}
+
+	if (m_vObjects.empty())
+	{
+		m_pSelectObject = new cBaseObject;
+		m_pSelectObject->SetActive(true);
+		m_pSelectObject->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Migdal/migdal_Wall.X"));
+		m_pSelectObject->objType = MIGDAL_WALL;
+	}
+	else
+	{
+		//선택한 오브젝트 크기 및 이동 설정
+		m_pSelectObject->pTransform->DefaultControl4(timeDelta);
+	}
 }
 
 void cScene_BoundBoxTool::ControlMonsters(float timeDelta)
@@ -424,6 +473,49 @@ void cScene_BoundBoxTool::ControlMonsters(float timeDelta)
 		{
 			SetMonsters();
 		}
+	}
+
+	if (m_vMonsters.empty())
+	{
+		m_pSelectMonster = new cBaseObject;
+		m_pSelectMonster->SetActive(true);
+		m_pSelectMonster->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Monster/Bashil/MOB_Bashil.X"));
+		m_pSelectMonster->monType = BASILISK;
+	}
+}
+
+void cScene_BoundBoxTool::ControlBoxes(float timeDelta)
+{
+	//바운드박스 선택
+	if (KEY_MGR->IsStayDown(VK_LCONTROL) == true && KEY_MGR->IsOnceDown(VK_LBUTTON))
+		SelectBoundBox();
+
+	//선택된 바운드박스 드래그
+	if (KEY_MGR->IsStayDown(VK_LCONTROL) == false && KEY_MGR->IsStayDown(VK_LBUTTON))
+	{
+		if (m_pSelectBound == NULL) return;
+
+		Ray ray;
+		POINT ptMouse = GetMousePos();
+		D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
+		this->pMainCamera->ComputeRay(&ray, &screenPos);
+
+		//레이의 터레인 히트 포인트를 얻는다.
+		D3DXVECTOR3 pos;
+		m_pTerrain->IsIntersectRay(&pos, &ray);
+
+		m_pSelectBound->pTransform->SetWorldPosition(pos);
+	}
+
+	//선택된 바운드박스 삭제
+	if (KEY_MGR->IsOnceDown(VK_DELETE))
+	{
+		DeleteBoundBox();
+	}
+
+	if (m_pSelectBound != NULL)
+	{
+		m_pSelectBound->Update(timeDelta);
 	}
 }
 
@@ -622,6 +714,84 @@ void cScene_BoundBoxTool::DeleteMonster()
 				else
 				{
 					m_pSelectMonster = m_vMonsters.back();	//가장 마지막에 들어간 몬스터를 선택
+				}
+				break;
+			}
+		}
+	}
+}
+
+void cScene_BoundBoxTool::SelectBoundBox()
+{
+	Ray ray;
+	POINT ptMouse = GetMousePos();
+	D3DXVECTOR2 screenPos(ptMouse.x, ptMouse.y);
+	this->pMainCamera->ComputeRay(&ray, &screenPos);
+
+	vector<cSetBoundObject*> hitObjects;
+	vector<float>	hitDistances;
+
+	//현재 있는 놈들 레이체크
+	int size = m_vBoundBoxes.size();
+	for (int i = 0; i < size; ++i)
+	{
+		D3DXVECTOR3 hitPos;
+		if (PHYSICS_MGR->IsRayHitBound(
+			&ray,
+			&this->m_vBoundBoxes[i]->BoundBox,
+			this->m_vBoundBoxes[i]->pTransform,
+			&hitPos,
+			NULL))
+		{
+			//충돌된 놈이라면...
+			hitObjects.push_back(this->m_vBoundBoxes[i]);
+
+			//카메라로부터의 거리 제곱도 푸쉬
+			hitDistances.push_back(D3DXVec3LengthSq(
+				&(hitPos - this->pMainCamera->GetWorldPosition())));
+		}
+	}
+
+
+	//히트 된 놈이 있다면...
+	if (hitObjects.size() > 0)
+	{
+		//일단 첫번째 
+		cSetBoundObject* pTarget = hitObjects[0];
+		float nearest = hitDistances[0];
+
+		for (int i = 1; i < hitObjects.size(); i++)
+		{
+			//갱신
+			if (nearest > hitDistances[i])
+			{
+				nearest = hitDistances[i];
+				pTarget = hitObjects[i];
+			}
+		}
+
+		//선택된 오브젝트
+		m_pSelectBound = pTarget;
+	}
+}
+
+void cScene_BoundBoxTool::DeleteBoundBox()
+{
+	if (m_pSelectBound != NULL)
+	{
+		//벡터에서 날리고
+		for (m_viBoundBoxes= m_vBoundBoxes.begin(); m_viBoundBoxes != m_vBoundBoxes.end(); ++m_viBoundBoxes)
+		{
+			if (*m_viBoundBoxes == m_pSelectBound)
+			{
+				m_vBoundBoxes.erase(m_viBoundBoxes);
+				if (m_vObjects.empty())
+				{
+					SAFE_DELETE(m_pSelectBound);
+				}
+				else
+				{
+					m_pSelectBound = m_vBoundBoxes.back();	//가장 마지막에 들어간 오브젝트를 선택
 				}
 				break;
 			}
@@ -903,5 +1073,136 @@ void cScene_BoundBoxTool::LoadMonsters()
 
 		//푸쉬 
 		m_vMonsters.push_back(pMonster);
+	}
+}
+
+void cScene_BoundBoxTool::SaveBoundBox()
+{
+	fstream file;
+	file.open("BoundData.txt", fstream::out); //fstream::out 파일 쓰기 모드
+
+	int size = m_vBoundBoxes.size();
+	for (int i = 0; i < size; i++)
+	{
+		cSetBoundObject* pBounds = this->m_vBoundBoxes[i];
+
+		//위치 값 얻는다.
+		D3DXVECTOR3 pos = pBounds->pTransform->GetWorldPosition();
+
+		//사원수 얻는다.
+		D3DXQUATERNION quat = pBounds->pTransform->GetWorldRotateQuaternion();
+
+		//스케일 얻는다.
+		D3DXVECTOR3 scale = pBounds->pTransform->GetScale();
+
+		//바운드 정보
+		D3DXVECTOR3 boundCenter = pBounds->center;
+		D3DXVECTOR3 boundHalf = pBounds->halfSize;
+
+
+		file <<
+			"[" << pos.x << "," << pos.y << "," << pos.z << "]" <<  //Pos 쓴다.
+			"[" << quat.x << "," << quat.y << "," << quat.z << "," << quat.w << "]" <<		//사원수 쓴다
+			"[" << scale.x << "," << scale.y << "," << scale.z << "]" <<	//스케일쓴다.
+			"[" << boundCenter.x << "," << boundCenter.y << "," << boundCenter.z << "]" <<	//바운드 센터 쓴다.
+			"[" << boundHalf.x << "," << boundHalf.y << "," << boundHalf.z << "]" <<
+			endl;
+	}
+	file.close(); //다쓴파일 스트림을 클로즈
+
+
+	LOG_MGR->AddLog("Save BoundBoxes !!!");
+}
+
+void cScene_BoundBoxTool::LoadBoundBox()
+{
+	fstream file;
+	file.open("BoundData.txt", fstream::in);  //fstream::in 읽기모드
+
+	std::vector<std::string> strLine;		//string 을 저장하는 벡터
+
+	//파일끝까지 읽는다.
+	while (file.eof() == false)  // file.eof() 파일을 읽어재끼다 끝을만나면 true
+	{
+		std::string line;
+		file >> line;			//file 한줄 문자열을 읽어 line 에 대입
+		strLine.push_back(line);
+	}
+	file.close();		//다쓴 파일스트림은 닫는다.
+
+	//읽어온 파일 대로 셋팅
+	for (int i = 0; i < strLine.size(); i++)
+	{
+		if (strLine[i].size() == 0)
+			continue;
+
+
+		//한줄라인이 여기에 대입된다.
+		char cStr[2048];
+		strcpy(cStr, strLine[i].c_str());
+
+		char* pc;
+
+		//위치
+		D3DXVECTOR3 pos;
+		pc = strtok(cStr, "][,");		
+		pos.x = atof(pc);
+		pc = strtok(NULL, "][,");
+		pos.y = atof(pc);
+		pc = strtok(NULL, "][,");	
+		pos.z = atof(pc);
+
+		//사원수
+		D3DXQUATERNION quat;
+		pc = strtok(NULL, "][,");
+		quat.x = atof(pc);
+		pc = strtok(NULL, "][,");
+		quat.y = atof(pc);
+		pc = strtok(NULL, "][,");
+		quat.z = atof(pc);
+		pc = strtok(NULL, "][,");
+		quat.w = atof(pc);
+
+		//스케일
+		D3DXVECTOR3 scale;
+		pc = strtok(NULL, "][,");
+		scale.x = atof(pc);
+		pc = strtok(NULL, "][,");
+		scale.y = atof(pc);
+		pc = strtok(NULL, "][,");
+		scale.z = atof(pc);
+
+
+		//바운드 로컬센터
+		D3DXVECTOR3 localCenter;
+		pc = strtok(NULL, "][,");
+		localCenter.x = atof(pc);
+		pc = strtok(NULL, "][,");
+		localCenter.y = atof(pc);
+		pc = strtok(NULL, "][,");
+		localCenter.z = atof(pc);
+
+		//바운드 로컬하프
+		D3DXVECTOR3 localHalf;
+		pc = strtok(NULL, "][,");
+		localHalf.x = atof(pc);
+		pc = strtok(NULL, "][,");
+		localHalf.y = atof(pc);
+		pc = strtok(NULL, "][,");
+		localHalf.z = atof(pc);
+
+
+		//위의 정보로 오브젝트 생성
+		cSetBoundObject* pNewBound = new cSetBoundObject();
+		pNewBound->SetActive(true);
+		pNewBound->pTransform->SetWorldPosition(pos);
+		pNewBound->pTransform->SetRotateWorld(quat);
+		pNewBound->pTransform->SetScale(scale);
+		pNewBound->BoundBox.SetBound(&localCenter, &localHalf);
+
+		//푸쉬 
+		this->m_vBoundBoxes.push_back(pNewBound);
+
+
 	}
 }

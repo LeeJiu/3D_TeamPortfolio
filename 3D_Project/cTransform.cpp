@@ -1786,8 +1786,6 @@ void cTransform::DefaultControl4(float timeDelta)
 	}
 }
 
-
-
 //Transform 에 대한 기즈모를 그린다.
 void cTransform::RenderGimozo( bool applyScale ) const
 {

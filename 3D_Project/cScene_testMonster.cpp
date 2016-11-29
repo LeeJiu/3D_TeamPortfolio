@@ -17,6 +17,12 @@ cScene_testMonster::~cScene_testMonster()
 HRESULT cScene_testMonster::Scene_Init()
 {
 	//
+	//파일 로드
+	//
+	LOAD_MGR->LoadObjects(m_vObject);
+	LOAD_MGR->LoadBoundBox(m_vBoundBox);
+
+	//
 	//터레인 세팅
 	//
 	m_pTerrain = new cTerrain;
@@ -127,6 +133,12 @@ void cScene_testMonster::Scene_Render1()
 	cXMesh_Static::SetCamera(this->pMainCamera);
 	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
 	cXMesh_Static::SetBaseLight(dynamic_cast<cLight_Direction*>(lights[0]));
+
+	int size = m_vObject.size();
+	for (int i = 0; i < size; ++i)
+	{
+		m_vObject[i]->Render();
+	}
 
 	//셰이더에 라이팅 셋팅
 	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrixArray("matLights", matLights, 10);

@@ -9,7 +9,7 @@ cSkill_Front::cSkill_Front()
 
 cSkill_Front::~cSkill_Front()
 {
-	SAFE_DELETE(m_CastEfc)
+
 
 }
 

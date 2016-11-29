@@ -13,8 +13,9 @@ private:
 
 	cMonsterManager*	m_pMonMgr;
 
-
 	std::vector<cLight*>		lights;
+	std::vector<cBaseObject*>	m_vObject;
+	std::vector<cBaseObject*>	m_vBoundBox;
 
 public:
 	cScene_testMonster();
