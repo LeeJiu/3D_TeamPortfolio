@@ -15,6 +15,11 @@ cSkill_MagicShot::~cSkill_MagicShot()
 
 void cSkill_MagicShot::Effect_Init()
 {
+
+	SOUND_MGR->addSound("mage_magicShot", "../Resources/Sound/메이지_평타.ogg", false, false);
+	SOUND_MGR->addSound("mage_magicShot_se", "../Resources/Sound/메이지_평타_발사효과음.ogg", false, false);
+	SOUND_MGR->addSound("mage_magicShot_se2", "../Resources/Sound/메이지_평타_피격.ogg", false, false);
+
 	m_magicATK = new cQuadParticleEmitter;
 	m_magicATK->SetActive(true);
 
@@ -129,9 +134,13 @@ void cSkill_MagicShot::Effect_Update(float timeDelta)
 
 	if (m_AttackingCount == 1)
 	{
+		SOUND_MGR->play("mage_magicShot", 0.3f);
+		SOUND_MGR->play("mage_magicShot_se", 0.3f);
 		m_magicATK2->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
 		m_magicATK3->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
 	}
+
+	
 
 	if (m_IsAttacking || m_IsShot)
 	{

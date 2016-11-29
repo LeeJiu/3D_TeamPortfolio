@@ -37,6 +37,10 @@ cMage::~cMage()
 
 void cMage::BaseObjectEnable()
 {
+
+
+
+
 	m_fHP = 2000;
 	m_currentHp = 2000;
 	m_fSP = 1500;
@@ -196,6 +200,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 			this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
 			m_pSkill_SnowStorm->Effect_Init();
 			m_pSkill_SnowStorm->StartCasting();
+	
 		}
 	}
 
@@ -536,5 +541,21 @@ void cMage::SKILL03()
 }
 void cMage::SKILL04()
 {
+
+	//if (m_pSkill_DarkRain->GetIsAttacking())
+	//{
+	//	
+	//
+	//	int size = m_vMonster.size();
+	//	for (int i = 0; i < size; i++)
+	//	{
+	//		LOG_MGR->AddLog("vector[%d] = %d", i, m_vMonster[i]->GetInRange());
+	//
+	//		if (!m_vMonster[i]->GetInRange()) continue;
+	//
+	//		m_vMonster[i]->Damage(100);
+	//		LOG_MGR->AddLog("데미지 받는중");
+	//	}
+	//}
 
 }
