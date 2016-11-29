@@ -58,7 +58,12 @@ public:
 	
 	//셋팅된 메쉬에 따라 바운드박스를 재계산 한다.
 	void ComputeBoundBox();	
+	//
 
+	void RenderShadow(){
+		if (this->bActive)
+			this->BaseObjectRenderShadow();
+	}
 
 
 protected:
@@ -69,6 +74,9 @@ protected:
 	virtual void BaseObjectUpdate( float timeDelta ) {}			//BaseObject 가 Update 때 실행....
 	virtual void BaseObjectNoActiveUpdate( float timeDelte){}	//BaseObject 가 비활성화시 업데이트 실행....
 	virtual void BaseObjectRender();							//BaseObject 를 그릴때 실행
-	virtual void BaseObjectBoundBox();							//BaseObject 의 바운드 박스를 세팅
+	virtual void BaseObjectBoundBox();//BaseObject 의 바운드 박스를 세팅
+	virtual void BaseObjectRenderShadow();						//BaseObject 를 그릴때 실행
+
+    
 };
 

@@ -129,6 +129,7 @@ void cScene_testMonster::Scene_Update(float timeDelta)
 
 	m_pMonMgr->Update(timeDelta);
 
+
 	ReadyShadowMap(&m_vRender);
 }
 
