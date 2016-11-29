@@ -3,8 +3,26 @@
 #include "cTransform.h"
 #include "cFrustum.h"
 
+#define MAX_RENDERTARGET 10
+
+
 class cCamera : public cTransform
 {
+public:
+	struct RenderTarget{
+		LPDIRECT3DTEXTURE9		m_pRenderTexture;				//랜더링될 Texture
+		LPDIRECT3DSURFACE9		m_pRenderSurface;				//랜더 Texture Deapth 버퍼와 Stencil 버퍼가 있는 Surface
+		LPDIRECT3DSURFACE9		m_pDeviceTargetSurface;
+		LPDIRECT3DSURFACE9		m_pDeviceDepthAndStencilSurface;
+
+		RenderTarget(){
+			m_pRenderTexture = NULL;
+			m_pRenderSurface = NULL;
+			m_pDeviceTargetSurface = NULL;
+			m_pDeviceDepthAndStencilSurface = NULL;
+		}
+	};
+
 public:
 	float fov;			//카메라 화각
 	float camNear;		//카메라 Near
@@ -18,7 +36,9 @@ protected:
 	D3DXMATRIXA16		matProjection;	//투영행렬
 	D3DXMATRIXA16		matViewProjection;	//뷰 * 투영행렬
 
-	
+private:
+	RenderTarget		renderTargets[MAX_RENDERTARGET];
+	RenderTarget		shadow;
 
 
 private:
@@ -94,6 +114,7 @@ public:
 
 	//랜터 Texture 얻는다.
 	LPDIRECT3DTEXTURE9 GetRenderTexture();
+	LPDIRECT3DTEXTURE9 GetRenderTexture(int idx);
 
 
 };

@@ -168,6 +168,7 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->pTransform->SetWorldPosition(pos);
 		monster->monType = DRAGON;
 		monster->SetActive(true);
+		monster->IgnoreCreateShadow = false;
 		break;
 	default:
 		break;

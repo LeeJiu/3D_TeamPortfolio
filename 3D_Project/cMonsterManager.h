@@ -23,12 +23,13 @@ private:
 	//링크 걸어줄 객체
 	cPlayer*		m_pPlayer;
 	cTerrain*		m_pTerrain;
-
 public:
 	cMonsterManager();
 	~cMonsterManager();
 
 	HRESULT Init();
+	
+
 	void Release();
 	void Update(float timeDelta);
 	void Render();

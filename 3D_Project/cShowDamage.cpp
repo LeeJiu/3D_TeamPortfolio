@@ -28,99 +28,82 @@ void cShowDamage::SetNumber(int number, cTransform * trans)
 			
 			stDamage damage;
 			damage.unit = num;
-			damage.unit_Rc = RectMake(WINSIZE_X/2, WINSIZE_Y/2, TEX_WIDTH, TEX_HEIGHT);
+			damage.Rc = RectMake(0, 0, TEX_WIDTH, TEX_HEIGHT);
+			damage.unit_x = WINSIZE_X / 2;
+			damage.unit_y = WINSIZE_Y / 2;
 			//damage.unit_Rc = RectMake(trans->GetWorldPosition().x, trans->GetWorldPosition().y, 5, 5);
 			char temp[32];
 			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.unit);
 			damage.unit_tex = RESOURCE_TEXTURE->GetResource(temp);
 			damage.countTime = 0;
-			damage.time = 5;
+			damage.time = 1;
 			damage.isDrawing = true;
+			damage.isEnd = false;
 			damage.tens_tex = NULL;		//다음자리 숫자 텍스쳐에 널값을 넣어서 랜더 막을거임.
 
 			v_damage.push_back(damage);
 		}
-		//쿼드로 출력할거면 여기서 trans값을 빌보드해서 쿼드이미지를 맞춰서띄워주면뎀. -> texture로
-		//else if (10 <= num && num < 100)
-		//{
-		//	unit = (number % 10);
-		//	tens = (number / 10);
-		//
-		//
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", unit);
-		//	unit_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", tens);
-		//	tens_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//
-		//	LOG_MGR->AddLog(" %d,%d", unit, tens);
-		//}
-		//else if (100 <= num && num < 1000)
-		//{
-		//	unit = (number % 10);
-		//	tens = (number / 10) % 10;
-		//	hund = (number / 100);
-		//
-		//	unit_quard->pTransform->AttachTo(trans);
-		//	tens_quard->pTransform->AttachTo(trans);
-		//	hund_quard->pTransform->AttachTo(trans);
-		//
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", unit);
-		//	unit_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", tens);
-		//	tens_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", hund);
-		//	hund_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//}
-		//else if (1000 <= num && num < 10000)
-		//{
-		//	unit = (number % 10);
-		//	tens = (number / 10) % 10;
-		//	hund = (number / 100) % 10;
-		//	thou = (number / 1000);
-		//
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", unit);
-		//	unit_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", tens);
-		//	tens_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", hund);
-		//	hund_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", thou);
-		//	thou_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//}
-		//else if (10000 <= num && num < 100000)
-		//{
-		//	unit = (number % 10);
-		//	tens = (number / 10) % 10;
-		//	hund = (number / 100) % 10;
-		//	thou = (number / 1000) % 10;
-		//	mil = (number / 10000);
-		//
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", unit);
-		//	unit_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", tens);
-		//	tens_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", hund);
-		//	hund_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", thou);
-		//	thou_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//	sprintf_s(temp, "../Resources/Textures/num_%d.tga", mil);
-		//	mil_quard->SetTexture(RESOURCE_TEXTURE->GetResource(temp));
-		//}
-		//else
-		//{
-		//	LOG_MGR->AddLog("숫자 표기 범위를 벗어낫다대스");
-		//	return;
-		//}
+		else if (num >= 10 && num < 100)
+		{
+			stDamage damage;
+			damage.unit = (num % 10);
+			damage.tens = (num / 10);
+			damage.Rc = RectMake(0, 0, TEX_WIDTH, TEX_HEIGHT);
+			damage.unit_x = WINSIZE_X / 2;
+			damage.unit_y = WINSIZE_Y / 2;
+			char temp[32];
+			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.unit);
+			damage.unit_tex = RESOURCE_TEXTURE->GetResource(temp);
+			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.tens);
+			damage.tens_tex = RESOURCE_TEXTURE->GetResource(temp);
+			damage.countTime = 0;
+			damage.time = 1;
+			damage.isDrawing = true;
+			damage.isEnd = false;
+			damage.hund_tex = NULL;		//다음자리 숫자 텍스쳐에 널값을 넣어서 랜더 막을거임.
+
+			v_damage.push_back(damage);
+		}
+		else if (num >= 100 && num < 1000)
+		{
+			stDamage damage;
+			damage.unit = (num % 10);
+			damage.tens = (number / 10) % 10;
+			damage.hund = (number / 100);
+			damage.Rc = RectMake(0, 0, TEX_WIDTH, TEX_HEIGHT);
+			damage.unit_x = WINSIZE_X / 2;
+			damage.unit_y = WINSIZE_Y / 2;
+			char temp[32];
+			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.unit);
+			damage.unit_tex = RESOURCE_TEXTURE->GetResource(temp);
+			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.tens);
+			damage.tens_tex = RESOURCE_TEXTURE->GetResource(temp);
+			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.hund);
+			damage.hund_tex = RESOURCE_TEXTURE->GetResource(temp);
+			damage.countTime = 0;
+			damage.time = 1;
+			damage.isDrawing = true;
+			damage.isEnd = false;
+			damage.thou_tex = NULL;		//다음자리 숫자 텍스쳐에 널값을 넣어서 랜더 막을거임.
+
+			v_damage.push_back(damage);
+		}
 	}
 }
 
 //삭제 원활하지 못하면 큐로바꺼
-void cShowDamage::Release()
+void cShowDamage::Clean()
 {
-	for (vi_damage = v_damage.begin(); vi_damage != v_damage.end(); vi_damage++)
+	for (vi_damage = v_damage.begin(); vi_damage != v_damage.end(); )
 	{
-		if (vi_damage->isDrawing) continue;
-		v_damage.erase(vi_damage);
+		if (!vi_damage->isEnd)
+		{
+			vi_damage++;
+		}
+		else if(vi_damage->isEnd)
+		{
+			vi_damage = v_damage.erase(vi_damage);
+		}
 	}
 }
 
@@ -133,30 +116,84 @@ void cShowDamage::Update(float timeDelta)
 		if (!v_damage[i].isDrawing) continue;
 
 		v_damage[i].countTime += timeDelta;
+		v_damage[i].unit_y -= 1.5;
 
 		if (v_damage[i].countTime > v_damage[i].time)
+		{
 			v_damage[i].isDrawing = false;
+			v_damage[i].isEnd = true;
+		}
 	}
 
-	//Release();  //터질지도모르니 일단 숨키자.
+	//Clean();  //터질지도모르니 일단 숨키자.
 }
 
 void cShowDamage::Render()
 {
 	for (int i = 0; i < size; i++)
 	{
-		if (!v_damage[i].isDrawing) continue;
-		
-		if (v_damage[i].tens_tex == NULL)
+		if (!v_damage[i].isEnd)
 		{
-			SPRITE_MGR->DrawTexture(
-				v_damage[i].unit_tex,
-				&v_damage[i].unit_Rc,
-				v_damage[i].unit_Rc.left,
-				v_damage[i].unit_Rc.top,
-				0xf0ffffff,
-				NULL
-			);
+			if (v_damage[i].tens_tex == NULL)
+			{
+				SPRITE_MGR->DrawTexture(
+					v_damage[i].unit_tex,
+					&v_damage[i].Rc,
+					v_damage[i].unit_x,
+					v_damage[i].unit_y,
+					0xf0ffffff,
+					NULL
+				);
+			}
+			else if (v_damage[i].tens_tex !=NULL && v_damage[i].hund_tex == NULL)
+			{
+				SPRITE_MGR->DrawTexture(
+					v_damage[i].unit_tex,
+					&v_damage[i].Rc,
+					v_damage[i].unit_x,
+					v_damage[i].unit_y,
+					0xf0ffffff,
+					NULL
+				);
+
+				SPRITE_MGR->DrawTexture(
+					v_damage[i].tens_tex,
+					&v_damage[i].Rc,
+					v_damage[i].unit_x - 20,
+					v_damage[i].unit_y,
+					0xf0ffffff,
+					NULL
+				);
+			}
+			else if (v_damage[i].hund_tex != NULL && v_damage[i].thou_tex == NULL)
+			{
+				SPRITE_MGR->DrawTexture(
+					v_damage[i].unit_tex,
+					&v_damage[i].Rc,
+					v_damage[i].unit_x,
+					v_damage[i].unit_y,
+					0xf0ffffff,
+					NULL
+				);
+
+				SPRITE_MGR->DrawTexture(
+					v_damage[i].tens_tex,
+					&v_damage[i].Rc,
+					v_damage[i].unit_x - 25,
+					v_damage[i].unit_y,
+					0xf0ffffff,
+					NULL
+				);
+
+				SPRITE_MGR->DrawTexture(
+					v_damage[i].hund_tex,
+					&v_damage[i].Rc,
+					v_damage[i].unit_x - 50,
+					v_damage[i].unit_y,
+					0xf0ffffff,
+					NULL
+				);
+			}
 		}
 	}
 }

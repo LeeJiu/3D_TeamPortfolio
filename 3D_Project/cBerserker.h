@@ -3,10 +3,11 @@
 #include "cSkill_Swing.h"
 #include "cSkill_Howling.h"
 #include "cSkill_Burserk.h"
+#include "cSkill_AmorCrash.h"
 #include "cTickFunc.h"
 
 #define CONTROL_KEY 5
-#define TICKMAX 3
+#define BK_TICKMAX 3
 
 enum BK_SKILL //틱 클래스에서 쓸꺼. 
 {
@@ -21,7 +22,7 @@ private:
 	cShowDamage*		m_ShowDamage;
 	cSkill_Surround*    m_pSurroundSkill;	//주변범위
 	
-	cTickFunc*			m_tick[TICKMAX];	//틱데미쥐
+	cTickFunc*			m_tick[BK_TICKMAX];	//틱데미쥐
 
 	//스킬
 	int					m_atkCnt;		//평타단계 수
@@ -37,6 +38,8 @@ private:
 
 	//스킬5
 	cSkill_Burserk*		m_Burserk;		//버서크모드
+
+	cSkill_AmorCrash*   m_ArmorCrash;
 
 	int					m_SwingCnt;
 

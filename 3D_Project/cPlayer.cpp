@@ -173,8 +173,6 @@ void cPlayer::UiURender()
 {
 	m_inven->render();
 	ITEM_MGR->render();
-	
-
 }
 
 void cPlayer::Move(float timeDelta)

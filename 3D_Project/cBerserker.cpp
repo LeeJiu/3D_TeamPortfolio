@@ -38,7 +38,7 @@ void cBerserker::BaseObjectEnable()
 	m_botton = false;
 
 	m_fHP = 3000;					//신상정보
-	m_currentHp = 3000;			//신상정보
+	m_currentHp = 3000;				//신상정보
 	m_attackLength = 5;				//신상정보
 	m_damage = 100;					//신상정보
 	m_isAttack = false;				//신상정보
@@ -60,7 +60,6 @@ void cBerserker::BaseObjectEnable()
 	//skill
 	SkillInit();
 	SetTickCount();
-	
 
 	m_ShowDamage = new cShowDamage;
 }
@@ -75,10 +74,10 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 
 	//틱업데이트
 
-	//for (int i = 0; i < TICKMAX; i++)
-	//{
-	//	m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
-	//}
+	for (int i = 0; i < BK_TICKMAX; i++)
+	{
+		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
+	}
 
 
 	if (!m_invenOn)
@@ -153,7 +152,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
 	}
 
-	//스킬2 - 하울링
+	//스킬2 - 차지
 	if (!m_isAttack && KEY_MGR->IsOnceDown('2'))
 	{
 		m_isAttack = true;
@@ -161,13 +160,21 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 
 		RangeCheck(10);
 
-		m_state = SK_HOWL;
+		m_state = SK_CHARGE;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->Play(m_strName, 0.3);
+		m_state = IDLE;
+		m_ArmorCrash->SelectSkill();
+		m_ArmorCrash->Effect_Init();
+	}
+
+	if (m_ArmorCrash->GetAtkCount() == 1)
+	{
+		m_state = SK_CHARGE_ATK;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
-		m_state = IDLE;
-		m_Howling->Effect_Init();
-		m_Howling->StartCasting();
 	}
+
 
 	//스킬3 - 스윙
 	if (!m_isAttack && KEY_MGR->IsOnceDown('3'))
@@ -214,6 +221,20 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	
 	m_Swing->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition());
 	m_Swing->Effect_Update(timeDelta);
+
+	m_Burserk->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition());
+	m_Burserk->Effect_Update(timeDelta);
+
+	Ray ray;
+	POINT ptMousePos = GetMousePos();
+	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+	m_camera->ComputeRay(&ray, &screenPos);
+	D3DXVECTOR3		mousePos;
+	pTerrain->IsIntersectRay(&mousePos, &ray);
+
+	m_ArmorCrash->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition(), mousePos);
+	m_ArmorCrash->Effect_Update(timeDelta);
+
 
 	
 
@@ -263,6 +284,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 void cBerserker::BaseObjectRender()
 {
 	this->pSkinned->Render(this->pTransform);
+	
 	this->BoundBox.RenderGizmo(this->pTransform);
 
 	m_Weapon->Render();
@@ -273,6 +295,10 @@ void cBerserker::BaseObjectRender()
 
 	m_Swing->BaseObjectRender();
 	m_Swing->Effect_Render();
+
+	m_Burserk->Effect_Render();
+	m_ArmorCrash->BaseObjectRender();
+	m_ArmorCrash->Effect_Render();
 }
 
 void cBerserker::BaseSpriteRender()
@@ -281,18 +307,18 @@ void cBerserker::BaseSpriteRender()
 	m_ShowDamage->Render();
 	m_UIContainer->UI_Render();
 
-	char temp[32];
-	sprintf_s(temp, "../Resources/Textures/num_%d.tga", 2);
-
-	RECT rc = RectMake(0, 0, 64, 64);
-
-	SPRITE_MGR->DrawTexture(
-		RESOURCE_TEXTURE->GetResource(temp),
-		&rc,
-		WINSIZE_X / 2, WINSIZE_Y / 2,
-		0xffffffff,
-		NULL
-	);
+	//char temp[32];
+	//sprintf_s(temp, "../Resources/Textures/num_%d.tga", 2);
+	//
+	//RECT rc = RectMake(0, 0, 64, 64);
+	//
+	//SPRITE_MGR->DrawTexture(
+	//	RESOURCE_TEXTURE->GetResource(temp),
+	//	&rc,
+	//	WINSIZE_X / 2, WINSIZE_Y / 2,
+	//	0xffffffff,
+	//	NULL
+	//);
 }
 
 void cBerserker::BaseObjectBoundBox()
@@ -334,7 +360,7 @@ void cBerserker::Damage(float damage)
 void cBerserker::Attack01()
 {	
 	int damage = m_damage * 1;
-	damage = 2; 
+	damage = 5; 
 	//damage = RandomIntRange(damage - 10, damage + 10);
 
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
@@ -346,7 +372,7 @@ void cBerserker::Attack01()
 void cBerserker::Attack02()
 {
 	int damage = m_damage * 2;
-	damage = 5;
+	damage = 10;
 	//damage = RandomIntRange(damage - 10, damage + 10);
 
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
@@ -358,7 +384,7 @@ void cBerserker::Attack02()
 void cBerserker::Attack03()
 {
 	int damage = m_damage * 3;
-	damage = 8;
+	damage = 19;
 	//damage = RandomIntRange(damage - 10, damage + 10);
 	
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
@@ -380,7 +406,11 @@ void  cBerserker::SkillInit()
 	
 	m_Burserk = new cSkill_Burserk;
 	m_Burserk->SetActive(true);
-	m_Burserk->BaseObjectEnable(pTransform->GetWorldPosition(), 1, 200, 20);
+	m_Burserk->BaseObjectEnable(pTransform->GetWorldPosition(), 70, 600, 20);
+
+	m_ArmorCrash = new cSkill_AmorCrash;
+	m_ArmorCrash->SetActive(true);
+	m_ArmorCrash->BaseObjectEnable(pTransform->GetWorldPosition(), 2, 10, 1, 100, 10);
 
 	m_aniCount = 0;
 }
@@ -407,11 +437,11 @@ void cBerserker::SKILL02()
 			if (m_tick[BK_SWING]->tickStart())
 			{
 				//이거 틱데미지로바꿔
-				//if (PHYSICS_MGR->IsOverlap(m_Weapon->pTransform, &m_inven->GetWeapon()->BoundBox, m_vMonster[i]->pTransform, &m_vMonster[i]->BoundBox))
-				if (PHYSICS_MGR->IsOverlap(m_Weapon, m_vMonster[i]))
+				//if (PHYSICS_MGR->IsOverlap(m_Weapon, m_vMonster[i]))
 				{
 					LOG_MGR->AddLog("%d 데미지줌", damage);
-					//m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
+
+					m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
 					m_vMonster[i]->Damage(damage);
 				}
 			}
@@ -504,7 +534,6 @@ void cBerserker::UiUpdate(float timeDelta, cCamera* camera)
 		this->pTrailRender->Transform.AttachTo(m_Weapon->pTransform);
 		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
 		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
-		
 		
 		//this->pTrailRender->Transform.AttachTo(m_inven->GetWeapon()->pTransform);
 		//this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);

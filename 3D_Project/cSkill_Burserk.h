@@ -7,7 +7,7 @@ class cSkill_Burserk : public cSkill_SelfBuff
 
 	cQuadParticleEmitter*  m_burserking;
 	cQuadParticleEmitter*  m_burserking_under;
-
+	cQuadParticleEmitter*  m_DarkStorm_under;
 
 
 public:
