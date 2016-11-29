@@ -496,6 +496,8 @@ void cBerserker::SKILL02()
 				LOG_MGR->AddLog("%d µ¥¹ÌÁöÁÜ", damage);
 				m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
 				m_vMonster[i]->Damage(damage);
+				LOG_MGR->AddLog("%d µ¥¹ÌÁöÁÜ", m_vMonster[i]->monType);
+
 			}
 		}
 	}
