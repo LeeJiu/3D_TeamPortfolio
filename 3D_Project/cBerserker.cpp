@@ -78,10 +78,12 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	Move(timeDelta);
 
 	//틱업데이트
+
 	//for (int i = 0; i < TICKMAX; i++)
 	//{
 	//	m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
 	//}
+
 
 	if (!m_invenOn)
 	{
