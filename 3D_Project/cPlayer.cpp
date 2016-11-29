@@ -29,11 +29,16 @@ void cPlayer::BaseObjectEnable()
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
 
+
+
 }
 
 void cPlayer::BaseObjectUpdate(float timeDelta)
 {
+	
 	Monster_pick();
+
+
 }
 
 void cPlayer::BaseObjectRender()
@@ -43,7 +48,7 @@ void cPlayer::BaseObjectRender()
 
 void cPlayer::BaseSpriteRender()
 {
-
+	
 }
 
 void cPlayer::BaseObjectBoundBox()
@@ -168,6 +173,8 @@ void cPlayer::UiURender()
 {
 	m_inven->render();
 	ITEM_MGR->render();
+	
+
 }
 
 void cPlayer::Move(float timeDelta)

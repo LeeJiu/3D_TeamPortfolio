@@ -1,13 +1,14 @@
 #pragma once
-#include "cSkill_Surround.h"
+#include "cSkill_SelfBuff.h"
 
-class cSkill_Burserk : public cSkill_Surround
+
+class cSkill_Burserk : public cSkill_SelfBuff
 {
-	//cQuadParticleEmitter*  m_snowStrom;
-	//cQuadParticleEmitter*  m_snowStrom_under;
-	//cPartcleEmitter*       m_snow;
-	bool                   m_howling;
-	int                    m_aniCount;
+
+	cQuadParticleEmitter*  m_burserking;
+	cQuadParticleEmitter*  m_burserking_under;
+
+
 
 public:
 	cSkill_Burserk();
