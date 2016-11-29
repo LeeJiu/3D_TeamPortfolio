@@ -61,13 +61,13 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene("DragonTest");
 	//SCENE_MGR->ChangeScene("berserker_test");
 	//SCENE_MGR->ChangeScene( "mage_Test" );
-	//SCENE_MGR->ChangeScene("berserker_test");
+	SCENE_MGR->ChangeScene("berserker_test");
 	//SCENE_MGR->ChangeScene("DragonTest");
 	//SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
 	//SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
 	//SCENE_MGR->ChangeScene("cScene_testMonster");
-	SCENE_MGR->ChangeScene("cVideoTest");
+	//SCENE_MGR->ChangeScene("cVideoTest");
 
 
 	return S_OK;		

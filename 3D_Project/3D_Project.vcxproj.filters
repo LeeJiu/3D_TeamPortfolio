@@ -40,11 +40,11 @@
     <Filter Include="GameActor\Pet">
       <UniqueIdentifier>{a7ba2d61-c162-4653-ad89-2d7b1b05d421}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameActor\Skill">
-      <UniqueIdentifier>{01084c57-4e81-44d1-80cd-23a3996a12dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{b0a09e12-09b2-42f6-ad67-83d89148aa61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Skill">
+      <UniqueIdentifier>{01084c57-4e81-44d1-80cd-23a3996a12dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -147,12 +147,6 @@
     <ClInclude Include="cParticle.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="cParticleQuad.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cQuadParticleEmitter.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="cScene_Mgr.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -167,9 +161,6 @@
     </ClInclude>
     <ClInclude Include="animation_Test.h">
       <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="cBaseskill.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="cSpriteManager.h">
       <Filter>Managers</Filter>
@@ -262,45 +253,39 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Surround.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Round.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_SnowStorm.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_DarkRain.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Burserk.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Escape.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_FlameRoad.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Front.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_MagicShild.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Meteo.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_SelfBuff.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_Swing.h">
-      <Filter>Component</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cTickFunc.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="cViewDamage.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="cSuccubus.h">
@@ -325,13 +310,37 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="cSkill_Thunder.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClInclude>
     <ClInclude Include="cVideoTest.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="cVideo.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cParticleQuad.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cQuadParticleEmitter.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cShowDamage.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Swing.h">
+      <Filter>Component\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Shot.h">
+      <Filter>Component\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_MagicShot.h">
+      <Filter>Component\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Howling.h">
+      <Filter>Component\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cBaseskill.h">
+      <Filter>Component\Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -434,12 +443,6 @@
     <ClCompile Include="cPartcleEmitter.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="cParticleQuad.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cQuadParticleEmitter.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="cScene_Mgr.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -454,9 +457,6 @@
     </ClCompile>
     <ClCompile Include="animation_Test.cpp">
       <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="cBaseskill.cpp">
-      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cSpriteManager.cpp">
       <Filter>Managers</Filter>
@@ -527,9 +527,6 @@
     <ClCompile Include="cSpider.cpp">
       <Filter>GameActor\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="berserker_backup.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cMonsterManager.cpp">
       <Filter>GameActor\Monster</Filter>
     </ClCompile>
@@ -552,45 +549,39 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Round.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Surround.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_SnowStorm.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_DarkRain.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Burserk.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Escape.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_FlameRoad.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Front.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_MagicShild.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Meteo.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_SelfBuff.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_Swing.cpp">
-      <Filter>Component</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cTickFunc.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="cViewDamage.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cSuccubus.cpp">
@@ -615,13 +606,37 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Thunder.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cVideoTest.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="cVideo.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cParticleQuad.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cQuadParticleEmitter.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cShowDamage.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Swing.cpp">
+      <Filter>Component\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Shot.cpp">
+      <Filter>Component\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_MagicShot.cpp">
+      <Filter>Component\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Howling.cpp">
+      <Filter>Component\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cBaseskill.cpp">
+      <Filter>Component\Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

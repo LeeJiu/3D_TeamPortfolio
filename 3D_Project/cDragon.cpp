@@ -607,7 +607,7 @@ void cDragon::LookPos(D3DXVECTOR3 target)
 void cDragon::basicAttackUpdate()
 {
 	if (isNoneBasicAttack == true)return;
-	if (strcmp(m_nowAni.c_str(), "ATK_02") == 0);
+	if (strcmp(m_nowAni.c_str(), "ATK_02") == 0)
 	{
 
 		float aniTime = pSkinned->GetTime();
@@ -670,7 +670,7 @@ void cDragon::spawn()
 
 	if (isBattle == false)
 	{
-		if (strcmp(m_nowAni.c_str(), "Spawn") == 0);
+		if (strcmp(m_nowAni.c_str(), "Spawn") == 0)
 		{
 			float aniTime = pSkinned->GetTime();
 
@@ -692,7 +692,7 @@ void cDragon::spawn()
 
 void cDragon::breathUpdate()
 {
-	if (strcmp(m_nowAni.c_str(), "SK_Firing_02") == 0);
+	if (strcmp(m_nowAni.c_str(), "SK_Firing_02") == 0)
 	{
 		float aniTime = pSkinned->GetTime();
 
@@ -735,7 +735,7 @@ void cDragon::breathUpdate()
 }
 void cDragon::earthUpate()
 {
-	if (strcmp(m_nowAni.c_str(), "ATK_01") == 0);
+	if (strcmp(m_nowAni.c_str(), "ATK_01") == 0)
 	{
 		float aniTime = pSkinned->GetTime();
 
@@ -780,7 +780,7 @@ void cDragon::earthUpate()
 }
 void cDragon::HeadAttUpate()
 {
-	if (strcmp(m_nowAni.c_str(), "SK_Firing_01") == 0);
+	if (strcmp(m_nowAni.c_str(), "SK_Firing_01") == 0)
 	{
 		float aniTime = pSkinned->GetTime();
 
