@@ -55,6 +55,13 @@ HRESULT DragonTest::Scene_Init()
 	//m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
 	m_Land->pTransform->SetWorldPosition(0, 0, 0);
 
+	castle = new cBaseObject;
+	castle->SetMesh(RESOURCE_STATICXMESH->GetResource(
+		"../Resources/Meshes/Migdal/migdal_Wall.X",&matCorrection));
+	castle->SetActive(true);
+	castle->pTransform->SetWorldPosition(0, 24, 0);
+
+
 	//¸ó½ºÅÍ
 	this->m_pMonMgr = new cMonsterManager;
 	this->pBerserker = new cBerserker;
@@ -193,7 +200,7 @@ void DragonTest::Scene_Render1()
 	this->pBerserker->Render();
 	this->m_pMonMgr->Render();
 	//RenderEnvironment(pBerserker->pTransform);
-	//m_Land->Render();
+	castle->Render();
 }
 
 
