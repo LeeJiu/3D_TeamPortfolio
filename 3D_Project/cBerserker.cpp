@@ -211,6 +211,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 void cBerserker::BaseObjectRender()
 {
 	this->pSkinned->Render(this->pTransform);
+	
 	this->BoundBox.RenderGizmo(this->pTransform);
 
 	if (m_inven->GetWeapon() != NULL)

@@ -23,12 +23,13 @@ private:
 	//링크 걸어줄 객체
 	cPlayer*		m_pPlayer;
 	cTerrain*		m_pTerrain;
-
 public:
 	cMonsterManager();
 	~cMonsterManager();
 
 	HRESULT Init();
+	
+
 	void Release();
 	void Update(float timeDelta);
 	void Render();
@@ -41,6 +42,9 @@ public:
 
 	vector<cMonster*>& GetMonsters() { return m_vMonster; }
 
+	//void shadowUpdate();
+	//void LickLighDirection(cCamera* direction){ pDirectionLightCamera = direction; }
+	
 	//vector<cBaseObject*> getShadow(){ return m_vShadow; }
 	//vector<cBaseObject*> MonToBasic();
 };

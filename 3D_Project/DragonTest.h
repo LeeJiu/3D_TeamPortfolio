@@ -11,12 +11,14 @@ class DragonTest : public cScene
 {
 	std::vector<cMonster*>				vMonsters;
 	std::vector<cMonster*>::iterator	viMonsters;
+	std::vector<cLight*>				extraLights;			//추가 라이팅
 private:
 	cTerrain*				m_pTerrain;
 	cPlayer*				pBerserker;
 
 	cMonsterManager*		m_pMonMgr;
 	cTransform*				pTransForCamera;		//카메라용
+	
 
 	// 도형 피킹에 쓸것.
 	Ray						cRay; //케릭터에 들어갈 레이.
@@ -53,6 +55,7 @@ public:
 
 	virtual void Scene_RenderSprite();
 
+	void showUpdate();
 };
 
 

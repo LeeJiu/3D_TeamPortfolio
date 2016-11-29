@@ -279,4 +279,8 @@ void cCamera::RenderTextureEnd()
 LPDIRECT3DTEXTURE9 cCamera::GetRenderTexture()
 {
 	return m_pRenderTexture;
+}//랜터 Texture 얻는다.
+LPDIRECT3DTEXTURE9 cCamera::GetRenderTexture(int idx)
+{
+	return this->renderTargets[idx].m_pRenderTexture;
 }

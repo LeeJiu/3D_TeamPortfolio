@@ -1,5 +1,5 @@
 #pragma once
-
+#include "cMonster.h"
 
 class cCamera;
 class cLight_Direction;
@@ -50,6 +50,7 @@ public:
 	void SetEnvironment( std::string cubeFilePath );
 
 	void ReadyShadowMap( std::vector<cBaseObject*>* renderObjects, cTerrain* pTerrain = NULL );
+	void ReadyShadowMap(std::vector<cMonster*>* renderObjects, cTerrain* pTerrain = NULL);
 
 	
 	//메인카메라의 랜더 Texture 를 얻는다.
@@ -73,7 +74,9 @@ private:
 	void RenderEnvironment();
 	
 
+	void RenderOutline();
 
+	cCamera* getDirectionLight(){ return pDirectionLightCamera; }
 
 };
 
