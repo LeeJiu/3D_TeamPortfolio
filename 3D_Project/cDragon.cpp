@@ -79,7 +79,7 @@ void cDragon::BaseObjectEnable()
 
 	//0몸통
 	BoundBox.Init(D3DXVECTOR3(-4, 0, -4), D3DXVECTOR3(4, 8, 4.5));
-	//m_bound[BODY].Init(D3DXVECTOR3(-4, 0, -4), D3DXVECTOR3(4, 8, 4.5));
+	m_bound[BODY].Init(D3DXVECTOR3(-4, 0, -4), D3DXVECTOR3(4, 8, 4.5));
 	//머리
 	m_bound[HEAD].Init(D3DXVECTOR3(-2, -1, -2), D3DXVECTOR3(0, 1, 0.5));
 	//왼팔
@@ -95,7 +95,7 @@ void cDragon::BaseObjectEnable()
 	m_spone.worldCenter = pTransform->GetWorldPosition();
 	m_spone.radius = 100.f;
 	// 평타 사정거리
-	m_basicAttack.radius = m_bound[0].radius;
+	m_basicAttack.radius = m_bound[BODY].radius;
 
 	//애니메이션 상태값
 	isBattle = false;         //전투중?
@@ -168,6 +168,10 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 				{
 					isHeadAtt = true;
 					isNoneBasicAttack = true;
+					if (SOUND_MGR->isPlaySound("dra_HeadATK") == false)
+					{
+						SOUND_MGR->play("dra_HeadATK", 0.8f);
+					}
 				}
 				else if (chance == 3 && isBasicAttack != true)
 				{
@@ -175,13 +179,20 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 					isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
 					LOG_MGR->AddLog("평타중 발동: %d", skillChance);
 					makeCircleQuad();
+					if (SOUND_MGR->isPlaySound("dra_Meteo") == false)
+					{
+						SOUND_MGR->play("dra_Meteo", 0.8f);
+					}
 				}
 				else
 				{
 					//기본 공격을 하기 위해서는 멈춰야 한다. 
 					isMove = false;
 					isBasicAttack = true;     // 기본 공격 
-
+					if (SOUND_MGR->isPlaySound("dra_BasicATK")==false)
+					{
+						SOUND_MGR->play("dra_BasicATK", 0.8f);
+					}
 				}
 
 			}
@@ -205,7 +216,10 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 							if (isBreath == true)break;
 							isBreath = true;         // 브레스중?
 							isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
-
+							if (SOUND_MGR->isPlaySound("dra_Breath") == false)
+							{
+								SOUND_MGR->play("dra_Breath", 0.8f);
+							}
 							break;
 						case 2:
 							if (isEarthquake == true)break;
@@ -220,7 +234,10 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 								m_Skill_Thunder[i]->Effect_Init();
 								m_Skill_Thunder[i]->StartCasting();
 							}
-
+							if (SOUND_MGR->isPlaySound("dra_Thunder") == false)
+							{
+								SOUND_MGR->play("dra_Thunder", 0.8f);
+							}
 
 							break;
 
@@ -235,7 +252,7 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 			spawn();
 		}
 		// 플레이어가 도망칠때 용이 움직일 코드
-		else if (battleRange() == false && isBattle == true)
+		else
 		{
 			MoveToSpone(m_spone.worldCenter);
 		}
@@ -257,7 +274,6 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 			if (isHeadAtt == true)
 			{
 				HeadAttUpate();
-
 			}
 			aniManager();
 
@@ -352,6 +368,7 @@ void cDragon::BaseObjectRender()
 
 		}
 	}
+
 	// 스킬 이팩트 부분
 	for (int i = 0; i < COLLCIRCLE; i++)
 	{
@@ -707,6 +724,10 @@ void cDragon::spawn()
 		if (pSkinned->GetIsPlay() == false)
 		{
 			this->pSkinned->Play("Spawn", 0.3f);
+			if (SOUND_MGR->isPlaySound("dra_Spawn") == false)
+			{
+				SOUND_MGR->play("dra_Spawn", 0.8f);
+			}
 		}
 		if (strcmp(m_nowAni.c_str(), "Spawn") == 0)return;
 		this->pSkinned->Play("Spawn", 0.3f);
@@ -838,7 +859,10 @@ void cDragon::dieUpdate(float timeDelta)
 	if (dieAniTime == 0)
 	{
 		LOG_MGR->AddLog("타임: %f", dieAniTime);
-
+		if (SOUND_MGR->isPlaySound("dra_Die") == false)
+		{
+			SOUND_MGR->play("dra_Die", 0.8f);
+		}
 		this->pSkinned->Play("Spawn", 0.3);
 	}
 

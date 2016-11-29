@@ -49,7 +49,7 @@ void cMinotauros::BaseObjectUpdate(float timeDelta)
 	float distance = D3DXVec3Length(&(m_pPlayer->pTransform->GetWorldPosition() - pTransform->GetWorldPosition()));
 
 
-	if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 2, 100 * ONE_RAD) == true)
+	if (PHYSICS_MGR->intersectSector(pTransform, m_pPlayer->pTransform, 2, 160 * ONE_RAD) == true)
 	{
 		RangeIn(timeDelta);
 	}
@@ -252,7 +252,7 @@ void cMinotauros::RangeOut()
 		}
 		else if (m_state == DMG)
 		{
-			pTransform->RotateSelf(0, 5 * ONE_RAD, 0);
+			pTransform->LookPosition(m_pPlayer->pTransform->GetWorldPosition());
 		}
 	}
 	else

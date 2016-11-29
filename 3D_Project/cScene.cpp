@@ -25,6 +25,7 @@ cScene::cScene(void)
 	//기본 값
 	this->pSceneBaseDirectionLight->Color = D3DXCOLOR(1, 1, 1, 1);
 	this->pSceneBaseDirectionLight->Intensity = 1.0f;
+	this->pSceneBaseDirectionLight->pTransform->SetRotateWorld(90 * ONE_RAD, 0, 0);
 
 	//그림자 거리
 	shadowDistance = 100.0f;

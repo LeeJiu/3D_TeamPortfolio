@@ -67,6 +67,15 @@ HRESULT cMainGame::Init(void)
 	SOUND_MGR->addSound("atk2", "../Resources/Sound/버서커_평타2.ogg", false, false);
 	SOUND_MGR->addSound("heat", "../Resources/Sound/버서커_맞음.ogg", false, false);
 	SOUND_MGR->addSound("dead", "../Resources/Sound/버서커_죽음.ogg", false, false);
+	//용 효과음
+	SOUND_MGR->addSound("dra_BasicATK", "../Resources/Sound/스컬드래곤_공격.ogg", false, false);
+	SOUND_MGR->addSound("dra_Breath", "../Resources/Sound/스컬드래곤_브레스.ogg", false, false);
+	SOUND_MGR->addSound("dra_HeadATK", "../Resources/Sound/스컬드래곤_스킬1.ogg", false, false);
+	SOUND_MGR->addSound("dra_Spawn", "../Resources/Sound/스컬드래곤_스킬2.ogg", false, false);
+
+	SOUND_MGR->addSound("dra_Thunder", "../Resources/Sound/스컬드래곤_썬더.ogg", false, false);
+	SOUND_MGR->addSound("dra_Meteo", "../Resources/Sound/스컬드래곤_메테오.ogg", false, false);
+	SOUND_MGR->addSound("dra_Die", "../Resources/Sound/스컬드래곤_죽음.ogg", false, false);
 
 	////게임 시작씬
 	//SCENE_MGR->ChangeScene( "mage_Test" );
