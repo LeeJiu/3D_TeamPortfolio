@@ -22,6 +22,10 @@ cBerserker::~cBerserker()
 
 void cBerserker::BaseObjectEnable()
 {
+	m_UIContainer = new cUI_Container;
+	m_UIContainer->UI_Init();
+
+
 	SetBassClass();
 	
 	//캐릭터의 그려진 위치를 세팅
@@ -66,16 +70,20 @@ void cBerserker::BaseObjectEnable()
 
 void cBerserker::BaseObjectUpdate(float timeDelta)
 {
+	m_UIContainer->UI_Update();
+
 	//m_ViewDamage->Update(timeDelta, m_camera);
 	m_ShowDamage->Update(timeDelta);
 	CamControl(timeDelta);
 	Move(timeDelta);
 
 	//틱업데이트
-	for (int i = 0; i < TICKMAX; i++)
-	{
-		//m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
-	}
+
+	//for (int i = 0; i < TICKMAX; i++)
+	//{
+	//	m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
+	//}
+
 
 	if (!m_invenOn)
 	{
@@ -276,6 +284,7 @@ void cBerserker::BaseSpriteRender()
 {
 	UiURender();
 	m_ShowDamage->Render();
+	m_UIContainer->UI_Render();
 
 	char temp[32];
 	sprintf_s(temp, "../Resources/Textures/num_%d.tga", 2);
