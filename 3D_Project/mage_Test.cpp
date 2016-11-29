@@ -129,6 +129,7 @@ void mage_Test::Scene_Release()
 	m_pTerrain->Release();
 	SAFE_DELETE(m_pTerrain);
 	SAFE_DELETE(m_pPlayer);
+	SAFE_DELETE(m_UIContainer);
 	m_pMonMgr->Release();
 	SAFE_DELETE(m_pMonMgr);
 
