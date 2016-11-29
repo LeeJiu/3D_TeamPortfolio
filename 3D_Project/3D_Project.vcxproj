@@ -82,7 +82,6 @@
     <ClInclude Include="berserker_test.h" />
     <ClInclude Include="BoneHierachy.h" />
     <ClInclude Include="cBaseObject.h" />
-    <ClInclude Include="cBaseskill.h" />
     <ClInclude Include="cBasilisk.h" />
     <ClInclude Include="cBerserker.h" />
     <ClInclude Include="cBoundBox.h" />
@@ -183,7 +182,6 @@
     <ClCompile Include="berserker_test.cpp" />
     <ClCompile Include="BoneHierachy.cpp" />
     <ClCompile Include="cBaseObject.cpp" />
-    <ClCompile Include="cBaseskill.cpp" />
     <ClCompile Include="cBasilisk.cpp" />
     <ClCompile Include="cBerserker.cpp" />
     <ClCompile Include="cBoundBox.cpp" />

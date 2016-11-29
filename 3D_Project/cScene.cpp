@@ -25,10 +25,11 @@ cScene::cScene(void)
 	//기본 값
 	this->pSceneBaseDirectionLight->Color = D3DXCOLOR( 1, 1, 1, 1 );
 	this->pSceneBaseDirectionLight->Intensity = 1.0f;
+	this->pSceneBaseDirectionLight->pTransform->SetRotateWorld(90 * ONE_RAD, 0, 0);
 
 
 	//그림자 거리
-	shadowDistance = 10.0f;
+	shadowDistance = 100.0f;
 
 
 	//카메라의 투영방식을 바꾼다...
@@ -375,82 +376,6 @@ void cScene::ReadyShadowMap( std::vector<cBaseObject*>* renderObjects, cTerrain*
 	//쉐도우 행렬
 	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrix( "matLightViewProjection", 
 		&this->pDirectionLightCamera->GetViewProjectionMatrix() );
-}
-void cScene::ReadyShadowMap(std::vector<cMonster*>* renderObjects, cTerrain* pTerrain )
-{
-	//방향성광원에 붙은 카메라의 Frustum 업데이트
-	this->pDirectionLightCamera->UpdateMatrix();
-	this->pDirectionLightCamera->UpdateFrustum();
-
-
-	//다이렉션라이팅 카메라에 들어오는 애들만 그린다...
-	static std::vector<cMonster*>		shadowCullObject;
-	shadowCullObject.clear();
-
-	for (int i = 0; i < renderObjects->size(); i++){
-
-		//프러스텀 안에 있니?
-		if (this->pDirectionLightCamera->Frustum.IsInFrustum((*renderObjects)[i]))
-		{
-			shadowCullObject.push_back((*renderObjects)[i]);
-		}
-	}
-
-
-	//쉐도우 맵 그린다.
-	this->pDirectionLightCamera->RenderTextureBegin(0xffffffff);
-
-	cXMesh_Static::SetCamera(this->pDirectionLightCamera);
-	cXMesh_Static::SetTechniqueName("CreateShadow");
-
-	cXMesh_Skinned::SetCamera(this->pDirectionLightCamera);
-	cXMesh_Skinned::SetTechniqueName("CreateShadow");
-
-
-
-	for (int i = 0; i < shadowCullObject.size(); i++){
-		if (shadowCullObject[i]->IgnoreCreateShadow == false)
-			shadowCullObject[i]->Render();
-	}
-
-	//만약 Terrain 도 쉐도우 맵을 그려야한다면...
-	if (pTerrain != NULL)
-	{
-		pTerrain->RenderShadow(this->pDirectionLightCamera);
-	}
-
-
-	this->pDirectionLightCamera->RenderTextureEnd();
-
-
-	//만약 Terrain 도 쉐도우 맵을 셋팅한다면...
-	if (pTerrain != NULL)
-	{
-		pTerrain->m_pTerrainEffect->SetTexture("Shadow_Tex",
-			this->pDirectionLightCamera->GetRenderTexture());
-
-		pTerrain->m_pTerrainEffect->SetMatrix("matLightViewProjection",
-			&this->pDirectionLightCamera->GetViewProjectionMatrix());
-	}
-
-
-
-	//쉐도우 Texture
-	cXMesh_Static::sStaticMeshEffect->SetTexture("Shadow_Tex",
-		this->pDirectionLightCamera->GetRenderTexture());
-
-	//쉐도우 행렬
-	cXMesh_Static::sStaticMeshEffect->SetMatrix("matLightViewProjection",
-		&this->pDirectionLightCamera->GetViewProjectionMatrix());
-
-
-	//쉐도우 Texture
-	cXMesh_Skinned::sSkinnedMeshEffect->SetTexture("Shadow_Tex",
-		this->pDirectionLightCamera->GetRenderTexture());
-
-	//쉐도우 행렬
-	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrix("matLightViewProjection",
-		&this->pDirectionLightCamera->GetViewProjectionMatrix());
 }
 
 //메인카메라의 랜더 Texture 를 얻는다.

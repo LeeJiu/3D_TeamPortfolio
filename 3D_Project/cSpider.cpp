@@ -108,13 +108,14 @@ void cSpider::Attack01(float timeDelta)
 
 void cSpider::Damage(float fDamage)
 {
-	LOG_MGR->AddLog("데미지들어옴!!!아파!! %.1f", fDamage);
 	if (m_state != DMG && m_state != DIE)
 	{
 		m_state = DMG;
 		m_strName = MyUtil::SetAnimation(m_state);
 		pSkinned->PlayOneShotAfterOther(m_strName, "WAIT");
 		m_fHP -= fDamage;
+
+		LOG_MGR->AddLog("%.2f", m_fHP);
 	}
 	else if (m_state == DIE || m_state == DMG)
 	{

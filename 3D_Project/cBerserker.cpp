@@ -50,7 +50,7 @@ void cBerserker::BaseObjectEnable()
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
 	m_camera->AttachTo(pTransform);			//카메라붙임
-	m_camera->SetLocalPosition(0, 2, -5);
+	m_camera->SetLocalPosition(0, 2, -10);
 
 	m_atkCnt = 1;			//평타 진행도
 	m_time = 0;				//평타 글쿨
