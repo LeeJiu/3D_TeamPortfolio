@@ -126,7 +126,6 @@ void cScene_testMonster::Scene_Release()
 void cScene_testMonster::Scene_Update(float timeDelta)
 {
 	m_pPlayer->Update(timeDelta);
-
 	m_pMonMgr->Update(timeDelta);
 
 

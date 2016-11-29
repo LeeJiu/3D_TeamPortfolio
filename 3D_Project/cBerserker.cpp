@@ -39,7 +39,7 @@ void cBerserker::BaseObjectEnable()
 	SetBassClass();
 	
 	//캐릭터의 그려진 위치를 세팅
-	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
+	//pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
 	BaseObjectBoundBox();
 
 	BasicWeaponSet();
@@ -55,12 +55,11 @@ void cBerserker::BaseObjectEnable()
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
 	m_camera->AttachTo(pTransform);			//카메라붙임
-	m_camera->SetLocalPosition(0, 2, -5);
+	m_camera->SetLocalPosition(0, 2, -7);
 
 	m_atkCnt = 1;			//평타 진행도
 	m_time = 0;				//평타 글쿨
 	m_testtime = 0;			//테스트용 로그찎는시간
-	m_Invintime = 0;		//무적시간체ㅔ크
 	m_TextTime = 0;
 
 	//skill
@@ -81,7 +80,6 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	{
 		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
 	}
-
 
 	if (m_invenOn || m_ArmorCrash->GetIsSelecting())
 	{
@@ -122,7 +120,6 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	*/
 	
 	m_time += timeDelta;
-	m_Invintime += timeDelta;
 	m_TextTime += timeDelta;
 	m_testtime += timeDelta;
 
@@ -217,21 +214,6 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		}
 	}
 
-	//스킬4
-	//if (!m_isAttack && KEY_MGR->IsOnceDown('4'))
-	//{
-	//	
-	//}
-	//else if (m_Burserk->GetIsCool() && KEY_MGR->IsOnceDown('5'))
-	//{
-	//	SOUND_MGR->play("ban", 0.5);
-	//	if (!m_textOn)
-	//	{
-	//		m_TextTime = 0;
-	//		m_textOn = true;
-	//	}
-	//}
-
 	//스킬5 - 버서크
 	if (!m_Burserk->GetIsCool() && !m_isAttack && KEY_MGR->IsOnceDown('5'))
 	{
@@ -316,12 +298,6 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	}
 
 	m_camera->ShakeUpdate(timeDelta);
-
-	if (m_isHeat && m_Invintime > 1)
-	{
-		m_state = IDLE;
-	}
-
 	m_UIContainer->UI_Update(m_currentHp, m_currentSp);
 
 }
@@ -369,10 +345,8 @@ void cBerserker::BaseObjectBoundBox()
 
 void cBerserker::Damage(float damage)
 {
-	m_Invintime = 0;
-	m_isHeat = true;
-
 	m_currentHp -= damage;
+
 	if (m_currentHp <= FEPSILON)
 	{
 		m_currentHp = 0.0f;
@@ -382,7 +356,10 @@ void cBerserker::Damage(float damage)
 		return;
 	}
 
-	if (m_state == DMG || m_state == DEAD)
+	if (m_state == DMG || m_state == DEAD 
+		|| m_ArmorCrash->GetIsSelecting()
+		|| m_ArmorCrash->GetIsAttacking()
+		|| m_Swing->GetIsAttacking())
 	{
 		return;
 	}
@@ -493,11 +470,8 @@ void cBerserker::SKILL02()
 
 			if (m_tick[BK_SWING]->tickStart())
 			{
-				LOG_MGR->AddLog("%d 데미지줌", damage);
 				m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
 				m_vMonster[i]->Damage(damage);
-				LOG_MGR->AddLog("%d 데미지줌", m_vMonster[i]->monType);
-
 			}
 		}
 	}

@@ -296,6 +296,9 @@ void cPlayer::SkillInit()
 
 void cPlayer::SetBassClass()
 {
+	//m_vObject;
+	//m_vBound;
+
 	m_pMove = new moveClass;
 	m_isMove = false;
 

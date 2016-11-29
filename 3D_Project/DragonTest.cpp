@@ -19,6 +19,13 @@ DragonTest::~DragonTest(void)
 
 HRESULT DragonTest::Scene_Init()
 {
+	//
+	//파일 로드
+	//
+	LOAD_MGR->LoadObjects(m_vObject);
+	LOAD_MGR->LoadBoundBox(m_vBoundBox);
+
+
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
 		"../Resources/Textures/MyHeight256.bmp",
@@ -69,9 +76,11 @@ HRESULT DragonTest::Scene_Init()
 	this->pBerserker->SetMonsterManager(this->m_pMonMgr);
 	this->pBerserker->SetActive(true);
 
-	//캐릭터가 그려질 위치 트랜스폼
-	this->pBerserker->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
+	this->pBerserker->SetObjects(m_vObject);
+	this->pBerserker->SetBounds(m_vBoundBox);
 
+	//캐릭터가 그려질 위치 트랜스폼
+	this->pBerserker->pTransform->SetWorldPosition(-200, m_pTerrain->GetHeight(-200, 200), 200);
 
 
 	//라이트 푸쉬
@@ -99,12 +108,7 @@ HRESULT DragonTest::Scene_Init()
 	this->lights.push_back(pLight3);
 
 	isMove = false;
-
 	isClick = false;
-
-	m_CharacterBar = new cUI_CharacterBar;
-	m_CharacterBar->init();
-	//
 
 	//라이트 추가
 	//cLight_Point* pL = new cLight_Point();
@@ -116,6 +120,21 @@ HRESULT DragonTest::Scene_Init()
 	//pL->pTransform->SetWorldPosition(pos2);
 	//
 	//this->extraLights.push_back(pL);
+
+	int size = m_vObject.size();
+	for (int i = 0; i < size; ++i)
+	{
+		m_vRender.push_back(m_vObject[i]);
+	}
+
+	m_vRender.push_back(dynamic_cast<cBaseObject*>(pBerserker));
+
+	size = m_pMonMgr->GetMonsters().size();
+	for (int i = 0; i < size; ++i)
+	{
+		m_vRender.push_back(dynamic_cast<cBaseObject*>(m_pMonMgr->GetMonsters()[i]));
+	}
+
 
 	return S_OK;
 }
@@ -134,15 +153,11 @@ void DragonTest::Scene_Release()
 		SAFE_DELETE(lights[i]);
 	}
 	lights.clear();
-
-	SAFE_DELETE(m_CharacterBar);
 }
 
 void DragonTest::Scene_Update(float timeDelta)
 {
 	//this->pTransForCamera->SetWorldPosition(this->pBerserker->pTransform->GetWorldPosition());
-	m_CharacterBar->update();
-
 	if (KEY_MGR->IsOnceUp('T'))
 	{
 		ITEM_MGR->createItem(1, D3DXVECTOR3(0, 7, 0));
@@ -166,6 +181,22 @@ void DragonTest::Scene_Render1()
 {
 	m_pTerrain->Render(this->pMainCamera, dynamic_cast<cLight_Direction*>(lights[0]));
 
+	m_vCulling.clear();
+	int size = m_vRender.size();
+	for (int i = 0; i < size; i++)
+	{
+		if (this->pMainCamera->Frustum.IsInFrustum(m_vRender[i]))
+		{
+			m_vCulling.push_back(m_vRender[i]);
+		}
+	}
+
+	size = m_vCulling.size();
+	for (int i = 0; i < size; i++)
+	{
+		m_vCulling[i]->Render();
+	}
+
 	//적용되는 LightMatrix
 	D3DXMATRIXA16 matLights[10];
 	for (int i = 0; i < this->lights.size(); i++)
@@ -180,7 +211,6 @@ void DragonTest::Scene_Render1()
 	cXMesh_Skinned::SetTechniqueName("Toon");
 	cXMesh_Skinned::sSkinnedMeshEffect->SetTexture("Ramp_Tex", RESOURCE_TEXTURE->GetResource("../Resources/Textures/Ramp_1.png"));
 	cXMesh_Skinned::SetBaseLight(this->pSceneBaseDirectionLight);
-	//
 
 	//
 	cXMesh_Static::SetCamera(this->pMainCamera);
@@ -188,10 +218,6 @@ void DragonTest::Scene_Render1()
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
 	//cXMesh_Skinned::SetTechniqueName("ReciveShadow");
-
-
-	this->pBerserker->Render();
-	this->m_pMonMgr->Render();
 	//RenderEnvironment(pBerserker->pTransform);
 	//m_Land->Render();
 }
@@ -200,7 +226,9 @@ void DragonTest::Scene_Render1()
 void DragonTest::Scene_RenderSprite()
 {
 	this->pBerserker->BaseSpriteRender();
-	m_CharacterBar->uiRender();
+}
 
-
+void DragonTest::Scene_FontSprite()
+{
+	this->pBerserker->BaseFontRender();
 }

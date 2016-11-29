@@ -21,6 +21,9 @@ protected:
 	vector<cMonster*>				m_vMonster;
 	vector<cMonster*>::iterator		m_viMonster;
 
+	vector<cBaseObject*>				m_vObject;
+	vector<cBaseObject*>					m_vBound;
+
 	ACTOR_STATE			m_state;				//상태
 	std::string			m_strName;				//애니메이션 string
 	std::map<int, bool> m_InputKeys;			//move키 맵
@@ -35,12 +38,6 @@ protected:
 
 	cTrailRender*		pTrailRender;			//트레일랜더
 
-	//float				m_Angle;				//카메라랑 앵글
-	//float				MaxZoomIn;
-	//float				MaxZoomOut;
-	//float				Zoom;
-
-	//status
 	float				m_fHP;					//hp
 	float				m_currentHp;
 	float				m_fSP;
@@ -49,14 +46,12 @@ protected:
 	float				m_TextTime;
 
 	int					m_damage;				//데미지
-	int					m_Invintime;			//무적시간
 
 	float				m_Angle;
 
 	bool				m_isIdle;
 	bool				m_isMove;				//움직이는중?
 	bool				m_isAttack;				//공격하는중?
-	bool				m_isHeat;				//데미지입는중
 	bool				m_invenOn;				//인벤켜진?
 	bool				m_textOn;				//텍스트 켜진?
 	
@@ -106,6 +101,8 @@ public:
 
 	virtual void SetCamera(cCamera* camera) { m_camera = camera; }
 	virtual void SetMonsterManager(cMonsterManager* pMonMgr) { m_pMonMgr = pMonMgr; }
+	virtual void SetObjects(std::vector<cBaseObject*> vObj) { m_vObject = vObj; }
+	virtual void SetBounds(std::vector<cBaseObject*> vBox) { m_vBound = vBox; }
 
 	cTransform* getTrans(){ return pTransform; }
 	moveClass* getMoveClass(){ return m_pMove; }
