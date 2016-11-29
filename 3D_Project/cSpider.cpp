@@ -98,8 +98,8 @@ void cSpider::Attack01(float timeDelta)
 		//피격 판정 + 플레이어에게 데미지 전달
 		if (PHYSICS_MGR->IsOverlap(m_pHitTrans, &m_pHitBound, m_pPlayer->pTransform, &m_pPlayer->BoundBox))
 		{
-			LOG_MGR->AddLog("때린다");
 			m_pPlayer->Damage(100);
+			LOG_MGR->AddLog("때린다 %d",100);
 			m_fAtkTime = 0;
 			m_bHit = false;
 		}
@@ -108,6 +108,7 @@ void cSpider::Attack01(float timeDelta)
 
 void cSpider::Damage(float fDamage)
 {
+	LOG_MGR->AddLog("데미지들어옴!!!아파!! %.1f", fDamage);
 	if (m_state != DMG && m_state != DIE)
 	{
 		m_state = DMG;

@@ -29,11 +29,16 @@ void cPlayer::BaseObjectEnable()
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
 
+
+
 }
 
 void cPlayer::BaseObjectUpdate(float timeDelta)
 {
+	
 	Monster_pick();
+
+
 }
 
 void cPlayer::BaseObjectRender()
@@ -43,7 +48,7 @@ void cPlayer::BaseObjectRender()
 
 void cPlayer::BaseSpriteRender()
 {
-
+	
 }
 
 void cPlayer::BaseObjectBoundBox()
@@ -168,6 +173,8 @@ void cPlayer::UiURender()
 {
 	m_inven->render();
 	ITEM_MGR->render();
+	
+
 }
 
 void cPlayer::Move(float timeDelta)
@@ -269,6 +276,15 @@ void cPlayer::Monster_pick()
 				this->m_target = m_vMonster[i];
 				break;
 			}
+			else if (m_vMonster[i]->monType == DRAGON)
+			{
+				if (PHYSICS_MGR->IsRayHitBound(&ray, &m_vMonster[i]->BoundBox, m_vMonster[i]->pTransform, NULL, NULL))
+				{
+					LOG_MGR->AddLog("타겟팅됨");
+					this->m_target = m_vMonster[i];
+					break;
+				}
+			}
 			else this->m_target = NULL;
 		}
 	}
@@ -297,8 +313,6 @@ void cPlayer::RangeCheck(float range)
 	{
 		//if(m_vMonster[i]->) 몬스터가 죽어잇으면 컨티뉴.
 		m_vMonster[i]->SetInRange(PHYSICS_MGR->IsPointSphere(this->pTransform, range, m_vMonster[i]->pTransform));
-
-		LOG_MGR->AddLog("vMon[%d] : %d", i, m_vMonster[i]->GetInRange());
 	}
 }
 

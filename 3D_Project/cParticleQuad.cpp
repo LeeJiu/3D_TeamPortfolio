@@ -12,15 +12,15 @@ cParticleQuad::~cParticleQuad(void)
 }
 
 
-void cParticleQuad::Start( 
-		float liveTime,				//라이브 타임
-		const D3DXVECTOR3* pos,		//시작 위치
-		const D3DXVECTOR3* velo,		//시작 속도
-		const D3DXVECTOR3* accel,	//가속 값
-		const D3DXVECTOR3* rotate,	//초당 회전 값
-		const D3DXVECTOR3* rotateAccel,	//초당 회전 증가값
-		float scale					//기본 스케일
-		)
+void cParticleQuad::Start(
+	float liveTime,				//라이브 타임
+	const D3DXVECTOR3* pos,		//시작 위치
+	const D3DXVECTOR3* velo,		//시작 속도
+	const D3DXVECTOR3* accel,	//가속 값
+	const D3DXVECTOR3* rotate,	//초당 회전 값
+	const D3DXVECTOR3* rotateAccel,	//초당 회전 증가값
+	float scale					//기본 스케일
+	)
 {
 	//활성화 여부
 	m_bLive = true;
@@ -31,7 +31,7 @@ void cParticleQuad::Start(
 
 	//위치 값셋팅
 	m_Transform.SetWorldPosition(
-		pos->x, pos->y, pos->z );
+		pos->x, pos->y, pos->z);
 
 	//시작 속도
 	m_Velocity = *velo;
@@ -50,12 +50,12 @@ void cParticleQuad::Start(
 }
 
 
-void cParticleQuad::Update( float timeDelta )
+void cParticleQuad::Update(float timeDelta)
 {
-	if( m_bLive == false ) return;
+	if (m_bLive == false) return;
 
 	//라이브 타임이 다되었다면...
-	if( m_fDeltaLiveTime > m_fTotalLiveTime ){
+	if (m_fDeltaLiveTime > m_fTotalLiveTime){
 		m_bLive = false;
 	}
 
@@ -64,19 +64,19 @@ void cParticleQuad::Update( float timeDelta )
 
 	//정규화된 시간값을 계산
 	m_fNomalizeLiveTime = m_fDeltaLiveTime / m_fTotalLiveTime;
-	if( m_fNomalizeLiveTime > 1.0f )
+	if (m_fNomalizeLiveTime > 1.0f)
 		m_fNomalizeLiveTime = 1.0f;
 
 	//파티클 월드 이동
 	m_Transform.MovePositionWorld(
-		m_Velocity.x * timeDelta, 
-		m_Velocity.y * timeDelta, 
-		m_Velocity.z * timeDelta );
+		m_Velocity.x * timeDelta,
+		m_Velocity.y * timeDelta,
+		m_Velocity.z * timeDelta);
 
-	m_Transform.RotateSelf( 
-		m_Rotate.x * timeDelta, 
-		m_Rotate.y * timeDelta, 
-		m_Rotate.z * timeDelta ); 
+	m_Transform.RotateSelf(
+		m_Rotate.x * timeDelta,
+		m_Rotate.y * timeDelta,
+		m_Rotate.z * timeDelta);
 
 	//파티클 가속
 	m_Velocity += m_Accelation * timeDelta;
@@ -86,16 +86,16 @@ void cParticleQuad::Update( float timeDelta )
 }
 
 //자신의 정점 정보를 바탕으로 LPPARTICLEQUAD_VERTEX 의 값을 넣어준다.
-void cParticleQuad::GetParticleVertex( 
-		LPPARTICLEQUAD_VERTEX pOut, 
-		DWORD* pIndex,
-		const VEC_COLOR& colors,
-		const VEC_SCALE& scales,
-		DWORD dwParticleNum )
+void cParticleQuad::GetParticleVertex(
+	LPPARTICLEQUAD_VERTEX pOut,
+	DWORD* pIndex,
+	const VEC_COLOR& colors,
+	const VEC_SCALE& scales,
+	DWORD dwParticleNum)
 {
 	//파티클 위치 값
-    D3DXVECTOR3 center = m_Transform.GetWorldPosition();
-	
+	D3DXVECTOR3 center = m_Transform.GetWorldPosition();
+
 	DWORD dwcolor = 0;
 	float scale;
 
@@ -110,13 +110,13 @@ void cParticleQuad::GetParticleVertex(
 	//스케일 배열의 마지막 인덱스
 	int lastIndex = scales.size() - 1;
 
-	if( m_fNomalizeLiveTime == 1.0f ){
-		dwcolor = colors[ colors.size() -  1 ];
-		scale = m_fScale * scales[ scales.size() - 1];
+	if (m_fNomalizeLiveTime == 1.0f){
+		dwcolor = colors[colors.size() - 1];
+		scale = m_fScale * scales[scales.size() - 1];
 	}
 
-	else if( m_fNomalizeLiveTime == 0.0f ){
-		dwcolor = colors[ 0 ];
+	else if (m_fNomalizeLiveTime == 0.0f){
+		dwcolor = colors[0];
 		scale = m_fScale * scales[0];
 	}
 
@@ -136,11 +136,10 @@ void cParticleQuad::GetParticleVertex(
 
 		//보간값
 		float fN = position - startIndex;
-		//////////////////////////////스케일, 컬러벡터잠굼
-		//s = ( scales[endIndex] - scales[startIndex] ) * fN + scales[startIndex];
+		s = (scales[endIndex] - scales[startIndex]) * fN + scales[startIndex];
 
 		//최종 스케일 값 셋팅
-		scale = m_fScale;// *s;
+		scale = m_fScale * s;
 
 
 
@@ -173,9 +172,9 @@ void cParticleQuad::GetParticleVertex(
 		D3DXColorLerp(&color,			//결과
 			&colors[startIndex],		//from
 			&colors[endIndex],			//to
-			fN );						//normalize Factor
+			fN);						//normalize Factor
 
-		dwcolor = (DWORD)( color );
+		dwcolor = (DWORD)(color);
 	}
 
 
@@ -187,20 +186,20 @@ void cParticleQuad::GetParticleVertex(
 	D3DXVECTOR3 y = m_Transform.GetUp();
 
 	//정점 정보 대입
-	( pOut + 0 )->pos = center + ( -x * halfScale ) + ( y * halfScale );
-	( pOut + 1 )->pos = center + (  x * halfScale ) + ( y * halfScale );
-	( pOut + 2 )->pos = center + ( -x * halfScale ) + ( -y * halfScale );
-	( pOut + 3 )->pos = center + (  x * halfScale ) + ( -y * halfScale );
+	(pOut + 0)->pos = center + (-x * halfScale) + (y * halfScale);
+	(pOut + 1)->pos = center + (x * halfScale) + (y * halfScale);
+	(pOut + 2)->pos = center + (-x * halfScale) + (-y * halfScale);
+	(pOut + 3)->pos = center + (x * halfScale) + (-y * halfScale);
 
-	( pOut + 0 )->uv = D3DXVECTOR2( 0, 0 );
-	( pOut + 1 )->uv = D3DXVECTOR2( 1, 0 );
-	( pOut + 2 )->uv = D3DXVECTOR2( 0, 1 );
-	( pOut + 3 )->uv = D3DXVECTOR2( 1, 1 );
+	(pOut + 0)->uv = D3DXVECTOR2(0, 0);
+	(pOut + 1)->uv = D3DXVECTOR2(1, 0);
+	(pOut + 2)->uv = D3DXVECTOR2(0, 1);
+	(pOut + 3)->uv = D3DXVECTOR2(1, 1);
 
-	( pOut + 0 )->color = dwcolor;
-	( pOut + 1 )->color = dwcolor;
-	( pOut + 2 )->color = dwcolor;
-	( pOut + 3 )->color = dwcolor;
+	(pOut + 0)->color = dwcolor;
+	(pOut + 1)->color = dwcolor;
+	(pOut + 2)->color = dwcolor;
+	(pOut + 3)->color = dwcolor;
 
 
 	//0----1
@@ -211,11 +210,11 @@ void cParticleQuad::GetParticleVertex(
 	//2----3
 
 	//인덱스 정보 대입 ( 인덱스 넣을때 지금까지 그려지는 Quad 수만큼 점프해한 값을 넣어야 한다 )
-	*( pIndex + 0 ) = (dwParticleNum * 4 ) + 0;
-	*( pIndex + 1 ) = (dwParticleNum * 4 ) + 1;
-	*( pIndex + 2 ) = (dwParticleNum * 4 ) + 2;
-	*( pIndex + 3 ) = (dwParticleNum * 4 ) + 2;
-	*( pIndex + 4 ) = (dwParticleNum * 4 ) + 1;
-	*( pIndex + 5 ) = (dwParticleNum * 4 ) + 3;
+	*(pIndex + 0) = (dwParticleNum * 4) + 0;
+	*(pIndex + 1) = (dwParticleNum * 4) + 1;
+	*(pIndex + 2) = (dwParticleNum * 4) + 2;
+	*(pIndex + 3) = (dwParticleNum * 4) + 2;
+	*(pIndex + 4) = (dwParticleNum * 4) + 1;
+	*(pIndex + 5) = (dwParticleNum * 4) + 3;
 
 }

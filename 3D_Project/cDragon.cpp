@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "cDragon.h"
 #include "cPlayer.h"
-
+#include "cTrailRender.h"
 
 cDragon::cDragon()
 {
@@ -38,6 +38,9 @@ cDragon::~cDragon()
 		SAFE_DELETE(m_Skill_Thunder[i]);
 
 	}
+
+	SAFE_DELETE(m_pTrailLEye);
+	SAFE_DELETE(m_pTrailREye);
 }
 
 void cDragon::BaseObjectEnable()
@@ -69,12 +72,14 @@ void cDragon::BaseObjectEnable()
 	//=================== 초기화 ================
 	//pTransform , 몬스터 움직일때 쓰는 trans 
 
+
 	pSkinned->AddBoneTransform("Bip01-HeadNub", m_pBoneTrans[HEAD]);
 	pSkinned->AddBoneTransform("Bip01-L-Hand_Bone", m_pBoneTrans[LHANAD]);
 	pSkinned->AddBoneTransform("Bip01-R-Hand_Bone", m_pBoneTrans[RHAND]);
 
 	//0몸통
-	m_bound[BODY].Init(D3DXVECTOR3(-4, 0, -4), D3DXVECTOR3(4, 8, 4.5));
+	BoundBox.Init(D3DXVECTOR3(-4, 0, -4), D3DXVECTOR3(4, 8, 4.5));
+	//m_bound[BODY].Init(D3DXVECTOR3(-4, 0, -4), D3DXVECTOR3(4, 8, 4.5));
 	//머리
 	m_bound[HEAD].Init(D3DXVECTOR3(-2, -1, -2), D3DXVECTOR3(0, 1, 0.5));
 	//왼팔
@@ -118,7 +123,8 @@ void cDragon::BaseObjectEnable()
 		m_Skill_Thunder[i]->Effect_Init();
 
 	}
-
+	
+	TrailSetting();
 	initParticle();
 }
 
@@ -268,6 +274,8 @@ void cDragon::BaseObjectUpdate(float timeDelta)
 		m_Skill_Thunder[i]->Effect_Update(timeDelta);
 	}
 
+	m_pTrailLEye->Update(timeDelta);					//트레일렌더 업데이트
+	m_pTrailREye->Update(timeDelta);					//트레일렌더 업데이트
 	//=================== 업데이트 ==============
 
 }
@@ -292,6 +300,9 @@ void cDragon::BaseObjectRender()
 	// 왼발 Bip01-L-Foot_Bone
 	// 오날개 BN_Wing_R003,007
 	// 왼날개 BN_Wing_L003,007
+	m_pTrailLEye->Render();							//트레일렌더 랜더링
+	m_pTrailREye->Render();							//트레일렌더 랜더링
+
 	pSkinned->Render(m_pBoneTrans[0]);
 	for (int i = 0; i < COLLISION; i++)
 	{
@@ -332,11 +343,42 @@ void cDragon::BaseObjectRender()
 
 }
 
+void cDragon::TrailSetting()
+{
+	pSkinned->AddBoneTransform("BN_Eye_L", &m_LEyeTrans);
+	pSkinned->AddBoneTransform("BN_Eye_R", &m_REyeTrans);
+
+	m_pTrailLEye = new cTrailRender();
+	m_pTrailLEye->Init(
+		1.0f,					//꼬리 라이브 타임 ( 이게 크면 환영큐 사이즈가 커지고 꼬리가 오랬동안 남아있다 )
+		0.1f,					//폭
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/TrailTest.png"),	//메인 Texture
+		D3DXCOLOR(0.5, 1, 0, 1),												//메인 Texture 로 그릴때 컬러
+		NULL
+	);
+
+	m_pTrailREye = new cTrailRender();
+	m_pTrailREye->Init(
+		1.0f,
+		0.1f,
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/TrailTest.png"),
+		D3DXCOLOR(0.5, 1, 0, 1),
+		NULL
+	);
+
+	m_pTrailLEye->Transform.AttachTo(&m_LEyeTrans);
+	m_pTrailREye->Transform.AttachTo(&m_REyeTrans);
+
+	m_LEyeTrans.SetLocalPosition(-10, 0, 0);
+	m_REyeTrans.SetLocalPosition(10, 0, 0);
+}
+
 void cDragon::collPosUpdate()
 {
 	//좌표 갱신.
 	//0번은 몸통 바운드 박스 기준
-	m_bound[BODY].GetWorldBox(m_pBoneTrans[BODY], m_collPos);
+	BoundBox.GetWorldBox(m_pBoneTrans[BODY], m_collPos);
+	//m_bound[BODY].GetWorldBox(m_pBoneTrans[BODY], m_collPos);
 	m_pCollTrans[1]->SetWorldPosition(m_collPos[0]);
 	m_pCollTrans[2]->SetWorldPosition(m_collPos[3]);
 	m_pCollTrans[3]->SetWorldPosition(m_collPos[4]);
@@ -565,7 +607,7 @@ void cDragon::LookPos(D3DXVECTOR3 target)
 void cDragon::basicAttackUpdate()
 {
 	if (isNoneBasicAttack == true)return;
-	if (strcmp(m_nowAni.c_str(), "ATK_02") == 0);
+	if (strcmp(m_nowAni.c_str(), "ATK_02") == 0)
 	{
 
 		float aniTime = pSkinned->GetTime();
@@ -628,7 +670,7 @@ void cDragon::spawn()
 
 	if (isBattle == false)
 	{
-		if (strcmp(m_nowAni.c_str(), "Spawn") == 0);
+		if (strcmp(m_nowAni.c_str(), "Spawn") == 0)
 		{
 			float aniTime = pSkinned->GetTime();
 
@@ -650,7 +692,7 @@ void cDragon::spawn()
 
 void cDragon::breathUpdate()
 {
-	if (strcmp(m_nowAni.c_str(), "SK_Firing_02") == 0);
+	if (strcmp(m_nowAni.c_str(), "SK_Firing_02") == 0)
 	{
 		float aniTime = pSkinned->GetTime();
 
@@ -693,7 +735,7 @@ void cDragon::breathUpdate()
 }
 void cDragon::earthUpate()
 {
-	if (strcmp(m_nowAni.c_str(), "ATK_01") == 0);
+	if (strcmp(m_nowAni.c_str(), "ATK_01") == 0)
 	{
 		float aniTime = pSkinned->GetTime();
 
@@ -738,7 +780,7 @@ void cDragon::earthUpate()
 }
 void cDragon::HeadAttUpate()
 {
-	if (strcmp(m_nowAni.c_str(), "SK_Firing_01") == 0);
+	if (strcmp(m_nowAni.c_str(), "SK_Firing_01") == 0)
 	{
 		float aniTime = pSkinned->GetTime();
 

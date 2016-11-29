@@ -43,6 +43,7 @@ public:
 	virtual void Damage(float fDamage) = 0;
 
 	virtual bool GetInRange() { return m_inRange; }
+	//virtual cBoundBox GetBodyBound() { return BoundBox; }
 
 	virtual void SetPlayer(cPlayer* pPlayer) { m_pPlayer = pPlayer; }
 	virtual void SetBoundObjects(vector<cBaseObject*> vObjects) { m_vObjects = vObjects; }

@@ -19,8 +19,8 @@ berserker_test::~berserker_test(void)
 
 HRESULT berserker_test::Scene_Init()
 {
-	m_pTerrain = new cTerrain;
-	m_pTerrain->Init(
+	this->m_pTerrain = new cTerrain;
+	this->m_pTerrain->Init(
 		"../Resources/Textures/MyHeight256.bmp",
 		"../Resources/Textures/terrain1.png",
 		"../Resources/Textures/terrain2.png",
@@ -33,7 +33,7 @@ HRESULT berserker_test::Scene_Init()
 		100);
 
 
-	m_bMove = false;
+	this->m_bMove = false;
 
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
@@ -95,18 +95,18 @@ HRESULT berserker_test::Scene_Init()
 
 void berserker_test::Scene_Release()
 {
-	m_pTerrain->Release();
-	SAFE_DELETE(m_pTerrain);
+	this->m_pTerrain->Release();
+	SAFE_DELETE(this->m_pTerrain);
 
 	SAFE_DELETE(this->pBerserker);
-	m_pMonMgr->Release();
-	SAFE_DELETE(m_pMonMgr);
+	this->m_pMonMgr->Release();
+	SAFE_DELETE(this->m_pMonMgr);
 
-	for (int i = 0; i < lights.size(); i++)
+	for (int i = 0; i < this->lights.size(); i++)
 	{
-		SAFE_DELETE(lights[i]);
+		SAFE_DELETE(this->lights[i]);
 	}
-	lights.clear();
+	this->lights.clear();
 }
 
 void berserker_test::Scene_Update(float timeDelta)
@@ -123,12 +123,12 @@ void berserker_test::Scene_Update(float timeDelta)
 	}
 
 	this->pBerserker->Update(timeDelta);
-	m_pMonMgr->Update(timeDelta);
+	this->m_pMonMgr->Update(timeDelta);
 }
 
 void berserker_test::Scene_Render1()
 {
-	m_pTerrain->Render(this->pMainCamera, dynamic_cast<cLight_Direction*>(lights[0]));
+	this->m_pTerrain->Render(this->pMainCamera, dynamic_cast<cLight_Direction*>(lights[0]));
 
 	//적용되는 LightMatrix
 	D3DXMATRIXA16 matLights[10];

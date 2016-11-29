@@ -97,29 +97,6 @@ void cUI_CharacterBar::update()
 	m_UIHPBar.rc = RectMake(0, 0, rcCurHP, 16);
 	m_UIMPBar.rc = RectMake(-rcCurMP, 0, -rcCurMP, 16);
 
-
-
-
-	if (KEY_MGR->IsOnceDown('K'))
-	{
-		playerCurHP -= damage;
-	}
-
-	if (KEY_MGR->IsOnceDown('L'))
-	{
-		playerCurHP += damage;
-	}
-
-	if (KEY_MGR->IsOnceDown('O'))
-	{
-		playerCurMP -= 10;
-	}
-
-	if (KEY_MGR->IsOnceDown('P'))
-	{
-		playerCurMP += 10;
-	}
-
 	rcCurHP = playerCurHP / playerMaxHP * rcMaxHP;
 	rcCurMP = playerCurMP / playerMaxMP * rcMaxMP;
 	

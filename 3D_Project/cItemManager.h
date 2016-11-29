@@ -27,7 +27,7 @@ public:
 	void createItem(int itemNum, D3DXVECTOR3 pos); // 아이템 생성
 	
 	int findItem(int itemNUm);
-
+	cItem*	getItem(int itemNum);
 };
 
 #define ITEM_MGR cItemManager::GetInstance()

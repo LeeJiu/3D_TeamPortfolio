@@ -127,16 +127,20 @@
     <ClInclude Include="cScene_Mgr.h" />
     <ClInclude Include="cScene_testMonster.h" />
     <ClInclude Include="cSetBoundObject.h" />
+    <ClInclude Include="cShowDamage.h" />
     <ClInclude Include="cSingletonBase.h" />
     <ClInclude Include="cSkill_Burserk.h" />
     <ClInclude Include="cSkill_DarkRain.h" />
     <ClInclude Include="cSkill_Escape.h" />
     <ClInclude Include="cSkill_FlameRoad.h" />
     <ClInclude Include="cSkill_Front.h" />
+    <ClInclude Include="cSkill_Howling.h" />
     <ClInclude Include="cSkill_MagicShild.h" />
+    <ClInclude Include="cSkill_MagicShot.h" />
     <ClInclude Include="cSkill_Meteo.h" />
     <ClInclude Include="cSkill_Round.h" />
     <ClInclude Include="cSkill_SelfBuff.h" />
+    <ClInclude Include="cSkill_Shot.h" />
     <ClInclude Include="cSkill_SnowStorm.h" />
     <ClInclude Include="cSkill_Surround.h" />
     <ClInclude Include="cSkill_Swing.h" />
@@ -157,7 +161,8 @@
     <ClInclude Include="cUI_Map.h" />
     <ClInclude Include="cUI_MenuBar.h" />
     <ClInclude Include="cUI_SkillDeck.h" />
-    <ClInclude Include="cViewDamage.h" />
+    <ClInclude Include="cVideo.h" />
+    <ClInclude Include="cVideoTest.h" />
     <ClInclude Include="cWayPoint.h" />
     <ClInclude Include="cXMesh.h" />
     <ClInclude Include="cXMesh_Skinned.h" />
@@ -174,7 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation_Test.cpp" />
-    <ClCompile Include="berserker_backup.cpp" />
     <ClCompile Include="berserker_test.cpp" />
     <ClCompile Include="BoneHierachy.cpp" />
     <ClCompile Include="cBaseObject.cpp" />
@@ -223,16 +227,20 @@
     <ClCompile Include="cScene_Mgr.cpp" />
     <ClCompile Include="cScene_testMonster.cpp" />
     <ClCompile Include="cSetBoundObject.cpp" />
+    <ClCompile Include="cShowDamage.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
     <ClCompile Include="cSkill_Burserk.cpp" />
     <ClCompile Include="cSkill_DarkRain.cpp" />
     <ClCompile Include="cSkill_Escape.cpp" />
     <ClCompile Include="cSkill_FlameRoad.cpp" />
     <ClCompile Include="cSkill_Front.cpp" />
+    <ClCompile Include="cSkill_Howling.cpp" />
     <ClCompile Include="cSkill_MagicShild.cpp" />
+    <ClCompile Include="cSkill_MagicShot.cpp" />
     <ClCompile Include="cSkill_Meteo.cpp" />
     <ClCompile Include="cSkill_Round.cpp" />
     <ClCompile Include="cSkill_SelfBuff.cpp" />
+    <ClCompile Include="cSkill_Shot.cpp" />
     <ClCompile Include="cSkill_SnowStorm.cpp" />
     <ClCompile Include="cSkill_Surround.cpp" />
     <ClCompile Include="cSkill_Swing.cpp" />
@@ -253,7 +261,8 @@
     <ClCompile Include="cUI_Map.cpp" />
     <ClCompile Include="cUI_MenuBar.cpp" />
     <ClCompile Include="cUI_SkillDeck.cpp" />
-    <ClCompile Include="cViewDamage.cpp" />
+    <ClCompile Include="cVideo.cpp" />
+    <ClCompile Include="cVideoTest.cpp" />
     <ClCompile Include="cWayPoint.cpp" />
     <ClCompile Include="cXMesh.cpp" />
     <ClCompile Include="cXMesh_Skinned.cpp" />

@@ -7,6 +7,7 @@
 
 bool ex_wheelUp = false;
 bool ex_wheelDown = false;
+bool g_bDXRender = true;
 
 // TODO: 필요한 추가 헤더는
 // 이 파일이 아닌 STDAFX.H에서 참조합니다.

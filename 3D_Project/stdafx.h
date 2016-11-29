@@ -23,6 +23,7 @@
 // TODO: 프로그램에 필요한 추가 헤더는 여기에서 참조합니다
 #include <string>
 #include <fstream>
+#include <Vfw.h>
 
 
 //필요한 헤더 (DirectSDK 설치폴더/Include)
@@ -54,6 +55,7 @@
 //#pragma comment( lib, "C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x86/d3dx9.lib" )
 #pragma comment( lib, "d3d9.lib" )
 #pragma comment( lib, "d3dx9.lib" )
+#pragma comment(lib, "vfw32.lib")
 
 
 //System 폴더 (DirectSDK 설치폴더/Lib/x86) 등록 방법
@@ -101,6 +103,7 @@ extern HINSTANCE	g_hInst;	//프로그램 인스턴스 핸들 ( OS 가 부여한 프로그램 번호 
 
 extern bool			ex_wheelUp;
 extern bool			ex_wheelDown;
+extern bool			g_bDXRender;
 //
 //
 //

@@ -29,9 +29,6 @@ mage_Test::~mage_Test(void)
 HRESULT mage_Test::Scene_Init()
 {
 
-	m_UIContainer = new cUI_Container;
-	m_UIContainer->UI_Init();
-
 	m_pTerrain = new cTerrain;
 	m_pTerrain->Init(
 		"../Resources/Textures/MyHeight256.bmp",
@@ -51,9 +48,6 @@ HRESULT mage_Test::Scene_Init()
 	D3DXMATRIXA16 matRotate;
 	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
-
-
-
 
 
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Elf/Elf_Master.X", &matCorrection);
@@ -146,7 +140,7 @@ void mage_Test::Scene_Update(float timeDelta)
 
 	m_pMonMgr->Update(timeDelta);
 
-	m_UIContainer->UI_Update();
+	
 
 }
 
@@ -196,7 +190,7 @@ void mage_Test::Scene_Render1()
 
 void mage_Test ::Scene_RenderSprite()
 {
-	m_UIContainer->UI_Render();
+	m_pPlayer->BaseSpriteRender();
 
 
 }
