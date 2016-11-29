@@ -11,7 +11,7 @@
 
 enum BK_SKILL //틱 클래스에서 쓸꺼. 
 {
-	BK_HOWL, BK_SWING, BK_ACCEL
+	BK_CHARGE, BK_SWING, BK_ACCEL
 };
 
 class cShowDamage;
@@ -38,8 +38,6 @@ private:
 	cSkill_AmorCrash*   m_ArmorCrash;
 
 	int					m_SwingCnt;
-
-	float				m_testtime;		//로그찎는용 타이머
 
 public:
 	cBerserker();

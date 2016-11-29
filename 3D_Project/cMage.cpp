@@ -379,6 +379,7 @@ void cMage::UiUpdate(float timeDelta, cCamera * camera)
 {
 	if (m_inven->GetWeapon() == NULL &&m_botton == true)
 	{
+		SOUND_MGR->play("offWeapon", 0.8);
 		if (pTrailRender != NULL)
 		{
 			this->pTrailRender->Transform.ReleaseParent();
@@ -399,6 +400,7 @@ void cMage::UiUpdate(float timeDelta, cCamera * camera)
 	}
 	else if (m_inven->GetWeapon() != NULL&& m_botton == false)
 	{
+		SOUND_MGR->play("setWeapon", 0.8);
 		if (pTrailRender != NULL)
 		{
 			this->pTrailRender->Transform.ReleaseParent();

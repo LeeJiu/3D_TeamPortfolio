@@ -130,40 +130,6 @@ void cPlayer::CamControl(float timeDelta)
 
 void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
 {
-	if (m_inven->GetWeapon() == NULL &&m_botton == true)
-	{
-		m_botton = false;
-	}
-	else if (m_inven->GetWeapon() != NULL&& m_botton == false)
-	{
-		m_inven->GetWeapon()->BoundBox.SetBound(&D3DXVECTOR3(0.f, 1.f, 0.f), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
-		pSkinned->AddBoneTransform("BN_Weapon_R", m_inven->GetWeapon()->pTransform);
-		m_botton = true;
-		
-	
-		this->pTrailRender->Transform.AttachTo(m_inven->GetWeapon()->pTransform);
-		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
-		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
-	}
-
-	if (m_inven->GetWeapon() == NULL)
-	{
-		pSkinned->RemoveBoneTransform("BN_Weapon_R");
-	}
-
-
-	if (KEY_MGR->IsOnceDown('I'))
-	{
-		m_invenOn = !m_invenOn;
-		m_inven->SetInvenOn(m_invenOn);
-	}
-
-	if (m_invenOn)
-	{
-		m_inven->update(timeDelta, m_camera, this->pTransform->GetWorldPosition());
-		ITEM_MGR->update(timeDelta);
-	}
-
 }
 
 void cPlayer::UiURender()
@@ -178,6 +144,7 @@ void cPlayer::Move(float timeDelta)
 	if (!m_InputKeys.find('S')->second && !m_pMove->GetIsJump() && !m_isAttack && m_isMove && (KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
 		|| KEY_MGR->IsOnceDown('A')))
 	{
+		SOUND_MGR->play("walk", 0.8f);
 		m_isIdle = false;
 		m_state = RUN;
 		m_strName = MyUtil::SetAnimation(m_state);
@@ -220,6 +187,8 @@ void cPlayer::Move(float timeDelta)
 	//
 	//===============¹«ºê==============================
 	//
+
+	if (!m_isMove) SOUND_MGR->pause("walk");
 
 	if (KEY_MGR->IsStayDown('W'))
 	{

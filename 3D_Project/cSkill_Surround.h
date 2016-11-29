@@ -54,7 +54,7 @@ public:
 
 
 	bool GetIsAttacking() { return m_IsAttacking; } //공격하고있니?
-
+	bool GetIsCool() { return m_IsCoolTime; }
 
 protected:
 	//이펙트 함수가 필요하면..

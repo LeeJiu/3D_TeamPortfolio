@@ -52,12 +52,25 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->AddScene("DragonTest", new DragonTest());
 	SCENE_MGR->AddScene("cVideoTest", new cVideoTest());
 
-	SOUND_MGR->addSound("bgm1", "../Answers.mp3", true, true);
-	
+	//공용 효과음
+	SOUND_MGR->addSound("ban", "../Resources/Sound/ban.wav", false, false); 
+	SOUND_MGR->addSound("setWeapon", "../Resources/Sound/무기착용.ogg", false, false);
+	SOUND_MGR->addSound("offWeapon", "../Resources/Sound/무기해제.wav", false, false);
+	SOUND_MGR->addSound("walk", "../Resources/Sound/걷다.ogg", true, true);
+
+	//배경음
+	SOUND_MGR->addSound("field_bgm", "../Resources/Sound/사막배경음.mp3", true, true);
+
+	//버서커 효과음
+	SOUND_MGR->addSound("atk_voice", "../Resources/Sound/버서커_공격_음성.ogg", false, false);
+	SOUND_MGR->addSound("atk1", "../Resources/Sound/버서커_평타1.ogg", false, false);
+	SOUND_MGR->addSound("atk2", "../Resources/Sound/버서커_평타2.ogg", false, false);
+	SOUND_MGR->addSound("heat", "../Resources/Sound/버서커_맞음.ogg", false, false);
+	SOUND_MGR->addSound("dead", "../Resources/Sound/버서커_죽음.ogg", false, false);
+
 	////게임 시작씬
-	SCENE_MGR->ChangeScene( "mage_Test" );
-	//SCENE_MGR->ChangeScene("berserker_test");
 	//SCENE_MGR->ChangeScene( "mage_Test" );
+	SCENE_MGR->ChangeScene("berserker_test");
 	//SCENE_MGR->ChangeScene("DragonTest");
 	//SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
@@ -118,6 +131,7 @@ void cMainGame::Update()
 {
 	//타임매니져 업데이트
 	TIME_MGR->UpdateTime( 60.0f );
+	SOUND_MGR->Update();
 	
 	//한프레임 갱신 시간
 	double timeDelta = TIME_MGR->GetFrameDeltaSec();
