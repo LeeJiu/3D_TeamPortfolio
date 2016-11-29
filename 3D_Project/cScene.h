@@ -5,6 +5,8 @@ class cCamera;
 class cLight_Direction;
 
 class cTerrain;
+class cMonster;
+class cPlayer;
 
 class cScene
 {

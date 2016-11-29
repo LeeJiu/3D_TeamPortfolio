@@ -13,13 +13,11 @@ enum BK_SKILL //틱 클래스에서 쓸꺼.
 	BK_HOWL, BK_SWING, BK_ACCEL
 };
 
-class cViewDamage;
 class cShowDamage;
 
 class cBerserker : public cPlayer
 {
 private:
-	//cViewDamage*        m_ViewDamage;
 	cShowDamage*		m_ShowDamage;
 	cSkill_Surround*    m_pSurroundSkill;	//주변범위
 	

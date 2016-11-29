@@ -28,7 +28,7 @@ cScene::cScene(void)
 
 
 	//그림자 거리
-	shadowDistance = 100.0f;
+	shadowDistance = 10.0f;
 
 
 	//카메라의 투영방식을 바꾼다...
@@ -110,7 +110,6 @@ void cScene::Release()
 void cScene::Update( float timeDelta )
 {
 	//pMainCamera->DefaultControl( timeDelta );
-	
 	pMainCamera->UpdateCamToDevice( Device );
 	pMainCamera->UpdateFrustum();
 	//

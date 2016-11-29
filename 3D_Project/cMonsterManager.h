@@ -40,8 +40,5 @@ public:
 	void SetTerrain(cTerrain* pTerrain) { m_pTerrain = pTerrain; }
 
 	vector<cMonster*>& GetMonsters() { return m_vMonster; }
-
-	//vector<cBaseObject*> getShadow(){ return m_vShadow; }
-	//vector<cBaseObject*> MonToBasic();
 };
 

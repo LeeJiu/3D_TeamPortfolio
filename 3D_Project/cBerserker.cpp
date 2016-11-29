@@ -8,7 +8,6 @@
 #include "cTrailRender.h"
 #include "cShowDamage.h"
 
-//#include "cViewDamage.h"
 
 cBerserker::cBerserker()
 {
@@ -16,7 +15,6 @@ cBerserker::cBerserker()
 
 cBerserker::~cBerserker()
 {
-	//SAFE_DELETE(m_ViewDamage);
 	SAFE_DELETE(m_ShowDamage);
 }
 
@@ -63,8 +61,7 @@ void cBerserker::BaseObjectEnable()
 	SkillInit();
 	SetTickCount();
 	
-	//m_ViewDamage = new cViewDamage;					//init
-	//m_ViewDamage->Init();
+
 	m_ShowDamage = new cShowDamage;
 }
 
@@ -72,7 +69,6 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 {
 	m_UIContainer->UI_Update();
 
-	//m_ViewDamage->Update(timeDelta, m_camera);
 	m_ShowDamage->Update(timeDelta);
 	CamControl(timeDelta);
 	Move(timeDelta);
@@ -277,7 +273,6 @@ void cBerserker::BaseObjectRender()
 
 	m_Swing->BaseObjectRender();
 	m_Swing->Effect_Render();
-	//m_ViewDamage->Render();
 }
 
 void cBerserker::BaseSpriteRender()
@@ -343,7 +338,6 @@ void cBerserker::Attack01()
 	//damage = RandomIntRange(damage - 10, damage + 10);
 
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
-	//m_ViewDamage->SetNumber(damage, m_target->pTransform);//¿©±â¼­ Æ®·£½ºÆû³Ñ°ÜÁà¾ßÁö .
 
 	LOG_MGR->AddLog("%dµ¥¹ÌÁö ÁÜ", damage);
 	m_target->Damage(damage);
@@ -356,7 +350,6 @@ void cBerserker::Attack02()
 	//damage = RandomIntRange(damage - 10, damage + 10);
 
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
-	//m_ViewDamage->SetNumber(damage, m_target->pTransform);
 
 	LOG_MGR->AddLog("%dµ¥¹ÌÁö ÁÜ", damage);
 	m_target->Damage(damage);
@@ -369,7 +362,6 @@ void cBerserker::Attack03()
 	//damage = RandomIntRange(damage - 10, damage + 10);
 	
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
-	//m_ViewDamage->SetNumber(damage, m_target->pTransform);
 
 	LOG_MGR->AddLog("%dµ¥¹ÌÁö ÁÜ", damage);
 	m_target->Damage(damage);
@@ -420,7 +412,6 @@ void cBerserker::SKILL02()
 				{
 					LOG_MGR->AddLog("%d µ¥¹ÌÁöÁÜ", damage);
 					//m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
-					//m_ViewDamage->SetNumber(damage, m_vMonster[i]->pTransform);
 					m_vMonster[i]->Damage(damage);
 				}
 			}
