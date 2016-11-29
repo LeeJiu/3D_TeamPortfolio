@@ -8,8 +8,6 @@
 #include "cTrailRender.h"
 #include "cShowDamage.h"
 
-//#include "cViewDamage.h"
-
 cBerserker::cBerserker()
 {
 }
@@ -17,13 +15,26 @@ cBerserker::cBerserker()
 cBerserker::~cBerserker()
 {
 	SAFE_DELETE(m_ShowDamage);
+	SAFE_DELETE(m_Swing);
+	SAFE_DELETE(m_Howling);
+	SAFE_DELETE(m_Burserk);
 }
 
 void cBerserker::BaseObjectEnable()
 {
-	m_UIContainer = new cUI_Container;
-	m_UIContainer->UI_Init();
+	m_fHP = 3000;					//최대체력
+	m_currentHp = 3000;				//hp
+	m_fSP = 1000;					//최대스킬포인트
+	m_currentSp = 1000;				//sp
 
+	m_attackLength = 5;				//공격범위
+	m_damage = 100;					//기본 데미지
+	m_isAttack = false;				//공격중
+	m_invenOn = false;				//인벤
+	m_isBurserk = false;			//버서크 모드
+
+	m_UIContainer = new cUI_Container;
+	m_UIContainer->UI_Init(m_fHP, m_fSP, BERSERKER);
 
 	SetBassClass();
 	
@@ -31,22 +42,15 @@ void cBerserker::BaseObjectEnable()
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
 	BaseObjectBoundBox();
 
-	BasixWeaponSet();
+	BasicWeaponSet();
 
 	m_state = IDLE;
 	m_strName = MyUtil::SetAnimation(m_state);
 
 	m_botton = false;
 
-	m_fHP = 3000;					//신상정보
-	m_currentHp = 3000;				//신상정보
-	m_attackLength = 5;				//신상정보
-	m_damage = 100;					//신상정보
-	m_isAttack = false;				//신상정보
-	m_invenOn = false;				//신상정보
-
 	m_vMonster = m_pMonMgr->GetMonsters();	//받아온 몬스터정보들
-	m_target = NULL;			//타겟팅된 몬스터
+	m_target = NULL;						//타겟팅된 몬스터
 	
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
@@ -67,14 +71,11 @@ void cBerserker::BaseObjectEnable()
 
 void cBerserker::BaseObjectUpdate(float timeDelta)
 {
-	m_UIContainer->UI_Update();
-
 	m_ShowDamage->Update(timeDelta);
 	CamControl(timeDelta);
 	Move(timeDelta);
-
+	
 	//틱업데이트
-
 	for (int i = 0; i < BK_TICKMAX; i++)
 	{
 		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
@@ -85,6 +86,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	{
 		Monster_pick();
 	}
+
 	UiUpdate(timeDelta, m_camera);
 	if (this->pTrailRender != NULL)
 		this->pTrailRender->Update(timeDelta);
@@ -183,7 +185,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		m_Swing->StartCasting();
 	}
 
-	//스킬4 - ?
+	//스킬4
 	if (!m_isAttack && KEY_MGR->IsOnceDown('4'))
 	{
 		
@@ -196,8 +198,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		m_time = 0;
 
 		LOG_MGR->AddLog("광폭화 시전");
-		m_damage += 100;
-
+	
 		m_state = SK_BUFF;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
@@ -248,7 +249,8 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//test용 로그 출려꾸 
 	if (m_testtime > 1)
 	{
-		LOG_MGR->AddLog("hp : %d", m_currentHp);
+		LOG_MGR->AddLog("maxhp : %.0f php : %.0f", m_fHP, m_currentHp);
+		//LOG_MGR->AddLog("hp : %d", m_currentHp);
 		m_testtime = 0;
 	}
 
@@ -258,6 +260,9 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	{
 		m_state = IDLE;
 	}
+
+	m_UIContainer->UI_Update(m_currentHp, m_currentSp);
+
 }
 
 void cBerserker::BaseObjectRender()
@@ -274,27 +279,20 @@ void cBerserker::BaseObjectRender()
 
 	m_Swing->BaseObjectRender();
 	m_Swing->Effect_Render();
-	//m_ViewDamage->Render();
+
+	
 }
 
 void cBerserker::BaseSpriteRender()
 {
 	UiURender();
-	m_ShowDamage->Render();
+	m_ShowDamage->Render();//바운드박스 xy받아와
 	m_UIContainer->UI_Render();
+}
 
-	//char temp[32];
-	//sprintf_s(temp, "../Resources/Textures/num_%d.tga", 2);
-	//
-	//RECT rc = RectMake(0, 0, 64, 64);
-	//
-	//SPRITE_MGR->DrawTexture(
-	//	RESOURCE_TEXTURE->GetResource(temp),
-	//	&rc,
-	//	WINSIZE_X / 2, WINSIZE_Y / 2,
-	//	0xffffffff,
-	//	NULL
-	//);
+void cBerserker::BaseFontRender()
+{
+	m_UIContainer->UI_fontRender();
 }
 
 void cBerserker::BaseObjectBoundBox()
@@ -324,7 +322,6 @@ void cBerserker::Damage(float damage)
 
 	if (m_state != DMG)
 	{
-		
 		m_state = DMG;
 		m_strName = MyUtil::SetAnimation(m_state);
 		pSkinned->PlayOneShotAfterOther(m_strName, "IDLE", 0.3f);
@@ -335,12 +332,10 @@ void cBerserker::Damage(float damage)
 
 void cBerserker::Attack01()
 {	
-	int damage = m_damage * 1;
-	damage = 5; 
-	//damage = RandomIntRange(damage - 10, damage + 10);
+	int damage = (m_damage + m_Weapon->getDmg()) * 1;
+	damage = RandomIntRange(damage - 10, damage + 10);
 
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
-	//m_ViewDamage->SetNumber(damage, m_target->pTransform);//여기서 트랜스폼넘겨줘야지 .
 
 	LOG_MGR->AddLog("%d데미지 줌", damage);
 	m_target->Damage(damage);
@@ -348,12 +343,10 @@ void cBerserker::Attack01()
 
 void cBerserker::Attack02()
 {
-	int damage = m_damage * 2;
-	damage = 10;
-	//damage = RandomIntRange(damage - 10, damage + 10);
+	int damage = (m_damage + m_Weapon->getDmg()) * 2;
+	damage = RandomIntRange(damage - 10, damage + 10);
 
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
-	//m_ViewDamage->SetNumber(damage, m_target->pTransform);
 
 	LOG_MGR->AddLog("%d데미지 줌", damage);
 	m_target->Damage(damage);
@@ -361,12 +354,10 @@ void cBerserker::Attack02()
 
 void cBerserker::Attack03()
 {
-	int damage = m_damage * 3;
-	damage = 19;
-	//damage = RandomIntRange(damage - 10, damage + 10);
+	int damage = (m_damage + m_Weapon->getDmg()) * 3;
+	damage = RandomIntRange(damage - 10, damage + 10);
 	
 	m_ShowDamage->SetNumber(damage, m_target->pTransform);
-	//m_ViewDamage->SetNumber(damage, m_target->pTransform);
 
 	LOG_MGR->AddLog("%d데미지 줌", damage);
 	m_target->Damage(damage);
@@ -397,7 +388,7 @@ void cBerserker::SKILL01()
 
 void cBerserker::SKILL02()
 {
-	int damage = m_damage * 2;
+	int damage = (m_damage + m_Weapon->getDmg()) * 2;
 
 	if (m_Swing->GetIsAttacking())
 	{
@@ -411,13 +402,9 @@ void cBerserker::SKILL02()
 
 			if (m_tick[BK_SWING]->tickStart())
 			{
-				//이거 틱데미지로바꿔
-				//if (PHYSICS_MGR->IsOverlap(m_Weapon, m_vMonster[i]))
-				{
-					LOG_MGR->AddLog("%d 데미지줌", damage);
-					m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
-					m_vMonster[i]->Damage(damage);
-				}
+				LOG_MGR->AddLog("%d 데미지줌", damage);
+				m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
+				m_vMonster[i]->Damage(damage);
 			}
 		}
 	}
@@ -430,20 +417,33 @@ void cBerserker::SKILL03()
 
 void cBerserker::SKILL04()
 {
-	//if (m_Burserk->GetIsInBuff())
-	//{
-	//	if (m_Burserk->m_AttackingCount > m_Burserk->m_AttackingTime)
-	//	{
-	//		m_damage -= 100;
-	//		LOG_MGR->AddLog("버프 끗");
-	//	}
-	//}
+	if (m_Burserk->GetIsInBuff())
+	{
+		LOG_MGR->AddLog("버서크모드임");
+		m_isBurserk = true;
+		m_damage = 200;
+	}
+	else
+	{
+		m_isBurserk = false;
+		m_damage = 100;
+	}
 }
 
-void cBerserker::BasixWeaponSet()
+void cBerserker::BasicWeaponSet()
 {
 	//베이직무기 셋팅해줄거
 	m_Weapon = new cItem;
+
+	//TrailRenderSet
+	this->pTrailRender = new cTrailRender();
+	this->pTrailRender->Init(
+		1.0f,					//꼬리 라이브 타임 ( 이게 크면 환영큐 사이즈가 커지고 꼬리가 오랬동안 남아있다 )
+		1.0f,					//폭
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/TrailTest.png"),	//메인 Texture
+		D3DXCOLOR(0.5f, 0, 0, 0.8),												//메인 Texture 로 그릴때 컬러
+		NULL
+	);
 
 	m_Weapon = ITEM_MGR->getItem(2);
 	m_Weapon->BoundBox.SetBound(&D3DXVECTOR3(0.f, 1.f, 0.f), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
@@ -508,10 +508,6 @@ void cBerserker::UiUpdate(float timeDelta, cCamera* camera)
 		this->pTrailRender->Transform.AttachTo(m_Weapon->pTransform);
 		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
 		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
-		
-		//this->pTrailRender->Transform.AttachTo(m_inven->GetWeapon()->pTransform);
-		//this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
-		//this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
 	}
 
 

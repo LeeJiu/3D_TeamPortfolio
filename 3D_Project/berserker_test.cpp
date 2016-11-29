@@ -154,3 +154,8 @@ void berserker_test::Scene_RenderSprite()
 {
 	this->pBerserker->BaseSpriteRender();
 }
+
+void berserker_test::Scene_RenderFont()
+{
+	this->pBerserker->BaseFontRender();
+}

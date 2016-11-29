@@ -39,6 +39,11 @@ enum MONSTER_TYPE
 	BASILISK, GRIFF, MINO, SPIDER, SPIDER_QUEEN, SUCCUBUS, DRAGON
 };
 
+//캐릭터 타입
+enum CHARAC_TYPE
+{
+	BERSERKER, MAGE
+};
 
 //캐릭터 상태 디파인문
 enum ACTOR_STATE
@@ -79,10 +84,9 @@ enum ACTOR_STATE
 	JUMP_LAND,		//착지
 
 
-	WEAPON,          //무기 착용
-	UNWEAPON,        //무기 해제
-
-						 //공격 상태
+	WEAPON,         //무기 착용
+	UNWEAPON,       //무기 해제
+					//공격 상태
 
 	ATK_01,           //기본공격 1
 	ATK_02,           //기본공격 2

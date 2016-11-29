@@ -10,11 +10,13 @@ struct stDamage
 	int	tens;					//10의자리 수 
 	int hund;					//100의자리 수
 	int thou;					//1000의자리 수
+	int mil;
 	RECT Rc;				// 렉트	
 	LPDIRECT3DTEXTURE9 unit_tex;	// 이미지들
 	LPDIRECT3DTEXTURE9 tens_tex;
 	LPDIRECT3DTEXTURE9 hund_tex;
 	LPDIRECT3DTEXTURE9 thou_tex;
+	LPDIRECT3DTEXTURE9 mil_tex;
 	float unit_x, unit_y;						// 화면에 그려질 좌표. 
 	float countTime;			//카운트할시간
 	float time;					//유지시간

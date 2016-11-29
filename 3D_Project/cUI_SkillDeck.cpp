@@ -11,8 +11,7 @@ cUI_SkillDeck::~cUI_SkillDeck()
 {
 }
 
-
-void cUI_SkillDeck::init()
+void cUI_SkillDeck::init(CHARAC_TYPE ctype)
 {
 	m_UIDeck.x = WINSIZE_X / 2 - 315;
 	m_UIDeck.y = WINSIZE_Y - 80;
@@ -35,52 +34,43 @@ void cUI_SkillDeck::init()
 	m_UIDeckNumBack.img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_SkillDeckNumBack.tga");
 	m_UIDeckNumBack.rc = RectMake(0, 0, 256, 64);
 
-	for (int i = 0; i < SKILLNUM; i++)
+	if (ctype == BERSERKER)
 	{
-		m_UISkillBtn[i].x = WINSIZE_X / 2 - 315 + 51*i;
-		m_UISkillBtn[i].y = WINSIZE_Y - 78;
-		m_UISkillBtn[0].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage1.tga");
-		m_UISkillBtn[1].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage2.tga");
-		m_UISkillBtn[2].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage3.tga");
-		m_UISkillBtn[3].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage4.tga");
-		m_UISkillBtn[4].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage5.tga");
-		m_UISkillBtn[i].rc = RectMake(0, 0, 64, 64);
-		m_UISkillBtn[i].rcColl = RectMake(m_UISkillBtn[i].x, m_UISkillBtn[i].y, 48, 48);
+		for (int i = 0; i < SKILLNUM; i++)
+		{
+			m_UISkillBtn[i].x = WINSIZE_X / 2 - 315 + 51 * i;
+			m_UISkillBtn[i].y = WINSIZE_Y - 78;
+			m_UISkillBtn[0].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber1.tga");
+			m_UISkillBtn[1].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber2.tga");
+			m_UISkillBtn[2].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber3.tga");
+			m_UISkillBtn[3].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber4.tga");
+			m_UISkillBtn[4].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber5.tga");
+			m_UISkillBtn[i].rc = RectMake(0, 0, 64, 64);
+			m_UISkillBtn[i].rcColl = RectMake(m_UISkillBtn[i].x, m_UISkillBtn[i].y, 48, 48);
 
+		}
 	}
 
-	isBerserker = false;
-	
+	else if (ctype == MAGE)
+	{
+		for (int i = 0; i < SKILLNUM; i++)
+		{
+			m_UISkillBtn[i].x = WINSIZE_X / 2 - 315 + 51 * i;
+			m_UISkillBtn[i].y = WINSIZE_Y - 78;
+			m_UISkillBtn[0].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage1.tga");
+			m_UISkillBtn[1].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage2.tga");
+			m_UISkillBtn[2].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage3.tga");
+			m_UISkillBtn[3].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage4.tga");
+			m_UISkillBtn[4].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage5.tga");
+			m_UISkillBtn[i].rc = RectMake(0, 0, 64, 64);
+			m_UISkillBtn[i].rcColl = RectMake(m_UISkillBtn[i].x, m_UISkillBtn[i].y, 48, 48);
 
+		}
+	}
 }
-
 
 void cUI_SkillDeck::update()
 {
-	if (KEY_MGR->IsOnceDown('N'))
-	{
-		if (isBerserker) isBerserker = false;
-		else isBerserker = true;
-	}
-
-	if (isBerserker)
-	{
-		m_UISkillBtn[0].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber1.tga");
-		m_UISkillBtn[1].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber2.tga");
-		m_UISkillBtn[2].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber3.tga");
-		m_UISkillBtn[3].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber4.tga");
-		m_UISkillBtn[4].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Ber5.tga");
-	}
-
-	if (!isBerserker)
-	{
-		m_UISkillBtn[0].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage1.tga");
-		m_UISkillBtn[1].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage2.tga");
-		m_UISkillBtn[2].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage3.tga");
-		m_UISkillBtn[3].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage4.tga");
-		m_UISkillBtn[4].img = RESOURCE_TEXTURE->GetResource("../Resources/UI/UI_Skill_Mage5.tga");
-	}
-	
 	for (int i = 0; i < SKILLNUM; i++)
 	{
 		POINT ptMousePos = GetMousePos();

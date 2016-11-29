@@ -26,19 +26,12 @@ cPlayer::~cPlayer()
 
 void cPlayer::BaseObjectEnable()
 {
-	//캐릭터의 그려진 위치를 세팅
-	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
-
-
-
 }
 
 void cPlayer::BaseObjectUpdate(float timeDelta)
 {
 	
 	Monster_pick();
-
-
 }
 
 void cPlayer::BaseObjectRender()
@@ -49,6 +42,10 @@ void cPlayer::BaseObjectRender()
 void cPlayer::BaseSpriteRender()
 {
 	
+}
+
+void cPlayer::BaseFontRender()
+{
 }
 
 void cPlayer::BaseObjectBoundBox()
@@ -178,7 +175,7 @@ void cPlayer::UiURender()
 void cPlayer::Move(float timeDelta)
 {
 	//애니메이션셋
-	if (!m_isAttack && m_isMove && (KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
+	if (!m_InputKeys.find('S')->second && !m_pMove->GetIsJump() && !m_isAttack && m_isMove && (KEY_MGR->IsOnceDown('W') || KEY_MGR->IsOnceDown('D')
 		|| KEY_MGR->IsOnceDown('A')))
 	{
 		m_isIdle = false;
@@ -187,7 +184,7 @@ void cPlayer::Move(float timeDelta)
 		this->pSkinned->Play(m_strName, 0.3);
 	}
 
-	if (!m_isAttack && m_isMove && KEY_MGR->IsOnceDown('S'))
+	if (!m_pMove->GetIsJump() && !m_isAttack && m_isMove && KEY_MGR->IsOnceDown('S'))
 	{
 		m_isIdle = false;
 		m_state = WALK_BACK;
@@ -195,7 +192,7 @@ void cPlayer::Move(float timeDelta)
 		this->pSkinned->Play(m_strName, 0.3);
 	}
 
-	if (!m_isAttack && !m_isMove && (KEY_MGR->IsOnceUp('W') || KEY_MGR->IsOnceUp('S')
+	if (!m_pMove->GetIsJump() && !m_isAttack && !m_isMove && (KEY_MGR->IsOnceUp('W') || KEY_MGR->IsOnceUp('S')
 		|| KEY_MGR->IsOnceUp('Q') || KEY_MGR->IsOnceUp('E')
 		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
 	{
@@ -206,11 +203,17 @@ void cPlayer::Move(float timeDelta)
 	}
 	
 
-	if (KEY_MGR->IsOnceDown(VK_SPACE))
+	if (!m_pMove->GetIsJump() && KEY_MGR->IsOnceDown(VK_SPACE))
 	{
 		m_state = JUMP;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3,0.3);
+
+		m_InputKeys.find(VK_SPACE)->second = true;
+	}
+	if (KEY_MGR->IsOnceUp(VK_SPACE))
+	{
+		m_InputKeys.find(VK_SPACE)->second = false;
 	}
 	
 
@@ -242,13 +245,6 @@ void cPlayer::Move(float timeDelta)
 		m_InputKeys.find('D')->second = true;
 	}
 	else m_InputKeys.find('D')->second = false;
-
-	if (KEY_MGR->IsStayDown(VK_SPACE))
-	{
-		m_InputKeys.find(VK_SPACE)->second = true;
-	}
-	else m_InputKeys.find(VK_SPACE)->second = false;
-
 
 	m_pMove->update(timeDelta, NULL, NULL, NULL, m_InputKeys);
 	m_isMove = m_pMove->GetIsMove();
@@ -309,7 +305,6 @@ void cPlayer::RangeCheck(float range)
 
 	for (int i = 0; i < size; i++)
 	{
-		//if(m_vMonster[i]->) 몬스터가 죽어잇으면 컨티뉴.
 		m_vMonster[i]->SetInRange(PHYSICS_MGR->IsPointSphere(this->pTransform, range, m_vMonster[i]->pTransform));
 	}
 }
@@ -355,16 +350,6 @@ void cPlayer::SetBassClass()
 	//웨폰
 	m_Weapon = new cItem;
 	m_Weapon = NULL;
-
-	//TrailRenderSet
-	this->pTrailRender = new cTrailRender();
-	this->pTrailRender->Init(
-		1.0f,					//꼬리 라이브 타임 ( 이게 크면 환영큐 사이즈가 커지고 꼬리가 오랬동안 남아있다 )
-		1.0f,					//폭
-		RESOURCE_TEXTURE->GetResource("../Resources/Textures/TrailTest.png"),	//메인 Texture
-		D3DXCOLOR(0.5f, 0, 0, 0.8),												//메인 Texture 로 그릴때 컬러
-		NULL
-	);
 
 	m_Angle = 0;
 }

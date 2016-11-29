@@ -5,6 +5,7 @@ class cSpider : public cMonster
 {
 private:
 	float			m_fRange2;
+	float			m_damage;
 
 public:
 	cSpider();

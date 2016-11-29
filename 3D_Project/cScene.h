@@ -69,6 +69,8 @@ private:
 	virtual void Scene_Render2(){}
 
 	virtual void Scene_RenderSprite(){}
+	virtual void Scene_RenderFont() {}
+
 
 	//환경구 랜더
 	void RenderEnvironment();

@@ -50,6 +50,8 @@ public:
 
 	virtual void Scene_RenderSprite();
 
+	virtual void Scene_RenderFont();
+
 };
 
 

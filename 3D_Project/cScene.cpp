@@ -201,6 +201,7 @@ void cScene::Render()
 	this->Scene_RenderSprite();
 	SPRITE_MGR->EndSpriteRender();
 
+	this->Scene_RenderFont();
 }
 
 //메인 카메라의 RenderToTexture 만 업데이트한다.

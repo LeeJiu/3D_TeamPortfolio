@@ -136,6 +136,18 @@ void mage_Test::Scene_Release()
 void mage_Test::Scene_Update(float timeDelta)
 {
 
+	if (KEY_MGR->IsOnceUp('T'))
+	{
+		ITEM_MGR->createItem(1, D3DXVECTOR3(0, 7, 0));
+
+	}
+	if (KEY_MGR->IsOnceUp('Y'))
+	{
+		ITEM_MGR->createItem(0, D3DXVECTOR3(0, 7, 0));
+
+	}
+
+
 	m_pPlayer->Update(timeDelta);
 
 	m_pMonMgr->Update(timeDelta);
@@ -191,8 +203,11 @@ void mage_Test::Scene_Render1()
 void mage_Test ::Scene_RenderSprite()
 {
 	m_pPlayer->BaseSpriteRender();
+}
 
-
+void mage_Test::Scene_RenderFont()
+{
+	this->m_pPlayer->BaseFontRender();
 }
 
 	//if (pMage->GetIsPetOn())

@@ -67,7 +67,7 @@ void cUI_CharacterBar::init(float userMaxHP, float userMaxMP)
 	//================== 케릭터 ===============
 	playerMaxHP = userMaxHP;
 	playerCurHP = userMaxHP;
-
+	
 	playerMaxMP = userMaxMP;
 	playerCurMP = userMaxMP;
 
@@ -127,8 +127,12 @@ void cUI_CharacterBar::update(float userCurrentHP, float userCurrentMP)
 {
 	//============= rc 그려주는 위치 계산 하는 공식
 
-	rcCurHP = userCurrentHP / playerMaxHP * rcMaxHP;
-	rcCurMP = userCurrentMP / playerMaxMP * rcMaxMP;
+	playerCurHP = userCurrentHP;
+	playerCurMP = userCurrentMP;
+
+	rcCurHP = playerCurHP / playerMaxHP * rcMaxHP;
+	rcCurMP = playerCurMP / playerMaxMP * rcMaxMP;
+
 	// ㅇㅖ외 처리
 	if (rcCurHP < 0)
 	{
@@ -157,27 +161,28 @@ void cUI_CharacterBar::update(float userCurrentHP, float userCurrentMP)
 
 void cUI_CharacterBar::uiRender()
 {
+
 	SPRITE_MGR->DrawTexture(
 		m_UICharacterBarBack.img,
 		&m_UICharacterBarBack.rc,
 		m_UICharacterBarBack.x, m_UICharacterBarBack.y,
 		0xffffffff,
 		NULL);
-
+	
 	SPRITE_MGR->DrawTexture(
 		m_UIHPBar.img,
 		&m_UIHPBar.rc,
 		m_UIHPBar.x, m_UIHPBar.y,
 		0xffffffff,
 		NULL);
-
+	
 	SPRITE_MGR->DrawTexture(
 		m_UIMPBar.img,
 		&m_UIMPBar.rc,
 		m_UIMPBar.x, m_UIMPBar.y,
 		0xffffffff,
 		NULL);
-
+	
 	SPRITE_MGR->DrawTexture(
 		m_UICharacterBar.img,
 		&m_UICharacterBar.rc,
@@ -185,6 +190,17 @@ void cUI_CharacterBar::uiRender()
 		0xffffffff,
 		NULL);
 
+	
+}
 
+void cUI_CharacterBar::fontRender()
+{
+	char tempHp[32];
+	sprintf_s(tempHp, "%.0f / %.0f", playerCurHP, playerMaxHP);
+	DXFONT_MGR->PrintTextOutline(tempHp, m_UIHPBar.x + 40, m_UIHPBar.y, 0xffffffff, 0xff000000);
+
+	char tempMp[32];
+	sprintf_s(tempMp, "%.0f / %.0f", playerCurMP, playerMaxMP);
+	DXFONT_MGR->PrintTextOutline(tempMp, m_UIMPBar.x - 140, m_UIMPBar.y, 0xffffffff, 0xff000000);
 
 }
