@@ -123,7 +123,7 @@ void cPlayer::CamControl(float timeDelta)
 	//
 	//D3DXVECTOR3 target = inputVector * delta;
 	//this->m_camera->MovePositionSelf(target * timeDelta);
-	//this->m_camera->DefaultControl3(timeDelta, this->pTransform);
+	this->m_camera->DefaultControl3(timeDelta, this->pTransform);
 }
 
 void cPlayer::UiUpdate(float timeDelta, cCamera* camera)
@@ -269,6 +269,15 @@ void cPlayer::Monster_pick()
 				this->m_target = m_vMonster[i];
 				break;
 			}
+			else if (m_vMonster[i]->monType == DRAGON)
+			{
+				if (PHYSICS_MGR->IsRayHitBound(&ray, &m_vMonster[i]->BoundBox, m_vMonster[i]->pTransform, NULL, NULL))
+				{
+					LOG_MGR->AddLog("Å¸°ÙÆÃµÊ");
+					this->m_target = m_vMonster[i];
+					break;
+				}
+			}
 			else this->m_target = NULL;
 		}
 	}
@@ -297,8 +306,6 @@ void cPlayer::RangeCheck(float range)
 	{
 		//if(m_vMonster[i]->) ¸ó½ºÅÍ°¡ Á×¾îÀÕÀ¸¸é ÄÁÆ¼´º.
 		m_vMonster[i]->SetInRange(PHYSICS_MGR->IsPointSphere(this->pTransform, range, m_vMonster[i]->pTransform));
-
-		LOG_MGR->AddLog("vMon[%d] : %d", i, m_vMonster[i]->GetInRange());
 	}
 }
 

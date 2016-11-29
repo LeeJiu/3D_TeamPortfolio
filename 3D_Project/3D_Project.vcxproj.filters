@@ -303,9 +303,6 @@
     <ClInclude Include="cSkill_SelfBuff.h">
       <Filter>GameActor\Skill</Filter>
     </ClInclude>
-    <ClInclude Include="cSkill_Swing.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="cTickFunc.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -327,7 +324,16 @@
     <ClInclude Include="cUI_MenuBar.h">
       <Filter>Component\UI</Filter>
     </ClInclude>
+    <ClInclude Include="cSkill_Howling.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
     <ClInclude Include="cSkill_Thunder.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Swing.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cShowDamage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -590,9 +596,6 @@
     <ClCompile Include="cSkill_SelfBuff.cpp">
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
-    <ClCompile Include="cSkill_Swing.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="cTickFunc.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -615,6 +618,15 @@
       <Filter>Component\UI</Filter>
     </ClCompile>
     <ClCompile Include="cSkill_Thunder.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Howling.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Swing.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cShowDamage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

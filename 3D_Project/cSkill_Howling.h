@@ -1,7 +1,7 @@
 #pragma once
 #include "cSkill_Surround.h"
 
-class cSkill_Burserk : public cSkill_Surround
+class cSkill_Howling : public cSkill_Surround
 {
 	//cQuadParticleEmitter*  m_snowStrom;
 	//cQuadParticleEmitter*  m_snowStrom_under;
@@ -10,11 +10,12 @@ class cSkill_Burserk : public cSkill_Surround
 	int                    m_aniCount;
 
 public:
-	cSkill_Burserk();
-	~cSkill_Burserk();
+	cSkill_Howling();
+	~cSkill_Howling();
 
 	void Effect_Init();
 	void Effect_Update(float timeDelta);
 	void Effect_Render();
+
 };
 

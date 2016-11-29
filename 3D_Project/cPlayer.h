@@ -38,15 +38,18 @@ protected:
 
 	//status
 	float				m_fHP;					//hp
+	float				m_currentHp;
 	float				m_sp;					//skill point
 	float				m_attackLength;			//공격가능범위
 	int					m_damage;				//데미지
+	int					m_Invintime;			//무적시간
 
 	float				m_Angle;
 
 	bool				m_isIdle;
 	bool				m_isMove;				//움직이는중?
 	bool				m_isAttack;				//공격하는중?
+	bool				m_isHeat;				//데미지입는중
 	bool				m_invenOn;				//인벤켜진?
 	
 	bool                m_WeaponCheck;          // 아이템 장착 됬는지.
