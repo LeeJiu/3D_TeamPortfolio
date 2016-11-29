@@ -50,9 +50,6 @@ HRESULT mage_Test::Scene_Init()
 	D3DXMATRIXA16 matCorrection = matScale * matRotate;
 
 
-
-
-
 	cXMesh_Skinned* pSkinned = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Elf/Elf_Master.X", &matCorrection);
 	cXMesh_Skinned* pPet_Elephant = RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Elephant/pet_Elephant.X", &matCorrection);
 
