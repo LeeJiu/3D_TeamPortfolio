@@ -6,7 +6,7 @@
 cDragon::cDragon()
 {
 	m_collCount = COLLISION;
-	m_fHP = 30000.f;
+	m_fHP = 300.f;
 
 	//TIME_MGR->GetFrameDeltaSec();
 }

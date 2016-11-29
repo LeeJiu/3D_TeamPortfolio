@@ -3,6 +3,7 @@
 #include "cSkill_Swing.h"
 #include "cSkill_Howling.h"
 #include "cSkill_Burserk.h"
+#include "cSkill_AmorCrash.h"
 #include "cTickFunc.h"
 
 #define CONTROL_KEY 5
@@ -34,6 +35,11 @@ private:
 	cSkill_Burserk*		m_Burserk;		//버서크모드
 
 	bool				m_isBurserk;
+	cSkill_AmorCrash*   m_ArmorCrash;
+
+	int					m_SwingCnt;
+
+	float				m_testtime;		//로그찎는용 타이머
 
 public:
 	cBerserker();

@@ -342,6 +342,9 @@
     <ClInclude Include="cBaseskill.h">
       <Filter>Component\Skill</Filter>
     </ClInclude>
+    <ClInclude Include="cSkill_AmorCrash.h">
+      <Filter>Component\Skill</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -636,6 +639,9 @@
       <Filter>Component\Skill</Filter>
     </ClCompile>
     <ClCompile Include="cBaseskill.cpp">
+      <Filter>Component\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_AmorCrash.cpp">
       <Filter>Component\Skill</Filter>
     </ClCompile>
   </ItemGroup>

@@ -55,7 +55,6 @@ public:
 
 	virtual void Scene_RenderSprite();
 
-	void showUpdate();
 };
 
 

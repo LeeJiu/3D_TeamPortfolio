@@ -145,8 +145,9 @@ void berserker_test::Scene_Render1()
 	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
 	cXMesh_Static::SetBaseLight(this->pSceneBaseDirectionLight);
 
-	this->pBerserker->Render();
+	
 	this->m_pMonMgr->Render();
+	this->pBerserker->Render();
 }
 
 

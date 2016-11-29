@@ -17,6 +17,9 @@ private:
 	std::vector<cBaseObject*>	m_vObject;
 	std::vector<cBaseObject*>	m_vBoundBox;
 
+	std::vector<cBaseObject*>	m_vRender;
+	std::vector<cBaseObject*>	m_vCulling;
+
 public:
 	cScene_testMonster();
 	~cScene_testMonster();

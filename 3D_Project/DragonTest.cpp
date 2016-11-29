@@ -158,7 +158,6 @@ void DragonTest::Scene_Update(float timeDelta)
 	this->pBerserker->Update(timeDelta);
 	m_pMonMgr->Update(timeDelta);
 
-	showUpdate();
 
 	//this->ReadyShadowMap(&m_pMonMgr->MonToBasic());
 }
@@ -178,7 +177,7 @@ void DragonTest::Scene_Render1()
 	//cXMesh_Skinned::SetLighting(&this->extraLights);
 	
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
-	cXMesh_Skinned::SetTechniqueName("ReciveShadow");
+	cXMesh_Skinned::SetTechniqueName("Toon");
 	cXMesh_Skinned::sSkinnedMeshEffect->SetTexture("Ramp_Tex", RESOURCE_TEXTURE->GetResource("../Resources/Textures/Ramp_1.png"));
 	cXMesh_Skinned::SetBaseLight(this->pSceneBaseDirectionLight);
 	//
@@ -204,59 +203,4 @@ void DragonTest::Scene_RenderSprite()
 	m_CharacterBar->uiRender();
 
 
-}
-void DragonTest::showUpdate()
-{
-	//방향성광원에 붙은 카메라의 Frustum 업데이트
-	this->pDirectionLightCamera->UpdateMatrix();
-	this->pDirectionLightCamera->UpdateFrustum();
-
-	//쉐도우 맵 그린다.
-	this->pDirectionLightCamera->RenderTextureBegin(0xffffffff);
-
-	cXMesh_Static::SetCamera(this->pDirectionLightCamera);
-	cXMesh_Static::SetTechniqueName("CreateShadow");
-
-	cXMesh_Skinned::SetCamera(this->pDirectionLightCamera);
-	cXMesh_Skinned::SetTechniqueName("CreateShadow");
-
-
-	//만약 Terrain 도 쉐도우 맵을 그려야한다면...
-	// if (m_pTerrain != NULL)
-	// {
-	// 	m_pTerrain->RenderShadow(this->pDirectionLightCamera);
-	// }
-	//
-
-	this->pDirectionLightCamera->RenderTextureEnd();
-
-
-	// //만약 Terrain 도 쉐도우 맵을 셋팅한다면...
-	// if (m_pTerrain != NULL)
-	// {
-	// 	m_pTerrain->m_pTerrainEffect->SetTexture("Shadow_Tex",
-	// 		this->pDirectionLightCamera->GetRenderTexture());
-	// 
-	// 	m_pTerrain->m_pTerrainEffect->SetMatrix("matLightViewProjection",
-	// 		&this->pDirectionLightCamera->GetViewProjectionMatrix());
-	// }
-
-
-
-	//쉐도우 Texture
-	cXMesh_Static::sStaticMeshEffect->SetTexture("Shadow_Tex",
-		this->pDirectionLightCamera->GetRenderTexture());
-
-	//쉐도우 행렬
-	cXMesh_Static::sStaticMeshEffect->SetMatrix("matLightViewProjection",
-		&this->pDirectionLightCamera->GetViewProjectionMatrix());
-
-
-	//쉐도우 Texture
-	cXMesh_Skinned::sSkinnedMeshEffect->SetTexture("Shadow_Tex",
-		this->pDirectionLightCamera->GetRenderTexture());
-
-	//쉐도우 행렬
-	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrix("matLightViewProjection",
-		&this->pDirectionLightCamera->GetViewProjectionMatrix());
 }
