@@ -9,6 +9,7 @@
 #include "cScene_testMonster.h"
 #include "berserker_test.h"
 #include "DragonTest.h"
+#include "cVideoTest.h"
 
 cMainGame::cMainGame(void)
 {
@@ -50,6 +51,7 @@ HRESULT cMainGame::Init(void)
 	SCENE_MGR->AddScene("berserker_test", new berserker_test());
 	
 	SCENE_MGR->AddScene("DragonTest", new DragonTest());
+	SCENE_MGR->AddScene("cVideoTest", new cVideoTest());
 
 	SOUND_MGR->addSound("bgm1", "../Answers.mp3", true, true);
 	
@@ -57,7 +59,7 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene( "mage_Test" );
 	//SCENE_MGR->ChangeScene( "mage_Test" );
 	//SCENE_MGR->ChangeScene("berserker_test");
-	SCENE_MGR->ChangeScene("DragonTest");
+	//SCENE_MGR->ChangeScene("DragonTest");
 	//SCENE_MGR->ChangeScene("berserker_test");
 	//SCENE_MGR->ChangeScene( "mage_Test" );
 	//SCENE_MGR->ChangeScene("berserker_test");
@@ -66,6 +68,7 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene( "animation_Test" );
 	//SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
 	//SCENE_MGR->ChangeScene("cScene_testMonster");
+	SCENE_MGR->ChangeScene("cVideoTest");
 
 
 	return S_OK;		

@@ -43,6 +43,9 @@
     <Filter Include="GameActor\Skill">
       <UniqueIdentifier>{01084c57-4e81-44d1-80cd-23a3996a12dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{b0a09e12-09b2-42f6-ad67-83d89148aa61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -305,6 +308,30 @@
     </ClInclude>
     <ClInclude Include="cLoadManager.h">
       <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_SkillDeck.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_MenuBar.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_Map.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_Container.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cUI_CharacterBar.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Thunder.h">
+      <Filter>GameActor\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cVideoTest.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cVideo.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -571,6 +598,30 @@
     </ClCompile>
     <ClCompile Include="cLoadManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_SkillDeck.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_MenuBar.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_Map.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_Container.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cUI_CharacterBar.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Thunder.cpp">
+      <Filter>GameActor\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cVideoTest.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cVideo.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

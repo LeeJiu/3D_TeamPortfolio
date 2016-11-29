@@ -119,9 +119,11 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdP
 			//업데이트 
 			g_MainGame.Update();
 
-			//드로우
-			g_MainGame.Draw();
-
+			if (g_bDXRender == true)
+			{
+				//드로우
+				g_MainGame.Draw();
+			}
 		}
 
 	}

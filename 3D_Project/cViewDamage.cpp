@@ -285,7 +285,7 @@ void cViewDamage::Update(float timeDelta, cTransform * trans, cCamera* camera)
 
 	
 
-	if (m_isDrawing);
+	if (m_isDrawing)
 	{
 		if (num < 10)
 		{
