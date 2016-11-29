@@ -16,6 +16,7 @@ protected:
 	bool               m_IsShot;           // 스킬 발사중이니?
 	bool               m_IsInRange;        // 발사할 스킬이 사거리 안이니?
 	bool               m_IsAttacking;      // 스킬이 닿아서 공격하고 있니?
+	bool               m_IsHit;            // 데미지 닿는다
 
 	int                m_AttackingCount;   //공격 시전시간을 잰다
 	int                m_AttackingTime;    //스킬이 머물러 있는 시간을 잰다
@@ -41,12 +42,14 @@ public:
 
 	void ShotSkill(); //스킬을 발사하려면
 	void MakeAtk();
+	void SetHit();
 
 
 
 	bool GetIsShot() { return m_IsShot; }       // 발사 중이니
 	bool GetIsAttacking() { return m_IsAttacking; } //공격하고있니?
 	int  GetAttackingCound() { return m_AttackingCount; }
+	bool GetHit()            { return m_IsHit; }
 
 protected:
 	//이펙트 함수가 필요하면..

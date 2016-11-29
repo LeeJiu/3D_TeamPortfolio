@@ -142,22 +142,37 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		D3DXVECTOR3 magicATKCollision = m_ATKBox->pTransform->GetWorldPosition() - m_target->pTransform->GetWorldPosition();
 
 
-		//if (D3DXVec3Length(&magicATKLegth) < 20);
-		//{
-		if (KEY_MGR->IsOnceDown('1'))
+		if (!m_pMagicShot->GetIsAttacking())
 		{
-			m_state = ATK_01;
-			m_strName = MyUtil::SetAnimation(m_state);
-			pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
 
-			m_pMagicShot->Effect_Init();
-			m_pMagicShot->MakeAtk();
+			if (KEY_MGR->IsOnceDown('1'))
+			{
+				m_state = ATK_01;
+				m_strName = MyUtil::SetAnimation(m_state);
+				pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+
+				m_pMagicShot->Effect_Init();
+				m_pMagicShot->MakeAtk();
+			}
+
 		}
-
-		//}
-
+		
 		if (m_pMagicShot->GetIsAttacking())
 		{
+			RangeCircleCheck(m_ATKBox->pTransform->GetWorldPosition(), 3);
+
+			int size = m_vMonster.size();
+			for (int i = 0; i < size; i++)
+			{
+				LOG_MGR->AddLog("vector[%d] = %d", i, m_vMonster[i]->GetInRange());
+
+				if (!m_vMonster[i]->GetInRange()) continue;
+
+				m_vMonster[i]->Damage(100);
+				LOG_MGR->AddLog("데미지 받는중");
+				m_pMagicShot->SetHit();
+			}
+
 			pSkinned->RemoveBoneTransform("Bip01-L-Hand");
 			m_ATKBox->pTransform->LookPosition(m_target->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
 			m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
@@ -167,56 +182,68 @@ void cMage::BaseObjectUpdate(float timeDelta)
 			pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
 		}
 
-
 	}
 
 
-
-	if (KEY_MGR->IsOnceDown('2'))
+	if (!m_pSkill_FlameRoad->GetIsAttacking())
 	{
-		m_state = STF_FROZEN;
-		m_strName = MyUtil::SetAnimation(m_state);
-		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+
+		if (KEY_MGR->IsOnceDown('2'))
+		{
+			m_state = STF_FROZEN;
+			m_strName = MyUtil::SetAnimation(m_state);
+			this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+
+			//캐스팅 120초
+			//시전시간 200초
+			m_pSkill_FlameRoad->Effect_Init();
+			m_pSkill_FlameRoad->StartCasting();
+		}
+	}
 	
-		//캐스팅 120초
-		//시전시간 200초
-		m_pSkill_FlameRoad->Effect_Init();
-		m_pSkill_FlameRoad->StartCasting();
-	}
 
-
-	if (KEY_MGR->IsOnceDown('3'))
+	if (!m_pSkill_SnowStorm->GetIsAttacking())
 	{
-		m_state = STF_TYFUNG;
-		m_strName = MyUtil::SetAnimation(m_state);
-		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
-		m_pSkill_SnowStorm->Effect_Init();
-		m_pSkill_SnowStorm->StartCasting();
+		if (KEY_MGR->IsOnceDown('3'))
+		{
+			m_state = STF_TYFUNG;
+			m_strName = MyUtil::SetAnimation(m_state);
+			this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+			m_pSkill_SnowStorm->Effect_Init();
+			m_pSkill_SnowStorm->StartCasting();
+		}
 	}
 
-	if (KEY_MGR->IsOnceDown('4'))
+	if (!m_pSkill_DarkRain->GetIsAttacking())
 	{
-		m_pSkill_DarkRain->Effect_Init();
-		m_pSkill_DarkRain->SelectSkill();
+		if (KEY_MGR->IsOnceDown('4'))
+		{
+			m_pSkill_DarkRain->Effect_Init();
+			m_pSkill_DarkRain->SelectSkill();
+		}
+
+		if (m_pSkill_DarkRain->GetCastCount() == 1) //캐스팅 시작시에 모션을 바꿔주기 위해서
+		{
+			m_state = STF_BUMB;
+			m_strName = MyUtil::SetAnimation(m_state);
+			this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+		}
 	}
 
-	if (m_pSkill_DarkRain->GetCastCount() == 1) //캐스팅 시작시에 모션을 바꿔주기 위해서
+	if (!m_pSkill_magicShild->GetIsInBuff())
 	{
-		m_state = STF_BUMB;
-		m_strName = MyUtil::SetAnimation(m_state);
-		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+		if (KEY_MGR->IsOnceDown('5'))
+		{
+			m_state = STF_BUFF;
+			m_strName = MyUtil::SetAnimation(m_state);
+			this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+			m_pSkill_magicShild->Effect_Init();
+			m_pSkill_magicShild->StartCasting();
+
+		}
 	}
 
 
-	if (KEY_MGR->IsOnceDown('5'))
-	{
-		m_state = STF_BUFF;
-		m_strName = MyUtil::SetAnimation(m_state);
-		this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
-		m_pSkill_magicShild->Effect_Init();
-		m_pSkill_magicShild->StartCasting();
-
-	}
 
 	if (KEY_MGR->IsOnceDown('7'))
 	{
@@ -288,7 +315,7 @@ void cMage::BaseObjectRender()
 {
 	this->pSkinned->Render(this->pTransform);
 
-	m_ATKBox->BoundBox.RenderGizmo(m_ATKBox->pTransform);
+	//m_ATKBox->BoundBox.RenderGizmo(m_ATKBox->pTransform);
 
 	m_pSurroundSkill->BaseObjectRender();
 	m_pRoundSkill->BaseObjectRender();

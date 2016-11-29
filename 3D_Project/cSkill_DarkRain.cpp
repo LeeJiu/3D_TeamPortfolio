@@ -47,7 +47,7 @@ void cSkill_DarkRain::Effect_Init()
 		100,
 		100.0f,     //이펙트 몇장
 		1.0f,       //라이브타임 (발생 횟수에 대한 시간(적을수록 겹겹이)
-		5.0f,
+		2.0f,
 		D3DXVECTOR3(0, 1, 0),     //시작위치에서 끝점까지의 거리
 		D3DXVECTOR3(0, 4, 0),
 		D3DXVECTOR3(0, 0, 0),     //회전량

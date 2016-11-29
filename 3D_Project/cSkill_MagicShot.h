@@ -6,7 +6,11 @@ class cSkill_MagicShot : public cSkill_Shot
 {
 
 	cQuadParticleEmitter*  m_magicATK;
+
 	cQuadParticleEmitter*  m_magicATK2;
+
+	cQuadParticleEmitter*   m_magicATK3;
+	
 
 public:
 	cSkill_MagicShot();
