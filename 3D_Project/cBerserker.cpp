@@ -380,7 +380,7 @@ void  cBerserker::SkillInit()
 	
 	m_Burserk = new cSkill_Burserk;
 	m_Burserk->SetActive(true);
-	m_Burserk->BaseObjectEnable(pTransform->GetWorldPosition(), 3.f, 1, 20, 80);
+	m_Burserk->BaseObjectEnable(pTransform->GetWorldPosition(), 1, 200, 20);
 
 	m_aniCount = 0;
 }
@@ -427,14 +427,14 @@ void cBerserker::SKILL03()
 
 void cBerserker::SKILL04()
 {
-	if (m_Burserk->GetIsAttacking())
-	{
-		if (m_Burserk->m_AttackingCount > m_Burserk->m_AttackingTime)
-		{
-			m_damage -= 100;
-			LOG_MGR->AddLog("น๖วม ฒý");
-		}
-	}
+	//if (m_Burserk->GetIsInBuff())
+	//{
+	//	if (m_Burserk->m_AttackingCount > m_Burserk->m_AttackingTime)
+	//	{
+	//		m_damage -= 100;
+	//		LOG_MGR->AddLog("น๖วม ฒý");
+	//	}
+	//}
 }
 
 void cBerserker::BasixWeaponSet()
