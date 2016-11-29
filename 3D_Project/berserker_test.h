@@ -2,7 +2,6 @@
 #include "cScene.h"
 #include "cMonsterManager.h"
 #include "cBerserker.h"
-#include "cUI_Container.h"
 
 class cBaseObject;
 class cCamera;
@@ -12,8 +11,6 @@ class berserker_test : public cScene
 	std::vector<cMonster*>				vMonsters;
 	std::vector<cMonster*>::iterator	viMonsters;
 private:
-	cUI_Container*			m_UIContainer;
-
 	cTerrain*				m_pTerrain;
 	cPlayer*				pBerserker;
 

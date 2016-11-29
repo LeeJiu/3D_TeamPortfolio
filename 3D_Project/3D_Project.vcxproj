@@ -109,11 +109,9 @@
     <ClInclude Include="cMonsterManager.h" />
     <ClInclude Include="cPartcleEmitter.h" />
     <ClInclude Include="cParticle.h" />
-    <ClInclude Include="cParticleQuad.h" />
     <ClInclude Include="cPet.h" />
     <ClInclude Include="cPhysicManager.h" />
     <ClInclude Include="cPlayer.h" />
-    <ClInclude Include="cQuadParticleEmitter.h" />
     <ClInclude Include="cQuadTree.h" />
     <ClInclude Include="cResourceMgr_XSkinnedMesh.h" />
     <ClInclude Include="cResourceMgr.h" />
@@ -209,11 +207,9 @@
     <ClCompile Include="cMonsterManager.cpp" />
     <ClCompile Include="cPartcleEmitter.cpp" />
     <ClCompile Include="cParticle.cpp" />
-    <ClCompile Include="cParticleQuad.cpp" />
     <ClCompile Include="cPet.cpp" />
     <ClCompile Include="cPhysicManager.cpp" />
     <ClCompile Include="cPlayer.cpp" />
-    <ClCompile Include="cQuadParticleEmitter.cpp" />
     <ClCompile Include="cQuadTree.cpp" />
     <ClCompile Include="cResourceMgr_XSkinnedMesh.cpp" />
     <ClCompile Include="cResourceMgr.cpp" />

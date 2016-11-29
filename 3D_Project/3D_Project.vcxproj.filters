@@ -147,12 +147,6 @@
     <ClInclude Include="cParticle.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="cParticleQuad.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="cQuadParticleEmitter.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="cScene_Mgr.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -438,12 +432,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="cPartcleEmitter.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cParticleQuad.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="cQuadParticleEmitter.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="cScene_Mgr.cpp">

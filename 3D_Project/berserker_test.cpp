@@ -19,9 +19,6 @@ berserker_test::~berserker_test(void)
 
 HRESULT berserker_test::Scene_Init()
 {
-	this->m_UIContainer = new cUI_Container;
-	this->m_UIContainer->UI_Init();
-
 	this->m_pTerrain = new cTerrain;
 	this->m_pTerrain->Init(
 		"../Resources/Textures/MyHeight256.bmp",
@@ -98,8 +95,6 @@ HRESULT berserker_test::Scene_Init()
 
 void berserker_test::Scene_Release()
 {
-	SAFE_DELETE(this->m_UIContainer);
-
 	this->m_pTerrain->Release();
 	SAFE_DELETE(this->m_pTerrain);
 
@@ -116,8 +111,6 @@ void berserker_test::Scene_Release()
 
 void berserker_test::Scene_Update(float timeDelta)
 {
-	m_UIContainer->UI_Update();
-
 	if (KEY_MGR->IsOnceUp('T'))
 	{
 		ITEM_MGR->createItem(1, D3DXVECTOR3(0, 7, 0));
@@ -159,6 +152,5 @@ void berserker_test::Scene_Render1()
 
 void berserker_test::Scene_RenderSprite()
 {
-	this->m_UIContainer->UI_Render();
 	this->pBerserker->BaseSpriteRender();
 }

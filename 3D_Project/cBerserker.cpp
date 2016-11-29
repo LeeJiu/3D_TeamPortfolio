@@ -277,19 +277,18 @@ void cBerserker::BaseSpriteRender()
 	UiURender();
 	m_ShowDamage->Render();
 
-	//char temp[32];
-	//sprintf_s(temp, "../Resources/Textures/num_%d.tga", 2);
-	//
-	//RECT rc = RectMake(WINSIZE_X / 2, WINSIZE_Y / 2, 32, 32);
-	//
-	//SPRITE_MGR->DrawTexture(
-	//	RESOURCE_TEXTURE->GetResource(temp),
-	//	&rc,
-	//	rc.left,
-	//	rc.top,
-	//	0xffffffff,
-	//	NULL
-	//);
+	char temp[32];
+	sprintf_s(temp, "../Resources/Textures/num_%d.tga", 2);
+
+	RECT rc = RectMake(0, 0, 64, 64);
+
+	SPRITE_MGR->DrawTexture(
+		RESOURCE_TEXTURE->GetResource(temp),
+		&rc,
+		WINSIZE_X / 2, WINSIZE_Y / 2,
+		0xffffffff,
+		NULL
+	);
 }
 
 void cBerserker::BaseObjectBoundBox()
@@ -372,7 +371,7 @@ void  cBerserker::SkillInit()
 {
 	m_Swing = new cSkill_Swing;
 	m_Swing->SetActive(true);
-	m_Swing->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 1, 10, 50);	//즉시시전은 캐스터 카운트 1
+	m_Swing->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 1, 200, 50);	//즉시시전은 캐스터 카운트 1
 
 	m_Howling = new cSkill_Howling;
 	m_Howling->SetActive(true);
@@ -484,7 +483,7 @@ void cBerserker::UiUpdate(float timeDelta, cCamera* camera)
 		//트레일렌더그려줄거
 		this->pTrailRender->Transform.AttachTo(m_Weapon->pTransform);
 		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
-		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
+		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 45 * ONE_RAD, 0);
 		
 		m_botton = false;
 	}
