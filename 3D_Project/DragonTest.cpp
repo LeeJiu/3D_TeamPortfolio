@@ -147,7 +147,7 @@ void DragonTest::Scene_Update(float timeDelta)
 	this->pBerserker->Update(timeDelta);
 	m_pMonMgr->Update(timeDelta);
 	
-	this->ReadyShadowMap(&m_pMonMgr->MonToBasic());
+	//this->ReadyShadowMap(&m_pMonMgr->MonToBasic());
 }
 
 void DragonTest::Scene_Render1()

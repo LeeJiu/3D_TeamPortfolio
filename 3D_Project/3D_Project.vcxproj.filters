@@ -252,13 +252,7 @@
     <ClInclude Include="cBasilisk.h">
       <Filter>GameActor\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="cGriff.h">
-      <Filter>GameActor\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="cMinotauros.h">
-      <Filter>GameActor\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="cSpiderQueen.h">
       <Filter>GameActor\Monster</Filter>
     </ClInclude>
     <ClInclude Include="cSuccubus.h">
@@ -333,8 +327,11 @@
     <ClInclude Include="cSkill_Shot.h">
       <Filter>GameActor\Skill</Filter>
     </ClInclude>
-    <ClInclude Include="cSkill_MagicShot.h">
+    <ClInclude Include="cLoadManager.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_MagicShot.h">
+      <Filter>GameActor\Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -545,13 +542,7 @@
     <ClCompile Include="cSuccubus.cpp">
       <Filter>GameActor\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="cSpiderQueen.cpp">
-      <Filter>GameActor\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="cMinotauros.cpp">
-      <Filter>GameActor\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="cGriff.cpp">
       <Filter>GameActor\Monster</Filter>
     </ClCompile>
     <ClCompile Include="cBasilisk.cpp">
@@ -626,8 +617,11 @@
     <ClCompile Include="cSkill_Shot.cpp">
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
-    <ClCompile Include="cSkill_MagicShot.cpp">
+    <ClCompile Include="cLoadManager.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_MagicShot.cpp">
+      <Filter>GameActor\Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

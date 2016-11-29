@@ -136,14 +136,6 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->pTransform->SetWorldPosition(pos);
 		monster->SetActive(true);
 		break;
-	case GRIFF:
-		monster = new cGriff;
-		monster->SetTerrain(m_pTerrain);
-		monster->SetPlayer(m_pPlayer);
-		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/Griff/MOB_HipGriff.X"));
-		monster->pTransform->SetWorldPosition(pos);
-		monster->SetActive(true);
-		break;
 	case MINO:
 		monster = new cMinotauros;
 		monster->SetTerrain(m_pTerrain);
@@ -157,14 +149,6 @@ void cMonsterManager::CreateMonster(MONSTER_TYPE type, D3DXVECTOR3 pos)
 		monster->SetTerrain(m_pTerrain);
 		monster->SetPlayer(m_pPlayer);
 		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_Spider.X"));
-		monster->pTransform->SetWorldPosition(pos);
-		monster->SetActive(true);
-		break;
-	case SPIDER_QUEEN:
-		monster = new cSpiderQueen;
-		monster->SetTerrain(m_pTerrain);
-		monster->SetPlayer(m_pPlayer);
-		monster->SetMesh(RESOURCE_SKINNEDXMESH->GetResource("../Resources/Meshes/Monster/SpiderQueen/MOB_SpiderQueen.X"));
 		monster->pTransform->SetWorldPosition(pos);
 		monster->SetActive(true);
 		break;
