@@ -146,7 +146,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		//{
 		if (KEY_MGR->IsOnceDown('1'))
 		{
-			m_strName = ATK_01;
+			m_state = ATK_01;
 			m_strName = MyUtil::SetAnimation(m_state);
 			pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
 

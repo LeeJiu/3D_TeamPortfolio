@@ -153,7 +153,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
 	}
 
-	//스킬2 - 하울링
+	//스킬2 - 차지
 	if (!m_isAttack && KEY_MGR->IsOnceDown('2'))
 	{
 		m_isAttack = true;
@@ -161,13 +161,21 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 
 		RangeCheck(10);
 
-		m_state = SK_HOWL;
+		m_state = SK_CHARGE;
+		m_strName = MyUtil::SetAnimation(m_state);
+		this->pSkinned->Play(m_strName, 0.3);
+		m_state = IDLE;
+		m_ArmorCrash->SelectSkill();
+		m_ArmorCrash->Effect_Init();
+	}
+
+	if (m_ArmorCrash->GetAtkCount() == 1)
+	{
+		m_state = SK_CHARGE_ATK;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
-		m_state = IDLE;
-		m_Howling->Effect_Init();
-		m_Howling->StartCasting();
 	}
+
 
 	//스킬3 - 스윙
 	if (!m_isAttack && KEY_MGR->IsOnceDown('3'))
@@ -214,6 +222,20 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	
 	m_Swing->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition());
 	m_Swing->Effect_Update(timeDelta);
+
+	m_Burserk->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition());
+	m_Burserk->Effect_Update(timeDelta);
+
+	Ray ray;
+	POINT ptMousePos = GetMousePos();
+	D3DXVECTOR2 screenPos(ptMousePos.x, ptMousePos.y);
+	m_camera->ComputeRay(&ray, &screenPos);
+	D3DXVECTOR3		mousePos;
+	pTerrain->IsIntersectRay(&mousePos, &ray);
+
+	m_ArmorCrash->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition(), mousePos);
+	m_ArmorCrash->Effect_Update(timeDelta);
+
 
 	
 
@@ -274,6 +296,9 @@ void cBerserker::BaseObjectRender()
 
 	m_Swing->BaseObjectRender();
 	m_Swing->Effect_Render();
+	m_Burserk->Effect_Render();
+	m_ArmorCrash->BaseObjectRender();
+	m_ArmorCrash->Effect_Render();
 	//m_ViewDamage->Render();
 }
 
@@ -385,7 +410,11 @@ void  cBerserker::SkillInit()
 	
 	m_Burserk = new cSkill_Burserk;
 	m_Burserk->SetActive(true);
-	m_Burserk->BaseObjectEnable(pTransform->GetWorldPosition(), 1, 200, 20);
+	m_Burserk->BaseObjectEnable(pTransform->GetWorldPosition(), 70, 600, 20);
+
+	m_ArmorCrash = new cSkill_AmorCrash;
+	m_ArmorCrash->SetActive(true);
+	m_ArmorCrash->BaseObjectEnable(pTransform->GetWorldPosition(), 2, 10, 1, 100, 10);
 
 	m_aniCount = 0;
 }

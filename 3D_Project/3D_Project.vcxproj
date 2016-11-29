@@ -129,6 +129,7 @@
     <ClInclude Include="cSetBoundObject.h" />
     <ClInclude Include="cShowDamage.h" />
     <ClInclude Include="cSingletonBase.h" />
+    <ClInclude Include="cSkill_AmorCrash.h" />
     <ClInclude Include="cSkill_Burserk.h" />
     <ClInclude Include="cSkill_DarkRain.h" />
     <ClInclude Include="cSkill_Escape.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="cSetBoundObject.cpp" />
     <ClCompile Include="cShowDamage.cpp" />
     <ClCompile Include="cSingletonBase.cpp" />
+    <ClCompile Include="cSkill_AmorCrash.cpp" />
     <ClCompile Include="cSkill_Burserk.cpp" />
     <ClCompile Include="cSkill_DarkRain.cpp" />
     <ClCompile Include="cSkill_Escape.cpp" />

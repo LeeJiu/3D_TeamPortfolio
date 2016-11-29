@@ -3,6 +3,7 @@
 #include "cSkill_Swing.h"
 #include "cSkill_Howling.h"
 #include "cSkill_Burserk.h"
+#include "cSkill_AmorCrash.h"
 #include "cTickFunc.h"
 
 #define CONTROL_KEY 5
@@ -39,6 +40,8 @@ private:
 
 	//스킬5
 	cSkill_Burserk*		m_Burserk;		//버서크모드
+
+	cSkill_AmorCrash*   m_ArmorCrash;
 
 	int					m_SwingCnt;
 
