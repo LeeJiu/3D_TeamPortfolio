@@ -6,7 +6,7 @@
 cDragon::cDragon()
 {
 	m_collCount = COLLISION;
-	m_fHP = 500.f;
+	m_fHP = 5500.f;
 	dieAniTime = 0.f;
 	//TIME_MGR->GetFrameDeltaSec();
 }
@@ -310,6 +310,7 @@ void cDragon::BaseObjectBoundBox()
 void cDragon::Damage(float fDamage)
 {
 	//=================== 데미지 받을 함수 ======
+	m_fHP -= fDamage;
 }
 void cDragon::BaseObjectRender()
 {

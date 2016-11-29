@@ -39,7 +39,6 @@ private:
 
 	int					m_SwingCnt;
 
-	float				m_testtime;		//로그찎는용 타이머
 
 public:
 	cBerserker();
