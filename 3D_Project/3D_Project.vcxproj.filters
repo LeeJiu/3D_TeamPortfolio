@@ -46,6 +46,15 @@
     <Filter Include="Component\UI">
       <UniqueIdentifier>{6380eeef-81d6-4954-93bf-940340150263}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameActor\Skill\Basic">
+      <UniqueIdentifier>{7f47b19d-c76e-4887-8e04-0cb487f3f615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameActor\Skill\Mage_Skill">
+      <UniqueIdentifier>{414cdf42-af53-4e79-b8b9-ebfbcd8e3673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameActor\Skill\Burserker_Skill">
+      <UniqueIdentifier>{1a4b235a-545d-4f7c-ad7a-0afc0cba7b97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -264,41 +273,8 @@
     <ClInclude Include="cInven2.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="cSkill_Surround.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_Round.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_SnowStorm.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_DarkRain.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_Burserk.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_Escape.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_FlameRoad.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_Front.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_MagicShild.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
     <ClInclude Include="cSkill_Meteo.h">
       <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_SelfBuff.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkill_Swing.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="cTickFunc.h">
       <Filter>Component</Filter>
@@ -324,14 +300,47 @@
     <ClInclude Include="cSkill_Thunder.h">
       <Filter>GameActor\Skill</Filter>
     </ClInclude>
-    <ClInclude Include="cSkill_Shot.h">
-      <Filter>GameActor\Skill</Filter>
-    </ClInclude>
     <ClInclude Include="cLoadManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="cSkill_Front.h">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Escape.h">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Shot.h">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_SelfBuff.h">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Round.h">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Surround.h">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_DarkRain.h">
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_FlameRoad.h">
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_MagicShild.h">
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClInclude>
     <ClInclude Include="cSkill_MagicShot.h">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_SnowStorm.h">
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Burserk.h">
+      <Filter>GameActor\Skill\Burserker_Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkill_Swing.h">
+      <Filter>GameActor\Skill\Burserker_Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -554,41 +563,8 @@
     <ClCompile Include="cInven2.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="cSkill_Round.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_Surround.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_SnowStorm.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_DarkRain.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_Burserk.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_Escape.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_FlameRoad.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_Front.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_MagicShild.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
     <ClCompile Include="cSkill_Meteo.cpp">
       <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_SelfBuff.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkill_Swing.cpp">
-      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="cTickFunc.cpp">
       <Filter>Component</Filter>
@@ -614,14 +590,47 @@
     <ClCompile Include="cSkill_Thunder.cpp">
       <Filter>GameActor\Skill</Filter>
     </ClCompile>
-    <ClCompile Include="cSkill_Shot.cpp">
-      <Filter>GameActor\Skill</Filter>
-    </ClCompile>
     <ClCompile Include="cLoadManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="cSkill_Front.cpp">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Escape.cpp">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Shot.cpp">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_SelfBuff.cpp">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Round.cpp">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Surround.cpp">
+      <Filter>GameActor\Skill\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_DarkRain.cpp">
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_FlameRoad.cpp">
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_MagicShild.cpp">
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClCompile>
     <ClCompile Include="cSkill_MagicShot.cpp">
-      <Filter>GameActor\Skill</Filter>
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_SnowStorm.cpp">
+      <Filter>GameActor\Skill\Mage_Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Burserk.cpp">
+      <Filter>GameActor\Skill\Burserker_Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkill_Swing.cpp">
+      <Filter>GameActor\Skill\Burserker_Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

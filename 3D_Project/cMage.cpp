@@ -40,6 +40,9 @@ cMage::~cMage()
 
 void cMage::BaseObjectEnable()
 {
+	m_UIContainer = new cUI_Container;
+	m_UIContainer->UI_Init();
+
 
 	//몬스터 관련
 	SetBassClass();
@@ -104,6 +107,8 @@ void cMage::BaseObjectEnable()
 
 void cMage::BaseObjectUpdate(float timeDelta)
 {
+	m_UIContainer->UI_Update();
+
 	CamControl(timeDelta);
 
 	Move(timeDelta);
@@ -303,6 +308,12 @@ void cMage::BaseObjectRender()
 
 
 }
+
+void  cMage::BaseSpriteRender()
+{
+	m_UIContainer->UI_Render();
+}
+
 
 void  cMage::SkillInit()
 {

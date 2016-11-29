@@ -1,8 +1,20 @@
 #pragma once
-class cSkill_Burserk
+#include "cSkill_SelfBuff.h"
+
+
+class cSkill_Burserk : public cSkill_SelfBuff
 {
+
+	cQuadParticleEmitter*  m_burserking;
+	cQuadParticleEmitter*  m_burserking_under;
+
+
 public:
 	cSkill_Burserk();
 	~cSkill_Burserk();
+
+	void Effect_Init();
+	void Effect_Update(float timeDelta);
+	void Effect_Render();
 };
 

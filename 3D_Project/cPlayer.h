@@ -2,6 +2,7 @@
 #include "cBaseObject.h"
 #include "moveClass.h"
 #include "cInven.h"
+#include "cUI_Container.h"
 
 class cTerrain;
 class cCamera;
@@ -14,6 +15,9 @@ class cTrailRender;
 class cPlayer : public cBaseObject 
 {
 protected:
+
+	cUI_Container*  m_UIContainer;
+
 	vector<cMonster*>				m_vMonster;
 	vector<cMonster*>::iterator		m_viMonster;
 

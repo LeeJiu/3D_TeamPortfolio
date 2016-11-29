@@ -71,6 +71,7 @@ public:
 	void BaseObjectEnable();
 	void BaseObjectUpdate(float timeDelta);			//BaseObject 가 Update 때 실행....
 	void BaseObjectRender();
+	void BaseSpriteRender();
 	void WeaponRender();
 	void BaseObjectBoundBox();
 
