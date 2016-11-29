@@ -28,7 +28,7 @@ private:
 	float				m_fStartLiveTimeMax;
 
 	//파티클 시작 속도 최대 최소
-	D3DXVECTOR3			m_StartVelocityMin;			
+	D3DXVECTOR3			m_StartVelocityMin;
 	D3DXVECTOR3			m_StartVelocityMax;
 
 	//파티클 시작 가속 최대 최소
@@ -42,7 +42,7 @@ private:
 	//파티클 시작 회전 최대 최소
 	D3DXVECTOR3			m_StartRotateMin;
 	D3DXVECTOR3			m_StartRotateMax;
-	
+
 	//파티클 회전 가속 최대 최소
 	D3DXVECTOR3			m_StartRotateAccelateMin;
 	D3DXVECTOR3			m_StartRotateAccelateMax;
@@ -67,7 +67,7 @@ public:
 	~cQuadParticleEmitter(void);
 
 
-	HRESULT Init( 
+	HRESULT Init(
 		DWORD partcleNum,					//총 파티클 량
 		float emission,						//초당 발생량
 		float liveTimeMin,
@@ -83,16 +83,16 @@ public:
 		const D3DXVECTOR3& rotateAccelMin,		//움직임 가속에대한 회전 최소량
 		const D3DXVECTOR3& rotateAccelMax,		//움직임 가속에대한 회전 최대량
 		const VEC_COLOR& colors,
-		const VEC_SCALE& scales, 
+		const VEC_SCALE& scales,
 		float scaleMin,
 		float scaleMax,
 		LPDIRECT3DTEXTURE9 pTex,
 		bool bLocal = false
 		);
-	
+
 	void Release();
 
-	virtual void BaseObjectUpdate( float timeDelta ) override;			//BaseObject 가 Update 때 실행....
+	virtual void BaseObjectUpdate(float timeDelta) override;			//BaseObject 가 Update 때 실행....
 	virtual void BaseObjectRender() override;
 
 
@@ -100,10 +100,10 @@ public:
 	void StopEmission();			//파티클 생성 중지
 
 	//카메라 소팅을 할꺼니?
-	void SetCameraSort( cTransform* pCameraTrans, bool bSort );
+	void SetCameraSort(cTransform* pCameraTrans, bool bSort);
 
-	void SetTexture(LPDIRECT3DTEXTURE9 tex) { m_pTex = tex; }
-	void SetRenderLocal( bool bLocal ){
+
+	void SetRenderLocal(bool bLocal){
 		m_bLocal = bLocal;
 	}
 
