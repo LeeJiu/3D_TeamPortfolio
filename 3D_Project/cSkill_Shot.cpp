@@ -18,6 +18,7 @@ void cSkill_Shot::BaseObjectEnable(D3DXVECTOR3 casterWorldPos, float maxDistance
 	m_IsShot = false;           // 스킬 발사중이니?
 	m_IsInRange = false;        // 발사할 스킬이 사거리 안이니?
 	m_IsAttacking = false;      // 스킬이 닿았니?
+	m_IsHit = false;
 
 	m_AttackingCount = 0;   //공격 시전시간을 잰다
 	m_AttackingTime = attackingTime; //
@@ -77,6 +78,12 @@ void cSkill_Shot::ShotSkill()
 void cSkill_Shot::MakeAtk()
 {
 	m_IsAttacking = true;
+	m_IsHit = false;
 	m_AttackingCount = 0;
 
+}
+
+void cSkill_Shot::SetHit()
+{
+	m_IsHit = true;
 }

@@ -6,8 +6,8 @@
 cDragon::cDragon()
 {
 	m_collCount = COLLISION;
-	m_fHP = 300.f;
-
+	m_fHP = 500.f;
+	dieAniTime = 0.f;
 	//TIME_MGR->GetFrameDeltaSec();
 }
 
@@ -107,7 +107,8 @@ void cDragon::BaseObjectEnable()
 	isNoneBasicAttack = false;// 브레스 , 장판 ,머리 치기 중 이니?
 	//스킬 사용할 숫자. 
 	skillChance = 0;          // max 3 개 1,2,3 사용
-
+	//죽었니?
+	isDie = false;
 
 
 
@@ -123,160 +124,181 @@ void cDragon::BaseObjectEnable()
 		m_Skill_Thunder[i]->Effect_Init();
 
 	}
-	
+
 	TrailSetting();
 	initParticle();
+
+	renderGizimo = false;
 }
 
 void cDragon::BaseObjectUpdate(float timeDelta)
 {
-	m_nowAni = pSkinned->GetNowPlayingAni();
-	int chance = MyUtil::RandomIntRange(0, 10);
+	//테스트용
+	//if (KEY_MGR->IsOnceDown('B'))
+	//{
+	//	m_fHP = -500.f;
+	//	LOG_MGR->AddLog("눌렀씨요: %f", dieAniTime);
+	//}
 
-	// 전투 범위에 들어오면 
-	if (battleRange() == true && isBattle == true)
+	if (m_fHP < 0.f)
 	{
-		//처음 생겨났을때 애니메이션 돌린당~
-		//플레이어 방향으로 따라옴
-		if (isBasicAttack == false && isNoneBasicAttack == false)
+		dieUpdate(timeDelta);
+	}
+	else if (m_fHP > 0.f)
+	{
+		m_nowAni = pSkinned->GetNowPlayingAni();
+		int chance = MyUtil::RandomIntRange(0, 10);
+
+		// 전투 범위에 들어오면 
+		if (battleRange() == true && isBattle == true)
 		{
-			MoveToPlayer();
-		}
-		// 충돌 체크에 필요한 Trans값들을 갱신 해줌. 
-		collPosUpdate();
-
-		// 평타 범위 안에 들어오면 평타 공격을 한다. 
-		if (basicRange() == true)
-		{
-			if (chance == 5 && isBasicAttack != true)  // 1/10 확률로 머리치기 /
+			//처음 생겨났을때 애니메이션 돌린당~
+			//플레이어 방향으로 따라옴
+			if (isBasicAttack == false && isNoneBasicAttack == false)
 			{
-				isHeadAtt = true;
-				isNoneBasicAttack = true;
+				MoveToPlayer();
 			}
-			else if (chance == 3 && isBasicAttack != true)
-			{
-				isEarthquake = true;     // 장판중?
-				isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
-				LOG_MGR->AddLog("평타중 발동: %d", skillChance);
-				makeCircleQuad();
-			}
-			else
-			{
-				//기본 공격을 하기 위해서는 멈춰야 한다. 
-				isMove = false;
-				isBasicAttack = true;     // 기본 공격 
+			// 충돌 체크에 필요한 Trans값들을 갱신 해줌. 
+			collPosUpdate();
 
-			}
-
-		}
-		else // 기본 공격 범위 벗어 났을때. 
-		{
-			//스킬 쓰고나서 초기 해야 할 값
-			//skillChance =0, isNoneBasicAttack = false, 스킬에 사용한 값
-			if (m_tick[Pattern]->tickStart())
+			// 평타 범위 안에 들어오면 평타 공격을 한다. 
+			if (basicRange() == true)
 			{
-
-				if (skillChance == 0)
+				if (chance == 5 && isBasicAttack != true)  // 1/10 확률로 머리치기 /
 				{
-					skillChance = MyUtil::RandomIntRange(1, 3);
+					isHeadAtt = true;
+					isNoneBasicAttack = true;
+				}
+				else if (chance == 3 && isBasicAttack != true)
+				{
+					isEarthquake = true;     // 장판중?
+					isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
+					LOG_MGR->AddLog("평타중 발동: %d", skillChance);
+					makeCircleQuad();
+				}
+				else
+				{
+					//기본 공격을 하기 위해서는 멈춰야 한다. 
 					isMove = false;
-					isBasicAttack = false;
-					//LookPos(m_pPlayer->pTransform->GetWorldPosition());
-					MoveToPlayer();
-					switch (skillChance)
+					isBasicAttack = true;     // 기본 공격 
+
+				}
+
+			}
+			else // 기본 공격 범위 벗어 났을때. 
+			{
+				//스킬 쓰고나서 초기 해야 할 값
+				//skillChance =0, isNoneBasicAttack = false, 스킬에 사용한 값
+				if (m_tick[Pattern]->tickStart())
+				{
+
+					if (skillChance == 0)
 					{
-					case 1:
-						if (isBreath == true)break;
-						isBreath = true;         // 브레스중?
-						isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
-
-						break;
-					case 2:
-						if (isEarthquake == true)break;
-						isEarthquake = true;     // 장판중?
-						isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
-						LOG_MGR->AddLog("랜덤: %d", skillChance);
-						makeCircleQuad();
-						for (int i = 0; i < COLLCIRCLE; i++)
+						skillChance = MyUtil::RandomIntRange(1, 3);
+						isMove = false;
+						isBasicAttack = false;
+						//LookPos(m_pPlayer->pTransform->GetWorldPosition());
+						MoveToPlayer();
+						switch (skillChance)
 						{
-							m_Skill_Meteo[i]->Effect_Init();
-							m_Skill_Meteo[i]->StartCasting();
-							m_Skill_Thunder[i]->Effect_Init();
-							m_Skill_Thunder[i]->StartCasting();
+						case 1:
+							if (isBreath == true)break;
+							isBreath = true;         // 브레스중?
+							isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
+
+							break;
+						case 2:
+							if (isEarthquake == true)break;
+							isEarthquake = true;     // 장판중?
+							isNoneBasicAttack = true;// 브레스 , 장판 ,머리 치기 중 이니?
+							LOG_MGR->AddLog("랜덤: %d", skillChance);
+							makeCircleQuad();
+							for (int i = 0; i < COLLCIRCLE; i++)
+							{
+								m_Skill_Meteo[i]->Effect_Init();
+								m_Skill_Meteo[i]->StartCasting();
+								m_Skill_Thunder[i]->Effect_Init();
+								m_Skill_Thunder[i]->StartCasting();
+							}
+
+
+							break;
+
 						}
-
-
-						break;
-
 					}
 				}
+
+			}
+		}
+		else if (battleRange() == true && isBattle == false)
+		{
+			spawn();
+		}
+		// 플레이어가 도망칠때 용이 움직일 코드
+		else if (battleRange() == false && isBattle == true)
+		{
+			MoveToSpone(m_spone.worldCenter);
+		}
+
+		if (isBattle == true)
+		{
+			if (isBasicAttack == true)
+			{
+				basicAttackUpdate();
+			}
+			if (isBreath == true)
+			{
+				breathUpdate();
+			}
+			if (isEarthquake == true)
+			{
+				earthUpate();
+			}
+			if (isHeadAtt == true)
+			{
+				HeadAttUpate();
+
+			}
+			aniManager();
+
+			// 전투중일때 업데이트 아니면 돌지 않게 한당. 
+			for (int i = 0; i < TICKMAX; i++)
+			{
+				m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
+			}
+			m_pBreathParticle->Update(TIME_MGR->GetFrameDeltaSec());
+
+			for (int i = 0; i < COLLCIRCLE; i++)
+			{
+				m_Skill_Meteo[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_circle[i].worldCenter);
+				m_Skill_Meteo[i]->Effect_Update(timeDelta);
+				m_Skill_Thunder[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_quadPos[i]);
+				m_Skill_Thunder[i]->Effect_Update(timeDelta);
 			}
 
+			m_pTrailLEye->Update(timeDelta);					//트레일렌더 업데이트
+			m_pTrailREye->Update(timeDelta);					//트레일렌더 업데이트
 		}
-	}
-	else if (battleRange() == true && isBattle == false)
-	{
-		spawn();
-	}
-	// 플레이어가 도망칠때 용이 움직일 코드
-	else
-	{
-		MoveToSpone(m_spone.worldCenter);
-	}
 
-	if (isBattle == true)
-	{
-		if (isBasicAttack == true)
-		{
-			basicAttackUpdate();
-		}
-		if (isBreath == true)
-		{
-			breathUpdate();
-		}
-		if (isEarthquake == true)
-		{
-			earthUpate();
-		}
-		if (isHeadAtt == true)
-		{
-			HeadAttUpate();
 
-		}
-		aniManager();
+		// if (KEY_MGR->IsStayDown('L'))
+		// {
+		// 	m_pBreathParticle->pTransform->SetWorldPosition(0, 9, 0);
+		// 	m_pBreathParticle->StartEmission();
+		// 
+		// }
+		// else
+		// {
+		// 	*m_pBreathParticle->pTransform = *pTransform;
+		// 	m_pBreathParticle->StopEmission();
+		// }
 
+
+		//=================== 업데이트 ==============
 	}
 
-	for (int i = 0; i < TICKMAX; i++)
-	{
-		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
-	}
 
-	// if (KEY_MGR->IsStayDown('L'))
-	// {
-	// 	m_pBreathParticle->pTransform->SetWorldPosition(0, 9, 0);
-	// 	m_pBreathParticle->StartEmission();
-	// 
-	// }
-	// else
-	// {
-	// 	*m_pBreathParticle->pTransform = *pTransform;
-	// 	m_pBreathParticle->StopEmission();
-	// }
-	
-	m_pBreathParticle->Update(TIME_MGR->GetFrameDeltaSec());
 
-	for (int i = 0; i < COLLCIRCLE; i++)
-	{
-		m_Skill_Meteo[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_circle[i].worldCenter);
-		m_Skill_Meteo[i]->Effect_Update(timeDelta);
-		m_Skill_Thunder[i]->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), m_quadPos[i]);
-		m_Skill_Thunder[i]->Effect_Update(timeDelta);
-	}
-
-	m_pTrailLEye->Update(timeDelta);					//트레일렌더 업데이트
-	m_pTrailREye->Update(timeDelta);					//트레일렌더 업데이트
-	//=================== 업데이트 ==============
 
 }
 
@@ -304,40 +326,39 @@ void cDragon::BaseObjectRender()
 	m_pTrailREye->Render();							//트레일렌더 랜더링
 
 	pSkinned->Render(m_pBoneTrans[0]);
-	for (int i = 0; i < COLLISION; i++)
-	{
-		//m_pBoneTrans[i]->RenderGimozo(true);
-	}
-	for (int i = 0; i < COLLISION; i++)
-	{
-		m_bound[i].RenderGizmo(m_pBoneTrans[i]);
-	}
 
-	for (int i = 0; i < 5; i++)
+	if (renderGizimo == true)
 	{
-		m_pCollTrans[i]->RenderGimozo(true);
+		for (int i = 0; i < COLLISION; i++)
+		{
+			m_bound[i].RenderGizmo(m_pBoneTrans[i]);
+		}
+
+		for (int i = 0; i < 5; i++)
+		{
+			m_pCollTrans[i]->RenderGimozo(true);
+		}
+
+		GIZMO_MGR->WireSphere(m_basicAttack.worldCenter, m_basicAttack.radius, 0xffff0000);
+		GIZMO_MGR->WireSphere(m_spone.worldCenter, m_spone.radius, 0xffffff00);
+
+		GIZMO_MGR->Sector(pTransform->GetWorldPosition(), pTransform->GetForward(), 50, 18 * ONE_RAD);
+
+		for (int i = 0; i < COLLCIRCLE; i++)
+		{
+			GIZMO_MGR->Quad(m_quad[i]);
+			GIZMO_MGR->WireSphere(m_circle[i].worldCenter, m_circle[i].radius, 0xffff0000);
+
+		}
 	}
-
-	GIZMO_MGR->WireSphere(m_basicAttack.worldCenter, m_basicAttack.radius, 0xffff0000);
-	GIZMO_MGR->WireSphere(m_spone.worldCenter, m_spone.radius, 0xffffff00);
-
-	GIZMO_MGR->Sector(pTransform->GetWorldPosition(), pTransform->GetForward(), 50, 18 * ONE_RAD);
-	
 	// 스킬 이팩트 부분
 	for (int i = 0; i < COLLCIRCLE; i++)
 	{
-		GIZMO_MGR->WireSphere(m_circle[i].worldCenter, m_circle[i].radius, 0xffff0000);
 		m_Skill_Meteo[i]->BaseObjectRender();
 		m_Skill_Meteo[i]->Effect_Render();
 		m_Skill_Thunder[i]->BaseObjectRender();
 		m_Skill_Thunder[i]->Effect_Render();
 	}
-
-	for (int i = 0; i < COLLCIRCLE; i++)
-	{
-		GIZMO_MGR->Quad(m_quad[i]);
-	}
-
 	// 파티클 부분
 	m_pBreathParticle->Render();
 
@@ -355,7 +376,7 @@ void cDragon::TrailSetting()
 		RESOURCE_TEXTURE->GetResource("../Resources/Textures/TrailTest.png"),	//메인 Texture
 		D3DXCOLOR(0.5, 1, 0, 1),												//메인 Texture 로 그릴때 컬러
 		NULL
-	);
+		);
 
 	m_pTrailREye = new cTrailRender();
 	m_pTrailREye->Init(
@@ -364,7 +385,7 @@ void cDragon::TrailSetting()
 		RESOURCE_TEXTURE->GetResource("../Resources/Textures/TrailTest.png"),
 		D3DXCOLOR(0.5, 1, 0, 1),
 		NULL
-	);
+		);
 
 	m_pTrailLEye->Transform.AttachTo(&m_LEyeTrans);
 	m_pTrailREye->Transform.AttachTo(&m_REyeTrans);
@@ -635,11 +656,13 @@ void cDragon::basicAttackUpdate()
 void cDragon::aniManager()
 {
 	// 움직이는 애니메이션
+
+
 	if (isMove == true && isBasicAttack == false
 		&& isNoneBasicAttack == false)
 	{
-		if (strcmp(m_nowAni.c_str(), "Walk_F") == 0)return;
-		this->pSkinned->Play("Walk_F", 0.3);
+		if (strcmp(m_nowAni.c_str(), "Run_F") == 0)return;
+		this->pSkinned->Play("Run_F", 0.3);
 	}// 기본 공격
 	else if (isBasicAttack == true
 		&& isNoneBasicAttack == false)
@@ -662,6 +685,7 @@ void cDragon::aniManager()
 		if (strcmp(m_nowAni.c_str(), "SK_Firing_01") == 0)return;
 		this->pSkinned->Play("SK_Firing_01", 0.3);
 	}
+
 
 }
 
@@ -696,12 +720,12 @@ void cDragon::breathUpdate()
 	{
 		float aniTime = pSkinned->GetTime();
 
-		if (0.58f<aniTime&&aniTime <= 0.59f)
+		if (0.58f < aniTime&&aniTime <= 0.59f)
 		{
-		m_pBreathParticle->StartEmission();
-		m_pBreathParticle->pTransform->SetWorldPosition(m_pBoneTrans[HEAD]->GetWorldPosition());
-		m_pBreathParticle->pTransform->SetRotateWorld(pTransform->GetWorldRotateMatrix());
-		LOG_MGR->AddLog("브레스 시작: %.2f", aniTime);
+			m_pBreathParticle->StartEmission();
+			m_pBreathParticle->pTransform->SetWorldPosition(m_pBoneTrans[HEAD]->GetWorldPosition());
+			m_pBreathParticle->pTransform->SetRotateWorld(pTransform->GetWorldRotateMatrix());
+			LOG_MGR->AddLog("브레스 시작: %.2f", aniTime);
 
 		}
 
@@ -764,7 +788,7 @@ void cDragon::earthUpate()
 						LOG_MGR->AddLog("네모장판맞음");
 					}
 				}
-			
+
 			}
 			//m_pPlayer->Damage();
 
@@ -804,6 +828,32 @@ void cDragon::HeadAttUpate()
 
 		}
 	}
+}
+
+void cDragon::dieUpdate(float timeDelta)
+{
+	if (isDie == true)return; // 죽었으면 리턴 .
+	if (dieAniTime > 8.f)return;
+	if (dieAniTime == 0)
+	{
+		LOG_MGR->AddLog("타임: %f", dieAniTime);
+
+		this->pSkinned->Play("Spawn", 0.3);
+	}
+
+	if (dieAniTime > 7.f)
+	{
+
+		pSkinned->Stop();
+		stateInit();
+		isDie = true;
+		m_state == DIE;
+		SetActive(false);
+	}
+
+
+	dieAniTime += timeDelta;
+
 }
 void cDragon::stateInit()
 {
@@ -881,7 +931,7 @@ void cDragon::initParticle()
 		80.0f,
 		0.3f,
 		1.1f,
-		D3DXVECTOR3(0, 0,30),
+		D3DXVECTOR3(0, 0, 30),
 		D3DXVECTOR3(0, 0, 40),
 		D3DXVECTOR3(0, 0.2f, -0.5f),
 		D3DXVECTOR3(0, 0.4f, -1.0f),
@@ -892,5 +942,5 @@ void cDragon::initParticle()
 		pTex
 		);
 
-	
+
 }
