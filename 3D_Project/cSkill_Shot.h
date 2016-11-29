@@ -46,6 +46,7 @@ public:
 
 	bool GetIsShot() { return m_IsShot; }       // 발사 중이니
 	bool GetIsAttacking() { return m_IsAttacking; } //공격하고있니?
+	int  GetAttackingCound() { return m_AttackingCount; }
 
 protected:
 	//이펙트 함수가 필요하면..
@@ -56,4 +57,3 @@ protected:
 
 
 };
-

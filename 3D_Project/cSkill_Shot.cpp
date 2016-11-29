@@ -46,7 +46,7 @@ void cSkill_Shot::BaseObjectUpdate(float timeDelta, D3DXVECTOR3 casterWorldPos, 
 
 	}
 
-	
+
 	if (m_IsAttacking)
 	{
 		m_IsShot = false;
@@ -70,8 +70,8 @@ void  cSkill_Shot::BaseObjectRender()
 
 void cSkill_Shot::ShotSkill()
 {
-     m_IsShot = true;
-     m_AttackingCount = 0;
+	m_IsShot = true;
+	m_AttackingCount = 0;
 }
 
 void cSkill_Shot::MakeAtk()

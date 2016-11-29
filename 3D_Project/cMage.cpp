@@ -131,6 +131,41 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	//else
 	//{
 
+	if (m_target != NULL)
+	{
+		D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_target->pTransform->GetWorldPosition();
+		D3DXVECTOR3 magicATKCollision = m_ATKBox->pTransform->GetWorldPosition() - m_target->pTransform->GetWorldPosition();
+
+
+		//if (D3DXVec3Length(&magicATKLegth) < 20);
+		//{
+		if (KEY_MGR->IsOnceDown('1'))
+		{
+			m_strName = ATK_01;
+			m_strName = MyUtil::SetAnimation(m_state);
+			pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
+
+			m_pMagicShot->Effect_Init();
+			m_pMagicShot->MakeAtk();
+		}
+
+		//}
+
+		if (m_pMagicShot->GetIsAttacking())
+		{
+			pSkinned->RemoveBoneTransform("Bip01-L-Hand");
+			m_ATKBox->pTransform->LookPosition(m_target->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
+			m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
+		}
+		else
+		{
+			pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
+		}
+
+
+	}
+
+
 
 	if (KEY_MGR->IsOnceDown('2'))
 	{
@@ -229,53 +264,6 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	m_pSkill_FlameRoad->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), pTransform->GetForward());
 	m_pSkill_FlameRoad->Effect_Update(timeDelta);
 
-
-	if (m_target != NULL)
-	{
-		D3DXVECTOR3 magicATKLegth = pTransform->GetWorldPosition() - m_target->pTransform->GetWorldPosition();
-		D3DXVECTOR3 magicATKCollision = m_ATKBox->pTransform->GetWorldPosition() - m_target->pTransform->GetWorldPosition();
-
-
-		if (D3DXVec3Length(&magicATKLegth) < 20);
-		{
-			if (KEY_MGR->IsOnceDown('1'))
-			{
-				m_isAttack = true;
-				m_pMagicShot->Effect_Init();
-				m_pMagicShot->MakeAtk();
-			
-				m_strName = ATK_01;
-				m_strName = MyUtil::SetAnimation(m_state);
-				this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
-			}
-
-		}
-
-	
-
-		
-		if (m_isAttack)
-		{
-			pSkinned->RemoveBoneTransform("Bip01-L-Hand");
-			m_ATKBox->pTransform->LookPosition(m_target->pTransform->GetWorldPosition() + D3DXVECTOR3(0, 2, 0));
-			m_ATKBox->pTransform->MovePositionSelf(0, 0, 30.0f * timeDelta);
-
-			if (D3DXVec3Length(&magicATKCollision) < 3);
-			{
-				m_isAttack = false;
-			}
-		}
-		
-		
-	}
-
-
-	if (!m_isAttack)
-	{
-		pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
-	}
-
-	
 
 
 	if (m_pSkill_Escape->GetBuffCount() == 100)
