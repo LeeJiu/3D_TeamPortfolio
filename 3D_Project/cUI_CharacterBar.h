@@ -33,6 +33,9 @@ class cUI_CharacterBar
 
 	float damage; // 데미지 예시용
 
+	char strHp[32];
+	char strSp[32];
+
 public:
 	cUI_CharacterBar();
 	~cUI_CharacterBar();
@@ -47,6 +50,7 @@ public:
 	void update(float userCurrentHP,float userCurrentMP);
 
 	void uiRender();
+	void fontRender();
 
 };
 

@@ -190,6 +190,7 @@ void cInven::render()
 						inven[i][j].x, inven[i][j].y,
 						0xffffffff,
 						NULL);
+
 				}
 
 
@@ -212,6 +213,8 @@ void cInven::render()
 				weapon.x, weapon.y,
 				0x80ffffff,
 				NULL);
+			//LOG_MGR->AddLog("ÀÌÁöÇö Áñ : %d", weapon.m_Item->m_Dmg);
+
 		}
 
 		//=====================================
@@ -393,7 +396,6 @@ bool cInven::weaponInputItem(cItem* item, POINT mouse)
 	{
 		ITEM_MGR->v_item.erase(ITEM_MGR->v_item.begin() + itemIndex);
 	}
-
 	//
 	clickItem = NULL;
 	pickUp = false;

@@ -38,7 +38,7 @@ public:
 	cUI_SkillDeck();
 	~cUI_SkillDeck();
 
-	void init();
+	void init(CHARAC_TYPE ctype);
 	void update();
 	void uiRender();
 

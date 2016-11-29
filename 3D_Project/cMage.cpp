@@ -5,6 +5,7 @@
 #include "cMonster.h"
 #include "cCamera.h"
 #include "cInven.h"
+#include "cTrailRender.h"
 
 //파티클
 #include "cPartcleEmitter.h"
@@ -30,47 +31,34 @@ cMage::~cMage()
 	SAFE_DELETE(m_pSkill_magicShild);
 	SAFE_DELETE(m_pSkill_Escape);
 	SAFE_DELETE(m_pSkill_FlameRoad);
-
-
-
-
 }
 
 
 
 void cMage::BaseObjectEnable()
 {
+	m_fHP = 2000;
+	m_currentHp = 2000;
+	m_fSP = 1500;
+	m_currentSp = 1500;
+
+	m_attackLength = 5;
+	m_damage = 100;
+	m_isAttack = false;
+	m_invenOn = false;				//인벤
+
 	m_UIContainer = new cUI_Container;
-	m_UIContainer->UI_Init();
+	m_UIContainer->UI_Init(m_fHP, m_fSP, MAGE);
 
-
-	//몬스터 관련
 	SetBassClass();
-
-
-	
-	//무기 관련
-
-	D3DXMATRIXA16 matScale;
-	D3DXMatrixScaling(&matScale, 0.1f, 0.1f, 0.1f);
-	D3DXMATRIXA16 matRotate;
-	D3DXMatrixRotationY(&matRotate, -90.0f * ONE_RAD);
-	D3DXMATRIXA16 matCorrection = matScale * matRotate;
-
-	cXMesh_Static* pSTF_Basic = RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/Weapon/STF_Master.X", &matCorrection);
-
-
-	//m_Weapon = new cWeapon;
-	//m_Weapon->SetMesh(pSTF_Basic);
-	//m_Weapon->SetActive(true);
-
-	//pSkinned->AddBoneTransform("Bip01-R-Hand", m_Weapon->pTransform);
-
 
 	//캐릭터의 그려진 위치를 세팅
 	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
 	BaseObjectBoundBox();
 
+	BasicWeaponSet();
+
+	m_botton = false;
 	m_isPetOn = false;
 
 	//평타 박스
@@ -81,40 +69,37 @@ void cMage::BaseObjectEnable()
 	pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
 
 	m_vMonster = m_pMonMgr->GetMonsters();
+	m_target = NULL;
 
+	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
 	m_state = IDLE;
 	m_strName = MyUtil::SetAnimation(m_state);
-
-	m_fHP = 1000;
-	m_attackLength = 5;
-	m_damage = 100;
-	m_isAttack = false;
 
 	m_camera->AttachTo(pTransform);
 	m_camera->SetLocalPosition(0, 3, -5);
 
 	//SetMoveKeys();
-	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
 	//스킬 관련
 	SkillInit();
-
-	m_target = NULL;
-
-
 }
 
 void cMage::BaseObjectUpdate(float timeDelta)
 {
-	m_UIContainer->UI_Update();
-
 	CamControl(timeDelta);
-
 	Move(timeDelta);
-	Monster_pick();
-	UiUpdate(timeDelta, m_camera);
 
+	if (m_invenOn || m_pSkill_DarkRain->GetIsSelecting())
+	{
+		
+	}
+	else	Monster_pick();
+
+	UiUpdate(timeDelta, m_camera);
+	if (this->pTrailRender != NULL)
+		this->pTrailRender->Update(timeDelta);
+	
 	//펫에 타고 있냐
 	//if (KEY_MGR->IsOnceDown('9'))
 	//{
@@ -182,8 +167,8 @@ void cMage::BaseObjectUpdate(float timeDelta)
 			pSkinned->AddBoneTransform("Bip01-L-Hand", m_ATKBox->pTransform);
 		}
 
-	}
 
+	}
 
 	if (!m_pSkill_FlameRoad->GetIsAttacking())
 	{
@@ -262,10 +247,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	if (KEY_MGR->IsOnceDown('9'))
 	{
 		m_pSkill_Front->SelectSkill();
-
 	}
-
-	
 
 	Ray ray;
 	POINT ptMousePos = GetMousePos();
@@ -273,8 +255,6 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	m_camera->ComputeRay(&ray, &screenPos);
 	D3DXVECTOR3		mousePos;
 	pTerrain->IsIntersectRay(&mousePos, &ray);
-	//mousePos = PHYSICS_MGR->getLastHeight(enemy, &ray, m_pTerrain, &m_mousePos);
-
 
 	m_pRoundSkill->BaseObjectUpdate(timeDelta, pTransform->GetWorldPosition(), mousePos);
 
@@ -308,6 +288,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	m_pMagicShot->BaseObjectUpdate(timeDelta, m_ATKBox->pTransform->GetWorldPosition(), pTransform->GetForward());
 	m_pMagicShot->Effect_Update(timeDelta);
 
+	m_UIContainer->UI_Update(m_currentHp, m_currentSp);
 }
 
 
@@ -316,6 +297,13 @@ void cMage::BaseObjectRender()
 	this->pSkinned->Render(this->pTransform);
 
 	//m_ATKBox->BoundBox.RenderGizmo(m_ATKBox->pTransform);
+
+	m_Weapon->Render();
+	if (this->pTrailRender != NULL)
+	{
+		this->pTrailRender->RenderDistort(this->m_camera);
+	}
+
 
 	m_pSurroundSkill->BaseObjectRender();
 	m_pRoundSkill->BaseObjectRender();
@@ -330,21 +318,21 @@ void cMage::BaseObjectRender()
 	m_pSkill_FlameRoad->Effect_Render();
 	m_pMagicShot->BaseObjectRender();
 	m_pMagicShot->Effect_Render();
-
-
-
-
 }
 
 void  cMage::BaseSpriteRender()
 {
+	UiURender();
 	m_UIContainer->UI_Render();
 }
 
+void cMage::BaseFontRender()
+{
+	m_UIContainer->UI_fontRender();
+}
 
 void  cMage::SkillInit()
 {
-
 	m_pSkill_SnowStorm = new cSkill_SnowStorm;
 	m_pSkill_SnowStorm->SetActive(true);
 	m_pSkill_SnowStorm->BaseObjectEnable(pTransform->GetWorldPosition(), 5.0f, 1, 400, 300);
@@ -391,6 +379,88 @@ void cMage::BaseObjectBoundBox()
 	BoundBox.SetBound(&D3DXVECTOR3(0, 1.5f, 0), &D3DXVECTOR3(0.5f, 1.5f, 0.5f));
 }
 
+void cMage::BasicWeaponSet()
+{
+	//베이직무기 셋팅해줄거
+	m_Weapon = new cItem;
+
+	//TrailRenderSet
+	this->pTrailRender = new cTrailRender();
+	this->pTrailRender->Init(
+		1.0f,					//꼬리 라이브 타임 ( 이게 크면 환영큐 사이즈가 커지고 꼬리가 오랬동안 남아있다 )
+		0.2f,					//폭
+		RESOURCE_TEXTURE->GetResource("../Resources/Textures/TrailTest.png"),	//메인 Texture
+		D3DXCOLOR(0, 0, 0.5, 0.8),												//메인 Texture 로 그릴때 컬러
+		NULL
+	);
+
+	m_Weapon = ITEM_MGR->getItem(3);
+	m_Weapon->BoundBox.SetBound(&D3DXVECTOR3(0.f, 1.f, 0.f), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
+	pSkinned->AddBoneTransform("Bip01-R-Hand", m_Weapon->pTransform);
+
+	//트레일렌더그려줄거
+	this->pTrailRender->Transform.AttachTo(m_Weapon->pTransform);
+	this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
+	this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
+
+}
+
+void cMage::UiUpdate(float timeDelta, cCamera * camera)
+{
+	if (m_inven->GetWeapon() == NULL &&m_botton == true)
+	{
+		if (pTrailRender != NULL)
+		{
+			this->pTrailRender->Transform.ReleaseParent();
+			pSkinned->RemoveBoneTransform("Bip01-R-Hand");
+		}
+
+		pSkinned->RemoveBoneTransform("Bip01-R-Hand");
+		m_Weapon = ITEM_MGR->getItem(3);
+		m_Weapon->BoundBox.SetBound(&D3DXVECTOR3(0.f, 1.f, 0.f), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
+		pSkinned->AddBoneTransform("Bip01-R-Hand", m_Weapon->pTransform);
+
+		//트레일렌더그려줄거
+		this->pTrailRender->Transform.AttachTo(m_Weapon->pTransform);
+		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
+		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 45 * ONE_RAD, 0);
+
+		m_botton = false;
+	}
+	else if (m_inven->GetWeapon() != NULL&& m_botton == false)
+	{
+		if (pTrailRender != NULL)
+		{
+			this->pTrailRender->Transform.ReleaseParent();
+			pSkinned->RemoveBoneTransform("Bip01-R-Hand");
+		}
+
+		m_Weapon = m_inven->GetWeapon();
+		m_Weapon->BoundBox.SetBound(&D3DXVECTOR3(0.f, 1.f, 0.f), &D3DXVECTOR3(-0.3f, -0.3f, -0.3f));
+		pSkinned->AddBoneTransform("Bip01-R-Hand", m_Weapon->pTransform);
+		m_botton = true;
+
+		//트레일렌더그려줄거
+		this->pTrailRender->Transform.AttachTo(m_Weapon->pTransform);
+		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
+		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
+	}
+
+
+	if (KEY_MGR->IsOnceDown('I'))
+	{
+		m_invenOn = !m_invenOn;
+		m_inven->SetInvenOn(m_invenOn);
+	}
+
+	if (m_invenOn)
+	{
+		m_inven->update(timeDelta, m_camera, this->pTransform->GetWorldPosition());
+		ITEM_MGR->update(timeDelta);
+	}
+
+}
+
 
 void  cMage::Damage(float damage)
 {
@@ -403,6 +473,12 @@ void  cMage::Damage(float damage)
 		pSkinned->PlayOneShotAfterHold(m_strName);
 		return;
 	}
+
+	if (m_state == DMG || m_state == DEAD)
+	{
+		return;
+	}
+
 
 	if (m_state != DMG)
 	{

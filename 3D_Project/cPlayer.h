@@ -43,7 +43,8 @@ protected:
 	//status
 	float				m_fHP;					//hp
 	float				m_currentHp;
-	float				m_sp;					//skill point
+	float				m_fSP;
+	float				m_currentSp;
 	float				m_attackLength;			//공격가능범위
 	int					m_damage;				//데미지
 	int					m_Invintime;			//무적시간
@@ -67,6 +68,7 @@ public:
 	virtual void BaseObjectUpdate(float timeDelta);				//BaseObject 가 Update 때 실행....
 	virtual void BaseObjectRender();							//기존 오브젝트랜더
 	virtual void BaseSpriteRender();							//스프라이트 랜더
+	virtual void BaseFontRender();	
 	virtual void BaseObjectBoundBox();
 
 	virtual void CamControl(float timeDelta);

@@ -41,11 +41,5 @@ public:
 	void SetTerrain(cTerrain* pTerrain) { m_pTerrain = pTerrain; }
 
 	vector<cMonster*>& GetMonsters() { return m_vMonster; }
-
-	//void shadowUpdate();
-	//void LickLighDirection(cCamera* direction){ pDirectionLightCamera = direction; }
-	
-	//vector<cBaseObject*> getShadow(){ return m_vShadow; }
-	//vector<cBaseObject*> MonToBasic();
 };
 

@@ -77,11 +77,6 @@ HRESULT cScene_testMonster::Scene_Init()
 	pLight1->Intensity = 1.0f;
 	pLight1->pTransform->SetRotateWorld(90 * ONE_RAD, 0, 0);
 
-	/*testLight = new cLight_Direction();
-	testLight->Color = D3DXCOLOR(1, 1, 1, 1);
-	testLight->Intensity = 1.0f;
-	testLight->pTransform->SetRotateWorld(90 * ONE_RAD, 0, 0);*/
-
 	/*cLight_Point* pLight2 = new cLight_Point();
 	pLight2->Color = D3DXCOLOR(1, 1, 1, 0);
 	pLight2->minRange = 5.0f;
@@ -99,6 +94,21 @@ HRESULT cScene_testMonster::Scene_Init()
 	this->lights.push_back(pLight1);
 	/*this->lights.push_back(pLight2);
 	this->lights.push_back(pLight3);*/
+
+
+	int size = m_vObject.size();
+	for (int i = 0; i < size; ++i)
+	{
+		m_vRender.push_back(m_vObject[i]);
+	}
+
+	m_vRender.push_back(dynamic_cast<cBaseObject*>(m_pPlayer));
+
+	size = m_pMonMgr->GetMonsters().size();
+	for (int i = 0; i < size; ++i)
+	{
+		m_vRender.push_back(dynamic_cast<cBaseObject*>(m_pMonMgr->GetMonsters()[i]));
+	}
 
 	return S_OK;
 }
@@ -118,11 +128,22 @@ void cScene_testMonster::Scene_Update(float timeDelta)
 	m_pPlayer->Update(timeDelta);
 
 	m_pMonMgr->Update(timeDelta);
+
+
+	ReadyShadowMap(&m_vRender);
 }
 
 void cScene_testMonster::Scene_Render1()
 {
-	m_pTerrain->Render(this->pMainCamera, dynamic_cast<cLight_Direction*>(lights[0]));
+	m_vCulling.clear();
+	int size = m_vRender.size();
+	for (int i = 0; i < size; i++) 
+	{
+		if (this->pMainCamera->Frustum.IsInFrustum(m_vRender[i]))
+		{
+			m_vCulling.push_back(m_vRender[i]);
+		}
+	}
 
 	//적용되는 LightMatrix
 	D3DXMATRIXA16 matLights[10];
@@ -131,21 +152,25 @@ void cScene_testMonster::Scene_Render1()
 
 	//셰이더에 라이팅 셋팅
 	cXMesh_Static::SetCamera(this->pMainCamera);
-	cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
+	//cXMesh_Static::SetTechniqueName("Base");		//쉐도우랑 같이 그릴려면 ReciveShadow 로 Technique 셋팅
+	cXMesh_Static::SetTechniqueName("ReciveShadow");
 	cXMesh_Static::SetBaseLight(dynamic_cast<cLight_Direction*>(lights[0]));
 
-	int size = m_vObject.size();
-	for (int i = 0; i < size; ++i)
-	{
-		m_vObject[i]->Render();
-	}
-
 	//셰이더에 라이팅 셋팅
+	cXMesh_Skinned::SetTechniqueName("ReciveShadow");
 	cXMesh_Skinned::sSkinnedMeshEffect->SetMatrixArray("matLights", matLights, 10);
 	cXMesh_Skinned::sSkinnedMeshEffect->SetInt("LightNum", this->lights.size());
 
 	cXMesh_Skinned::SetCamera(this->pMainCamera);
 
-	m_pPlayer->Render();
-	m_pMonMgr->Render();
+	size = m_vCulling.size();
+	for (int i = 0; i < size; i++)
+	{
+		m_vCulling[i]->Render();
+	}
+
+	m_pTerrain->Render(
+		this->pMainCamera,
+		dynamic_cast<cLight_Direction*>(lights[0]),
+		this->pDirectionLightCamera);
 }

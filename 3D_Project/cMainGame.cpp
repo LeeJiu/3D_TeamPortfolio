@@ -38,7 +38,7 @@ HRESULT cMainGame::Init(void)
 	GIZMO_MGR->Init( Device );
 	SPRITE_MGR->Init( Device );
 	ITEM_MGR->init();
-
+	LOAD_MGR->Init();
 	
 	//게임에 사용되는 씬 추가
 	SCENE_MGR->AddScene("move_Test", new move_Test());
@@ -55,7 +55,7 @@ HRESULT cMainGame::Init(void)
 	SOUND_MGR->addSound("bgm1", "../Answers.mp3", true, true);
 	
 	////게임 시작씬
-	SCENE_MGR->ChangeScene( "mage_Test" );
+	//SCENE_MGR->ChangeScene( "mage_Test" );
 	//SCENE_MGR->ChangeScene("berserker_test");
 	//SCENE_MGR->ChangeScene("DragonTest");
 	//SCENE_MGR->ChangeScene( "move_Test" );
@@ -92,6 +92,8 @@ void cMainGame::Release()
 
 	ITEM_MGR->release();
 	cItemManager::ReleaseInstance();
+	LOAD_MGR->Release();
+	cLoadManager::ReleaseInstance();
 
 
 	RESOURCE_TEXTURE->ClearResource();
