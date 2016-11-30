@@ -68,5 +68,7 @@ private:
 	void BasicWeaponSet();
 	void SetTickCount();
 	void UiUpdate(float timeDelta, cCamera* camera);		//버서커유아이
+	
+	//ACTOR_STATE GetState() { return m_state; }
 };
 

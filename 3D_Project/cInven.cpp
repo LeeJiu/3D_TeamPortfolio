@@ -150,7 +150,7 @@ void cInven::update(float timeDelta, cCamera* camera, D3DXVECTOR3& pos)
 			//인벤에 넣는다.
 			if (invenInputItem(&cRow, &cCol, clickItem, ptMousePos))
 			{
-
+				SOUND_MGR->play("inputWeapon",0.8);
 			}//웨폰에 넣는다. 
 			else if (weaponInputItem(clickItem, ptMousePos))
 			{

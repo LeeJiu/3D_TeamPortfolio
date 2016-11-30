@@ -32,6 +32,8 @@ private:
 	std::vector<stDamage> v_damage;		//데미지 구조체 백터
 	std::vector<stDamage>::iterator vi_damage;		//데미지 구조체 백터
 	
+	D3DXVECTOR2 pos;
+
 	int num;				//들어오는 숫자
 	int size; 				//벡터사이즈
 
@@ -41,7 +43,8 @@ public:
 
 	void Init();
 
-	void SetNumber(int number, cTransform* trans);
+	void SetNumber(int number, cTransform* trans, cCamera* cam);
+	void Release();
 	void Clean();
 	void Update(float timeDelta);
 	void Render();

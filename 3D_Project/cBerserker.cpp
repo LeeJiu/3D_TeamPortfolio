@@ -32,6 +32,7 @@ void cBerserker::BaseObjectEnable()
 	m_isAttack = false;				//공격중
 	m_invenOn = false;				//인벤
 	m_isBurserk = false;			//버서크 모드
+	m_isAutoWalk = false;
 
 	m_UIContainer = new cUI_Container;
 	m_UIContainer->UI_Init(m_fHP, m_fSP, BERSERKER);
@@ -39,7 +40,7 @@ void cBerserker::BaseObjectEnable()
 	SetBassClass();
 	
 	//캐릭터의 그려진 위치를 세팅
-	pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
+	//pTransform->SetWorldPosition(0, pTerrain->GetHeight(0, 0), 0);
 	BaseObjectBoundBox();
 
 	BasicWeaponSet();
@@ -60,7 +61,6 @@ void cBerserker::BaseObjectEnable()
 	m_atkCnt = 1;			//평타 진행도
 	m_time = 0;				//평타 글쿨
 	m_testtime = 0;			//테스트용 로그찎는시간
-	m_Invintime = 0;		//무적시간체ㅔ크
 	m_TextTime = 0;
 
 	//skill
@@ -81,7 +81,6 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	{
 		m_tick[i]->tickUpdate(TIME_MGR->GetFrameDeltaSec());
 	}
-
 
 	if (m_invenOn || m_ArmorCrash->GetIsSelecting())
 	{
@@ -122,7 +121,6 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	*/
 	
 	m_time += timeDelta;
-	m_Invintime += timeDelta;
 	m_TextTime += timeDelta;
 	m_testtime += timeDelta;
 
@@ -137,22 +135,16 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		switch (m_atkCnt)
 		{
 			case 1 : 
-				SOUND_MGR->play("atk_voice",0.8);
-				SOUND_MGR->play("atk1", 0.8);
 				m_state = ATK_01;
 				Attack01();
 				m_atkCnt++;
 				break;
 			case 2: 
-				SOUND_MGR->play("atk_voice", 0.8);
-				SOUND_MGR->play("atk2", 0.8);
 				m_state = ATK_02;
 				Attack02();
 				m_atkCnt++;
 				break;
 			case 3: 
-				SOUND_MGR->play("atk_voice", 0.8);
-				SOUND_MGR->play("atk1", 0.8);
 				pSkinned->ChangeBoneTransform("BN_Weapon_R", "BN_Weapon_L");// 막타를 칠때 BN_Weapon_L로
 				m_state = ATK_03;
 				Attack03();
@@ -166,10 +158,12 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//스킬2 - 차지
 	if (!m_ArmorCrash->GetIsCool() && !m_isAttack && KEY_MGR->IsOnceDown('2'))
 	{
+		SOUND_MGR->play("bk_charge_voice", 0.8);
+
 		m_currentSp -= 100;
 		m_time = 0;
 		RangeCheck(10);
-
+		
 		m_state = SK_CHARGE;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->Play(m_strName, 0.3);
@@ -189,6 +183,8 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 
 	if (m_ArmorCrash->GetAtkCount() == 1)
 	{
+		SOUND_MGR->play("bk_atk3_voice", 0.8);
+		SOUND_MGR->play("charge_boom", 0.8);
 		m_state = SK_CHARGE_ATK;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
@@ -198,6 +194,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//스킬3 - 스윙
 	if (!m_Swing->GetIsCool() && !m_isAttack && KEY_MGR->IsOnceDown('3'))
 	{
+		SOUND_MGR->play("bk_swing_voice", 0.8);
 		m_currentSp -= 80;
 		m_time = 0;
 		m_state = SK_SWING;
@@ -217,24 +214,11 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		}
 	}
 
-	//스킬4
-	//if (!m_isAttack && KEY_MGR->IsOnceDown('4'))
-	//{
-	//	
-	//}
-	//else if (m_Burserk->GetIsCool() && KEY_MGR->IsOnceDown('5'))
-	//{
-	//	SOUND_MGR->play("ban", 0.5);
-	//	if (!m_textOn)
-	//	{
-	//		m_TextTime = 0;
-	//		m_textOn = true;
-	//	}
-	//}
-
 	//스킬5 - 버서크
 	if (!m_Burserk->GetIsCool() && !m_isAttack && KEY_MGR->IsOnceDown('5'))
 	{
+		SOUND_MGR->play("bk_burserk_voice", 0.8);
+
 		m_currentSp -= 50;
 		m_time = 0;
 		LOG_MGR->AddLog("광폭화 시전");
@@ -311,17 +295,10 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//test용 로그 출려꾸 
 	if (m_testtime > 1)
 	{
-		LOG_MGR->AddLog("damage : %d ", m_damage);
 		m_testtime = 0;
 	}
 
 	m_camera->ShakeUpdate(timeDelta);
-
-	if (m_isHeat && m_Invintime > 1)
-	{
-		m_state = IDLE;
-	}
-
 	m_UIContainer->UI_Update(m_currentHp, m_currentSp);
 
 }
@@ -329,7 +306,6 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 void cBerserker::BaseObjectRender()
 {
 	this->pSkinned->Render(this->pTransform);
-	
 	this->BoundBox.RenderGizmo(this->pTransform);
 
 	m_Weapon->Render();
@@ -369,12 +345,11 @@ void cBerserker::BaseObjectBoundBox()
 
 void cBerserker::Damage(float damage)
 {
-	m_Invintime = 0;
-	m_isHeat = true;
-
 	m_currentHp -= damage;
+
 	if (m_currentHp <= FEPSILON)
 	{
+		SOUND_MGR->play("bk_dead", 0.8);
 		m_currentHp = 0.0f;
 		m_state = DEAD;
 		m_strName = MyUtil::SetAnimation(m_state);
@@ -382,13 +357,17 @@ void cBerserker::Damage(float damage)
 		return;
 	}
 
-	if (m_state == DMG || m_state == DEAD)
+	if (m_state == DMG || m_state == DEAD 
+		|| m_ArmorCrash->GetIsSelecting()
+		|| m_ArmorCrash->GetIsAttacking()
+		|| m_Swing->GetIsAttacking())
 	{
 		return;
 	}
 
 	if (m_state != DMG)
 	{
+		SOUND_MGR->play("bk_heat", 0.8);
 		m_state = DMG;
 		m_strName = MyUtil::SetAnimation(m_state);
 		pSkinned->PlayOneShotAfterOther(m_strName, "IDLE", 0.3f);
@@ -399,10 +378,13 @@ void cBerserker::Damage(float damage)
 
 void cBerserker::Attack01()
 {	
+	SOUND_MGR->play("bk_atk1_voice", 0.8);
+	SOUND_MGR->play("bk_atk1", 0.8);
+
 	int damage = (m_damage + m_Weapon->getDmg()) * 1;
 	damage = RandomIntRange(damage - 10, damage + 10);
 
-	m_ShowDamage->SetNumber(damage, m_target->pTransform);
+	m_ShowDamage->SetNumber(damage, m_target->pTransform, m_camera);
 
 	LOG_MGR->AddLog("%d데미지 줌", damage);
 	m_target->Damage(damage);
@@ -410,10 +392,13 @@ void cBerserker::Attack01()
 
 void cBerserker::Attack02()
 {
+	SOUND_MGR->play("bk_atk2_voice", 0.8);
+	SOUND_MGR->play("bk_atk2", 0.8);
+
 	int damage = (m_damage + m_Weapon->getDmg()) * 2;
 	damage = RandomIntRange(damage - 10, damage + 10);
 
-	m_ShowDamage->SetNumber(damage, m_target->pTransform);
+	m_ShowDamage->SetNumber(damage, m_target->pTransform, m_camera);
 
 	LOG_MGR->AddLog("%d데미지 줌", damage);
 	m_target->Damage(damage);
@@ -421,10 +406,13 @@ void cBerserker::Attack02()
 
 void cBerserker::Attack03()
 {
+	SOUND_MGR->play("bk_atk3_voice", 0.8);
+	SOUND_MGR->play("bk_atk3", 0.8);
+
 	int damage = (m_damage + m_Weapon->getDmg()) * 3;
 	damage = RandomIntRange(damage - 10, damage + 10);
 	
-	m_ShowDamage->SetNumber(damage, m_target->pTransform);
+	m_ShowDamage->SetNumber(damage, m_target->pTransform, m_camera);
 
 	LOG_MGR->AddLog("%d데미지 줌", damage);
 	m_target->Damage(damage);
@@ -460,16 +448,19 @@ void cBerserker::SKILL01()
 		RangeCircleCheck(m_ArmorCrash->GetAttackPos(), 2);
 		int size = m_vMonster.size();
 
-		for (int i = 0; i < size; i++)
+		if (m_tick[BK_SWING]->tickStart())
 		{
-			if (!m_vMonster[i]->GetInRange()) continue;
-			damage = RandomIntRange(damage - 10, damage + 10);
-
-			if (m_tick[BK_CHARGE]->tickStart())
+			for (int i = 0; i < size; i++)
 			{
-				LOG_MGR->AddLog("%d 데미지줌", damage);
-				m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
-				m_vMonster[i]->Damage(damage);
+				if (m_vMonster[i]->GetInRange())
+				{
+
+					LOG_MGR->AddLog("m_vMonster[%d] = %d", m_vMonster[i]->GetInRange());
+					damage = RandomIntRange(damage - 10, damage + 10);
+					m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform, m_camera);
+					m_vMonster[i]->Damage(damage);
+				}
+				else if (!m_vMonster[i]->GetInRange()) continue;
 			}
 		}
 	}
@@ -486,18 +477,19 @@ void cBerserker::SKILL02()
 		RangeCheck(10);
 		int size = m_vMonster.size();
 
-		for (int i = 0; i < size; i++)
+		if (m_tick[BK_SWING]->tickStart())
 		{
-			if (!m_vMonster[i]->GetInRange()) continue;
-			damage = RandomIntRange(damage - 10, damage + 10);
-
-			if (m_tick[BK_SWING]->tickStart())
+			for (int i = 0; i < size; i++)
 			{
-				LOG_MGR->AddLog("%d 데미지줌", damage);
-				m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
-				m_vMonster[i]->Damage(damage);
-				LOG_MGR->AddLog("%d 데미지줌", m_vMonster[i]->monType);
+				if (m_vMonster[i]->GetInRange())
+				{
 
+					LOG_MGR->AddLog("m_vMonster[%d] = %d", i, m_vMonster[i]->GetInRange());
+					damage = RandomIntRange(damage - 10, damage + 10);
+					m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform, m_camera);
+					m_vMonster[i]->Damage(damage);
+				}
+				else if (!m_vMonster[i]->GetInRange()) continue;
 			}
 		}
 	}
@@ -557,8 +549,8 @@ void cBerserker::SetTickCount()
 		m_tick[i]->init(0.3f);
 	}
 
-	m_tick[BK_CHARGE]->init(0.8f);
-	m_tick[BK_SWING]->init(0.5f);
+	m_tick[BK_CHARGE]->init(1.f);
+	m_tick[BK_SWING]->init(0.8f);
 	m_tick[BK_ACCEL]->init(0.3f); //넌아직모르겟엄
 }
 
