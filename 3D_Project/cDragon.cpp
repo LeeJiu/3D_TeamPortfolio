@@ -855,7 +855,7 @@ void cDragon::HeadAttUpate()
 void cDragon::dieUpdate(float timeDelta)
 {
 	if (isDie == true)return; // 죽었으면 리턴 .
-	if (dieAniTime > 8.f)return;
+	if (dieAniTime > 11.f)return;
 	if (dieAniTime == 0)
 	{
 		LOG_MGR->AddLog("타임: %f", dieAniTime);
