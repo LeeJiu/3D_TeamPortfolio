@@ -87,7 +87,7 @@ HRESULT DragonTest::Scene_Init()
 	this->pBerserker->SetBounds(m_vBoundBox);
 
 	//캐릭터가 그려질 위치 트랜스폼
-	this->pBerserker->pTransform->SetWorldPosition(50, m_pTerrain->GetHeight(50, 50), 50);
+	this->pBerserker->pTransform->SetWorldPosition(0, m_pTerrain->GetHeight(0, 0), 0);
 
 
 	//라이트 푸쉬

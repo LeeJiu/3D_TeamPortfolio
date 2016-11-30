@@ -219,6 +219,8 @@ void cPlayer::Move(float timeDelta)
 	else m_InputKeys.find('D')->second = false;
 
 	m_pMove->update(timeDelta, NULL, NULL, NULL, m_InputKeys);
+	//m_pMove->update(timeDelta, m_vObject, m_vBound, m_InputKeys);
+
 	m_isMove = m_pMove->GetIsMove();
 }
 

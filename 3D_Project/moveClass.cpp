@@ -122,7 +122,7 @@ void moveClass::update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox
 
 	//아래 피직스 매니져 사용 법
 	//반환할 좌표 값 = ( NULL or 충돌 할 Obj , Obj,Terrain 비교할 Ray , 터레인 , 반환 시킬 좌표 값)
-	m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
+	//m_prePos = PHYSICS_MGR->getLastHeight(collObj, &moveRay, m_pTerrain, &m_prePos);
 
 	moveJumpCheck(timeDelta);
 	boundCheck(collBox, collTrans);
@@ -278,7 +278,7 @@ void moveClass::update(float timeDelta, std::vector<cBaseObject*> vObj, std::vec
 
 	moveJumpCheck(timeDelta);
 	
-	// boundCheck(vBound);
+	boundCheck(vBound);
 
 	/*	if (test == false)
 	{
@@ -340,6 +340,7 @@ void moveClass::getLastHeight(cBaseObject* enumy)
 	{
 		m_prePos.y = m_pTerrain->GetHeight(m_prePos.x, m_prePos.z);
 		this->pCharTrans->SetWorldPosition(m_prePos);
+		m_currentPos.y = m_pTerrain->GetHeight(m_prePos.x, m_prePos.z);
 	}
 	// 예외처리 / 맨 처음 한번은 쿼드 트리에서 레이체크를 못한다.
 	if (objColl == true && terrainColl == false)
@@ -527,21 +528,21 @@ void moveClass::getLastHeight(std::vector<cBaseObject*> vObj)
 	
 			}
 		}
-		// else if ((*iter)->objType == MIGDAL_WALL || (*iter)->objType == MIGDAL_HOUSE && dist < 30)
-		// {
-		// 	if ((
-		// 		PHYSICS_MGR->IsRayHitStaticMeshObject(
-		// 		&this->moveRay,
-		// 		(*iter),
-		// 		(*iter)->pTransform,
-		// 		&this->m_prePos,
-		// 		NULL)) == true)
-		// 	{
-		// 		tempLast = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
-		// 		objColl = true;      // 오브젝트 충돌 했다. 
-		// 
-		// 	}
-		// }
+		 else if ((*iter)->objType == MIGDAL_WALL || (*iter)->objType == MIGDAL_HOUSE && dist < 30)
+		 {
+		 	if ((
+		 		PHYSICS_MGR->IsRayHitStaticMeshObject(
+		 		&this->moveRay,
+		 		(*iter),
+		 		(*iter)->pTransform,
+		 		&this->m_prePos,
+		 		NULL)) == true)
+		 	{
+		 		tempLast = m_prePos; // 오브젝트 충돌 값이 더 클 경우 Last 값을 갱신한다. 
+		 		objColl = true;      // 오브젝트 충돌 했다. 
+		 
+		 	}
+		 }
 	}
 
 	// 오브젝트와 충돌 했다면 - tempLast 에 값이 들어간다. 
@@ -566,6 +567,8 @@ void moveClass::getLastHeight(std::vector<cBaseObject*> vObj)
 	{
 		m_prePos.y = m_pTerrain->GetHeight(m_prePos.x, m_prePos.z);
 		this->pCharTrans->SetWorldPosition(m_prePos);
+		m_currentPos.y = m_pTerrain->GetHeight(m_prePos.x, m_prePos.z);
+
 	}
 	// 예외처리 / 맨 처음 한번은 쿼드 트리에서 레이체크를 못한다.
 	if (objColl == true && terrainColl == false)
