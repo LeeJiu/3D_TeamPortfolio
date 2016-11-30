@@ -88,6 +88,25 @@ HRESULT cMainGame::Init(void)
 	SOUND_MGR->addSound("dra_Meteo", "../Resources/Sound/스컬드래곤_메테오.ogg", false, false);
 	SOUND_MGR->addSound("dra_Die", "../Resources/Sound/스컬드래곤_죽음.ogg", false, false);
 
+	//몬스터 효과음
+	//거미
+	SOUND_MGR->addSound("atk_spider", "../Resources/Sound/거미_때림.ogg", false, false);
+	SOUND_MGR->addSound("dmg_spider", "../Resources/Sound/거미_맞음.ogg", false, false);
+	SOUND_MGR->addSound("die_spider", "../Resources/Sound/거미_죽음.ogg", false, false);
+	
+	//바실리스크
+	SOUND_MGR->addSound("atk_basil", "../Resources/Sound/바실_때림.ogg", false, false);
+	SOUND_MGR->addSound("atk2_basil", "../Resources/Sound/바실_때림2.ogg", false, false);
+	SOUND_MGR->addSound("dmg_basil", "../Resources/Sound/바실_맞음.ogg", false, false);
+	SOUND_MGR->addSound("die_basil", "../Resources/Sound/바실_죽음.ogg", false, false);
+
+	//미노타우로스
+	SOUND_MGR->addSound("atk_mino", "../Resources/Sound/monster_minotauros_atk.mp3", false, false);
+	SOUND_MGR->addSound("atk2_mino", "../Resources/Sound/monster_minotauros_atk2.mp3", false, false);
+	SOUND_MGR->addSound("die_mino", "../Resources/Sound/monster_minotauros_dead.ogg", false, false);
+	SOUND_MGR->addSound("hit_mino", "../Resources/Sound/monster_minotauros_hit.ogg", false, false);
+	SOUND_MGR->addSound("wait_mino", "../Resources/Sound/monster_moonknight_cry2.ogg", false, false);
+
 	////게임 시작씬
 	//SCENE_MGR->ChangeScene( "mage_Test" );
 	SCENE_MGR->ChangeScene("berserker_test");
@@ -95,7 +114,7 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
 	//SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
-	//SCENE_MGR->ChangeScene("cScene_testMonster");
+	SCENE_MGR->ChangeScene("cScene_testMonster");
 	//SCENE_MGR->ChangeScene("cVideoTest");
 
 	return S_OK;		

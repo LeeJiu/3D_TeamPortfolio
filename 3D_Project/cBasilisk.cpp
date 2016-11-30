@@ -86,6 +86,8 @@ void cBasilisk::Damage(float fDamage)
 		m_strName = MyUtil::SetAnimation(m_state);
 		pSkinned->PlayOneShotAfterOther(m_strName, "WAIT");
 		m_fHP -= fDamage;
+
+		SOUND_MGR->play("dmg_basil", 0.8f);
 	}
 	else if (m_state == DIE || m_state == DMG)
 	{
@@ -99,6 +101,7 @@ void cBasilisk::Damage(float fDamage)
 		m_strName = MyUtil::SetAnimation(m_state);
 		pSkinned->PlayOneShotAfterHold(m_strName);
 		m_fDeadTime = 0;
+		SOUND_MGR->play("die_basil", 0.8f);
 		return;
 	}
 }
@@ -173,6 +176,7 @@ void cBasilisk::Attack01(float timeDelta)
 
 		m_bHit = true;
 		m_fAtkTime = 0;
+		SOUND_MGR->play("atk2_basil", 0.8f);
 		return;
 	}
 
@@ -200,6 +204,7 @@ void cBasilisk::Attack02(float timeDelta)
 
 		m_bHit = true;
 		m_fAtkTime = 0;
+		SOUND_MGR->play("atk_basil", 0.8f);
 		return;
 	}
 
@@ -270,6 +275,7 @@ void cBasilisk::RangeIn(float timeDelta)
 			m_state = RUN;
 			m_strName = MyUtil::SetAnimation(m_state);
 			pSkinned->Play(m_strName);
+			pSkinned->SetPlaySpeed(2.0f);
 		}
 
 	}

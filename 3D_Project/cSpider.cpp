@@ -33,7 +33,7 @@ void cSpider::BaseObjectUpdate(float timeDelta)
 	if (m_state == DIE)
 	{
 		m_fDeadTime += timeDelta;
-		if (m_fDeadTime > 5.0f)
+		if (m_fDeadTime > 10.0f)
 		{
 			m_fDeadTime = 0;
 			SetActive(false);
@@ -90,6 +90,8 @@ void cSpider::Attack01(float timeDelta)
 
 		m_bHit = true;
 		m_fAtkTime = 0;
+
+		SOUND_MGR->play("atk_spider", 0.8f);
 		return;
 	}
 
@@ -117,7 +119,7 @@ void cSpider::Damage(float fDamage)
 		pSkinned->PlayOneShotAfterOther(m_strName, "WAIT");
 		m_fHP -= fDamage;
 
-		LOG_MGR->AddLog("%.2f", m_fHP);
+		SOUND_MGR->play("dmg_spider", 0.8f);
 	}
 	else if (m_state == DIE || m_state == DMG)
 	{
@@ -131,6 +133,7 @@ void cSpider::Damage(float fDamage)
 		m_strName = MyUtil::SetAnimation(m_state);
 		pSkinned->PlayOneShotAfterHold(m_strName);
 		m_fDeadTime = 0;
+		SOUND_MGR->play("die_spider", 0.8f);
 		return;
 	}
 }
