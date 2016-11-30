@@ -16,8 +16,8 @@ public:
 	HRESULT Init();
 	void Release();
 
-	void LoadObjects(vector<cBaseObject*>& vObjects);
-	void LoadBoundBox(vector<cBaseObject*>& vObjects);
+	void LoadObjects(vector<cBaseObject*>* vObjects);
+	void LoadBoundBox(vector<cBaseObject*>* vObjects);
 
 	void SelectObjMesh(OBJECT_TYPE type);
 };

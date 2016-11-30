@@ -19,8 +19,8 @@ HRESULT cScene_testMonster::Scene_Init()
 	//
 	//파일 로드
 	//
-	LOAD_MGR->LoadObjects(m_vObject);
-	LOAD_MGR->LoadBoundBox(m_vBoundBox);
+	LOAD_MGR->LoadObjects(&m_vObject);
+	LOAD_MGR->LoadBoundBox(&m_vBoundBox);
 
 	//
 	//터레인 세팅
@@ -168,5 +168,11 @@ void cScene_testMonster::Scene_Render1()
 	for (int i = 0; i < size; i++)
 	{
 		m_vCulling[i]->Render();
+	}
+
+	size = m_vBoundBox.size();
+	for (int i = 0; i < size; i++)
+	{
+		m_vBoundBox[i]->Render();
 	}
 }

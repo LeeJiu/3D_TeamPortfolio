@@ -22,8 +22,8 @@ HRESULT DragonTest::Scene_Init()
 	//
 	//파일 로드
 	//
-	LOAD_MGR->LoadObjects(m_vObject);
-	LOAD_MGR->LoadBoundBox(m_vBoundBox);
+	LOAD_MGR->LoadObjects(&m_vObject);
+	LOAD_MGR->LoadBoundBox(&m_vBoundBox);
 
 
 	m_pTerrain = new cTerrain;
