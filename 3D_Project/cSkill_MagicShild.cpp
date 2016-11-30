@@ -92,8 +92,8 @@ void cSkill_MagicShild::Effect_Update(float timeDelta)
 {
 	if (m_BuffCount == 1)
 	{
-		SOUND_MGR->play("mage_magicShild", 0.3f);
-		SOUND_MGR->play("mage_magicShild_se", 0.3f);
+		SOUND_MGR->play("mage_magicShild", 0.8f);
+		SOUND_MGR->play("mage_magicShild_se", 0.8f);
 	}
 
 

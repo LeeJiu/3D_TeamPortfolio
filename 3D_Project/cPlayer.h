@@ -46,6 +46,8 @@ protected:
 	float				m_fSP;
 	float				m_currentSp;
 	float				m_attackLength;			//공격가능범위
+	float				m_TextTime;
+
 	int					m_damage;				//데미지
 	int					m_Invintime;			//무적시간
 
@@ -56,6 +58,7 @@ protected:
 	bool				m_isAttack;				//공격하는중?
 	bool				m_isHeat;				//데미지입는중
 	bool				m_invenOn;				//인벤켜진?
+	bool				m_textOn;				//텍스트 켜진?
 	
 	bool                m_WeaponCheck;          // 아이템 장착 됬는지.
 	bool                m_botton;

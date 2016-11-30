@@ -130,13 +130,13 @@ void cSkill_FlameRoad::Effect_Update(float timeDelta)
 {
 	if (m_CastTimeCount == 1)
 	{
-		SOUND_MGR->play("mage_FireRoad", 0.3f);
-		SOUND_MGR->play("mage_FireRoad_se", 0.3f);
+		SOUND_MGR->play("mage_FireRoad", 0.8f);
+		SOUND_MGR->play("mage_FireRoad_se", 0.8f);
 	}
 
 	if (m_AttackingCount == 1)
 	{
-		SOUND_MGR->play("mage_FireRoad_se2", 0.3f);
+		SOUND_MGR->play("mage_FireRoad_se2", 0.8f);
 		m_flameRoad->StartEmission();
 		m_flameRoad2->StartEmission();
 		m_flameRoad3->StartEmission();

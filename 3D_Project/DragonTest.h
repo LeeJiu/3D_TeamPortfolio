@@ -36,6 +36,8 @@ private:
 	bool			m_bMove;
 	cBaseObject*	m_Land;			//컬링된 오브젝트
 
+	cBaseObject*    castle;
+
 	D3DXMATRIXA16 temp;
 
 	cUI_CharacterBar* m_CharacterBar;

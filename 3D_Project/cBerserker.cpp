@@ -16,8 +16,8 @@ cBerserker::~cBerserker()
 {
 	SAFE_DELETE(m_ShowDamage);
 	SAFE_DELETE(m_Swing);
-	SAFE_DELETE(m_Howling);
 	SAFE_DELETE(m_Burserk);
+	SAFE_DELETE(m_ArmorCrash);
 }
 
 void cBerserker::BaseObjectEnable()
@@ -55,12 +55,13 @@ void cBerserker::BaseObjectEnable()
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
 	m_camera->AttachTo(pTransform);			//카메라붙임
-	m_camera->SetLocalPosition(0, 2, -5);
+	m_camera->SetLocalPosition(0, 2, -10);
 
 	m_atkCnt = 1;			//평타 진행도
 	m_time = 0;				//평타 글쿨
 	m_testtime = 0;			//테스트용 로그찎는시간
 	m_Invintime = 0;		//무적시간체ㅔ크
+	m_TextTime = 0;
 
 	//skill
 	SkillInit();
@@ -82,10 +83,10 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	}
 
 
-	if (!m_invenOn)
+	if (m_invenOn || m_ArmorCrash->GetIsSelecting())
 	{
-		Monster_pick();
 	}
+	else	Monster_pick();
 
 	UiUpdate(timeDelta, m_camera);
 	if (this->pTrailRender != NULL)
@@ -122,6 +123,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	
 	m_time += timeDelta;
 	m_Invintime += timeDelta;
+	m_TextTime += timeDelta;
 	m_testtime += timeDelta;
 
 	//
@@ -135,16 +137,22 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		switch (m_atkCnt)
 		{
 			case 1 : 
+				SOUND_MGR->play("atk_voice",0.8);
+				SOUND_MGR->play("atk1", 0.8);
 				m_state = ATK_01;
 				Attack01();
 				m_atkCnt++;
 				break;
 			case 2: 
+				SOUND_MGR->play("atk_voice", 0.8);
+				SOUND_MGR->play("atk2", 0.8);
 				m_state = ATK_02;
 				Attack02();
 				m_atkCnt++;
 				break;
 			case 3: 
+				SOUND_MGR->play("atk_voice", 0.8);
+				SOUND_MGR->play("atk1", 0.8);
 				pSkinned->ChangeBoneTransform("BN_Weapon_R", "BN_Weapon_L");// 막타를 칠때 BN_Weapon_L로
 				m_state = ATK_03;
 				Attack03();
@@ -156,11 +164,10 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	}
 
 	//스킬2 - 차지
-	if (!m_isAttack && KEY_MGR->IsOnceDown('2'))
+	if (!m_ArmorCrash->GetIsCool() && !m_isAttack && KEY_MGR->IsOnceDown('2'))
 	{
-		m_isAttack = true;
+		m_currentSp -= 100;
 		m_time = 0;
-
 		RangeCheck(10);
 
 		m_state = SK_CHARGE;
@@ -169,6 +176,15 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		m_state = IDLE;
 		m_ArmorCrash->SelectSkill();
 		m_ArmorCrash->Effect_Init();
+	}
+	else if (m_ArmorCrash->GetIsCool() && KEY_MGR->IsOnceDown('2'))
+	{
+		SOUND_MGR->play("ban", 0.5);
+		if (!m_textOn)
+		{
+			m_TextTime = 0;
+			m_textOn = true;
+		}
 	}
 
 	if (m_ArmorCrash->GetAtkCount() == 1)
@@ -180,11 +196,10 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 
 
 	//스킬3 - 스윙
-	if (!m_isAttack && KEY_MGR->IsOnceDown('3'))
+	if (!m_Swing->GetIsCool() && !m_isAttack && KEY_MGR->IsOnceDown('3'))
 	{
-		m_isAttack = true;
+		m_currentSp -= 80;
 		m_time = 0;
-	
 		m_state = SK_SWING;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->PlayOneShotAFTERIDLE(m_strName, 0.3, 0.15);
@@ -192,19 +207,36 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		m_Swing->Effect_Init();
 		m_Swing->StartCasting();
 	}
-
-	//스킬4
-	if (!m_isAttack && KEY_MGR->IsOnceDown('4'))
+	else if (m_Swing->GetIsCool() && KEY_MGR->IsOnceDown('3'))
 	{
-		
+		SOUND_MGR->play("ban", 0.5);
+		if (!m_textOn)
+		{
+			m_TextTime = 0;
+			m_textOn = true;
+		}
 	}
 
-	//스킬5 - 버서크
-	if (!m_isAttack && KEY_MGR->IsOnceDown('5'))
-	{
-		m_isAttack = true;
-		m_time = 0;
+	//스킬4
+	//if (!m_isAttack && KEY_MGR->IsOnceDown('4'))
+	//{
+	//	
+	//}
+	//else if (m_Burserk->GetIsCool() && KEY_MGR->IsOnceDown('5'))
+	//{
+	//	SOUND_MGR->play("ban", 0.5);
+	//	if (!m_textOn)
+	//	{
+	//		m_TextTime = 0;
+	//		m_textOn = true;
+	//	}
+	//}
 
+	//스킬5 - 버서크
+	if (!m_Burserk->GetIsCool() && !m_isAttack && KEY_MGR->IsOnceDown('5'))
+	{
+		m_currentSp -= 50;
+		m_time = 0;
 		LOG_MGR->AddLog("광폭화 시전");
 	
 		m_state = SK_BUFF;
@@ -214,16 +246,23 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 		m_Burserk->Effect_Init();
 		m_Burserk->StartCasting();
 	}
+	else if (m_Burserk->GetIsCool() && KEY_MGR->IsOnceDown('5'))
+	{
+		SOUND_MGR->play("ban", 0.5);
+		if (!m_textOn)
+		{
+			m_TextTime = 0;
+			m_textOn = true;
+		}
+	}
 
-	SKILL01();			//하울링
+	SKILL01();			//차징
 	SKILL02();			//스윙
 	SKILL03();			//
 	SKILL04();			//버프
-
 	
 	m_Swing->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition());
 	m_Swing->Effect_Update(timeDelta);
-
 	m_Burserk->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition());
 	m_Burserk->Effect_Update(timeDelta);
 
@@ -237,8 +276,9 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	m_ArmorCrash->BaseObjectUpdate(timeDelta, this->pTransform->GetWorldPosition(), mousePos);
 	m_ArmorCrash->Effect_Update(timeDelta);
 
-
-	
+	//텍스트사라줘
+	if (m_textOn && m_TextTime > 1)
+		m_textOn = false;
 
 	//글쿨 막타만 1.5초
 	if (m_time > 1)
@@ -271,8 +311,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	//test용 로그 출려꾸 
 	if (m_testtime > 1)
 	{
-		LOG_MGR->AddLog("maxhp : %.0f php : %.0f", m_fHP, m_currentHp);
-		//LOG_MGR->AddLog("hp : %d", m_currentHp);
+		LOG_MGR->AddLog("damage : %d ", m_damage);
 		m_testtime = 0;
 	}
 
@@ -316,6 +355,11 @@ void cBerserker::BaseSpriteRender()
 void cBerserker::BaseFontRender()
 {
 	m_UIContainer->UI_fontRender();
+
+	if (m_textOn)
+	{
+		DXFONT_MGR->PrintTextOutline("스킬 쿨타임 입니다", WINSIZE_X/2 - 80, WINSIZE_Y/2 - 200, 0xffffffff, 0xff000000);
+	}
 }
 
 void cBerserker::BaseObjectBoundBox()
@@ -391,19 +435,15 @@ void  cBerserker::SkillInit()
 {
 	m_Swing = new cSkill_Swing;
 	m_Swing->SetActive(true);
-	m_Swing->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 1, 200, 50);	//즉시시전은 캐스터 카운트 1
-
-	m_Howling = new cSkill_Howling;
-	m_Howling->SetActive(true);
-	m_Howling->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 1, 5, 60);
+	m_Swing->BaseObjectEnable(pTransform->GetWorldPosition(), 10.f, 1, 200, 150);	//즉시시전은 캐스터 카운트 1
 	
 	m_Burserk = new cSkill_Burserk;
 	m_Burserk->SetActive(true);
-	m_Burserk->BaseObjectEnable(pTransform->GetWorldPosition(), 70, 600, 20);
+	m_Burserk->BaseObjectEnable(pTransform->GetWorldPosition(), 70, 600, 500);
 
 	m_ArmorCrash = new cSkill_AmorCrash;
 	m_ArmorCrash->SetActive(true);
-	m_ArmorCrash->BaseObjectEnable(pTransform->GetWorldPosition(), 2, 10, 1, 100, 10);
+	m_ArmorCrash->BaseObjectEnable(pTransform->GetWorldPosition(), 2, 10, 1, 100, 1000);
 
 	m_aniCount = 0;
 }
@@ -411,6 +451,28 @@ void  cBerserker::SkillInit()
 
 void cBerserker::SKILL01()
 {
+	int damage = (m_damage + m_Weapon->getDmg()) * 5;
+
+	if (m_ArmorCrash->GetIsAttacking())
+	{
+		m_isAttack = true;
+
+		RangeCircleCheck(m_ArmorCrash->GetAttackPos(), 2);
+		int size = m_vMonster.size();
+
+		for (int i = 0; i < size; i++)
+		{
+			if (!m_vMonster[i]->GetInRange()) continue;
+			damage = RandomIntRange(damage - 10, damage + 10);
+
+			if (m_tick[BK_CHARGE]->tickStart())
+			{
+				LOG_MGR->AddLog("%d 데미지줌", damage);
+				m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
+				m_vMonster[i]->Damage(damage);
+			}
+		}
+	}
 }
 
 void cBerserker::SKILL02()
@@ -419,6 +481,8 @@ void cBerserker::SKILL02()
 
 	if (m_Swing->GetIsAttacking())
 	{
+		m_isAttack = true;
+
 		RangeCheck(10);
 		int size = m_vMonster.size();
 
@@ -432,6 +496,8 @@ void cBerserker::SKILL02()
 				LOG_MGR->AddLog("%d 데미지줌", damage);
 				m_ShowDamage->SetNumber(damage, m_vMonster[i]->pTransform);
 				m_vMonster[i]->Damage(damage);
+				LOG_MGR->AddLog("%d 데미지줌", m_vMonster[i]->monType);
+
 			}
 		}
 	}
@@ -491,7 +557,7 @@ void cBerserker::SetTickCount()
 		m_tick[i]->init(0.3f);
 	}
 
-	m_tick[BK_HOWL]->init(0.5f);
+	m_tick[BK_CHARGE]->init(0.8f);
 	m_tick[BK_SWING]->init(0.5f);
 	m_tick[BK_ACCEL]->init(0.3f); //넌아직모르겟엄
 }
@@ -500,6 +566,7 @@ void cBerserker::UiUpdate(float timeDelta, cCamera* camera)
 {
 	if (m_inven->GetWeapon() == NULL &&m_botton == true)
 	{
+		SOUND_MGR->play("offWeapon", 0.8);
 		if (pTrailRender != NULL)
 		{
 			this->pTrailRender->Transform.ReleaseParent();
@@ -520,6 +587,7 @@ void cBerserker::UiUpdate(float timeDelta, cCamera* camera)
 	}
 	else if (m_inven->GetWeapon() != NULL&& m_botton == false)
 	{
+		SOUND_MGR->play("setWeapon", 0.8);
 		if (pTrailRender != NULL)
 		{
 			this->pTrailRender->Transform.ReleaseParent();
@@ -549,5 +617,6 @@ void cBerserker::UiUpdate(float timeDelta, cCamera* camera)
 		m_inven->update(timeDelta, m_camera, this->pTransform->GetWorldPosition());
 		ITEM_MGR->update(timeDelta);
 	}
+
 
 }

@@ -147,8 +147,8 @@ void cSkill_SnowStorm::Effect_Update(float timeDelta)
 {
 	if (m_AttackingCount == 1)
 	{
-		SOUND_MGR->play("mage_SnowStorm", 0.3f);
-		SOUND_MGR->play("mage_SnowStorm_se", 0.3f);
+		SOUND_MGR->play("mage_SnowStorm", 0.8f);
+		SOUND_MGR->play("mage_SnowStorm_se", 0.8f);
 	}
 
 	if (m_AttackingTime - 100 == m_AttackingCount)

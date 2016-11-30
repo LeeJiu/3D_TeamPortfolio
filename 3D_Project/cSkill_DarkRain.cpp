@@ -158,9 +158,9 @@ void cSkill_DarkRain::Effect_Update(float timeDelta)
 
 	if (m_CastTimeCount == 1)
 	{
-		SOUND_MGR->play("mage_DarkSwarm", 0.3f);
-		SOUND_MGR->play("mage_DarkSwarm_se", 0.3f);
-		SOUND_MGR->play("mage_DarkSwarm_se2", 0.3f);
+		SOUND_MGR->play("mage_DarkSwarm", 0.8f);
+		SOUND_MGR->play("mage_DarkSwarm_se", 0.8f);
+		SOUND_MGR->play("mage_DarkSwarm_se2", 0.8f);
 	}
 
 	if (m_AttackingTime - 50 == m_AttackingCount)

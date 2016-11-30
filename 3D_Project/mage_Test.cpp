@@ -152,6 +152,12 @@ void mage_Test::Scene_Update(float timeDelta)
 
 	m_pMonMgr->Update(timeDelta);
 
+	if (KEY_MGR->IsOnceDown('0'))
+	{
+		SCENE_MGR->ChangeSceneWithLoading("DragonTest", "Loading", 1, 1);
+	}
+
+
 	
 
 }

@@ -134,8 +134,8 @@ void cSkill_MagicShot::Effect_Update(float timeDelta)
 
 	if (m_AttackingCount == 1)
 	{
-		SOUND_MGR->play("mage_magicShot", 0.3f);
-		SOUND_MGR->play("mage_magicShot_se", 0.3f);
+		SOUND_MGR->play("mage_magicShot", 0.8f);
+		SOUND_MGR->play("mage_magicShot_se", 0.8f);
 		m_magicATK2->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
 		m_magicATK3->pTransform->SetWorldPosition(pTransform->GetWorldPosition());
 	}

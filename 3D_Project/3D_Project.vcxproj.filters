@@ -339,11 +339,14 @@
     <ClInclude Include="cSkill_Howling.h">
       <Filter>Component\Skill</Filter>
     </ClInclude>
-    <ClInclude Include="cBaseskill.h">
-      <Filter>Component\Skill</Filter>
-    </ClInclude>
     <ClInclude Include="cSkill_AmorCrash.h">
       <Filter>Component\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_LoadingScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cScene_OpeningScene.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -638,11 +641,14 @@
     <ClCompile Include="cSkill_Howling.cpp">
       <Filter>Component\Skill</Filter>
     </ClCompile>
-    <ClCompile Include="cBaseskill.cpp">
-      <Filter>Component\Skill</Filter>
-    </ClCompile>
     <ClCompile Include="cSkill_AmorCrash.cpp">
       <Filter>Component\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_LoadingScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="cScene_OpeningScene.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

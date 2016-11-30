@@ -11,7 +11,7 @@
 
 enum BK_SKILL //Æ½ Å¬·¡½º¿¡¼­ ¾µ²¨. 
 {
-	BK_HOWL, BK_SWING, BK_ACCEL
+	BK_CHARGE, BK_HOWL, BK_SWING, BK_ACCEL
 };
 
 class cShowDamage;
