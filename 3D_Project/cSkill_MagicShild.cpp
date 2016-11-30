@@ -16,6 +16,9 @@ cSkill_MagicShild::~cSkill_MagicShild()
 
 void cSkill_MagicShild::Effect_Init()
 {
+	SOUND_MGR->addSound("mage_magicShild", "../Resources/Sound/메이지_버프_음성.ogg", false, false);
+	SOUND_MGR->addSound("mage_magicShild_se", "../Resources/Sound/메이지_버프.ogg", false, false);
+
 	m_magicShild = new cQuadParticleEmitter();
 	m_magicShild->SetActive(true);
 
@@ -87,6 +90,13 @@ void cSkill_MagicShild::Effect_Init()
 
 void cSkill_MagicShild::Effect_Update(float timeDelta)
 {
+	if (m_BuffCount == 1)
+	{
+		SOUND_MGR->play("mage_magicShild", 0.8f);
+		SOUND_MGR->play("mage_magicShild_se", 0.8f);
+	}
+
+
 
 	if (m_IsInBuff)
 	{

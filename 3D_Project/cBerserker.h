@@ -11,7 +11,7 @@
 
 enum BK_SKILL //Æ½ Å¬·¡½º¿¡¼­ ¾µ²¨. 
 {
-	BK_CHARGE, BK_SWING, BK_ACCEL
+	BK_CHARGE, BK_HOWL, BK_SWING, BK_ACCEL
 };
 
 class cShowDamage;
@@ -38,6 +38,7 @@ private:
 	cSkill_AmorCrash*   m_ArmorCrash;
 
 	int					m_SwingCnt;
+
 
 public:
 	cBerserker();

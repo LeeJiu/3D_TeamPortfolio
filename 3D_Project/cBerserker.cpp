@@ -56,7 +56,7 @@ void cBerserker::BaseObjectEnable()
 	m_pMove->init(pTransform, pTerrain, m_camera, NULL);
 
 	m_camera->AttachTo(pTransform);			//카메라붙임
-	m_camera->SetLocalPosition(0, 2, -10);
+	m_camera->SetLocalPosition(0, 4, -10);
 
 	m_atkCnt = 1;			//평타 진행도
 	m_time = 0;				//평타 글쿨
@@ -183,6 +183,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 
 	if (m_ArmorCrash->GetAtkCount() == 1)
 	{
+		SOUND_MGR->stop("bk_charge_voice");
 		SOUND_MGR->play("bk_atk3_voice", 0.8);
 		SOUND_MGR->play("charge_boom", 0.8);
 		m_state = SK_CHARGE_ATK;
@@ -300,6 +301,12 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 
 	m_camera->ShakeUpdate(timeDelta);
 	m_UIContainer->UI_Update(m_currentHp, m_currentSp);
+
+	if (m_target)
+	{
+		if (!m_target->IsActive())
+			m_target = NULL;
+	}
 
 }
 
@@ -445,7 +452,7 @@ void cBerserker::SKILL01()
 	{
 		m_isAttack = true;
 
-		RangeCircleCheck(m_ArmorCrash->GetAttackPos(), 2);
+		RangeCircleCheck(m_ArmorCrash->GetAttackPos(), 4);
 		int size = m_vMonster.size();
 
 		if (m_tick[BK_SWING]->tickStart())
@@ -454,6 +461,7 @@ void cBerserker::SKILL01()
 			{
 				if (m_vMonster[i]->GetInRange())
 				{
+					if (!m_vMonster[i]->IsActive()) continue;
 
 					LOG_MGR->AddLog("m_vMonster[%d] = %d", m_vMonster[i]->GetInRange());
 					damage = RandomIntRange(damage - 10, damage + 10);
@@ -483,6 +491,7 @@ void cBerserker::SKILL02()
 			{
 				if (m_vMonster[i]->GetInRange())
 				{
+					if (!m_vMonster[i]->IsActive()) continue;
 
 					LOG_MGR->AddLog("m_vMonster[%d] = %d", i, m_vMonster[i]->GetInRange());
 					damage = RandomIntRange(damage - 10, damage + 10);
@@ -573,7 +582,7 @@ void cBerserker::UiUpdate(float timeDelta, cCamera* camera)
 		//트레일렌더그려줄거
 		this->pTrailRender->Transform.AttachTo(m_Weapon->pTransform);
 		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
-		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 45 * ONE_RAD, 0);
+		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 0 * ONE_RAD, 90 * ONE_RAD);
 		
 		m_botton = false;
 	}
@@ -596,7 +605,6 @@ void cBerserker::UiUpdate(float timeDelta, cCamera* camera)
 		this->pTrailRender->Transform.SetLocalPosition(0, 1, 0);
 		this->pTrailRender->Transform.RotateLocal(90 * ONE_RAD, 90 * ONE_RAD, 0);
 	}
-
 
 	if (KEY_MGR->IsOnceDown('I'))
 	{

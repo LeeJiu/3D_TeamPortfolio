@@ -37,6 +37,10 @@ cMage::~cMage()
 
 void cMage::BaseObjectEnable()
 {
+
+
+
+
 	m_fHP = 2000;
 	m_currentHp = 2000;
 	m_fSP = 1500;
@@ -196,6 +200,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 			this->pSkinned->PlayOneShotAfterOther(m_strName, "WAIT", 0.3);
 			m_pSkill_SnowStorm->Effect_Init();
 			m_pSkill_SnowStorm->StartCasting();
+	
 		}
 	}
 
@@ -283,7 +288,10 @@ void cMage::BaseObjectUpdate(float timeDelta)
 		pTransform->SetWorldPosition(D3DXVECTOR3(m_pSkill_Escape->GetEscapePos().x, pTransform->GetWorldPosition().y, m_pSkill_Escape->GetEscapePos().z));
 	}
 
+	SKILL01();
+	SKILL02();
 	SKILL03();
+	SKILL04();
 
 	m_pMagicShot->BaseObjectUpdate(timeDelta, m_ATKBox->pTransform->GetWorldPosition(), pTransform->GetForward());
 	m_pMagicShot->Effect_Update(timeDelta);
@@ -366,7 +374,7 @@ void  cMage::SkillInit()
 
 	m_pMagicShot = new cSkill_MagicShot;
 	m_pMagicShot->SetActive(true);
-	m_pMagicShot->BaseObjectEnable(m_ATKBox->pTransform->GetWorldPosition(), 30.0f, 100);
+	m_pMagicShot->BaseObjectEnable(m_ATKBox->pTransform->GetWorldPosition(), 30.0f, 80);
 
 
 	m_aniCount = 0;
@@ -512,6 +520,22 @@ void cMage::SKILL01()
 }
 void cMage::SKILL02()
 {
+	if (m_pSkill_FlameRoad->GetIsAttacking())
+	{
+		RangeCheck(10);
+
+		int size = m_vMonster.size();
+		for (int i = 0; i < size; i++)
+		{
+			LOG_MGR->AddLog("vector[%d] = %d", i, m_vMonster[i]->GetInRange());
+
+			if (!m_vMonster[i]->GetInRange()) continue;
+
+			m_vMonster[i]->Damage(500);
+			LOG_MGR->AddLog("데미지 받는중");
+		}
+	}
+
 
 }
 void cMage::SKILL03()
@@ -528,7 +552,7 @@ void cMage::SKILL03()
 
 			if (!m_vMonster[i]->GetInRange()) continue;
 			
-			m_vMonster[i]->Damage(100);
+			m_vMonster[i]->Damage(700);
 			LOG_MGR->AddLog("데미지 받는중");
 		}
 	}
@@ -538,5 +562,21 @@ void cMage::SKILL03()
 }
 void cMage::SKILL04()
 {
+
+	if (m_pSkill_DarkRain->GetIsAttacking())
+	{
+		RangeCircleCheck(m_pSkill_DarkRain->GetAttackPos(), 5);
+	
+		int size = m_vMonster.size();
+		for (int i = 0; i < size; i++)
+		{
+			LOG_MGR->AddLog("vector[%d] = %d", i, m_vMonster[i]->GetInRange());
+	
+			if (!m_vMonster[i]->GetInRange()) continue;
+	
+			m_vMonster[i]->Damage(1600);
+			LOG_MGR->AddLog("데미지 받는중");
+		}
+	}
 
 }

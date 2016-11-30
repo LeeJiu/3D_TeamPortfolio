@@ -16,6 +16,8 @@ cSkill_SnowStorm::~cSkill_SnowStorm()
 
 void cSkill_SnowStorm::Effect_Init()
 {
+	SOUND_MGR->addSound("mage_SnowStorm", "../Resources/Sound/메이지_태풍_음성.ogg", false, false);
+	SOUND_MGR->addSound("mage_SnowStorm_se", "../Resources/Sound/메이지_태풍.ogg", false, false);
 
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling(&matScale, 0.3f, 0.3f, 0.3f);
@@ -137,8 +139,17 @@ void cSkill_SnowStorm::Effect_Init()
 }
 
 
+
+
+
+
 void cSkill_SnowStorm::Effect_Update(float timeDelta)
 {
+	if (m_AttackingCount == 1)
+	{
+		SOUND_MGR->play("mage_SnowStorm", 0.8f);
+		SOUND_MGR->play("mage_SnowStorm_se", 0.8f);
+	}
 
 	if (m_AttackingTime - 100 == m_AttackingCount)
 	{
@@ -147,6 +158,10 @@ void cSkill_SnowStorm::Effect_Update(float timeDelta)
 		m_snow->StopEmission();
 	}
 
+	if (m_AttackingCount == m_AttackingTime)
+	{
+		SOUND_MGR->stop("mage_SnowStorm_se");
+	}
 
 	if (m_IsAttacking)
 	{

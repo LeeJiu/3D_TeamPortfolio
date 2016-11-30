@@ -15,6 +15,11 @@ cSkill_DarkRain::~cSkill_DarkRain()
 
 void cSkill_DarkRain::Effect_Init()
 {
+	SOUND_MGR->addSound("mage_DarkSwarm", "../Resources/Sound/메이지_소용돌이_음성.ogg", false, false);
+	SOUND_MGR->addSound("mage_DarkSwarm_se", "../Resources/Sound/메이지_소용돌이2.ogg", false, false);
+	SOUND_MGR->addSound("mage_DarkSwarm_se2", "../Resources/Sound/메이지_소용돌이.ogg", false, true);
+
+
 	//D3DXMATRIXA16 matScale;
 	//D3DXMatrixScaling(&matScale, 0.05f, 0.05f, 0.05f);
 	//D3DXMATRIXA16 matCorrection = matScale;
@@ -151,10 +156,22 @@ void cSkill_DarkRain::Effect_Update(float timeDelta)
 		m_snow->StopEmission();
 	}
 
+	if (m_CastTimeCount == 1)
+	{
+		SOUND_MGR->play("mage_DarkSwarm", 0.8f);
+		SOUND_MGR->play("mage_DarkSwarm_se", 0.8f);
+		SOUND_MGR->play("mage_DarkSwarm_se2", 0.8f);
+	}
+
 	if (m_AttackingTime - 50 == m_AttackingCount)
 	{
 		m_snowStrom->StopEmission();
 	
+	}
+
+	if (m_AttackingTime == m_AttackingCount)
+	{
+		SOUND_MGR->stop("mage_DarkSwarm_se2");
 	}
 
 

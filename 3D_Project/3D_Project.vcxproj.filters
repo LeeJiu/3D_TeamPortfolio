@@ -339,14 +339,14 @@
     <ClInclude Include="cSkill_Howling.h">
       <Filter>Component\Skill</Filter>
     </ClInclude>
-    <ClInclude Include="cSkill_AmorCrash.h">
-      <Filter>Component\Skill</Filter>
+    <ClInclude Include="cScene_Field.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="cScene_Prologue.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cScene_Field.h">
-      <Filter>Scenes</Filter>
+    <ClInclude Include="cSkill_AmorCrash.h">
+      <Filter>Component\Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -614,6 +614,9 @@
     <ClCompile Include="cSkill_Thunder.cpp">
       <Filter>Component\Skill</Filter>
     </ClCompile>
+    <ClCompile Include="cVideoTest.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="cVideo.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -638,19 +641,16 @@
     <ClCompile Include="cSkill_Howling.cpp">
       <Filter>Component\Skill</Filter>
     </ClCompile>
-    <ClCompile Include="cSkill_AmorCrash.cpp">
-      <Filter>Component\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="cVideoTest.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="cScene_Prologue.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="camera_Test.cpp">
+    <ClCompile Include="cScene_Field.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="cScene_Field.cpp">
+    <ClCompile Include="cSkill_AmorCrash.cpp">
+      <Filter>Component\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="camera_Test.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>

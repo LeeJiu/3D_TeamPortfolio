@@ -10,6 +10,8 @@
 #include "berserker_test.h"
 #include "DragonTest.h"
 #include "cVideoTest.h"
+#include "cScene_LoadingScene.h"
+#include "cScene_OpeningScene.h"
 
 //½Ã¿¬ ¾À
 #include "cScene_Prologue.h"
@@ -59,7 +61,7 @@ HRESULT cMainGame::Init(void)
 	//½Ã¿¬¿ë ¾À
 	SCENE_MGR->AddScene("Prologue", new cScene_Prologue());
 	SCENE_MGR->AddScene("Field", new cScene_Field());
-	
+
 
 	////°ÔÀÓ ½ÃÀÛ¾À
 	//SCENE_MGR->ChangeScene( "mage_Test" );
@@ -72,8 +74,6 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene("cVideoTest");
 
 	SCENE_MGR->ChangeScene("Prologue");
-
-	//SCENE_MGR->ChangeScene("Field");
 
 	return S_OK;		
 }	
