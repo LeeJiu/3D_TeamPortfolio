@@ -6,7 +6,7 @@
 cDragon::cDragon()
 {
 	m_collCount = COLLISION;
-	m_fHP = 5500.f;
+	m_fHP = 50000.0f;
 	dieAniTime = 0.f;
 	//TIME_MGR->GetFrameDeltaSec();
 }
@@ -866,7 +866,7 @@ void cDragon::dieUpdate(float timeDelta)
 		this->pSkinned->Play("Spawn", 0.3);
 	}
 
-	if (dieAniTime > 7.f)
+	if (dieAniTime > 10.f)
 	{
 
 		pSkinned->Stop();

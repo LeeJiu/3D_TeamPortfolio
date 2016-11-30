@@ -11,6 +11,11 @@
 #include "DragonTest.h"
 #include "cVideoTest.h"
 
+//시연 씬
+#include "cScene_Prologue.h"
+#include "cScene_Field.h"
+
+
 cMainGame::cMainGame(void)
 {
 }
@@ -41,71 +46,20 @@ HRESULT cMainGame::Init(void)
 	LOAD_MGR->Init();
 	
 	//게임에 사용되는 씬 추가
-	SCENE_MGR->AddScene("move_Test", new move_Test());
-	SCENE_MGR->AddScene("mage_Test", new mage_Test());
-	SCENE_MGR->AddScene("animation_Test", new animation_Test());
-	SCENE_MGR->AddScene("cScene_BoundBoxTool", new cScene_BoundBoxTool());
-	SCENE_MGR->AddScene("monster_Test", new monster_Test());
-	SCENE_MGR->AddScene("cScene_testMonster", new cScene_testMonster());
-	SCENE_MGR->AddScene("berserker_test", new berserker_test());
+	//SCENE_MGR->AddScene("move_Test", new move_Test());
+	//SCENE_MGR->AddScene("mage_Test", new mage_Test());
+	//SCENE_MGR->AddScene("animation_Test", new animation_Test());
+	//SCENE_MGR->AddScene("cScene_BoundBoxTool", new cScene_BoundBoxTool());
+	//SCENE_MGR->AddScene("monster_Test", new monster_Test());
+	//SCENE_MGR->AddScene("cScene_testMonster", new cScene_testMonster());
+	//SCENE_MGR->AddScene("berserker_test", new berserker_test());	
+	//SCENE_MGR->AddScene("DragonTest", new DragonTest());
+	//SCENE_MGR->AddScene("cVideoTest", new cVideoTest());
+
+	//시연용 씬
+	SCENE_MGR->AddScene("Prologue", new cScene_Prologue());
+	SCENE_MGR->AddScene("Field", new cScene_Field());
 	
-	SCENE_MGR->AddScene("DragonTest", new DragonTest());
-	SCENE_MGR->AddScene("cVideoTest", new cVideoTest());
-
-	//공용 효과음
-	SOUND_MGR->addSound("ban", "../Resources/Sound/ban.ogg", false, false); 
-	SOUND_MGR->addSound("setWeapon", "../Resources/Sound/무기착용.ogg", false, false);
-	SOUND_MGR->addSound("offWeapon", "../Resources/Sound/무기해제.wav", false, false);
-	SOUND_MGR->addSound("inputWeapon", "../Resources/Sound/템주움.ogg", false, false);
-	SOUND_MGR->addSound("walk", "../Resources/Sound/걷다.ogg", true, true);
-	SOUND_MGR->addSound("hit", "../Resources/Sound/hit_impact02.ogg", false, false);
-
-	//배경음
-	SOUND_MGR->addSound("field_bgm", "../Resources/Sound/사막배경음.mp3", true, true);
-
-	//버서커 효과음
-	SOUND_MGR->addSound("bk_atk1_voice", "../Resources/Sound/버서커_평타3 (1).ogg", false, false);
-	SOUND_MGR->addSound("bk_atk2_voice", "../Resources/Sound/버서커_평타3 (2).ogg", false, false);
-	SOUND_MGR->addSound("bk_atk3_voice", "../Resources/Sound/버서커_평타3 (3).ogg", false, false);
-	SOUND_MGR->addSound("bk_atk1", "../Resources/Sound/버서커_평타6.ogg", false, false);
-	SOUND_MGR->addSound("bk_atk2", "../Resources/Sound/버서커_평타1.ogg", false, false);
-	SOUND_MGR->addSound("bk_atk3", "../Resources/Sound/버서커_평타7.ogg", false, false);
-	SOUND_MGR->addSound("bk_heat", "../Resources/Sound/버서커_맞음.ogg", false, false);
-	SOUND_MGR->addSound("bk_dead", "../Resources/Sound/버서커_죽음.ogg", false, false);
-	SOUND_MGR->addSound("bk_charge_voice", "../Resources/Sound/버서커_대사_아머크래셔.ogg", false, false);
-	SOUND_MGR->addSound("charge_boom", "../Resources/Sound/차지 폭발음.ogg", false, false);
-	SOUND_MGR->addSound("bk_swing_voice", "../Resources/Sound/버서커_대사_스윙.ogg", false, false);
-	SOUND_MGR->addSound("bk_burserk_voice", "../Resources/Sound/버서커_대사_광폭화.ogg", false, false);
-	SOUND_MGR->addSound("bk_weapon_voice", "../Resources/Sound/버서커_대사_무기착용.ogg", false, false);
-
-	//용 효과음
-	SOUND_MGR->addSound("dra_BasicATK", "../Resources/Sound/스컬드래곤_공격.ogg", false, false);
-	SOUND_MGR->addSound("dra_Breath", "../Resources/Sound/스컬드래곤_브레스.ogg", false, false);
-	SOUND_MGR->addSound("dra_HeadATK", "../Resources/Sound/스컬드래곤_스킬1.ogg", false, false);
-	SOUND_MGR->addSound("dra_Spawn", "../Resources/Sound/스컬드래곤_스킬2.ogg", false, false);
-
-	SOUND_MGR->addSound("dra_Thunder", "../Resources/Sound/스컬드래곤_썬더.ogg", false, false);
-	SOUND_MGR->addSound("dra_Meteo", "../Resources/Sound/스컬드래곤_메테오.ogg", false, false);
-	SOUND_MGR->addSound("dra_Die", "../Resources/Sound/스컬드래곤_죽음.ogg", false, false);
-
-	//몬스터 효과음
-	//거미
-	SOUND_MGR->addSound("atk_spider", "../Resources/Sound/거미_때림.ogg", false, false);
-	SOUND_MGR->addSound("dmg_spider", "../Resources/Sound/거미_맞음.ogg", false, false);
-	SOUND_MGR->addSound("die_spider", "../Resources/Sound/거미_죽음.ogg", false, false);
-	
-	//바실리스크
-	SOUND_MGR->addSound("atk_basil", "../Resources/Sound/바실_때림.ogg", false, false);
-	SOUND_MGR->addSound("atk2_basil", "../Resources/Sound/바실_때림2.ogg", false, false);
-	SOUND_MGR->addSound("dmg_basil", "../Resources/Sound/바실_맞음.ogg", false, false);
-	SOUND_MGR->addSound("die_basil", "../Resources/Sound/바실_죽음.ogg", false, false);
-
-	//미노타우로스
-	SOUND_MGR->addSound("atk_mino", "../Resources/Sound/monster_minotauros_atk.mp3", false, false);
-	SOUND_MGR->addSound("atk2_mino", "../Resources/Sound/monster_minotauros_atk2.mp3", false, false);
-	SOUND_MGR->addSound("die_mino", "../Resources/Sound/monster_minotauros_dead.ogg", false, false);
-	SOUND_MGR->addSound("hit_mino", "../Resources/Sound/monster_minotauros_hit.ogg", false, false);
-	SOUND_MGR->addSound("wait_mino", "../Resources/Sound/monster_moonknight_cry2.ogg", false, false);
 
 	////게임 시작씬
 	//SCENE_MGR->ChangeScene( "mage_Test" );
@@ -114,8 +68,12 @@ HRESULT cMainGame::Init(void)
 	//SCENE_MGR->ChangeScene( "move_Test" );
 	//SCENE_MGR->ChangeScene( "animation_Test" );
 	//SCENE_MGR->ChangeScene("cScene_BoundBoxTool");
-	SCENE_MGR->ChangeScene("cScene_testMonster");
+	//SCENE_MGR->ChangeScene("cScene_testMonster");
 	//SCENE_MGR->ChangeScene("cVideoTest");
+
+	SCENE_MGR->ChangeScene("Prologue");
+
+	//SCENE_MGR->ChangeScene("Field");
 
 	return S_OK;		
 }	
