@@ -41,7 +41,7 @@ void cLoadManager::Release()
 {
 }
 
-void cLoadManager::LoadObjects(vector<cBaseObject*>& vObjects)
+void cLoadManager::LoadObjects(vector<cBaseObject*>* vObjects)
 {
 	fstream file;
 	file.open("ObjectData.txt", fstream::in);  //fstream::in 읽기모드
@@ -117,11 +117,11 @@ void cLoadManager::LoadObjects(vector<cBaseObject*>& vObjects)
 		pObject->pTransform->SetScale(scale);
 
 		//푸쉬 
-		vObjects.push_back(pObject);
+		(*vObjects).push_back(pObject);
 	}
 }
 
-void cLoadManager::LoadBoundBox(vector<cBaseObject*>& vObjects)
+void cLoadManager::LoadBoundBox(vector<cBaseObject*>* vObjects)
 {
 	fstream file;
 	file.open("BoundData.txt", fstream::in);  //fstream::in 읽기모드
@@ -207,7 +207,7 @@ void cLoadManager::LoadBoundBox(vector<cBaseObject*>& vObjects)
 		pNewBound->BoundBox.SetBound(&localCenter, &localHalf);
 
 		//푸쉬 
-		vObjects.push_back(pNewBound);
+		(*vObjects).push_back(pNewBound);
 	}
 }
 

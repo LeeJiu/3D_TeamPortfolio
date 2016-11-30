@@ -872,7 +872,7 @@ void cDragon::dieUpdate(float timeDelta)
 		pSkinned->Stop();
 		stateInit();
 		isDie = true;
-		m_state == DIE;
+		m_state = DIE;
 		SetActive(false);
 	}
 
