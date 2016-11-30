@@ -35,6 +35,12 @@ void cScene_Prologue::Scene_Update(float timeDelta)
 		m_bStart = true;
 	}
 
+	if (m_pVideo->GetIsPlay() == false)
+	{
+		m_pVideo->Stop();
+		SCENE_MGR->ChangeScene("Field", 1);
+	}
+
 	if (KEY_MGR->IsOnceDown(VK_RETURN))
 	{
 		SCENE_MGR->ChangeScene("Field", 1);

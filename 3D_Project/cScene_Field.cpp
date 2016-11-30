@@ -119,6 +119,12 @@ void cScene_Field::Scene_Render1()
 
 	m_pPlayer->Render();
 	m_pMonMgr->Render();
+
+	int size = m_vObject.size();
+	for (int i = 0; i < size; ++i)
+	{
+		m_vObject[i]->Render();
+	}
 }
 
 void cScene_Field::Scene_RenderSprite()
