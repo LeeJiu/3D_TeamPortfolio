@@ -45,11 +45,15 @@ public:
 	// 충돌 오브젝트는 여러개 일 수 있음 나중에 벡터 형으로 바뀔 수도 있다.
 	void update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox, cTransform* collTrans);
 	void update(float timeDelta, cBaseObject* collObj, cBoundBox* collBox, cTransform* collTrans, std::map<int, bool> key);
-
+	void update(float timeDelta, std::vector<cBaseObject*> vObj, std::vector<cBaseObject*> vBound, std::map<int, bool> key);
 	void render();
 
 	void boundCheck(cBoundBox* collBox,cTransform* collTrans);
+	void boundCheck(std::vector<cBaseObject*> vBound);
+
 	void getLastHeight(cBaseObject* enumy);
+	void getLastHeight(std::vector<cBaseObject*> vObj);
+
 	void clickUpdate(cBaseObject* enumy);
 	void moveJumpCheck(float timeDelta);
 

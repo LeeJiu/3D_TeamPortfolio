@@ -62,11 +62,11 @@ HRESULT DragonTest::Scene_Init()
 	//m_Land->pTransform->SetWorldPosition(0, this->m_pTerrain->GetHeight(0, 0) - 18, 0);
 	m_Land->pTransform->SetWorldPosition(0, 0, 0);
 
-	castle = new cBaseObject;
-	castle->SetMesh(RESOURCE_STATICXMESH->GetResource(
-		"../Resources/Meshes/Migdal/migdal_Wall.X",&matCorrection));
-	castle->SetActive(true);
-	castle->pTransform->SetWorldPosition(0, 24, 0);
+	// castle = new cBaseObject;
+	// castle->SetMesh(RESOURCE_STATICXMESH->GetResource(
+	// 	"../Resources/Meshes/Migdal/migdal_Wall.X",&matCorrection));
+	// castle->SetActive(true);
+	// castle->pTransform->SetWorldPosition(0, 24, 0);
 
 
 	//몬스터
@@ -87,7 +87,7 @@ HRESULT DragonTest::Scene_Init()
 	this->pBerserker->SetBounds(m_vBoundBox);
 
 	//캐릭터가 그려질 위치 트랜스폼
-	this->pBerserker->pTransform->SetWorldPosition(-200, m_pTerrain->GetHeight(-200, 200), 200);
+	this->pBerserker->pTransform->SetWorldPosition(50, m_pTerrain->GetHeight(50, 50), 50);
 
 
 	//라이트 푸쉬
@@ -226,7 +226,8 @@ void DragonTest::Scene_Render1()
 
 	//cXMesh_Skinned::SetTechniqueName("ReciveShadow");
 	//RenderEnvironment(pBerserker->pTransform);
-	castle->Render();
+	
+	//castle->Render();
 }
 
 
