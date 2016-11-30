@@ -164,11 +164,10 @@ void cPlayer::Move(float timeDelta)
 		|| KEY_MGR->IsOnceUp('A') || KEY_MGR->IsOnceUp('D')))
 	{
 		m_isIdle = true;
-		m_state = IDLE;
+		m_state = WAIT;
 		m_strName = MyUtil::SetAnimation(m_state);
 		this->pSkinned->Play(m_strName, 0.3);
 	}
-	
 
 	if (!m_pMove->GetIsJump() && KEY_MGR->IsOnceDown(VK_SPACE))
 	{
@@ -183,19 +182,23 @@ void cPlayer::Move(float timeDelta)
 		m_InputKeys.find(VK_SPACE)->second = false;
 	}
 	
+	if (m_state == RUN && KEY_MGR->IsOnceDown('T'))
+	{
+		m_isAutoWalk = !m_isAutoWalk;
+	}
 
 	//
 	//===============¹«ºê==============================
 	//
 
-	if (!m_isMove) SOUND_MGR->pause("walk");
+	if (!m_isMove || m_pMove->GetIsJump()) SOUND_MGR->pause("walk");
 
 	if (KEY_MGR->IsStayDown('W'))
 	{
 		m_InputKeys.find('W')->second = true;
 	}
 	else m_InputKeys.find('W')->second = false;
-
+	
 
 	if (KEY_MGR->IsStayDown('S'))
 	{
@@ -296,9 +299,6 @@ void cPlayer::SkillInit()
 
 void cPlayer::SetBassClass()
 {
-	//m_vObject;
-	//m_vBound;
-
 	m_pMove = new moveClass;
 	m_isMove = false;
 

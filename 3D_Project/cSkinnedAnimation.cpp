@@ -252,7 +252,7 @@ void cSkinnedAnimation::PlayOneShotAFTERIDLE(std::string animName, float inCross
 	if (find != this->m_mapAnimSet.end()) {
 
 		//현재 Animaiton 을 기억한다.
-		this->m_pPrevPlayAnimationSet = m_mapAnimSet.find("IDLE")->second;
+		this->m_pPrevPlayAnimationSet = m_mapAnimSet.find("WAIT")->second;
 
 		//크로스 페이드 타임 기억
 		m_fCrossFadeTime = inCrossFadeTime;

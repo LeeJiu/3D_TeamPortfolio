@@ -19,6 +19,8 @@ berserker_test::~berserker_test(void)
 
 HRESULT berserker_test::Scene_Init()
 {
+
+
 	this->m_pTerrain = new cTerrain;
 	this->m_pTerrain->Init(
 		"../Resources/Textures/MyHeight256.bmp",
@@ -89,6 +91,8 @@ HRESULT berserker_test::Scene_Init()
 
 	isMove = false;
 	isClick = false;
+
+	SOUND_MGR->play("field_bgm", 0.8);
 
 	return S_OK;
 }

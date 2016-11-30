@@ -54,6 +54,7 @@ protected:
 	bool				m_isAttack;				//공격하는중?
 	bool				m_invenOn;				//인벤켜진?
 	bool				m_textOn;				//텍스트 켜진?
+	bool				m_isAutoWalk;			//자동이동
 	
 	bool                m_WeaponCheck;          // 아이템 장착 됬는지.
 	bool                m_botton;

@@ -15,9 +15,11 @@ void cShowDamage::Init()
 	
 }
 
-void cShowDamage::SetNumber(int number, cTransform * trans)
+void cShowDamage::SetNumber(int number, cTransform * trans, cCamera* cam)
 {
 	char temp[32];
+
+	cam->GetWorldPosToScreenPos(&pos, &trans->GetWorldPosition());
 
 	num = 0;
 	num = number;
@@ -28,8 +30,8 @@ void cShowDamage::SetNumber(int number, cTransform * trans)
 			stDamage damage;
 			damage.unit = num;
 			damage.Rc = RectMake(0, 0, TEX_WIDTH, TEX_HEIGHT);
-			damage.unit_x = WINSIZE_X / 2;
-			damage.unit_y = WINSIZE_Y / 2;
+			damage.unit_x = pos.x;
+			damage.unit_y = pos.y - 100;
 			char temp[32];
 			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.unit);
 			damage.unit_tex = RESOURCE_TEXTURE->GetResource(temp);
@@ -47,8 +49,8 @@ void cShowDamage::SetNumber(int number, cTransform * trans)
 			damage.unit = (num % 10);
 			damage.tens = (num / 10);
 			damage.Rc = RectMake(0, 0, TEX_WIDTH, TEX_HEIGHT);
-			damage.unit_x = WINSIZE_X / 2;
-			damage.unit_y = WINSIZE_Y / 2;
+			damage.unit_x = pos.x;
+			damage.unit_y = pos.y - 100;
 			char temp[32];
 			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.unit);
 			damage.unit_tex = RESOURCE_TEXTURE->GetResource(temp);
@@ -69,8 +71,8 @@ void cShowDamage::SetNumber(int number, cTransform * trans)
 			damage.tens = (number / 10) % 10;
 			damage.hund = (number / 100);
 			damage.Rc = RectMake(0, 0, TEX_WIDTH, TEX_HEIGHT);
-			damage.unit_x = WINSIZE_X / 2;
-			damage.unit_y = WINSIZE_Y / 2;
+			damage.unit_x = pos.x;
+			damage.unit_y = pos.y - 100;
 			char temp[32];
 			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.unit);
 			damage.unit_tex = RESOURCE_TEXTURE->GetResource(temp);
@@ -94,8 +96,8 @@ void cShowDamage::SetNumber(int number, cTransform * trans)
 			damage.hund = (number / 100) % 10;
 			damage.thou = (number / 1000) % 10;
 			damage.Rc = RectMake(0, 0, TEX_WIDTH, TEX_HEIGHT);
-			damage.unit_x = WINSIZE_X / 2;
-			damage.unit_y = WINSIZE_Y / 2;
+			damage.unit_x = pos.x;
+			damage.unit_y = pos.y - 100;
 			char temp[32];
 			sprintf_s(temp, "../Resources/Textures/num_%d.tga", damage.unit);
 			damage.unit_tex = RESOURCE_TEXTURE->GetResource(temp);
@@ -117,18 +119,22 @@ void cShowDamage::SetNumber(int number, cTransform * trans)
 	}
 }
 
+void cShowDamage::Release()
+{
+}
+
 //삭제 원활하지 못하면 큐로바꺼
 void cShowDamage::Clean()
 {
 	for (vi_damage = v_damage.begin(); vi_damage != v_damage.end(); )
 	{
-		if (!vi_damage->isEnd)
-		{
-			vi_damage++;
-		}
-		else if(vi_damage->isEnd)
+		if(vi_damage->isEnd)
 		{
 			vi_damage = v_damage.erase(vi_damage);
+		}
+		else
+		{
+			vi_damage++;
 		}
 	}
 }
@@ -151,11 +157,12 @@ void cShowDamage::Update(float timeDelta)
 		}
 	}
 
-	//Clean();  //터질지도모르니 일단 숨키자.
+	Clean();  //터질지도모르니 일단 숨키자.
 }
 
 void cShowDamage::Render()
 {
+	size = v_damage.size();
 	for (int i = 0; i < size; i++)
 	{
 		if (!v_damage[i].isEnd)
