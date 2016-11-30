@@ -47,9 +47,11 @@ HRESULT cScene_OpeningScene::Scene_Init()
 	m_pStage = new cBaseObject;
 	m_pStage->SetMesh(RESOURCE_STATICXMESH->GetResource("../Resources/Meshes/OpenObject/openObj.X", &matCorrection));
 	m_pStage->SetActive(true);
-	m_pStage->pTransform->SetWorldPosition(D3DXVECTOR3(0, +100, 0));
+	m_pStage->pTransform->SetWorldPosition(D3DXVECTOR3(0, +510, 0));
 
-
+	pMainCamera->SetWorldPosition(D3DXVECTOR3(0, 70, 10));
+	pMainCamera->LookPosition(D3DXVECTOR3(0, 0, 0));
+	
 
 	//¶óÀÌÆ® Çª½¬
 	cLight_Direction* pLight1 = new cLight_Direction();
@@ -69,7 +71,7 @@ void cScene_OpeningScene::Scene_Release()
 
 void cScene_OpeningScene::Scene_Update(float timDelta)
 {
-
+	pMainCamera->DefaultControl(timDelta);
 	m_pMainCharacter->Update(timDelta);
 	m_pMainCharacter->pSkinned->Play("HELLO", 0.3f);
 
