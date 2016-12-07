@@ -16,12 +16,16 @@ class cUI_Map
 
 	UI_map m_MiniMap;
 
+	D3DXVECTOR3 m_PlayerPos;
+	LPDIRECT3DTEXTURE9 m_PlayerTex;
+	RECT m_rcPlayer;
+
 public:
 	cUI_Map();
 	~cUI_Map();
 
 	void init();
-	void update();
+	void update(D3DXVECTOR3 pos);
 	void uiRender();
 	void MiniMapRender();
 

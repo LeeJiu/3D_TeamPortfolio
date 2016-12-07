@@ -38,9 +38,9 @@ void cUI_Container::UI_Release()
 
 }
 
-void cUI_Container::UI_Update(float m_currentHp, float m_currentSp)
+void cUI_Container::UI_Update(float m_currentHp, float m_currentSp, D3DXVECTOR3 pos)
 {
-	m_Map->update();
+	m_Map->update(pos);
 	m_CharacterBar->update(m_currentHp, m_currentSp);
 	m_SkillDeck->update();
 	m_MenuBar->update();

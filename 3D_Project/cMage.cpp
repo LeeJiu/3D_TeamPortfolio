@@ -9,7 +9,7 @@
 
 //ÆÄÆ¼Å¬
 #include "cPartcleEmitter.h"
-#include "cParticleQuad.h""
+#include "cParticleQuad.h"
 #include "cParticle.h"
 #include "cQuadParticleEmitter.h"
 
@@ -296,7 +296,7 @@ void cMage::BaseObjectUpdate(float timeDelta)
 	m_pMagicShot->BaseObjectUpdate(timeDelta, m_ATKBox->pTransform->GetWorldPosition(), pTransform->GetForward());
 	m_pMagicShot->Effect_Update(timeDelta);
 
-	m_UIContainer->UI_Update(m_currentHp, m_currentSp);
+	m_UIContainer->UI_Update(m_currentHp, m_currentSp, this->pTransform->GetWorldPosition());
 }
 
 

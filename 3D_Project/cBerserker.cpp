@@ -300,7 +300,7 @@ void cBerserker::BaseObjectUpdate(float timeDelta)
 	}
 
 	m_camera->ShakeUpdate(timeDelta);
-	m_UIContainer->UI_Update(m_currentHp, m_currentSp);
+	m_UIContainer->UI_Update(m_currentHp, m_currentSp, this->pTransform->GetWorldPosition());
 
 	if (m_target)
 	{

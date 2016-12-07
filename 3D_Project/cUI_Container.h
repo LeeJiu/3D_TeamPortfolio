@@ -18,7 +18,7 @@ public:
 	~cUI_Container();
 
 	void UI_Init(float maxHp, float maxSp, CHARAC_TYPE cType);
-	void UI_Update(float m_currentHp, float m_currentSp);
+	void UI_Update(float m_currentHp, float m_currentSp, D3DXVECTOR3 pos);
 	void UI_Render();
 	void UI_Release();
 	void UI_fontRender();
